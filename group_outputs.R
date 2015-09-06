@@ -1,9 +1,10 @@
 #' Group outputs.
 #'
-#' @param nout 
+#' @param outputs
 #' @param nvars 
 #' @param folders 
 #' @param files 
+#' @param lvls
 #'
 #' @return
 #' @export
@@ -154,3 +155,5 @@ plot.grpout <- function(go, col=c("blue","red","green","gold","violet","cyan"), 
   legend("top", legend=go$lvls, fill=col, horiz=T)
   
 }
+
+# Other nice generics to implement: mean, max, min, median, std
