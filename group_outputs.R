@@ -156,4 +156,4 @@ plot.grpout <- function(go, col=c("blue","red","green","gold","violet","cyan"), 
   
 }
 
-# Other nice generics to implement: mean, max, min, median, std
+# TODO Other nice generics to implement: mean, max, min, median, std
