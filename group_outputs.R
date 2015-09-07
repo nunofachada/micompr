@@ -130,7 +130,7 @@ plot.grpout <- function(go, col=c("blue","red","green","gold","violet","cyan"), 
   nout = dim(go$data)[1];
   ncols = min(2, nout)
   nrows = nout %/% ncols
-  m <- matrix(c(1:nout,rep(nout+1,ncols)), nrow=nrows+1, ncol=ncols, byrow=T)
+  m <- matrix(c(1:nout, rep(nout+1,ncols)), nrow=nrows+1, ncol=ncols, byrow=T)
   layout(mat=m, heights=c(rep(0.85/nrows, nrows), 0.15))
 
   # Plot each output separately

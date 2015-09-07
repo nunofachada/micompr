@@ -15,6 +15,8 @@ compare_models <- function(ve, data, factors) {
     stop("'ve' parameter must be between 0 and 1.")
   if (length(factors) != dim(data)[1])
     stop("Number of observations in 'groups' and 'data' does not match.")
+  if (nlevels(factors) < 2)
+    stop("At least two factors are required to perform model comparison.")
   
   # Perform PCA
   pca <- prcomp(data)
@@ -27,21 +29,54 @@ compare_models <- function(ve, data, factors) {
 
   # Manova
   if (npcs > 1) {
-    mnv_res <- manova(pca$x[,1:npcs] ~ factors)
+    mnvtest <- manova(pca$x[,1:npcs] ~ factors)
+    mnvpval <- summary(mnvtest)$stats[1,6]
   } else {
-    mnv_res <- aov(pca$x[,1] ~ factors)
+    mnvtest <- NULL
+    mnvpval <- NA
   }
   
-  # t-test 1st PC
-  # TODO: Should be ANOVA for more than two groups - Determine p-values for all PCs
-  ttest_res <- t.test(pca$x[,1] ~ factors)
+  parpvals <- vector(mode="numeric", length=npcs)
+  partests <- list()
+  nonparpvals <- vector(mode="numeric", length=npcs)
+  nonpartests <- list()
   
-  # Mann-Whitney
-  # TODO: Should be Kruskal-Wallis for more than two groups
-  mw_res <- wilcox.test(pca$x[,1] ~ factors)
+  if (nlevels(factors) == 2) { # Use two-group tests
+
+    # Cycle through each PC
+    for (i in 1:npcs) {
+      
+      # Parametric test (t-test) for each PC
+      partests[[i]] <- t.test(pca$x[,i] ~ factors)
+      parpvals[i] <- partests[[i]]$p.value
+      
+      # Non-parametric test (Mann-Whitney) for each PC
+      nonpartests[[i]] <- wilcox.test(pca$x[,i] ~ factors)
+      nonparpvals[i] <- nonpartests[[i]]$p.value
+      
+    }
+    
+  } else { # Use multi-group tests (npcs > 2)
+
+    # Cycle through each PC
+    for (i in 1:npcs) {
+      
+      # Parametric test (ANOVA) for each PC
+      partests[[i]] <- aov(pca$x[,i] ~ factors)
+      parpvals[i] <- summary(partests[[i]])[[1]]$"Pr(>F)"[1]
+      
+      # Non-parametric test (Kruskal-Wallis) for each PC
+      nonpartests[[i]] <- kruskal.test(pca$x[,i] ~ factors)
+      nonparpvals[i] <- nonpartests[[i]]$p.value
+      
+    }
+    
+  }
   
   # Return
-  cmpmod <- list(scores=pca$x, mnv=mnv_res, ttest=ttest_res, mw=mw_res, varexp=varexp, npcs=npcs, ve=ve)
+  cmpmod <- list(scores=pca$x, varexp=varexp, npcs=npcs, ve=ve, 
+                 p.values=list(manova=mnvpval, parametric=parpvals, nonparametric=nonparpvals),
+                 tests=list(manova=mnvtest, parametric=partests, nonparametric=nonpartests))
   class(cmpmod) <- "cmpmodels"
   cmpmod
   
@@ -50,11 +85,9 @@ compare_models <- function(ve, data, factors) {
 print.cmpmodels <- function(cmpmod) {
   cat("Number of PCs which explain ", cmpmod$ve * 100, "% of variance: ", cmpmod$npcs, "\n", sep="")
   if (cmpmod$npcs > 1) {
-    cat("P-Value for MANOVA along", cmpmod$npcs, "dimensions:", summary(cmpmod$mnv)$stats[1,6], "\n")
-  } else {
-    cat("P-Value for ANOVA (1st PC):", summary(cmpmod$mnv)[[1]]$"Pr(>F)"[1], "\n")
+    cat("P-Value for MANOVA along", cmpmod$npcs, "dimensions:", cmpmod$p.values$manova, "\n")
   }
-  cat("P-Value for t-test (1st PC):", cmpmod$ttest$p.value, "\n")
-  cat("P-Value for Mann-Whitney test (1st PC):", cmpmod$mw$p.value, "\n")
+  cat("P-Value for t-test (1st PC):", cmpmod$p.values$parametric[1], "\n")
+  cat("P-Value for Mann-Whitney test (1st PC):", cmpmod$p.values$parametric[2], "\n")
 
 }
