@@ -36,7 +36,7 @@ micomp <- function(outputs, nvars, ve, ...) {
   for (i in 1:ncomp) {
     
     grpd_outputs[[i]] <- 
-      group_outputs(outputs, nvars, unlist(comps[[i]][1]), 
+      grpoutputs(outputs, nvars, unlist(comps[[i]][1]), 
                     unlist(comps[[i]][2]), lvls=comps[[i]]$lvls)
     
   }
@@ -48,7 +48,7 @@ micomp <- function(outputs, nvars, ve, ...) {
     for (j in 1:ncomp) {
       
       comp_res[[i, j]] <- 
-        compare_output(outputs[i], ve, 
+        cmpoutput(outputs[i], ve, 
                        grpd_outputs[[j]]$data[i,,], 
                        grpd_outputs[[j]]$factors)
 

@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-group_outputs <- function(outputs, nvars, folders, files, lvls=NULL) {
+grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
   
   # Determine number of file sets (i.e. number of unique factors or levels)
   nfilesets <- length(files)
@@ -106,12 +106,12 @@ group_outputs <- function(outputs, nvars, folders, files, lvls=NULL) {
   
   # Return outputs, groups and factors
   go <- list(data=data, outputs=outputs, groups=groups, factors=factors, lvls=lvls)
-  class(go) <- "grpout"
+  class(go) <- "grpoutputs"
   go
 
 }
 
-print.grpout <- function(go) {
+print.grpoutputs <- function(go) {
   
   cat("Number of outputs: ", dim(go$data)[1], "\n")
   cat("Outputs: ", paste(go$outputs,collapse=", "), "\n")
@@ -123,7 +123,7 @@ print.grpout <- function(go) {
 
 }
 
-plot.grpout <- function(go, col=c("blue","red","green","gold","violet","cyan"), ...) {
+plot.grpoutputs <- function(go, col=c("blue","red","green","gold","violet","cyan"), ...) {
   
   # TODO: Mean plot, max/min plot
   

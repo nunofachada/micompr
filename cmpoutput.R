@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-compare_output <- function(name, ve, data, factors) {
+cmpoutput <- function(name, ve, data, factors) {
 
   # Check parameters
   if (ve < 0 || ve > 1) 
