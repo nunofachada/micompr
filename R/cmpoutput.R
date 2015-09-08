@@ -5,10 +5,10 @@
 #' @param data 
 #' @param factors 
 #'
-#' @return
-#' @export
+#' @return Compared outputs
+#' @export cmpoutput
 #'
-#' @examples
+#' @examples #' micomp()
 cmpoutput <- function(name, ve, data, factors) {
 
   # Check parameters

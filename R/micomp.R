@@ -5,10 +5,10 @@
 #' @param ve
 #' @param comps
 #'
-#' @return
-#' @export
+#' @return Some stuff
+#' @export micomp
 #'
-#' @examples
+#' @examples #' micomp()
 micomp <- function(outputs, nvars, ve, ...) {
   
   # Put comparisons in a list

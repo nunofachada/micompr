@@ -6,10 +6,10 @@
 #' @param files 
 #' @param lvls
 #'
-#' @return
-#' @export
+#' @return Some stuff
+#' @export grpoutputs
 #'
-#' @examples
+#' @examples #' micomp()
 grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
   
   # Determine number of file sets (i.e. number of unique factors or levels)
