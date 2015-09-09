@@ -6,7 +6,7 @@
 #' @param comps
 #'
 #' @return Some stuff
-#' @export micomp
+#' @export
 #'
 #' @examples #' micomp()
 micomp <- function(outputs, nvars, ve, ...) {
@@ -61,6 +61,14 @@ micomp <- function(outputs, nvars, ve, ...) {
 
 }
 
+#' Title
+#'
+#' @param mcmp 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
 print.micomp <- function(mcmp) {
   
   dims <- dim(mcmp)
@@ -90,6 +98,16 @@ print.micomp <- function(mcmp) {
 }
 
 # TODO The color vector could be some kind of global
+#' Title
+#'
+#' @param mcmp 
+#' @param col 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
 plot.micomp <- function(mcmp, col=c("blue","red","green","gold","violet","cyan"), ...) {
   
   dims <- dim(mcmp)

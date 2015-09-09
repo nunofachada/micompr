@@ -7,7 +7,7 @@
 #' @param lvls
 #'
 #' @return Some stuff
-#' @export grpoutputs
+#' @export
 #'
 #' @examples #' micomp()
 grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
@@ -111,6 +111,14 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
 
 }
 
+#' Title
+#'
+#' @param go 
+#'
+#' @return todo
+#' @export 
+#'
+#' @examples #' todo()
 print.grpoutputs <- function(go) {
   
   cat("Number of outputs: ", dim(go$data)[1], "\n")
@@ -123,6 +131,16 @@ print.grpoutputs <- function(go) {
 
 }
 
+#' Title
+#'
+#' @param go 
+#' @param col 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
 plot.grpoutputs <- function(go, col=c("blue","red","green","gold","violet","cyan"), ...) {
   
   # TODO: Mean plot, max/min plot

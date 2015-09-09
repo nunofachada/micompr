@@ -6,7 +6,7 @@
 #' @param factors 
 #'
 #' @return Compared outputs
-#' @export cmpoutput
+#' @export
 #'
 #' @examples #' micomp()
 cmpoutput <- function(name, ve, data, factors) {
@@ -83,6 +83,14 @@ cmpoutput <- function(name, ve, data, factors) {
   
 }
 
+#' Title
+#'
+#' @param cmpout 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
 print.cmpoutput <- function(cmpout) {
 
   cat("Output name:", cmpout$name, "\n")
@@ -95,6 +103,16 @@ print.cmpoutput <- function(cmpout) {
 
 }
 
+#' Title
+#'
+#' @param cmpout 
+#' @param col 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
 plot.cmpoutput <- function(cmpout, col=c("blue","red","green","gold","violet","cyan"), ...) {
   
   par(mfrow=c(2,2))
