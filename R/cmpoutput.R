@@ -92,14 +92,20 @@ cmpoutput <- function(name, ve, data, factors) {
 #'
 #' @examples #' todo()
 print.cmpoutput <- function(cmpout) {
+  
+  if (length(unique(cmpout$factors)) == 2) {
+    test_names <- c("t-test", "Mann-Whitney U test")
+  } else {
+    test_names <- c("ANOVA test", "Kruskal-Wallis test")
+  }
 
   cat("Output name:", cmpout$name, "\n")
   cat("Number of PCs which explain ", cmpout$ve * 100, "% of variance: ", cmpout$npcs, "\n", sep="")
   if (cmpout$npcs > 1) {
     cat("P-Value for MANOVA along", cmpout$npcs, "dimensions:", cmpout$p.values$manova, "\n")
   }
-  cat("P-Value for t-test (1st PC):", cmpout$p.values$parametric[1], "\n")
-  cat("P-Value for Mann-Whitney test (1st PC):", cmpout$p.values$parametric[2], "\n")
+  cat("P-Value for", test_names[1], "(1st PC):", cmpout$p.values$parametric[1], "\n")
+  cat("P-Value for", test_names[2], "(1st PC):", cmpout$p.values$nonparametric[1], "\n")
 
 }
 
