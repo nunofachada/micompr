@@ -27,14 +27,20 @@ cmpoutput <- function(name, ve, data, factors) {
   varexp <- eig/sum(eig)
   cumvar <- cumsum(varexp)
   npcs <- which(cumvar > ve)[1]
+  
+  # Assumptions list
+  assumptions <- list()
+  class(assumptions) <- "cmpoutput_assumptions"
 
   # Manova
   if (npcs > 1) {
     mnvtest <- manova(pca$x[,1:npcs] ~ factors)
     mnvpval <- summary(mnvtest)$stats[1,6]
+    assumptions$manova <- assumptions_manova(pca$x[,1:npcs], factors)
   } else {
     mnvtest <- NULL
     mnvpval <- NA
+    assumptions$manova <- NULL
   }
   
   parpvals <- vector(mode="numeric", length=npcs)
@@ -50,6 +56,7 @@ cmpoutput <- function(name, ve, data, factors) {
       # Parametric test (t-test) for each PC
       partests[[i]] <- t.test(pca$x[,i] ~ factors)
       parpvals[i] <- partests[[i]]$p.value
+      assumptions$ttest <- assumptions_parunivar(pca$x[,1:npcs], factors)
       
       # Non-parametric test (Mann-Whitney) for each PC
       nonpartests[[i]] <- wilcox.test(pca$x[,i] ~ factors)
@@ -77,7 +84,8 @@ cmpoutput <- function(name, ve, data, factors) {
   # Return
   cmpout <- list(scores=pca$x, factors=factors, varexp=varexp, npcs=npcs, ve=ve, name=name,
                  p.values=list(manova=mnvpval, parametric=parpvals, nonparametric=nonparpvals),
-                 tests=list(manova=mnvtest, parametric=partests, nonparametric=nonpartests))
+                 tests=list(manova=mnvtest, parametric=partests, nonparametric=nonpartests),
+                 assumptions=assumptions)
   class(cmpout) <- "cmpoutput"
   cmpout
   
