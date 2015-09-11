@@ -81,6 +81,14 @@ assumptions_paruv <- function(data, factors) {
   
 }
 
+#' Title
+#'
+#' @param asmnv 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
 print.assumptions_manova <- function(asmnv) {
   
   for (grp in names(asmnv$mvntest)) {
@@ -89,6 +97,14 @@ print.assumptions_manova <- function(asmnv) {
   cat("Var:", asmnv$vartest$p.value, "\n")
 }
 
+#' Title
+#'
+#' @param aspuv 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
 print.assumptions_paruv <- function(aspuv) {
   
   maxvars <- min(5, length(aspuv$uvntest[[1]]))
@@ -108,38 +124,56 @@ print.assumptions_paruv <- function(aspuv) {
   cat(" ... \n")
 }
 
+#' Title
+#'
+#' @param asmnv 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
 plot.assumptions_manova <- function(asmnv, ...) {
   
   pvals <- sapply(asmnv$mvntest, function(x) x@p.value)
-  barplot(pvals, main="Royston test p-values (multivar. normality)", 
+  barplot(pvals, main="Royston test p-values", sub="Multivariate normality",
           xlab="Groups", ylab="Probability", col=micomp:::pvalcol(pvals), ...)
 
 }
 
-plot.assumptions_paruv <- function(aspuv, ...) {
+#' Title
+#'
+#' @param aspuv 
+#' @param extra 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+plot.assumptions_paruv <- function(aspuv, extra=0, ...) {
   
   # Number of vars in the PC plots
   nvars <- length(aspuv$uvntest[[1]])
 
-  # One plot for each factor + 1 for the variance
-  nplots <- length(aspuv$uvntest) + 1
+  # One plot for each factor + 1 for the variance + extra for more plots
+  nplots <- length(aspuv$uvntest) + 1 + extra
   
-  # 
+  # Plot matrix side dimension 
   side_dim <- ceiling(sqrt(nplots))
   
-  par(mfcol=c(side_dim, side_dim))
-  cat(side_dim)
+  par(mfrow=c(side_dim, side_dim))
   # Plot the Bartlett test p-values by PC
   vardata <- sapply(aspuv$vartest, function(x) x$p.value)
   barplot(vardata, names.arg=as.character(1:nvars), 
-          main="p-values for the Bartlett test (Homogeneity of Variances)", 
+          main="p-values for the Bartlett test", sub="Homogeneity of Variances", 
           xlab="PC", ylab="Probability", col=micomp:::pvalcol(vardata), ...)
   
   # Plot the Shapiro-Wilk p-values by PC for each factor
   for (grp in names(aspuv$uvntest)) {
     normdata <- sapply(aspuv$uvntest[[grp]], function(x) x$p.value)
     barplot(normdata, names.arg=as.character(1:nvars), 
-            main=paste("p-values for the SW normality test (",grp,")", sep=""), 
+            sub=grp, main="p-values for the SW normality test",  
             xlab="PC", ylab="Probability", col=micomp:::pvalcol(normdata), ...)
   }
   

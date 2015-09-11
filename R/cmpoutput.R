@@ -151,3 +151,23 @@ plot.cmpoutput <- function(cmpout, col=c("blue","red","green","gold","violet","c
           main="Non-parametric p-values by PC", xlab="PC", ylab="Prob.", ...)
   
 }
+
+#' Title
+#'
+#' @param cmpoass 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+plot.cmpoutput_assumptions <- function(cmpoass, ...) {
+  
+  if (exists('manova', where=cmpoass)) {
+    plot(cmpoass$ttest, extra=1, ...)
+    plot(cmpoass$manova, ...)
+  } else {
+    # No extra for multivariate assumptions, just plot univariate stuff
+    plot(cmpoass$ttest, ...)
+  }
+}
