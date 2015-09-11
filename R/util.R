@@ -5,3 +5,5 @@ pvalcol <- function(pvals, col=c("darkgreen","yellow","red"),
          ifelse(pvals < pvlims[2], col[2],
                 col[1]))
 }
+
+plotcols <- function() c("blue","red","green","gold","violet","cyan")

@@ -128,7 +128,7 @@ print.cmpoutput <- function(cmpout) {
 #' @export
 #'
 #' @examples #' todo()
-plot.cmpoutput <- function(cmpout, col=c("blue","red","green","gold","violet","cyan"), ...) {
+plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
   
   par(mfrow=c(2,2))
   
@@ -170,4 +170,17 @@ plot.cmpoutput_assumptions <- function(cmpoass, ...) {
     # No extra for multivariate assumptions, just plot univariate stuff
     plot(cmpoass$ttest, ...)
   }
+}
+
+#' Title
+#'
+#' @param obj 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+assumptions.cmpoutput <- function(obj, ...) {
+  obj$assumptions
 }

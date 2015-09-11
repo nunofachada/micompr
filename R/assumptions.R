@@ -1,5 +1,16 @@
 #' Title
 #'
+#' @param obj 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+assumptions <- function(obj, ...) UseMethod("assumptions")
+
+#' Title
+#'
 #' @param data 
 #' @param factors 
 #'

@@ -108,7 +108,7 @@ print.micomp <- function(mcmp) {
 #' @export
 #'
 #' @examples #' todo()
-plot.micomp <- function(mcmp, col=c("blue","red","green","gold","violet","cyan"), ...) {
+plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
   
   dims <- dim(mcmp)
   nout <- dims[1]
@@ -143,5 +143,23 @@ plot.micomp <- function(mcmp, col=c("blue","red","green","gold","violet","cyan")
     }
   }
   
+}
+
+#' Title
+#'
+#' @param obj 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+assumptions.micomp <- function(obj, ...) {
+  micas <- lapply(obj, function(x) x$assumptions)
+  #dim(micas) <- dim(obj)
+  class(micas) <- "assumptions_micomp"
+}
+
+print.assumptions_micomp <- function(micas, ...) {
   
 }
