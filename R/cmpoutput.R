@@ -54,9 +54,9 @@ cmpoutput <- function(name, ve, data, factors) {
     for (i in 1:npcs) {
       
       # Parametric test (t-test) for each PC
-      partests[[i]] <- t.test(pca$x[,i] ~ factors)
+      partests[[i]] <- t.test(pca$x[,i] ~ factors, var.equal = T)
       parpvals[i] <- partests[[i]]$p.value
-      assumptions$ttest <- assumptions_parunivar(pca$x[,1:npcs], factors)
+      assumptions$ttest <- assumptions_paruv(pca$x[,1:npcs], factors)
       
       # Non-parametric test (Mann-Whitney) for each PC
       nonpartests[[i]] <- wilcox.test(pca$x[,i] ~ factors)
@@ -72,6 +72,7 @@ cmpoutput <- function(name, ve, data, factors) {
       # Parametric test (ANOVA) for each PC
       partests[[i]] <- aov(pca$x[,i] ~ factors)
       parpvals[i] <- summary(partests[[i]])[[1]]$"Pr(>F)"[1]
+      assumptions$ttest <- assumptions_paruv(pca$x[,1:npcs], factors)
       
       # Non-parametric test (Kruskal-Wallis) for each PC
       nonpartests[[i]] <- kruskal.test(pca$x[,i] ~ factors)

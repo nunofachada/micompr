@@ -7,6 +7,7 @@ Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
 Maintainer: Nuno Fachada <faken@fakenmc.com>
 Description: Compares models 
 Depends: R (>= 2.0.0)
+Imports: MVN
 License: MIT + file LICENSE
 URL: http://github.com/fakenmc/micomp
 BugReports: https://github.com/fakenmc/micomp/issues
