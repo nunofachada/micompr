@@ -178,6 +178,8 @@ print.assumptions_micomp <- function(micas, ...) {
   nout <- dims[1]
   ncomp <- dims[2]
   
+  all <- list()
+  
   # Cycle through comparisons
   for (i in 1:ncomp) {
     
@@ -197,18 +199,21 @@ print.assumptions_micomp <- function(micas, ...) {
       }
       return(pvals)
     })
-    names(mnv) <- 
+    names(mnv) <- c(paste("MNV.", names(micas[1,i]$ttest$uvntest), sep=""), "BoxM(Var.)")
     
-    # Get 
-
+    # Get the p-values for for t-test assumptions
+    ttst <- lapply(micas[,i], function (ma) {
+      pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
+      pvals <- c(pvals, ma$ttest$vartest[[1]]$p.value)
+      return(pvals)
+    })
+    names(ttst) <- c(paste("ttest.", names(micas[1,i]$ttest$uvntest), sep=""), "Bartlett(Var.)")
     
-    df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F, 
-                     row.names = c("#PCs", "MNV", "Par.test", "NonParTest"))
-    names(df) <- rownames(micas)
-    
-    cat("==== Comparison", i, "====\n")
-    print(df, digits=5, print.gap=2)
+    # 
+    all <- cbind(all, c(mnv, ttst))
     
   }
+  colnames(all) <- colnames(micas)
+  print(all, digits=5, print.gap=2)
   
 }
