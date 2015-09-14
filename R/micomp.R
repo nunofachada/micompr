@@ -189,8 +189,9 @@ print.assumptions_micomp <- function(micas, ...) {
       if (exists('manova', where=ma)) {
         # Get the Royston test p-values
         pvals <- sapply(ma$manova$mvntest, function(x) return(x@p.value))
+        names(pvals) <- paste("Royston(",names(pvals),")", sep="")
         # Get the Box test p-values
-        pvals <- c(pvals, ma$manova$vartest$p.value)
+        pvals <- c(pvals, `BoxM(Var.)`=ma$manova$vartest$p.value)
       } else {
         # Number of compared models
         ncmpmod <- length(ma$ttest$uvntest)
@@ -199,21 +200,22 @@ print.assumptions_micomp <- function(micas, ...) {
       }
       return(pvals)
     })
-    names(mnv) <- c(paste("MNV.", names(micas[1,i]$ttest$uvntest), sep=""), "BoxM(Var.)")
-    
+
     # Get the p-values for for t-test assumptions
     ttst <- lapply(micas[,i], function (ma) {
       pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
-      pvals <- c(pvals, ma$ttest$vartest[[1]]$p.value)
+      names(pvals) <- paste("Shapiro-Wilk(",names(pvals),")", sep="")
+      pvals <- c(pvals, `Bartlett(Var.)`=ma$ttest$vartest[[1]]$p.value)
       return(pvals)
     })
-    names(ttst) <- c(paste("ttest.", names(micas[1,i]$ttest$uvntest), sep=""), "Bartlett(Var.)")
     
-    # 
-    all <- cbind(all, c(mnv, ttst))
+    # Merge
+    mrgd <- mapply(function(x,y) c(x,y), mnv, ttst)
+
+     cat("==== Comparison", i, "====\n")
+     print(mrgd, digits=5, print.gap=2)
     
   }
-  colnames(all) <- colnames(micas)
-  print(all, digits=5, print.gap=2)
+
   
 }
