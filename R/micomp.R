@@ -174,12 +174,72 @@ assumptions.micomp <- function(obj, ...) {
 #' @examples #' todo
 print.assumptions_micomp <- function(micas, ...) {
   
+  sm <- summary(micas)
+
+  # Cycle through comparisons
+  for (cmp in names(sm)) {
+    
+     cat("==== ", cmp, "====\n")
+     print(sm[[cmp]], digits=5, print.gap=2)
+     cat("\n")
+    
+  }
+
+}
+
+#' Title
+#'
+#' @param micas 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+plot.assumptions_micomp <- function(micas, col=micomp:::plotcols(), ...) {
+  
+  sm <- summary(micas)
+  
+  dims <- dim(micas)
+  nout <- dims[1]
+  ncomp <- dims[2]
+  # One plot for each output/comparison pair  + 1 for the legend
+  nplots = ncomp + 1
+
+  # Plot matrix side dimension 
+  side_dim <- ceiling(sqrt(nplots))
+  
+  par(mfrow=c(side_dim, side_dim))  
+  
+  # Cycle through comparisons
+  for (cmp in names(sm)) {
+    par(mar = rep(2, 4))
+    barplot(sm[[cmp]], col=col, beside=T, main=cmp, ...) 
+  }
+  
+  plot(0, type = "n", axes=FALSE, xlab="", ylab="")
+  legend("top", legend=rownames(sm[[1]]), fill=col)
+  
+}
+
+#' Title
+#'
+#' @param micas 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
+summary.assumptions_micomp <- function(micas, ...) {
+  
   dims <- dim(micas)
   nout <- dims[1]
   ncomp <- dims[2]
   
-  all <- list()
-  
+  all = list()
+  cmpnames <- colnames(micas)
+
   # Cycle through comparisons
   for (i in 1:ncomp) {
     
@@ -200,7 +260,7 @@ print.assumptions_micomp <- function(micas, ...) {
       }
       return(pvals)
     })
-
+    
     # Get the p-values for for t-test assumptions
     ttst <- lapply(micas[,i], function (ma) {
       pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
@@ -209,13 +269,12 @@ print.assumptions_micomp <- function(micas, ...) {
       return(pvals)
     })
     
-    # Merge
+    # Merge...
     mrgd <- mapply(function(x,y) c(x,y), mnv, ttst)
-
-     cat("==== Comparison", i, "====\n")
-     print(mrgd, digits=5, print.gap=2)
+    #... and save to list
+    all[[cmpnames[i]]] <- mrgd
     
   }
-
   
+  all
 }
