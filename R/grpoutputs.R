@@ -134,6 +134,23 @@ print.grpoutputs <- function(go) {
 #' Title
 #'
 #' @param go 
+#'
+#' @return todo
+#' @export 
+#'
+#' @examples #' todo()
+summary.grpoutputs <- function(go) {
+  list(`Number of outputs`=dim(go$data)[1],
+       `Outputs`=paste(go$outputs,collapse=", "),
+       `Dimensions`=dim(go$data)[2:3],
+       `Group size by factor`=data.frame(go$groups, row.names = go$lvls, 
+                                         stringsAsFactors = F)
+       )
+}
+
+#' Title
+#'
+#' @param go 
 #' @param col 
 #' @param ... 
 #'
