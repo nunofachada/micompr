@@ -29,7 +29,7 @@ micomp <- function(outputs, nvars, ve, ...) {
   grpd_outputs <- list()
   
   # Results of each comparison for each output
-  comp_res = vector("list", length = nout * ncomp)
+  comp_res <- vector("list", length = nout * ncomp)
   dim(comp_res) <- c(nout, ncomp)
   
   # Group outputs for each comparison
@@ -38,7 +38,7 @@ micomp <- function(outputs, nvars, ve, ...) {
     grpd_outputs[[i]] <- 
       grpoutputs(outputs, nvars, unlist(comps[[i]][1]), 
                     unlist(comps[[i]][2]), lvls=comps[[i]]$lvls)
-    
+
   }
   
   # Cycle through each output 
@@ -56,6 +56,8 @@ micomp <- function(outputs, nvars, ve, ...) {
 
   }
   
+  colnames(comp_res) <- paste("Comp", 1:ncomp, sep="")
+  rownames(comp_res) <- outputs
   class(comp_res) <- "micomp"
   comp_res
 
@@ -75,9 +77,6 @@ print.micomp <- function(mcmp) {
   nout <- dims[1]
   ncomp <- dims[2]
   
-  # Get a vector with output names
-  outputs <- lapply(mcmp[,1], function(mc) return(mc$name))
-  
   # Cycle through comparisons
   for (i in 1:ncomp) {
     
@@ -87,8 +86,9 @@ print.micomp <- function(mcmp) {
     p_npar <- lapply(mcmp[,i], function (mc) return (mc$p.values$nonparametric[1]))
 
     
-    df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F, row.names = c("#PCs", "MNV", "Par.test", "NonParTest"))
-    names(df) <- outputs
+    df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F, 
+                     row.names = c("#PCs", "MNV", "Par.test", "NonParTest"))
+    names(df) <- rownames(mcmp)
     
     cat("==== Comparison", i, "====\n")
     print(df, digits=5, print.gap=2)
@@ -156,10 +156,59 @@ plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
 #' @examples #' todo
 assumptions.micomp <- function(obj, ...) {
   micas <- lapply(obj, function(x) x$assumptions)
-  #dim(micas) <- dim(obj)
+  dim(micas) <- dim(obj)
+  colnames(micas) <- colnames(obj)
+  rownames(micas) <- rownames(obj)
   class(micas) <- "assumptions_micomp"
+  micas
 }
 
+#' Title
+#'
+#' @param micas 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
 print.assumptions_micomp <- function(micas, ...) {
+  
+  dims <- dim(micas)
+  nout <- dims[1]
+  ncomp <- dims[2]
+  
+  # Cycle through comparisons
+  for (i in 1:ncomp) {
+    
+    # Get the p-values for the MANOVA assumptions
+    mnv <- lapply(micas[,i], function (ma) {
+      # Was MANOVA performed?
+      if (exists('manova', where=ma)) {
+        # Get the Royston test p-values
+        pvals <- sapply(ma$manova$mvntest, function(x) return(x@p.value))
+        # Get the Box test p-values
+        pvals <- c(pvals, ma$manova$vartest$p.value)
+      } else {
+        # Number of compared models
+        ncmpmod <- length(ma$ttest$uvntest)
+        # Set a vector of NAs (+1 for the Box test p-value)
+        pvals <- rep(NA, ncmpmod + 1)
+      }
+      return(pvals)
+    })
+    names(mnv) <- 
+    
+    # Get 
+
+    
+    df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F, 
+                     row.names = c("#PCs", "MNV", "Par.test", "NonParTest"))
+    names(df) <- rownames(micas)
+    
+    cat("==== Comparison", i, "====\n")
+    print(df, digits=5, print.gap=2)
+    
+  }
   
 }

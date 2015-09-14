@@ -17,7 +17,7 @@ assumptions <- function(obj, ...) UseMethod("assumptions")
 #' @return to do
 #' @export
 #'
-#' @examples #' todo
+#' @examples #' todo indeed
 assumptions_manova <- function(data, factors) {
   
   # `assumpt` will be a list containing the test for multivariate normality 

@@ -18,6 +18,6 @@ to do
 Title
 }
 \examples{
-#' todo
+#' todo indeed
 }
 
