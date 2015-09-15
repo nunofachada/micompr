@@ -5,12 +5,13 @@
 #' @param folders 
 #' @param files 
 #' @param lvls
+#' @param concat
 #'
 #' @return Some stuff
 #' @export
 #'
 #' @examples #' micomp()
-grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
+grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   
   # Determine number of file sets (i.e. number of unique factors or levels)
   nfilesets <- length(files)
@@ -71,9 +72,12 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
     nout <- length(outputs)
   }
   
-  # Create grouped outputs array
-  data <- array(dim=c(nout, nobs, nvars))
-  
+  # Create grouped outputs list
+  data <- list()
+  for (out in outputs) {
+    data[[out]] <- matrix(nrow=nobs, ncol=nvars)
+  }
+
   # Cycle through all file sets
   for (i in 1:nfilesets) {
     
@@ -98,14 +102,15 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
       
       # Organize data
       for (k in 1:nout) {
-        data[k,bidx+j,] <- t(tdata[,k])
+        out <- outputs[k]
+        data[[out]][bidx+j,] <- t(tdata[,k])
       }
     }
     
   }
   
   # Return outputs, groups and factors
-  go <- list(data=data, outputs=outputs, groups=groups, factors=factors, lvls=lvls)
+  go <- list(data=data, groups=groups, factors=factors, lvls=lvls)
   class(go) <- "grpoutputs"
   go
 
@@ -121,13 +126,13 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL) {
 #' @examples #' todo()
 print.grpoutputs <- function(go) {
   
-  cat("Number of outputs: ", dim(go$data)[1], "\n")
-  cat("Outputs: ", paste(go$outputs,collapse=", "), "\n")
-  cat("Dimensions: ", dim(go$data)[2:3], "\n")
-  cat("Group size by factor:\n")
-  for (i in 1:length(go$groups)) {
-    cat("\t", go$lvls[i], ": ", go$groups[i], "\n")
-  }
+  smgo <- summary(go)
+  
+  cat("Number of outputs: ", length(go$data), "\n")
+  cat("\nOutput dimensions:\n")
+  print(smgo$output.dims)
+  cat("\nGroup size by factor:\n")
+  print(smgo$group.sizes)
 
 }
 
@@ -140,12 +145,16 @@ print.grpoutputs <- function(go) {
 #'
 #' @examples #' todo()
 summary.grpoutputs <- function(go) {
-  list(`Number of outputs`=dim(go$data)[1],
-       `Outputs`=paste(go$outputs,collapse=", "),
-       `Dimensions`=dim(go$data)[2:3],
-       `Group size by factor`=data.frame(go$groups, row.names = go$lvls, 
-                                         stringsAsFactors = F)
-       )
+  
+  outptab <- sapply(go$data, function(x) dim(x))
+  rownames(outptab) <- c("N.Obs", "N.Vars")
+    
+  grpszbyfact <- data.frame(group.size=go$groups, 
+                            row.names = go$lvls, 
+                            stringsAsFactors = F)
+  
+  list(`output.dims`=outptab, `group.sizes`=grpszbyfact)
+
 }
 
 #' Title
@@ -158,30 +167,30 @@ summary.grpoutputs <- function(go) {
 #' @export
 #'
 #' @examples #' todo()
-plot.grpoutputs <- function(go, col=c("blue","red","green","gold","violet","cyan"), ...) {
+plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   
   # TODO: Mean plot, max/min plot
   
-  nout = dim(go$data)[1];
+  nout = length(go$data);
   ncols = min(2, nout)
   nrows = nout %/% ncols
   m <- matrix(c(1:nout, rep(nout+1,ncols)), nrow=nrows+1, ncol=ncols, byrow=T)
   layout(mat=m, heights=c(rep(0.85/nrows, nrows), 0.15))
 
   # Plot each output separately
-  for (i in 1:nout) {
-    
+  for (out in names(go$data)) {
+
     # Find the maximum and minimum of the current output
-    ymax <- max(go$data[i,,])
-    ymin <- min(go$data[i,,])
-    xlen <- length(go$data[i,1,])
+    ymax <- max(go$data[[out]])
+    ymin <- min(go$data[[out]])
+    xlen <- length(go$data[[out]][1,])
     
     # Prepare plot
-    plot.default(0, xlim=c(0,xlen), ylim=c(ymin,ymax), main=go$outputs[i], type="n")
+    plot.default(0, xlim=c(0,xlen), ylim=c(ymin,ymax), main=out, type="n")
     
     # Plot lines
-    for (j in 1:length(go$factors)) {
-      lines(go$data[i,j,], col=col[unclass(go$factors)[j]], ...)
+    for (i in 1:length(go$factors)) {
+      lines(go$data[[out]][i,], col=col[unclass(go$factors)[i]], ...)
     }
 
   }
