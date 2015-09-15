@@ -121,6 +121,32 @@ print.cmpoutput <- function(cmpout) {
 #' Title
 #'
 #' @param cmpout 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
+summary.cmpoutput <- function(cmpout) {
+
+    if (length(unique(cmpout$factors)) == 2) {
+    test_names <- c("t-test", "Mann-Whitney")
+  } else {
+    test_names <- c("ANOVA", "Kruskal-Wallis")
+  }
+  
+  list(output.name=cmpout$name, 
+      num.pcs=cmpout$npcs, 
+      var.exp=cmpout$ve,
+      manova.pval=cmpout$p.values$manova, 
+      parametric.test=test_names[1],
+      parametric.pvals=cmpout$p.values$parametric,
+      nonparametric.test=test_names[2],
+      nonparametric.pvals=cmpout$p.values$nonparametric)
+}
+
+#' Title
+#'
+#' @param cmpout 
 #' @param col 
 #' @param ... 
 #'
