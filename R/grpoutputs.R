@@ -122,7 +122,11 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   }
   
   # Return outputs, groups and factors
-  go <- list(data=data, groups=groups, factors=factors, lvls=lvls)
+  go <- list(data=data, 
+             groups=groups, 
+             factors=factors, 
+             lvls=lvls, 
+             concat=concat)
   class(go) <- "grpoutputs"
   go
 
@@ -182,11 +186,29 @@ summary.grpoutputs <- function(go) {
 plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   
   # TODO: Mean plot, max/min plot
-  
+
   nout = length(go$data);
+  nout_simpl <- nout-go$concat
   ncols = min(2, nout)
-  nrows = nout %/% ncols
-  m <- matrix(c(1:nout, rep(nout+1,ncols)), nrow=nrows+1, ncol=ncols, byrow=T)
+
+  ### Build layout matrix
+  # One plot space for each normal output
+  l1 <- 1:nout_simpl
+  totsp <- nout_simpl
+  # Make adjustment if number of plots is not pair
+  l2 <- if (nout_simpl %% 2 != 0) { totsp<-totsp+1; totsp } else { NULL }
+  # Get plot space for concatenated output
+  l3 <- if (go$concat) { totsp<-totsp+ncols; rep(totsp-(ncols==2), ncols) } 
+        else { NULL }
+  # Get plot space for legend
+  l4 <- rep(totsp+1-(ncols==2), ncols)
+  # Concatenate layout vector
+  lv <- c(l1, l2, l3, l4)
+  # Create layout matrix
+  m <- matrix(lv, ncol=ncols, byrow=T)
+  
+  # Set layout
+  nrows <- length(lv) / ncols
   layout(mat=m, heights=c(rep(0.85/nrows, nrows), 0.15))
 
   # Plot each output separately
@@ -197,19 +219,28 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
     ymin <- min(go$data[[out]])
     xlen <- length(go$data[[out]][1,])
     
+    # Take into account non-pair number of simple outputs
+    if ((out == "concat") && (nout_simpl %% 2 != 0)) {
+      plot(0, type = "n", axes=FALSE, xlab="", ylab="")
+    }
+    
     # Prepare plot
-    plot.default(0, xlim=c(0,xlen), ylim=c(ymin,ymax), main=out, type="n")
+    plot.default(0, xlim=c(0,xlen), ylim=c(ymin,ymax), main=out, type="n", ...)
     
     # Plot lines
     for (i in 1:length(go$factors)) {
-      lines(go$data[[out]][i,], col=col[unclass(go$factors)[i]], ...)
+      lines(go$data[[out]][i,], col=col[unclass(go$factors)[i]])
     }
 
   }
+
+  # Take into account non-pair number of simple outputs
+  if ((!go$concat) && (nout_simpl %% 2 != 0)) {
+    plot(0, type = "n", axes=FALSE, xlab="", ylab="")
+  }
+  
   par(mar = rep(2, 4))
   plot(0, type = "n", axes=FALSE, xlab="", ylab="")
   legend("top", legend=go$lvls, fill=col, horiz=T)
   
 }
-
-# TODO Other nice generics to implement: mean, max, min, median, std
