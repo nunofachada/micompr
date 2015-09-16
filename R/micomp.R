@@ -76,9 +76,34 @@ micomp <- function(outputs, nvars, ve, ..., concat=F) {
 #' @examples #' todo()
 print.micomp <- function(mcmp) {
   
+  smic <- summary(mcmp)
+  
+  # Cycle through comparisons
+  for (cmpname in names(smic)) {
+    
+    cat("====", cmpname, "====\n")
+    print(smic[[cmpname]], digits=5, print.gap=2)
+    
+  }
+  
+}
+
+#' Title
+#'
+#' @param mcmp 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo()
+summary.micomp <- function(mcmp) {
+  
   dims <- dim(mcmp)
   nout <- dims[1]
   ncomp <- dims[2]
+  cmpnames <- colnames(mcmp)
+  
+  smic <- list()
   
   # Cycle through comparisons
   for (i in 1:ncomp) {
@@ -87,18 +112,20 @@ print.micomp <- function(mcmp) {
     p_mnv <- lapply(mcmp[,i], function (mc) return (mc$p.values$manova))
     p_par <- lapply(mcmp[,i], function (mc) return (mc$p.values$parametric[1]))
     p_npar <- lapply(mcmp[,i], function (mc) return (mc$p.values$nonparametric[1]))
-
+    
     
     df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F, 
                      row.names = c("#PCs", "MNV", "Par.test", "NonParTest"))
     names(df) <- rownames(mcmp)
     
-    cat("==== Comparison", i, "====\n")
-    print(df, digits=5, print.gap=2)
+    smic[[cmpnames[i]]] <- df
     
   }
   
+  smic
+  
 }
+
 
 # TODO The color vector could be some kind of global
 #' Title
