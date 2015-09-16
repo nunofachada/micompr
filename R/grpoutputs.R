@@ -64,7 +64,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   # Determine total number of files for all sets (i.e. observations)
   nobs <- sum(groups)
   
-  #
+  # Set default output names if not given
   if (length(outputs) == 1) {
     nout <- outputs
     outputs <- paste("out", 1:nout, sep="")
@@ -107,6 +107,18 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
       }
     }
     
+  }
+  
+  # Perform output concatenation?
+  if (concat) {
+    outconcat <- matrix(nrow=nobs,ncol=nvars*nout)
+    for (i in 1:nobs) {
+      outconcat[i,] <- unlist(sapply(data, function(x, row) 
+        (x[row,]-mean(x[row,]))/(max(x[row,])-min(x[row,])), i))
+    }
+    nout <- nout + 1
+    outputs <- c(outputs, "concat")
+    data$concat <- outconcat
   }
   
   # Return outputs, groups and factors
