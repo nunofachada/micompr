@@ -1,0 +1,7 @@
+- Define code style based on R Google Style Guide and http://r-pkgs.had.co.nz/r.html#style
+- Implement coherent code style, clean up code and add doccomments
+- Give names to comparisons in micomp
+- Warning in both MANOVA and mv assumptions when nvars >= nobs (e.g. "requires more samples")
+- Allow loading data from matrices (not only files)
+- Add data/ folder and some datasets 
+- Add tests
