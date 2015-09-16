@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples #' micomp()
-micomp <- function(outputs, nvars, ve, ...) {
+micomp <- function(outputs, nvars, ve, ..., concat=F) {
   
   # Put comparisons in a list
   comps <- list(...)
@@ -36,8 +36,12 @@ micomp <- function(outputs, nvars, ve, ...) {
   for (i in 1:ncomp) {
     
     grpd_outputs[[i]] <- 
-      grpoutputs(outputs, nvars, unlist(comps[[i]][1]), 
-                 unlist(comps[[i]][2]), lvls=comps[[i]]$lvls)
+      grpoutputs(outputs=outputs, 
+                 nvars=nvars, 
+                 folders=unlist(comps[[i]][1]), 
+                 files=unlist(comps[[i]][2]), 
+                 lvls=comps[[i]]$lvls,
+                 concat=concat)
 
   }
   

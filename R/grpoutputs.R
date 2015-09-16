@@ -66,15 +66,16 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   
   # Set default output names if not given
   if (length(outputs) == 1) {
-    nout <- outputs
+    nout <- outputs - concat
     outputs <- paste("out", 1:nout, sep="")
   } else {
-    nout <- length(outputs)
+    nout <- length(outputs) - concat
   }
   
   # Create grouped outputs list
   data <- list()
-  for (out in outputs) {
+  for (i in 1:nout) {
+    out <- outputs[i]
     data[[out]] <- matrix(nrow=nobs, ncol=nvars)
   }
 
@@ -85,11 +86,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
     curr_files <- dir(folders[i], pattern=glob2rx(files[i]))
     
     # Base index for current file set
-    if (i == 1) {
-      bidx <- 0;
-    } else {
-      bidx <- sum(groups[1:(i-1)])
-    }
+    bidx <- if (i == 1) { 0 } else { sum(groups[1:(i-1)]) }
 
     # Cycle through files in current set
     for (j in 1:groups[i]) {
@@ -117,8 +114,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
         (x[row,]-mean(x[row,]))/(max(x[row,])-min(x[row,])), i))
     }
     nout <- nout + 1
-    outputs <- c(outputs, "concat")
-    data$concat <- outconcat
+    data[[outputs[nout]]] <- outconcat
   }
   
   # Return outputs, groups and factors
@@ -190,6 +186,7 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   nout = length(go$data);
   nout_simpl <- nout-go$concat
   ncols = min(2, nout)
+  outputs = names(go$data)
 
   ### Build layout matrix
   # One plot space for each normal output
@@ -212,7 +209,9 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   layout(mat=m, heights=c(rep(0.85/nrows, nrows), 0.15))
 
   # Plot each output separately
-  for (out in names(go$data)) {
+  for (i in 1:nout) {
+    
+    out = outputs[i]
 
     # Find the maximum and minimum of the current output
     ymax <- max(go$data[[out]])
@@ -220,7 +219,7 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
     xlen <- length(go$data[[out]][1,])
     
     # Take into account non-pair number of simple outputs
-    if ((out == "concat") && (nout_simpl %% 2 != 0)) {
+    if ((go$concat) && (i == nout) && (nout_simpl %% 2 != 0)) {
       plot(0, type = "n", axes=FALSE, xlab="", ylab="")
     }
     
