@@ -308,3 +308,46 @@ summary.assumptions_micomp <- function(micas, ...) {
   
   all
 }
+
+toLatex.micomp <- function(mic, ...) {
+  
+  pst <- function(...) paste(..., sep="", collapse="")
+  
+  nout <- dim(mic)[1]
+  ncmp <- dim(mic)[2]
+
+  ltxtab <- list()
+  idx <- 1
+  
+  ltxtab[[idx]] <- "\\begin{table}[ht]"
+  idx <- idx + 1
+  
+  ltxtab[[idx]] <- "\\centering"
+  idx <- idx + 1
+  
+  ltxtab[[idx]] <- "\\resizebox{\\columnwidth}{!}{%"
+  idx <- idx + 1 
+  
+  ltxtab[[idx]] <- pst("\\begin{tabular}{cl", pst(rep("r", nout)), "}")
+  idx <- idx + 1 
+  
+  ltxtab[[idx]] <- "\\toprule"
+  idx <- idx + 1 
+  
+  ltxtab[[idx]] <- pst("\\multirow{2}{*}{Comp.} & \\multirow{2}{*}{Test} & ",
+                         "\\multicolumn{", nout, "}{c}{Outputs} \\\\")
+  idx <- idx + 1 
+  
+  ltxtab[[idx]] <- pst("\\cmidrule(l){3-", 2+nout, "}")
+  idx <- idx + 1 
+  
+  ltxtab[[idx]] <- pst(" & & ", paste(rownames(mic), collapse=" & ", sep=""), 
+                       "\\\\")
+  idx <- idx + 1 
+  
+  ltxtab <- unlist(ltxtab)
+  class(ltxtab) <- "Latex"
+  
+  ltxtab
+  
+}
