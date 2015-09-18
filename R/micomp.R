@@ -108,10 +108,10 @@ summary.micomp <- function(mcmp) {
   # Cycle through comparisons
   for (i in 1:ncomp) {
     
-    npcs <- lapply(mcmp[,i], function (mc) return (mc$npcs))
-    p_mnv <- lapply(mcmp[,i], function (mc) return (mc$p.values$manova))
-    p_par <- lapply(mcmp[,i], function (mc) return (mc$p.values$parametric[1]))
-    p_npar <- lapply(mcmp[,i], function (mc) return (mc$p.values$nonparametric[1]))
+    npcs <- sapply(mcmp[,i], function (mc) return (mc$npcs))
+    p_mnv <- sapply(mcmp[,i], function (mc) return (mc$p.values$manova))
+    p_par <- sapply(mcmp[,i], function (mc) return (mc$p.values$parametric[1]))
+    p_npar <- sapply(mcmp[,i], function (mc) return (mc$p.values$nonparametric[1]))
     
     
     df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F, 
@@ -307,47 +307,4 @@ summary.assumptions_micomp <- function(micas, ...) {
   }
   
   all
-}
-
-toLatex.micomp <- function(mic, ...) {
-  
-  pst <- function(...) paste(..., sep="", collapse="")
-  
-  nout <- dim(mic)[1]
-  ncmp <- dim(mic)[2]
-
-  ltxtab <- list()
-  idx <- 1
-  
-  ltxtab[[idx]] <- "\\begin{table}[ht]"
-  idx <- idx + 1
-  
-  ltxtab[[idx]] <- "\\centering"
-  idx <- idx + 1
-  
-  ltxtab[[idx]] <- "\\resizebox{\\columnwidth}{!}{%"
-  idx <- idx + 1 
-  
-  ltxtab[[idx]] <- pst("\\begin{tabular}{cl", pst(rep("r", nout)), "}")
-  idx <- idx + 1 
-  
-  ltxtab[[idx]] <- "\\toprule"
-  idx <- idx + 1 
-  
-  ltxtab[[idx]] <- pst("\\multirow{2}{*}{Comp.} & \\multirow{2}{*}{Test} & ",
-                         "\\multicolumn{", nout, "}{c}{Outputs} \\\\")
-  idx <- idx + 1 
-  
-  ltxtab[[idx]] <- pst("\\cmidrule(l){3-", 2+nout, "}")
-  idx <- idx + 1 
-  
-  ltxtab[[idx]] <- pst(" & & ", paste(rownames(mic), collapse=" & ", sep=""), 
-                       "\\\\")
-  idx <- idx + 1 
-  
-  ltxtab <- unlist(ltxtab)
-  class(ltxtab) <- "Latex"
-  
-  ltxtab
-  
 }
