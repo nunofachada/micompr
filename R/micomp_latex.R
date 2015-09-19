@@ -58,6 +58,24 @@ tscat_apply <- function(cmps, marks) {
   
 }
 
+#' Title
+#'
+#' @param mic 
+#' @param data.show 
+#' @param table.placement 
+#' @param latex.environments 
+#' @param booktabs 
+#' @param btalign 
+#' @param col.width 
+#' @param digits 
+#' @param pvalformat 
+#' @param marks 
+#' @param ... 
+#'
+#' @return todo
+#' @export
+#'
+#' @examples #' todo
 toLatex.micomp <- 
   function(mic,
            data.show=c("npcs", "mnvp", "parp", "nparp", "scoreplot"),

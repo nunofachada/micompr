@@ -4,8 +4,7 @@
 \alias{plot.grpoutputs}
 \title{Title}
 \usage{
-\method{plot}{grpoutputs}(go, col = c("blue", "red", "green", "gold",
-  "violet", "cyan"), ...)
+\method{plot}{grpoutputs}(go, col = micomp:::plotcols(), ...)
 }
 \arguments{
 \item{go}{}

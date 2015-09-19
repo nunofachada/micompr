@@ -4,7 +4,7 @@
 \alias{grpoutputs}
 \title{Group outputs.}
 \usage{
-grpoutputs(outputs, nvars, folders, files, lvls = NULL)
+grpoutputs(outputs, nvars, folders, files, lvls = NULL, concat = F)
 }
 \arguments{
 \item{outputs}{}
@@ -16,6 +16,8 @@ grpoutputs(outputs, nvars, folders, files, lvls = NULL)
 \item{files}{}
 
 \item{lvls}{}
+
+\item{concat}{}
 }
 \value{
 Some stuff

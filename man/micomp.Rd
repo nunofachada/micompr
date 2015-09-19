@@ -4,7 +4,7 @@
 \alias{micomp}
 \title{micomp...}
 \usage{
-micomp(outputs, nvars, ve, ...)
+micomp(outputs, nvars, ve, ..., concat = F)
 }
 \arguments{
 \item{nvars}{}
