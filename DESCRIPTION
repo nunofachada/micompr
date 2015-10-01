@@ -1,7 +1,7 @@
 Package: micomp
 Title: Model-independent comparison
 Version: 0.0.1
-Date: 2015-09-09
+Date: 2015-09-20
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
