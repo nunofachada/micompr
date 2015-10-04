@@ -2,20 +2,25 @@
 % Please edit documentation in R/grpoutputs.R
 \name{summary.grpoutputs}
 \alias{summary.grpoutputs}
-\title{Title}
+\title{Summary method for grouped outputs}
 \usage{
 \method{summary}{grpoutputs}(go)
 }
 \arguments{
-\item{go}{}
+\item{go}{Object of class \code{grpoutputs}.}
 }
 \value{
-todo
+A list with the following components:
+\describe{
+ \item{output.dims}{Dimensions of each output, i.e. number of observations
+          and number of variables (i.e. output length).}
+ \item{group.sizes}{Number of output observations in each group.}
+}
 }
 \description{
-Title
+Summary method for objects of class \code{grpoutputs}.
 }
 \examples{
-#' todo()
+todo()
 }
 

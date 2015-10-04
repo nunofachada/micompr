@@ -6,9 +6,9 @@
 \usage{
 \method{toLatex}{micomp}(mic, data.show = c("npcs", "mnvp", "parp", "nparp",
   "scoreplot"), table.placement = "ht", latex.environments = c("center"),
-  booktabs = F, btalign = "l", col.width = F, digits = 3,
-  pvalformat = pvalf,
-  marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
+  booktabs = F, booktabs.cmalign = "l", caption = NULL, label = NULL,
+  col.width = F, digits = 3, pvalformat = pvalf,
+  scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), ...)
 }
 \arguments{
@@ -22,17 +22,17 @@
 
 \item{booktabs}{}
 
-\item{btalign}{}
-
 \item{col.width}{}
 
 \item{digits}{}
 
 \item{pvalformat}{}
 
-\item{marks}{}
-
 \item{...}{}
+
+\item{btalign}{}
+
+\item{marks}{}
 }
 \value{
 todo

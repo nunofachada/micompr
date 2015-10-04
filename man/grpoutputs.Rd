@@ -2,30 +2,48 @@
 % Please edit documentation in R/grpoutputs.R
 \name{grpoutputs}
 \alias{grpoutputs}
-\title{Group outputs.}
+\title{Group outputs}
 \usage{
 grpoutputs(outputs, nvars, folders, files, lvls = NULL, concat = F)
 }
 \arguments{
-\item{outputs}{}
+\item{outputs}{A vector with the labels of each output, or an integer with
+the number of outputs (in which case output labels will be assigned
+automatically).}
 
-\item{nvars}{}
+\item{nvars}{Number of variables (i.e. length of each output).}
 
-\item{folders}{}
+\item{folders}{Vector of folder names where to read files from. These are
+recycled if \code{length(folders) < length(files)}.}
 
-\item{files}{}
+\item{files}{Vector of filenames (with wildcards) to load in each folder.}
 
-\item{lvls}{}
+\item{lvls}{Vector of factor (group) names, must be the same length as
+\code{files}, i.e. each file set will be associated with a different group.
+If not given, default group names will be set.}
 
-\item{concat}{}
+\item{concat}{If TRUE add an additional output which corresponds to the
+concatenation of all outputs, properly range scaled.}
 }
 \value{
-Some stuff
+Object of class \code{grpoutputs} containing the following data:
+\describe{
+ \item{data}{List of all outputs, each one grouped into a \emph{n} x \emph{m}
+          matrix, where \emph{n} is the total number of output observations
+          and \emph{m} is the number of variables (i.e. output length).}
+ \item{groups}{Vector containing number of output observations in each
+          group.}
+ \item{factors}{Factors (or groups) associated with each observation.}
+ \item{lvls}{Vector of factor names in the order they occur (as given in
+          parameter with the same name).}
+ \item{concat}{Boolean indicating if this object was created with an
+          additional concatenated output.}
+}
 }
 \description{
-Group outputs.
+Group outputs from multiple observations of the models to be compared.
 }
 \examples{
-#' micomp()
+todo()
 }
 

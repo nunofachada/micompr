@@ -2,20 +2,21 @@
 % Please edit documentation in R/grpoutputs.R
 \name{print.grpoutputs}
 \alias{print.grpoutputs}
-\title{Title}
+\title{Print information about grouped outputs}
 \usage{
 \method{print}{grpoutputs}(go)
 }
 \arguments{
-\item{go}{}
+\item{go}{Object of class \code{grpoutputs}.}
 }
 \value{
-todo
+The argument \code{go}, invisibly, as for all \code{\link{print}}
+methods.
 }
 \description{
-Title
+Print information about objects of class \code{grpoutputs}.
 }
 \examples{
-#' todo()
+todo()
 }
 

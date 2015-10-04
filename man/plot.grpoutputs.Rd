@@ -2,24 +2,31 @@
 % Please edit documentation in R/grpoutputs.R
 \name{plot.grpoutputs}
 \alias{plot.grpoutputs}
-\title{Title}
+\title{Plot grouped outputs}
 \usage{
 \method{plot}{grpoutputs}(go, col = micomp:::plotcols(), ...)
 }
 \arguments{
-\item{go}{}
+\item{go}{Object of class \code{grpoutputs}.}
 
-\item{col}{}
+\item{col}{Vector of colors to use on observations of different groups.}
 
-\item{...}{}
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+Plot each grouped output.
+}
+\details{
+Each output is plotted individually, and observations are plotted on top of
+each other. Observations from different groups are plotted with different
+colors (which can be controlled through the \code{col} parameter).
+
+This function can be very slow for a large number of observations.
 }
 \examples{
-#' todo()
+todo()
 }
 
