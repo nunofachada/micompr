@@ -2,22 +2,27 @@
 % Please edit documentation in R/cmpoutput.R
 \name{assumptions.cmpoutput}
 \alias{assumptions.cmpoutput}
-\title{Title}
+\title{Get assumptions for parametric tests performed on output comparisons.}
 \usage{
-\method{assumptions}{cmpoutput}(obj, ...)
+\method{assumptions}{cmpoutput}(cmpout, ...)
 }
 \arguments{
-\item{obj}{}
+\item{cmpout}{Object of class \code{cmpoutput}.}
 
-\item{...}{}
+\item{...}{Currently ignored.}
 }
 \value{
-todo
+Object of class \code{cmpoutput_assumptions} containing the
+assumptions for parametric tests performed on an output comparisons
+Basically a list containing the assumptions for the MANOVA (object of class
+\code{\link{assumptions_manova}}) and univariate parametric tests for each
+principal component (object of class \code{\link{assumptions_paruv}}).
 }
 \description{
-Title
+Get assumptions for parametric tests performed on output comparisons (i.e.
+from objects of class \code{\link{cmpoutput}}).
 }
 \examples{
-#' todo
+NULL
 }
 

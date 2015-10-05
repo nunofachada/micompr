@@ -324,6 +324,6 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   plot(0, type = "n", axes=FALSE, xlab="", ylab="")
   legend("top", legend=go$lvls, fill=col, horiz=T)
 
-  NULL
+  invisible(NULL)
 
 }

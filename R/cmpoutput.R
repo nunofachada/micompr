@@ -186,6 +186,8 @@ print.cmpoutput <- function(cmpout) {
   cat("P-Value for", test_names[2], "(1st PC):",
       cmpout$p.values$nonparametric[1], "\n")
 
+  invisible(cmpout)
+
 }
 
 #' Summary method for comparison of simulation outputs
@@ -216,20 +218,20 @@ print.cmpoutput <- function(cmpout) {
 #'
 summary.cmpoutput <- function(cmpout) {
 
-    if (length(unique(cmpout$factors)) == 2) {
+  if (length(unique(cmpout$factors)) == 2) {
     test_names <- c("t-test", "Mann-Whitney")
   } else {
     test_names <- c("ANOVA", "Kruskal-Wallis")
   }
 
   list(output.name=cmpout$name,
-      num.pcs=cmpout$npcs,
-      var.exp=cmpout$ve,
-      manova.pval=cmpout$p.values$manova,
-      parametric.test=test_names[1],
-      parametric.pvals=cmpout$p.values$parametric,
-      nonparametric.test=test_names[2],
-      nonparametric.pvals=cmpout$p.values$nonparametric)
+       num.pcs=cmpout$npcs,
+       var.exp=cmpout$ve,
+       manova.pval=cmpout$p.values$manova,
+       parametric.test=test_names[1],
+       parametric.pvals=cmpout$p.values$parametric,
+       nonparametric.test=test_names[2],
+       nonparametric.pvals=cmpout$p.values$nonparametric)
 }
 
 #' Plot comparison of simulation output
@@ -285,8 +287,7 @@ plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
   barplot(cmpout$p.values$nonparametric, names.arg=as.character(1:cmpout$npcs),
           main="Non-parametric p-values by PC", xlab="PC", ylab="Prob.", ...)
 
-  NULL
-
+  invisible(NULL)
 }
 
 #' Plot \emph{p}-values for the assumptions of the parametric test used in
@@ -319,18 +320,29 @@ plot.cmpoutput_assumptions <- function(cmpoass, ...) {
     plot(cmpoass$ttest, ...)
   }
 
-  NULL
+  invisible(NULL)
+
 }
 
-#' Title
+#' Get assumptions for parametric tests performed on output comparisons.
 #'
-#' @param obj
-#' @param ...
+#' Get assumptions for parametric tests performed on output comparisons (i.e.
+#' from objects of class \code{\link{cmpoutput}}).
 #'
-#' @return todo
+#' @param cmpout Object of class \code{cmpoutput}.
+#' @param ... Currently ignored.
+#'
+#' @return Object of class \code{cmpoutput_assumptions} containing the
+#' assumptions for parametric tests performed on an output comparisons
+#' Basically a list containing the assumptions for the MANOVA (object of class
+#' \code{\link{assumptions_manova}}) and univariate parametric tests for each
+#' principal component (object of class \code{\link{assumptions_paruv}}).
+#'
 #' @export
 #'
-#' @examples #' todo
-assumptions.cmpoutput <- function(obj, ...) {
-  obj$assumptions
+#' @examples
+#' NULL
+#'
+assumptions.cmpoutput <- function(cmpout, ...) {
+  cmpout$assumptions
 }
