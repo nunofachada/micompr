@@ -2,20 +2,21 @@
 % Please edit documentation in R/cmpoutput.R
 \name{print.cmpoutput}
 \alias{print.cmpoutput}
-\title{Title}
+\title{Print information about comparison of simulation output}
 \usage{
 \method{print}{cmpoutput}(cmpout)
 }
 \arguments{
-\item{cmpout}{}
+\item{cmpout}{Object of class \code{cmpoutput}.}
 }
 \value{
-todo
+The argument \code{cmpout}, invisibly, as for all \code{\link{print}}
+methods.
 }
 \description{
-Title
+Print information about objects of class \code{cmpoutput}.
 }
 \examples{
-#' todo()
+NULL
 }
 

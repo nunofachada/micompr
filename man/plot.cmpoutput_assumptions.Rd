@@ -2,20 +2,28 @@
 % Please edit documentation in R/cmpoutput.R
 \name{plot.cmpoutput_assumptions}
 \alias{plot.cmpoutput_assumptions}
-\title{Title}
+\title{Plot \emph{p}-values for the assumptions of the parametric test used in
+simulation output comparison}
 \usage{
 \method{plot}{cmpoutput_assumptions}(cmpoass, ...)
 }
 \arguments{
-\item{cmpoass}{}
+\item{cmpoass}{Objects of class \code{\link{cmpoutput_assumptions}}.}
 
-\item{...}{}
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+Plot method for objects of class \code{\link{cmpoutput_assumptions}}
+containing \emph{p}-values for the assumptions of the parametric test used in
+simulation output comparison.
+}
+\details{
+Four bar plots are presented, showing the \emph{p}-values for Shapiro-Wilk
+and Royston normality tests, and for the Bartlett equality of variances
+test.
 }
 \examples{
 NULL

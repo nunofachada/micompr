@@ -2,24 +2,38 @@
 % Please edit documentation in R/cmpoutput.R
 \name{plot.cmpoutput}
 \alias{plot.cmpoutput}
-\title{Title}
+\title{Plot comparison of simulation output}
 \usage{
 \method{plot}{cmpoutput}(cmpout, col = micomp:::plotcols(), ...)
 }
 \arguments{
-\item{cmpout}{}
+\item{cmpout}{Object of class \code{cmpoutput}.}
 
-\item{col}{}
+\item{col}{Vector of colors to use on observations of different groups
+(scatter plot only).}
 
-\item{...}{}
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+Plot objects of class  \code{cmpoutput}.
+}
+\details{
+This method produces four sub-plots, namely:
+\itemize{
+  \item Scatter plot containing the projection of output observations on the
+        first two dimensions of the principal components space.
+  \item Bar plot of the percentage of variance explain per principal
+        component.
+  \item Bar plot of \emph{p}-values for the parametric test for each
+        principal component.
+  \item Bar plot of \emph{p}-values for the non-parametric test for each
+        principal component.
+}
 }
 \examples{
-#' todo()
+NULL
 }
 

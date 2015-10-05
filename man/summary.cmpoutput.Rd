@@ -2,20 +2,33 @@
 % Please edit documentation in R/cmpoutput.R
 \name{summary.cmpoutput}
 \alias{summary.cmpoutput}
-\title{Title}
+\title{Summary method for comparison of simulation outputs}
 \usage{
 \method{summary}{cmpoutput}(cmpout)
 }
 \arguments{
-\item{cmpout}{}
+\item{cmpout}{Object of class \code{cmpoutput}.}
 }
 \value{
-todo
+A list with the following components:
+\describe{
+ \item{num.pcs}{Number of principal components which explain \code{var.exp}
+                percentage of variance.}
+ \item{var.exp}{Minimum percentage of variance which must be explained by the
+                number of principal components used for the MANOVA test.}
+ \item{manova.pval}{\emph{P}-value of the MANOVA test.}
+ \item{parametric.test}{Name of the used parametric test.}
+ \item{parametric.pvals}{Vector of $p$-values returned by applying the
+                         parametric test to each principal component.}
+ \item{nonparametric.test}{Name of the used non-parametric test.}
+ \item{nonparametric.pvals}{Vector of $p$-values returned by applying the
+                         non-parametric test to each principal component.}
+}
 }
 \description{
-Title
+Summary method for objects of class \code{cmpoutput}.
 }
 \examples{
-#' todo()
+NULL
 }
 
