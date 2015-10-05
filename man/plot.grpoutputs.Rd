@@ -27,6 +27,6 @@ colors (which can be controlled through the \code{col} parameter).
 This function can be very slow for a large number of observations.
 }
 \examples{
-todo()
+NULL
 }
 

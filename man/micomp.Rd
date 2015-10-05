@@ -22,6 +22,6 @@ Some stuff
 micomp...
 }
 \examples{
-#' micomp()
+NULL
 }
 

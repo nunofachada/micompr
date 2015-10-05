@@ -44,6 +44,6 @@ Object of class \code{grpoutputs} containing the following data:
 Group outputs from multiple observations of the models to be compared.
 }
 \examples{
-todo()
+NULL
 }
 

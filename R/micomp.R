@@ -8,7 +8,8 @@
 #' @return Some stuff
 #' @export
 #'
-#' @examples #' micomp()
+#' @examples
+#' NULL
 micomp <- function(outputs, nvars, ve, ..., concat=F) {
 
   # Put comparisons in a list
@@ -16,7 +17,7 @@ micomp <- function(outputs, nvars, ve, ..., concat=F) {
 
   # Determine number of comparions
   ncomp <- length(comps)
-  cmp_names = vector(mode="character", length=ncomp)
+  cmp_names <- vector(mode="character", length=ncomp)
 
   #
   if (length(outputs) == 1) {
@@ -45,8 +46,11 @@ micomp <- function(outputs, nvars, ve, ..., concat=F) {
                  concat=concat)
 
     cmp_names[i] <-
-      if (!is.null(comps[[i]]$name)) { comps[[i]]$name }
-      else { paste("Comp", i) }
+      if (!is.null(comps[[i]]$name)) {
+        comps[[i]]$name
+      } else {
+        paste("Comp", i)
+      }
 
   }
 
@@ -104,7 +108,6 @@ print.micomp <- function(mcmp) {
 summary.micomp <- function(mcmp) {
 
   dims <- dim(mcmp)
-  nout <- dims[1]
   ncomp <- dims[2]
   cmpnames <- colnames(mcmp)
 
@@ -116,7 +119,8 @@ summary.micomp <- function(mcmp) {
     npcs <- sapply(mcmp[,i], function (mc) return (mc$npcs))
     p_mnv <- sapply(mcmp[,i], function (mc) return (mc$p.values$manova))
     p_par <- sapply(mcmp[,i], function (mc) return (mc$p.values$parametric[1]))
-    p_npar <- sapply(mcmp[,i], function (mc) return (mc$p.values$nonparametric[1]))
+    p_npar <- sapply(mcmp[,i],
+                     function (mc) return (mc$p.values$nonparametric[1]))
 
 
     df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F,
@@ -148,9 +152,9 @@ plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
   dims <- dim(mcmp)
   nout <- dims[1]
   ncomp <- dims[2]
-  nplots = nout * ncomp
+  nplots <- nout * ncomp
 
-  m <- matrix(1:(nplots + ncomp), nrow=ncomp, ncol=nout+1, byrow=T)
+  m <- matrix(1:(nplots + ncomp), nrow=ncomp, ncol=nout + 1, byrow=T)
   layout(mat=m)
 
   for (i in 1:ncomp) {
@@ -170,10 +174,11 @@ plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
       varexp <- mcmp[[j,i]]$varexp
 
       # Score plot (first two PCs)
-      #par(mar = rep(2, 4))
       plot.default(scores[,1], scores[,2], col=col[as.numeric(facts)],
-                   xlab=paste("PC1 (", round(varexp[1] * 100, 2), "%)", sep = ""),
-                   ylab=paste("PC2 (", round(varexp[2] * 100, 2), "%)", sep = ""),
+                   xlab=paste("PC1 (", round(varexp[1] * 100, 2), "%)",
+                              sep = ""),
+                   ylab=paste("PC2 (", round(varexp[2] * 100, 2), "%)",
+                              sep = ""),
                    main=mcmp[[j,i]]$name, ...)
     }
   }
@@ -236,10 +241,9 @@ plot.assumptions_micomp <- function(micas, col=micomp:::plotcols(), ...) {
   sm <- summary(micas)
 
   dims <- dim(micas)
-  nout <- dims[1]
   ncomp <- dims[2]
   # One plot for each output/comparison pair  + 1 for the legend
-  nplots = ncomp + 1
+  nplots <- ncomp + 1
 
   # Plot matrix side dimension
   side_dim <- ceiling(sqrt(nplots))
@@ -269,10 +273,9 @@ plot.assumptions_micomp <- function(micas, col=micomp:::plotcols(), ...) {
 summary.assumptions_micomp <- function(micas, ...) {
 
   dims <- dim(micas)
-  nout <- dims[1]
   ncomp <- dims[2]
 
-  all = list()
+  all <- list()
   cmpnames <- colnames(micas)
 
   # Cycle through comparisons
@@ -281,7 +284,7 @@ summary.assumptions_micomp <- function(micas, ...) {
     # Get the p-values for the MANOVA assumptions
     mnv <- lapply(micas[,i], function (ma) {
       # Was MANOVA performed?
-      if (exists('manova', where=ma)) {
+      if (exists("manova", where=ma)) {
         # Get the Royston test p-values
         pvals <- sapply(ma$manova$mvntest, function(x) return(x@p.value))
         names(pvals) <- paste("Royston(",names(pvals),")", sep="")

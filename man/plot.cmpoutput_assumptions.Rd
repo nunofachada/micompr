@@ -18,6 +18,6 @@ todo
 Title
 }
 \examples{
-#' todo
+NULL
 }
 

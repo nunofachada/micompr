@@ -17,6 +17,6 @@ methods.
 Print information about objects of class \code{grpoutputs}.
 }
 \examples{
-todo()
+NULL
 }
 

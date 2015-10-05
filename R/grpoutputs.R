@@ -32,7 +32,7 @@
 #' @export
 #'
 #' @examples
-#' todo()
+#' NULL
 #'
 grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
 
@@ -64,7 +64,8 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   # Instantiate the 'groups' vector
   groups <- vector(mode="integer", length=nfilesets)
 
-  # Determine number of files (i.e. observations) for each file set (i.e. factor)
+  # Determine number of files (i.e. observations) for each file set (i.e.
+  # factor)
   for (i in 1:nfilesets) {
 
     # Current file set (i.e. factor)
@@ -110,7 +111,11 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
     curr_files <- dir(folders[i], pattern=glob2rx(files[i]))
 
     # Base index for current file set
-    bidx <- if (i == 1) { 0 } else { sum(groups[1:(i-1)]) }
+    bidx <- if (i == 1) {
+      0
+    } else {
+      sum(groups[1:(i - 1)])
+    }
 
     # Cycle through files in current set
     for (j in 1:groups[i]) {
@@ -124,7 +129,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
       # Organize data
       for (k in 1:nout) {
         out <- outputs[k]
-        data[[out]][bidx+j,] <- t(tdata[,k])
+        data[[out]][bidx + j, ] <- t(tdata[, k])
       }
     }
 
@@ -132,10 +137,10 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
 
   # Perform output concatenation?
   if (concat) {
-    outconcat <- matrix(nrow=nobs,ncol=nvars*nout)
+    outconcat <- matrix(nrow=nobs,ncol=nvars * nout)
     for (i in 1:nobs) {
       outconcat[i,] <- unlist(sapply(data, function(x, row)
-        (x[row,]-mean(x[row,]))/(max(x[row,])-min(x[row,])), i))
+        (x[row,] - mean(x[row, ])) / (max(x[row, ]) - min(x[row, ])), i))
     }
     nout <- nout + 1
     data[[outputs[nout]]] <- outconcat
@@ -164,7 +169,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
 #' @export
 #'
 #' @examples
-#' todo()
+#' NULL
 #'
 print.grpoutputs <- function(go) {
 
@@ -199,7 +204,7 @@ print.grpoutputs <- function(go) {
 #' @export
 #'
 #' @examples
-#' todo()
+#' NULL
 #'
 summary.grpoutputs <- function(go) {
 
@@ -235,42 +240,59 @@ summary.grpoutputs <- function(go) {
 #' @export
 #'
 #' @examples
-#' todo()
+#' NULL
 #'
 plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
 
   # TODO: Mean plot, max/min plot
 
   # Get required data
-  nout = length(go$data);
-  nout_simpl <- nout-go$concat
-  ncols = min(2, nout)
-  outputs = names(go$data)
+  nout <- length(go$data);
+  nout_simpl <- nout - go$concat
+  ncols <- min(2, nout)
+  outputs <- names(go$data)
 
-  ### Build layout matrix
+  # Build layout matrix =======================================
+
   # One plot space for each normal output
   l1 <- 1:nout_simpl
   totsp <- nout_simpl
+
   # Make adjustment if number of plots is not pair
-  l2 <- if (nout_simpl %% 2 != 0) { totsp<-totsp+1; totsp } else { NULL }
+  l2 <- if (nout_simpl %% 2 != 0) {
+    totsp <- totsp + 1;
+    totsp
+  } else {
+    NULL
+  }
+
   # Get plot space for concatenated output
-  l3 <- if (go$concat) { totsp<-totsp+ncols; rep(totsp-(ncols==2), ncols) }
-        else { NULL }
+  l3 <- if (go$concat) {
+    totsp <- totsp + ncols;
+    rep(totsp - (ncols == 2), ncols)
+  } else {
+    NULL
+  }
+
   # Get plot space for legend
-  l4 <- rep(totsp+1-(ncols==2), ncols)
+  l4 <- rep(totsp + 1 - (ncols == 2), ncols)
+
   # Concatenate layout vector
   lv <- c(l1, l2, l3, l4)
+
   # Create layout matrix
   m <- matrix(lv, ncol=ncols, byrow=T)
 
+  # Set layoyt and plot outputs  ===================================
+
   # Set layout
   nrows <- length(lv) / ncols
-  layout(mat=m, heights=c(rep(0.85/nrows, nrows), 0.15))
+  layout(mat=m, heights=c(rep(0.85 / nrows, nrows), 0.15))
 
   # Plot each output separately
   for (i in 1:nout) {
 
-    out = outputs[i]
+    out <- outputs[i]
 
     # Find the maximum and minimum of the current output
     ymax <- max(go$data[[out]])

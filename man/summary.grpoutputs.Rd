@@ -21,6 +21,6 @@ A list with the following components:
 Summary method for objects of class \code{grpoutputs}.
 }
 \examples{
-todo()
+NULL
 }
 

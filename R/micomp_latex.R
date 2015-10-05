@@ -24,20 +24,23 @@ tikscat <- function(data, factors, marks) {
   ugrps <- unique(factors)
 
   # Begin figure
-  figstr <- "\\begin{tikzpicture}[scale=6] \\path (-1.2,-1.2) (1.2,1.2); \\draw[very thin,color=gray] (0,1.1)--(0,-1.1); \\draw[very thin,color=gray] (1.1,0)--(-1.1,0);"
+  figstr <- paste("\\begin{tikzpicture}[scale=6] \\path (-1.2,-1.2) (1.2,1.2);",
+                  "\\draw[very thin,color=gray] (0,1.1)--(0,-1.1); ",
+                  "\\draw[very thin,color=gray] (1.1,0)--(-1.1,0);", sep="");
 
   # Cycle
   for (i in 1:length(ugrps)) {
 
     # Get points in group
-    pts_in_grp = data[factors==ugrps[i],]
+    pts_in_grp <- data[factors == ugrps[i], ]
 
     # Begin plotting points in current group
     figstr <- sprintf("%s \\path plot[%s] coordinates {", figstr, marks[i])
 
     # Cycle points in group
     for (j in 1:dim(pts_in_grp)[1]) {
-      figstr <- sprintf("%s (%5.3f,%5.3f)", figstr, pts_in_grp[j, 1], pts_in_grp[j, 2]);
+      figstr <- sprintf("%s (%5.3f,%5.3f)", figstr, pts_in_grp[j, 1],
+                        pts_in_grp[j, 2]);
     }
 
     # End current group
@@ -75,7 +78,8 @@ tscat_apply <- function(cmps, marks) {
 #' @return todo
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
 toLatex.micomp <-
   function(mic,
            data.show=c("npcs", "mnvp", "parp", "nparp", "scoreplot"),
@@ -88,9 +92,10 @@ toLatex.micomp <-
            col.width=F,
            digits=3,
            pvalformat=pvalf,
-           scoreplot.marks=c('mark=square*,mark options={color=red},mark size=0.8pt',
-                   'mark=*,mark size=0.6pt',
-                   'mark=o,mark size=0.7pt'),
+           scoreplot.marks=c(
+             "mark=square*,mark options={color=red},mark size=0.8pt",
+             "mark=*,mark size=0.6pt",
+             "mark=o,mark size=0.7pt"),
            ...) {
 
 
@@ -103,7 +108,6 @@ toLatex.micomp <-
     }
 
     nout <- dim(mic)[1]
-    ncmp <- dim(mic)[2]
     smic <- summary(mic)
 
     ltxtab <- list()
@@ -130,7 +134,7 @@ toLatex.micomp <-
                          "\\multicolumn{", nout, "}{c}{Outputs} \\\\")
     idx <- idx + 1
 
-    ltxtab[[idx]] <- pst(hlines$c, "{3-", 2+nout, "}")
+    ltxtab[[idx]] <- pst(hlines$c, "{3-", 2 + nout, "}")
     idx <- idx + 1
 
     ltxtab[[idx]] <- pst(" & & ", paste(rownames(mic), collapse=" & ", sep=""),
@@ -155,11 +159,20 @@ toLatex.micomp <-
       for (cdata in data.show) {
         ltxtab[[idx]] <-
           switch(cdata,
-                 npcs=pst(" & $\\#$PCs ", pst(" & ", as.integer(smicf["#PCs",])), "\\\\"),
-                 mnvp=pst(" & MNV ", pst(" & ", pvalf(unlist(smicf["MNV",]))), "\\\\"),
-                 parp=pst(" & $t$-test ", pst(" & ", pvalf(unlist(smicf["Par.test",]))), "\\\\"),
-                 nparp=pst(" & MW  ", pst(" & ", pvalf(unlist(smicf["NonParTest",]))), "\\\\"),
-                 scoreplot=pst(" & PCS ", pst(" & ", tscat_apply(mic[,cmp], scoreplot.marks)), "\\\\"))
+                 npcs=pst(" & $\\#$PCs ",
+                          pst(" & ", as.integer(smicf["#PCs",])), "\\\\"),
+                 mnvp=pst(" & MNV ",
+                          pst(" & ", pvalf(unlist(smicf["MNV",]))), "\\\\"),
+                 parp=pst(" & $t$-test ",
+                          pst(" & ",
+                              pvalf(unlist(smicf["Par.test",]))), "\\\\"),
+                 nparp=pst(" & MW  ",
+                           pst(" & ",
+                               pvalf(unlist(smicf["NonParTest",]))), "\\\\"),
+                 scoreplot=pst(" & PCS ",
+                               pst(" & ",
+                                   tscat_apply(mic[,cmp], scoreplot.marks)),
+                               "\\\\"))
         idx <- idx + 1
       }
 
