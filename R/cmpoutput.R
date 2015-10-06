@@ -290,16 +290,31 @@ plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
   invisible(NULL)
 }
 
-#' Plot \emph{p}-values for the assumptions of the parametric test used in
-#' simulation output comparison
+#' Plot \emph{p}-values for testing the assumptions of the parametric tests used
+#' in simulation output comparison
 #'
 #' Plot method for objects of class \code{\link{cmpoutput_assumptions}}
-#' containing \emph{p}-values for the assumptions of the parametric test used in
-#' simulation output comparison.
+#' containing \emph{p}-values produced by testing the assumptions of the
+#' parametric tests used for comparing simulation output.
 #'
-#' Four bar plots are presented, showing the \emph{p}-values for Shapiro-Wilk
-#' and Royston normality tests, and for the Bartlett equality of variances
-#' test.
+#' Several bar plots are presented, showing the \emph{p}-values yielded by the
+#' Shapiro-Wilk (\code{\link{shapiro.test}}) and Royston tests
+#' (\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
+#' respectively, and for the Bartlett (\code{\link{bartlett.test}}) and Box's M
+#' (\code{\link[biotools]{boxM}}) for testing homogeneity of variances and of
+#' covariance matrices, respectively. The following bar plots are shown:
+#'
+#' \itemize{
+#'  \item One bar plot for the \emph{p}-values of the Bartlett test, one bar
+#'        (\emph{p}-value) per individual principal component.
+#'  \item \emph{s} bar plots for \emph{p}-values of the Shapiro-Wilk test, where
+#'        \emph{s} is the number of groups being compared. Individual bars in
+#'        each plot are associated with a principal component.
+#'  \item One bar plot for the \emph{p}-values of the Royston test with \emph{s}
+#'        bars, where \emph{s} is the number of groups being compared. This plot
+#'        will not show if there is only one principal component being
+#'        considered.
+#' }
 #'
 #' @param cmpoass Objects of class \code{\link{cmpoutput_assumptions}}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.

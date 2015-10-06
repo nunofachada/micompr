@@ -283,7 +283,7 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   # Create layout matrix
   m <- matrix(lv, ncol=ncols, byrow=T)
 
-  # Set layoyt and plot outputs  ===================================
+  # Set layout and plot outputs  ===================================
 
   # Set layout
   nrows <- length(lv) / ncols

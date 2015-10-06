@@ -2,7 +2,7 @@
 % Please edit documentation in R/micomp.R
 \name{micomp}
 \alias{micomp}
-\title{micomp...}
+\title{Model-independent comparison of simulation output}
 \usage{
 micomp(outputs, nvars, ve, ..., concat = F)
 }
@@ -19,7 +19,7 @@ micomp(outputs, nvars, ve, ..., concat = F)
 Some stuff
 }
 \description{
-micomp...
+Perform multiple model-independent comparisons of simulation outputs.
 }
 \examples{
 NULL

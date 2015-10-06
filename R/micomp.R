@@ -1,4 +1,6 @@
-#' micomp...
+#' Model-independent comparison of simulation output
+#'
+#' Perform multiple model-independent comparisons of simulation outputs.
 #'
 #' @param nout
 #' @param nvars
