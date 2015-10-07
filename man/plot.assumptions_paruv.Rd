@@ -2,24 +2,36 @@
 % Please edit documentation in R/assumptions.R
 \name{plot.assumptions_paruv}
 \alias{plot.assumptions_paruv}
-\title{Title}
+\title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
+in simulation output comparison}
 \usage{
 \method{plot}{assumptions_paruv}(aspuv, extra = 0, ...)
 }
 \arguments{
-\item{aspuv}{}
+\item{aspuv}{Objects of class \code{\link{assumptions_paruv}}.}
 
-\item{extra}{}
+\item{extra}{Number of extra sub-plot spaces to create (useful when this
+function is called from another which will produce more plots).}
 
-\item{...}{}
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+Plot method for objects of class \code{\link{assumptions_paruv}}
+containing \emph{p}-values produced by testing the assumptions of the
+parametric tests used for comparing simulation output.
+}
+\details{
+One bar plot is presented for the Bartlett test
+(\code{\link{bartlett.test}}), showing the respective \emph{p}-values along
+principal component. \emph{s} bar plots are presented for the Shapiro-Wilk
+(\code{\link{shapiro.test}}), where \emph{s} is the number of groups being
+compared; individual bars in each plot represent the \emph{p}-values
+associated with each principal component.
 }
 \examples{
-#' todo
+NULL
 }
 

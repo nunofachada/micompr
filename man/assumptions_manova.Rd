@@ -2,22 +2,33 @@
 % Please edit documentation in R/assumptions.R
 \name{assumptions_manova}
 \alias{assumptions_manova}
-\title{Title}
+\title{Determine the assumptions for the MANOVA test}
 \usage{
 assumptions_manova(data, factors)
 }
 \arguments{
-\item{data}{}
+\item{data}{Data used for the MANOVA test (rows correspond to observations,
+columns to dependent variables).}
 
-\item{factors}{}
+\item{factors}{Groups to which rows of \code{data} belong to (independent
+variables).}
 }
 \value{
-to do
+An object of class \code{assumptions_manova} which is a list
+containing two elements:
+\describe{
+ \item{\code{mvntest}}{List of resuls from the Royston multivariate
+       normality test (\code{\link[MVN]{roystonTest}}), one result per
+       group.}
+ \item{\code{vartest}}{Result of Box's M test for homogeneity of covariance
+       matrices (\code{\link[biotools]{boxM}}).}
+}
 }
 \description{
-Title
+Determine two assumptions for the MANOVA test: a) multivariate normality
+of each group; b) homogeneity of covariance matrices.
 }
 \examples{
-#' todo indeed
+NULL
 }
 

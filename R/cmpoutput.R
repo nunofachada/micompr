@@ -319,7 +319,7 @@ plot.cmpoutput <- function(cmpout, col = micomp:::plotcols(), ...) {
 #'        considered.
 #' }
 #'
-#' @param cmpoass Objects of class \code{\link{assumptions_cmpoutput}}.
+#' @param cmpoass Objects of class \code{assumptions_cmpoutput}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.

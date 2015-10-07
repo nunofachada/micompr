@@ -2,20 +2,24 @@
 % Please edit documentation in R/assumptions.R
 \name{print.assumptions_paruv}
 \alias{print.assumptions_paruv}
-\title{Title}
+\title{Print information about the assumptions of the parametric test}
 \usage{
 \method{print}{assumptions_paruv}(aspuv)
 }
 \arguments{
-\item{aspuv}{}
+\item{aspuv}{Object of class \code{assumptions_paruv}.}
 }
 \value{
-todo
+The argument \code{aspuv}, invisibly, as for all \code{\link{print}}
+methods.
 }
 \description{
-Title
+Print information about objects of class \code{assumptions_paruv}, which
+represent the assumptions of the parametric test (i.e. either
+\code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
+simulation output.
 }
 \examples{
-#' todo
+NULL
 }
 

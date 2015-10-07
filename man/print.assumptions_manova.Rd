@@ -2,20 +2,23 @@
 % Please edit documentation in R/assumptions.R
 \name{print.assumptions_manova}
 \alias{print.assumptions_manova}
-\title{Title}
+\title{Print information about the assumptions of the MANOVA test}
 \usage{
 \method{print}{assumptions_manova}(asmnv)
 }
 \arguments{
-\item{asmnv}{}
+\item{asmnv}{Object of class \code{assumptions_manova}.}
 }
 \value{
-todo
+The argument \code{asmnv}, invisibly, as for all \code{\link{print}}
+methods.
 }
 \description{
-Title
+Print information about objects of class \code{assumptions_manova}, which
+represent the assumptions of the MANOVA test performed on a comparison of
+simulation output.
 }
 \examples{
-#' todo
+NULL
 }
 

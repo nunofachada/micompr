@@ -189,7 +189,7 @@ summary.micomp <- function(mcmp) {
 #' the projection of output observations on the first two dimensions of the
 #' principal components space.
 #'
-#' @param ncmp An object of class \code{\link{micomp}}.
+#' @param mcmp An object of class \code{\link{micomp}}.
 #' @param col Vector of colors to use on observations of different groups.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
@@ -276,6 +276,7 @@ assumptions.micomp <- function(mcmp, ...) {
 #' multiple comparisons of simulation output.
 #'
 #' @param micas Object of class \code{assumptions_micomp}.
+#' @param ... Currently ignored.
 #'
 #' @return The argument \code{micas}, invisibly, as for all \code{\link{print}}
 #' methods.
@@ -303,7 +304,7 @@ print.assumptions_micomp <- function(micas, ...) {
 #' Plot \emph{p}-values for testing the assumptions of the parametric tests used
 #' in multiple output comparison
 #'
-#' Plot method for objects of class \code{\link{assumptions_cmpoutput}}
+#' Plot method for objects of class \code{assumptions_cmpoutput}
 #' containing \emph{p}-values produced by testing the assumptions of the
 #' parametric tests used for multiple output comparisons.
 #'

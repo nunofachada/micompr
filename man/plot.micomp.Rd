@@ -8,11 +8,11 @@ principal components space}
 \method{plot}{micomp}(mcmp, col = micomp:::plotcols(), ...)
 }
 \arguments{
+\item{mcmp}{An object of class \code{\link{micomp}}.}
+
 \item{col}{Vector of colors to use on observations of different groups.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
-
-\item{ncmp}{An object of class \code{\link{micomp}}.}
 }
 \value{
 None.

@@ -2,22 +2,26 @@
 % Please edit documentation in R/assumptions.R
 \name{plot.assumptions_manova}
 \alias{plot.assumptions_manova}
-\title{Title}
+\title{Plot \emph{p}-values for testing the multivariate normality assumptions of
+the MANOVA test}
 \usage{
 \method{plot}{assumptions_manova}(asmnv, ...)
 }
 \arguments{
-\item{asmnv}{}
+\item{asmnv}{Objects of class \code{\link{assumptions_manova}}.}
 
-\item{...}{}
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+Plot method for objects of class \code{\link{assumptions_manova}} which
+presents a bar plot containing the \emph{p}-values produced by the Royston
+multivariate normality test (\code{\link[MVN]{roystonTest}}) for each group
+being compared.
 }
 \examples{
-#' todo
+NULL
 }
 

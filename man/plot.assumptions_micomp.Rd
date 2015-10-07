@@ -19,7 +19,7 @@ case of normality tests).}
 None.
 }
 \description{
-Plot method for objects of class \code{\link{assumptions_cmpoutput}}
+Plot method for objects of class \code{assumptions_cmpoutput}
 containing \emph{p}-values produced by testing the assumptions of the
 parametric tests used for multiple output comparisons.
 }

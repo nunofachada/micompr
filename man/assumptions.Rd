@@ -2,22 +2,25 @@
 % Please edit documentation in R/assumptions.R
 \name{assumptions}
 \alias{assumptions}
-\title{Title}
+\title{Get assumptions for parametric tests applied to the comparison of simulation
+outputs}
 \usage{
 assumptions(obj, ...)
 }
 \arguments{
-\item{obj}{}
+\item{obj}{Object from which to get the assumptions.}
 
-\item{...}{}
+\item{...}{Further arguments passed to concrete methods.}
 }
 \value{
-todo
+Assumptions for parametric tests applied to the comparison of
+simulation outputs.
 }
 \description{
-Title
+Generic function to get the assumptions for parametric tests applied to the
+comparison of simulation outputs.
 }
 \examples{
-#' todo
+NULL
 }
 

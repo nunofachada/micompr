@@ -8,7 +8,7 @@ in simulation output comparison}
 \method{plot}{assumptions_cmpoutput}(cmpoass, ...)
 }
 \arguments{
-\item{cmpoass}{Objects of class \code{\link{assumptions_cmpoutput}}.}
+\item{cmpoass}{Objects of class \code{assumptions_cmpoutput}.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
 }

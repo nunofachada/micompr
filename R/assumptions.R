@@ -1,26 +1,50 @@
-#' Title
+#' Get assumptions for parametric tests applied to the comparison of simulation
+#' outputs
 #'
-#' @param obj
-#' @param ...
+#' Generic function to get the assumptions for parametric tests applied to the
+#' comparison of simulation outputs.
 #'
-#' @return todo
+#' @param obj Object from which to get the assumptions.
+#' @param ... Further arguments passed to concrete methods.
+#'
+#' @return Assumptions for parametric tests applied to the comparison of
+#' simulation outputs.
+#'
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
+#'
 assumptions <- function(obj, ...) UseMethod("assumptions")
 
-#' Title
+#' Determine the assumptions for the MANOVA test
 #'
-#' @param data
-#' @param factors
+#' Determine two assumptions for the MANOVA test: a) multivariate normality
+#' of each group; b) homogeneity of covariance matrices.
 #'
-#' @return to do
+#' @param data Data used for the MANOVA test (rows correspond to observations,
+#' columns to dependent variables).
+#' @param factors Groups to which rows of \code{data} belong to (independent
+#' variables).
+#'
+#' @return An object of class \code{assumptions_manova} which is a list
+#' containing two elements:
+#' \describe{
+#'  \item{\code{mvntest}}{List of resuls from the Royston multivariate
+#'        normality test (\code{\link[MVN]{roystonTest}}), one result per
+#'        group.}
+#'  \item{\code{vartest}}{Result of Box's M test for homogeneity of covariance
+#'        matrices (\code{\link[biotools]{boxM}}).}
+#' }
+#'
 #' @export
 #'
-#' @examples #' todo indeed
+#' @examples
+#' NULL
+#'
 assumptions_manova <- function(data, factors) {
 
-    # `assumpt` will be a list containing the test for multivariate normality
+  # `assumpt` will be a list containing the test for multivariate normality
   # and the test for the homogeneity of covariance matrices
   assumpt <- list()
   class(assumpt) <- "assumptions_manova"
@@ -30,7 +54,7 @@ assumptions_manova <- function(data, factors) {
   # Number of variables
   nvars <- dim(data)[2]
 
-    # Cycle through factors for the multivariate normality tests
+  # Cycle through factors for the multivariate normality tests
   for (f in unique(factors)) {
     # Indexes of current factor level
     fidx <- factors == f
@@ -45,16 +69,30 @@ assumptions_manova <- function(data, factors) {
   assumpt
 }
 
-#' Title
+#' Determine the assumptions for the parametric comparison test
 #'
-#' @param data
-#' @param factors
+#' Determine two assumptions for the parametric comparison tests (i.e. either
+#' \code{\link{t.test}} or \code{\link{aov}}) for each principal component,
+#' namely: a) univariate normality of each group; b) homogeneity of variances.
 #'
-#' @return to do
+#' @param data Data used in the parametric test (rows correspond to
+#' observations, columns to principal components).
+#' @param factors Groups to which rows of \code{data} belong to.
+#'
+#' @return An object of class \code{assumptions_paruv} which is a list
+#' containing two elements:
+#' \describe{
+#'  \item{\code{uvntest}}{List of resuls from the Shapiro-Wilk normality test
+#'  (\code{\link{shapiro.test}}), one result per group per principal component.}
+#'  \item{\code{vartest}}{Result of Bartlett test for homogeneity of variances
+#'        (\code{\link{bartlett.test}}).}
+#' }
+#'
 #' @export
 #'
 #' @examples
 #' NULL
+#'
 assumptions_paruv <- function(data, factors) {
 
   # Number of variables
@@ -93,30 +131,49 @@ assumptions_paruv <- function(data, factors) {
 
 }
 
-#' Title
+#' Print information about the assumptions of the MANOVA test
 #'
-#' @param asmnv
+#' Print information about objects of class \code{assumptions_manova}, which
+#' represent the assumptions of the MANOVA test performed on a comparison of
+#' simulation output.
 #'
-#' @return todo
+#' @param asmnv Object of class \code{assumptions_manova}.
+#'
+#' @return The argument \code{asmnv}, invisibly, as for all \code{\link{print}}
+#' methods.
+#'
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
+#'
 print.assumptions_manova <- function(asmnv) {
 
   for (grp in names(asmnv$mvntest)) {
     cat(grp, ":", asmnv$mvntest[[grp]]@p.value, "\n")
   }
   cat("Var:", asmnv$vartest$p.value, "\n")
+
+  invisible(asmnv)
 }
 
-#' Title
+#' Print information about the assumptions of the parametric test
 #'
-#' @param aspuv
+#' Print information about objects of class \code{assumptions_paruv}, which
+#' represent the assumptions of the parametric test (i.e. either
+#' \code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
+#' simulation output.
 #'
-#' @return todo
+#' @param aspuv Object of class \code{assumptions_paruv}.
+#'
+#' @return The argument \code{aspuv}, invisibly, as for all \code{\link{print}}
+#' methods.
+#'
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
+#'
 print.assumptions_paruv <- function(aspuv) {
 
   maxvars <- min(5, length(aspuv$uvntest[[1]]))
@@ -134,17 +191,28 @@ print.assumptions_paruv <- function(aspuv) {
     cat("", aspuv$vartest[[i]]$p.value)
   }
   cat(" ... \n")
+
+  invisible(aspuv)
 }
 
-#' Title
+#' Plot \emph{p}-values for testing the multivariate normality assumptions of
+#' the MANOVA test
 #'
-#' @param asmnv
-#' @param ...
+#' Plot method for objects of class \code{\link{assumptions_manova}} which
+#' presents a bar plot containing the \emph{p}-values produced by the Royston
+#' multivariate normality test (\code{\link[MVN]{roystonTest}}) for each group
+#' being compared.
 #'
-#' @return todo
+#' @param asmnv Objects of class \code{\link{assumptions_manova}}.
+#' @param ... Extra options passed to \code{\link{plot.default}}.
+#'
+#' @return None.
+#'
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
+#'
 plot.assumptions_manova <- function(asmnv, ...) {
 
   pvals <- sapply(asmnv$mvntest, function(x) x@p.value)
@@ -152,18 +220,35 @@ plot.assumptions_manova <- function(asmnv, ...) {
           xlab = "Groups", ylab = "Probability", col = micomp:::pvalcol(pvals),
           ...)
 
+  invisible(NULL)
 }
 
-#' Title
+#' Plot \emph{p}-values for testing the assumptions of the parametric tests used
+#' in simulation output comparison
 #'
-#' @param aspuv
-#' @param extra
-#' @param ...
+#' Plot method for objects of class \code{\link{assumptions_paruv}}
+#' containing \emph{p}-values produced by testing the assumptions of the
+#' parametric tests used for comparing simulation output.
 #'
-#' @return todo
+#' One bar plot is presented for the Bartlett test
+#' (\code{\link{bartlett.test}}), showing the respective \emph{p}-values along
+#' principal component. \emph{s} bar plots are presented for the Shapiro-Wilk
+#' (\code{\link{shapiro.test}}), where \emph{s} is the number of groups being
+#' compared; individual bars in each plot represent the \emph{p}-values
+#' associated with each principal component.
+#'
+#' @param aspuv Objects of class \code{\link{assumptions_paruv}}.
+#' @param extra Number of extra sub-plot spaces to create (useful when this
+#' function is called from another which will produce more plots).
+#' @param ... Extra options passed to \code{\link{plot.default}}.
+#'
+#' @return None.
+#'
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
+#'
 plot.assumptions_paruv <- function(aspuv, extra = 0, ...) {
 
   # Number of vars in the PC plots
@@ -192,5 +277,7 @@ plot.assumptions_paruv <- function(aspuv, extra = 0, ...) {
             xlab = "PC", ylab = "Probability", col = micomp:::pvalcol(normdata),
             ...)
   }
+
+  invisible(NULL)
 
 }

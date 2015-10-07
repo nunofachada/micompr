@@ -2,20 +2,30 @@
 % Please edit documentation in R/assumptions.R
 \name{assumptions_paruv}
 \alias{assumptions_paruv}
-\title{Title}
+\title{Determine the assumptions for the parametric comparison test}
 \usage{
 assumptions_paruv(data, factors)
 }
 \arguments{
-\item{data}{}
+\item{data}{Data used in the parametric test (rows correspond to
+observations, columns to principal components).}
 
-\item{factors}{}
+\item{factors}{Groups to which rows of \code{data} belong to.}
 }
 \value{
-to do
+An object of class \code{assumptions_paruv} which is a list
+containing two elements:
+\describe{
+ \item{\code{uvntest}}{List of resuls from the Shapiro-Wilk normality test
+ (\code{\link{shapiro.test}}), one result per group per principal component.}
+ \item{\code{vartest}}{Result of Bartlett test for homogeneity of variances
+       (\code{\link{bartlett.test}}).}
+}
 }
 \description{
-Title
+Determine two assumptions for the parametric comparison tests (i.e. either
+\code{\link{t.test}} or \code{\link{aov}}) for each principal component,
+namely: a) univariate normality of each group; b) homogeneity of variances.
 }
 \examples{
 NULL

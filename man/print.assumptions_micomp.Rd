@@ -9,6 +9,8 @@ performed on multiple comparisons of simulation output}
 }
 \arguments{
 \item{micas}{Object of class \code{assumptions_micomp}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 The argument \code{micas}, invisibly, as for all \code{\link{print}}
