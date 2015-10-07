@@ -13,16 +13,16 @@
 A list with the following components:
 \describe{
  \item{num.pcs}{Number of principal components which explain \code{var.exp}
-                percentage of variance.}
+       percentage of variance.}
  \item{var.exp}{Minimum percentage of variance which must be explained by the
-                number of principal components used for the MANOVA test.}
+       number of principal components used for the MANOVA test.}
  \item{manova.pval}{\emph{P}-value of the MANOVA test.}
  \item{parametric.test}{Name of the used parametric test.}
  \item{parametric.pvals}{Vector of $p$-values returned by applying the
-                         parametric test to each principal component.}
+       parametric test to each principal component.}
  \item{nonparametric.test}{Name of the used non-parametric test.}
  \item{nonparametric.pvals}{Vector of $p$-values returned by applying the
-                         non-parametric test to each principal component.}
+       non-parametric test to each principal component.}
 }
 }
 \description{

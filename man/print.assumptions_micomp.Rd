@@ -2,22 +2,24 @@
 % Please edit documentation in R/micomp.R
 \name{print.assumptions_micomp}
 \alias{print.assumptions_micomp}
-\title{Title}
+\title{Print information about the assumptions concerning the parametric tests
+performed on multiple comparisons of simulation output}
 \usage{
 \method{print}{assumptions_micomp}(micas, ...)
 }
 \arguments{
-\item{micas}{}
-
-\item{...}{}
+\item{micas}{Object of class \code{assumptions_micomp}.}
 }
 \value{
-todo
+The argument \code{micas}, invisibly, as for all \code{\link{print}}
+methods.
 }
 \description{
-Title
+Print information about objects of class \code{assumptions_micomp}, which
+represent the assumptions concerning the parametric tests performed on
+multiple comparisons of simulation output.
 }
 \examples{
-#' todo
+NULL
 }
 

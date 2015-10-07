@@ -23,48 +23,46 @@ output length).}
 Object of class \code{cmpoutput} containing the following data:
 \describe{
  \item{scores}{\emph{n} x \emph{n} matrix containing projections of
-               simulation output data in the principal components space.
-               Rows correspond to observations, columns to principal
-               components. }
+       simulation output data in the principal components space. Rows
+       correspond to observations, columns to principal components. }
  \item{factors}{Factors (or groups) associated with each observation.}
  \item{varexp}{Percentage of variance explained by each principal component.}
  \item{npcs}{Number of principal components which explain \code{ve}
-             percentage of variance.}
+       percentage of variance.}
  \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
-           principal components (i.e. number of dimensions) used in MANOVA.}
+       principal components (i.e. number of dimensions) used in MANOVA.}
  \item{name}{Comparison name (useful when calling this function to perform
-             multiple comparisons).}
+       multiple comparisons).}
  \item{p.values}{\emph{P}-values for the performed statistical tests, namely:
    \describe{
      \item{manova}{\emph{P}-values for the MANOVA test for \code{npcs}
-                   principal components.}
+           principal components.}
      \item{parametric}{Vector of \emph{p}-values for the parametric test
-                       applied to groups along each principal component
-                       (\emph{t}-test for 2 groups, ANOVA for more than 2
-                       groups).}
+           applied to groups along each principal component (\emph{t}-test
+           for 2 groups, ANOVA for more than 2 groups).}
      \item{nonparametric}{Vector of \emph{p}-values for the non-parametric
-                          test applied to groups along each principal
-                          component (Mann-Whitney U test for 2 groups,
-                          Kruskal-Wallis test for more than 2 groups).}
+           test applied to groups along each principal component
+           (Mann-Whitney U test for 2 groups, Kruskal-Wallis test for more
+           than 2 groups).}
    }
  }
  \item{tests}{
    \describe{
      \item{manova}{Object returned by the \code{\link{manova}} function.}
      \item{parametric}{List of objects returned by applying
-                       \code{\link{t.test}} (two groups) or \code{\link{aov}}
-                       (more than two groups) to each principal component.}
+           \code{\link{t.test}} (two groups) or \code{\link{aov}} (more than
+           two groups) to each principal component.}
      \item{nonparametric}{List of objects returned by applying
-                          \code{\link{wilcox.test}} (two groups) or
-                          \code{\link{kruskal.test}} (more than two groups)
-                          to each principal component.}
+           \code{\link{wilcox.test}} (two groups) or
+           \code{\link{kruskal.test}} (more than two groups) to each
+           principal component.}
    }
  }
- \item{assumptions}{Object of class \code{cmpoutput_assumptions}. Basically
-                    a list containing the assumptions for the MANOVA (object
-                    of class \code{\link{assumptions_manova}}) and
-                    univariate parametric tests for each principal component
-                    (object of class \code{\link{assumptions_paruv}}).}
+ \item{assumptions}{Object of class \code{assumptions_cmpoutput}. Basically
+       a list containing the assumptions for the MANOVA (object of class
+       \code{\link{assumptions_manova}}) and univariate parametric tests for
+       each principal component (object of class
+       \code{\link{assumptions_paruv}}).}
 }
 }
 \description{

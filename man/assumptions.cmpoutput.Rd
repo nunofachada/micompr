@@ -12,7 +12,7 @@
 \item{...}{Currently ignored.}
 }
 \value{
-Object of class \code{cmpoutput_assumptions} containing the
+Object of class \code{assumptions_cmpoutput} containing the
 assumptions for parametric tests performed on an output comparisons
 Basically a list containing the assumptions for the MANOVA (object of class
 \code{\link{assumptions_manova}}) and univariate parametric tests for each

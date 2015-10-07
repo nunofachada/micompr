@@ -7,16 +7,33 @@
 micomp(outputs, nvars, ve, ..., concat = F)
 }
 \arguments{
-\item{nvars}{}
+\item{outputs}{A vector with the labels of each output, or an integer with
+the number of outputs (in which case output labels will be assigned
+automatically).}
 
-\item{ve}{}
+\item{nvars}{Number of variables (i.e. length of each output).}
 
-\item{nout}{}
+\item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
+principal components (i.e. number of dimensions) used in MANOVA.}
 
-\item{comps}{}
+\item{...}{A set of lists, where each list contains information regarding an
+individual comparison, namely:
+\describe{
+  \item{name}{A string describing the comparison name.}
+  \item{folders}{Vector of folder names where to read files from. These are
+        recycled if \code{length(folders) < length(files)}.}
+  \item{files}{Vector of filenames (with wildcards) to load in each folder.}
+  \item{lvls}{Vector of factor (group) names, must be the same length as
+        \code{files}, i.e. each file set will be associated with a different
+        group. If not given, default group names will be set.}
+}}
+
+\item{concat}{Create an additional, concatenated output?}
 }
 \value{
-Some stuff
+An object of class \code{\link{micomp}}, which is a multi-dimensional list
+of \code{cmpoutput} objects. Rows are associated with individual outputs,
+while columns are associated with separate comparisons.
 }
 \description{
 Perform multiple model-independent comparisons of simulation outputs.

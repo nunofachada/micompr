@@ -2,20 +2,34 @@
 % Please edit documentation in R/micomp.R
 \name{summary.micomp}
 \alias{summary.micomp}
-\title{Title}
+\title{Summary method for multiple comparisons of simulation output}
 \usage{
 \method{summary}{micomp}(mcmp)
 }
 \arguments{
-\item{mcmp}{}
+\item{mcmp}{Object of class \code{\link{micomp}}.}
 }
 \value{
-todo
+A list in which each component is associated with a distinct
+comparison. Each component contains a data frame, in which columns represent
+individual simulation outputs and rows have information about the outputs.
+More specifically, each data frame has four rows with the following
+information:
+\describe{
+ \item{#PCs}{Number of principal components required to explain the
+       percentage of variance specified when creating the
+       \code{\link{micomp}} object.}
+ \item{MNV}{\emph{P}-value for the MANOVA test (\code{#PCs}).}
+ \item{par.test}{\emph{P}-value for the parametric test (first principal
+       component).}
+ \item{nonpar.test}{\emph{P}-value for the non-parametric test (first
+       principal component).}
+}
 }
 \description{
-Title
+Summary method for objects of class \code{\link{micomp}}.
 }
 \examples{
-#' todo()
+NULL
 }
 

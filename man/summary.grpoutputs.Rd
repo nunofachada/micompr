@@ -13,7 +13,7 @@
 A list with the following components:
 \describe{
  \item{output.dims}{Dimensions of each output, i.e. number of observations
-          and number of variables (i.e. output length).}
+       and number of variables (i.e. output length).}
  \item{group.sizes}{Number of output observations in each group.}
 }
 }

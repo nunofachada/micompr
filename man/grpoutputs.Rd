@@ -29,15 +29,15 @@ concatenation of all outputs, properly range scaled.}
 Object of class \code{grpoutputs} containing the following data:
 \describe{
  \item{data}{List of all outputs, each one grouped into a \emph{n} x \emph{m}
-          matrix, where \emph{n} is the total number of output observations
-          and \emph{m} is the number of variables (i.e. output length).}
+       matrix, where \emph{n} is the total number of output observations
+       and \emph{m} is the number of variables (i.e. output length).}
  \item{groups}{Vector containing number of output observations in each
-          group.}
+       group.}
  \item{factors}{Factors (or groups) associated with each observation.}
  \item{lvls}{Vector of factor names in the order they occur (as given in
-          parameter with the same name).}
+       parameter with the same name).}
  \item{concat}{Boolean indicating if this object was created with an
-          additional concatenated output.}
+       additional concatenated output.}
 }
 }
 \description{

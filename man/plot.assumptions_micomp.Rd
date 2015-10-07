@@ -2,22 +2,39 @@
 % Please edit documentation in R/micomp.R
 \name{plot.assumptions_micomp}
 \alias{plot.assumptions_micomp}
-\title{Title}
+\title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
+in multiple output comparison}
 \usage{
 \method{plot}{assumptions_micomp}(micas, col = micomp:::plotcols(), ...)
 }
 \arguments{
-\item{micas}{}
+\item{micas}{Object of class \code{assumptions_micomp}.}
 
-\item{...}{}
+\item{col}{Vector of colors to use for different tests (and groups in the
+case of normality tests).}
+
+\item{...}{Extra options passed to \code{\link{barplot}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+Plot method for objects of class \code{\link{assumptions_cmpoutput}}
+containing \emph{p}-values produced by testing the assumptions of the
+parametric tests used for multiple output comparisons.
+}
+\details{
+Several bar plots are presented, one for each comparison, showing the
+\emph{p}-values yielded by the Shapiro-Wilk (\code{\link{shapiro.test}}) and
+Royston tests (\code{\link[MVN]{roystonTest}}) for univariate and
+multivariate normality of each group, respectively, and for the Bartlett
+(\code{\link{bartlett.test}}) and Box's M (\code{\link[biotools]{boxM}}) for
+testing homogeneity of variances and of covariance matrices, respectively.
+\emph{P}-values are aggregated by output in each plot. Note that the
+\emph{p-values} plotted for the Shapiro-Wilk and Bartlett tests correspond to
+group observations along the first principal component.
 }
 \examples{
-#' todo
+NULL
 }
 

@@ -18,15 +18,15 @@
 #' @return Object of class \code{grpoutputs} containing the following data:
 #' \describe{
 #'  \item{data}{List of all outputs, each one grouped into a \emph{n} x \emph{m}
-#'           matrix, where \emph{n} is the total number of output observations
-#'           and \emph{m} is the number of variables (i.e. output length).}
+#'        matrix, where \emph{n} is the total number of output observations
+#'        and \emph{m} is the number of variables (i.e. output length).}
 #'  \item{groups}{Vector containing number of output observations in each
-#'           group.}
+#'        group.}
 #'  \item{factors}{Factors (or groups) associated with each observation.}
 #'  \item{lvls}{Vector of factor names in the order they occur (as given in
-#'           parameter with the same name).}
+#'        parameter with the same name).}
 #'  \item{concat}{Boolean indicating if this object was created with an
-#'           additional concatenated output.}
+#'        additional concatenated output.}
 #' }
 #'
 #' @export
@@ -34,7 +34,8 @@
 #' @examples
 #' NULL
 #'
-grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
+grpoutputs <- function(outputs, nvars, folders,
+                       files, lvls = NULL, concat = F) {
 
   # Determine number of file sets (i.e. number of unique factors or levels)
   nfilesets <- length(files)
@@ -62,14 +63,14 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   folders <- rep_len(folders, nfilesets)
 
   # Instantiate the 'groups' vector
-  groups <- vector(mode="integer", length=nfilesets)
+  groups <- vector(mode = "integer", length = nfilesets)
 
   # Determine number of files (i.e. observations) for each file set (i.e.
   # factor)
   for (i in 1:nfilesets) {
 
     # Current file set (i.e. factor)
-    curr_files <- dir(folders[i], pattern=glob2rx(files[i]))
+    curr_files <- dir(folders[i], pattern = glob2rx(files[i]))
 
     # How many files in set? (i.e. how many observations for current factor)
     groups[i] <- length(curr_files)
@@ -92,7 +93,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   # Set default output names if not given
   if (length(outputs) == 1) {
     nout <- outputs - concat
-    outputs <- paste("out", 1:nout, sep="")
+    outputs <- paste("out", 1:nout, sep = "")
   } else {
     nout <- length(outputs) - concat
   }
@@ -101,14 +102,14 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   data <- list()
   for (i in 1:nout) {
     out <- outputs[i]
-    data[[out]] <- matrix(nrow=nobs, ncol=nvars)
+    data[[out]] <- matrix(nrow = nobs, ncol = nvars)
   }
 
   # Cycle through all file sets
   for (i in 1:nfilesets) {
 
     # Current file set
-    curr_files <- dir(folders[i], pattern=glob2rx(files[i]))
+    curr_files <- dir(folders[i], pattern = glob2rx(files[i]))
 
     # Base index for current file set
     bidx <- if (i == 1) {
@@ -137,7 +138,7 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
 
   # Perform output concatenation?
   if (concat) {
-    outconcat <- matrix(nrow=nobs,ncol=nvars * nout)
+    outconcat <- matrix(nrow = nobs,ncol = nvars * nout)
     for (i in 1:nobs) {
       outconcat[i,] <- unlist(sapply(data, function(x, row)
         (x[row,] - mean(x[row, ])) / (max(x[row, ]) - min(x[row, ])), i))
@@ -147,11 +148,11 @@ grpoutputs <- function(outputs, nvars, folders, files, lvls=NULL, concat=F) {
   }
 
   # Return outputs, groups and factors
-  go <- list(data=data,
-             groups=groups,
-             factors=factors,
-             lvls=lvls,
-             concat=concat)
+  go <- list(data = data,
+             groups = groups,
+             factors = factors,
+             lvls = lvls,
+             concat = concat)
   class(go) <- "grpoutputs"
   go
 
@@ -197,7 +198,7 @@ print.grpoutputs <- function(go) {
 #' @return A list with the following components:
 #' \describe{
 #'  \item{output.dims}{Dimensions of each output, i.e. number of observations
-#'           and number of variables (i.e. output length).}
+#'        and number of variables (i.e. output length).}
 #'  \item{group.sizes}{Number of output observations in each group.}
 #' }
 #'
@@ -213,12 +214,12 @@ summary.grpoutputs <- function(go) {
   rownames(outptab) <- c("N.Obs", "N.Vars")
 
   # Get group sizes
-  grpszbyfact <- data.frame(group.size=go$groups,
+  grpszbyfact <- data.frame(group.size = go$groups,
                             row.names = go$lvls,
                             stringsAsFactors = F)
 
   # Return list with summary information
-  list(`output.dims`=outptab, `group.sizes`=grpszbyfact)
+  list(`output.dims` = outptab, `group.sizes` = grpszbyfact)
 
 }
 
@@ -242,7 +243,7 @@ summary.grpoutputs <- function(go) {
 #' @examples
 #' NULL
 #'
-plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
+plot.grpoutputs <- function(go, col = micomp:::plotcols(), ...) {
 
   # TODO: Mean plot, max/min plot
 
@@ -281,13 +282,13 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
   lv <- c(l1, l2, l3, l4)
 
   # Create layout matrix
-  m <- matrix(lv, ncol=ncols, byrow=T)
+  m <- matrix(lv, ncol = ncols, byrow = T)
 
   # Set layout and plot outputs  ===================================
 
   # Set layout
   nrows <- length(lv) / ncols
-  layout(mat=m, heights=c(rep(0.85 / nrows, nrows), 0.15))
+  layout(mat = m, heights = c(rep(0.85 / nrows, nrows), 0.15))
 
   # Plot each output separately
   for (i in 1:nout) {
@@ -301,28 +302,29 @@ plot.grpoutputs <- function(go, col=micomp:::plotcols(), ...) {
 
     # Take into account non-pair number of simple outputs
     if ((go$concat) && (i == nout) && (nout_simpl %% 2 != 0)) {
-      plot(0, type = "n", axes=FALSE, xlab="", ylab="")
+      plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
     }
 
     # Prepare plot
-    plot.default(0, xlim=c(0,xlen), ylim=c(ymin,ymax), main=out, type="n", ...)
+    plot.default(0, xlim = c(0,xlen), ylim = c(ymin,ymax),
+                 main = out, type = "n", ...)
 
     # Plot lines
     for (i in 1:length(go$factors)) {
-      lines(go$data[[out]][i,], col=col[unclass(go$factors)[i]])
+      lines(go$data[[out]][i,], col = col[unclass(go$factors)[i]])
     }
 
   }
 
   # Take into account non-pair number of simple outputs
   if ((!go$concat) && (nout_simpl %% 2 != 0)) {
-    plot(0, type = "n", axes=FALSE, xlab="", ylab="")
+    plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
   }
 
   # Plot legend showing colors assigned to groups
   par(mar = rep(2, 4))
-  plot(0, type = "n", axes=FALSE, xlab="", ylab="")
-  legend("top", legend=go$lvls, fill=col, horiz=T)
+  plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
+  legend("top", legend = go$lvls, fill = col, horiz = T)
 
   invisible(NULL)
 

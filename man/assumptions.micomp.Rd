@@ -2,22 +2,27 @@
 % Please edit documentation in R/micomp.R
 \name{assumptions.micomp}
 \alias{assumptions.micomp}
-\title{Title}
+\title{Get assumptions for parametric tests performed on each comparisons.}
 \usage{
-\method{assumptions}{micomp}(obj, ...)
+\method{assumptions}{micomp}(mcmp, ...)
 }
 \arguments{
-\item{obj}{}
+\item{mcmp}{Object of class \code{\link{micomp}}.}
 
-\item{...}{}
+\item{...}{Currently ignored.}
 }
 \value{
-todo
+Object of class \code{assumptions_micomp} containing the
+assumptions for parametric tests performed for the multiple comparisons held
+by the \code{mcmp} object. This object is a multi-dimensional list of
+\code{assumptions_cmpoutput} objects. Rows are associated with individual
+outputs, while columns are associated with separate comparisons.
 }
 \description{
-Title
+Get assumptions for parametric tests performed on multiple comparisons (i.e.
+from objects of class \code{\link{micomp}}).
 }
 \examples{
-#' todo
+NULL
 }
 

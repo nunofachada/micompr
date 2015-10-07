@@ -2,20 +2,21 @@
 % Please edit documentation in R/micomp.R
 \name{print.micomp}
 \alias{print.micomp}
-\title{Title}
+\title{Print information about multiple comparisons of simulation output}
 \usage{
 \method{print}{micomp}(mcmp)
 }
 \arguments{
-\item{mcmp}{}
+\item{mcmp}{Object of class \code{\link{micomp}}.}
 }
 \value{
-todo
+The argument \code{mcmp}, invisibly, as for all \code{\link{print}}.
+methods.
 }
 \description{
-Title
+Print information about objects of class \code{\link{micomp}}.
 }
 \examples{
-#' todo()
+NULL
 }
 

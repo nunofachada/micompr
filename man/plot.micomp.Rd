@@ -2,24 +2,27 @@
 % Please edit documentation in R/micomp.R
 \name{plot.micomp}
 \alias{plot.micomp}
-\title{Title}
+\title{Plot projection of output observations on the first two dimensions of the
+principal components space}
 \usage{
 \method{plot}{micomp}(mcmp, col = micomp:::plotcols(), ...)
 }
 \arguments{
-\item{mcmp}{}
+\item{col}{Vector of colors to use on observations of different groups.}
 
-\item{col}{}
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 
-\item{...}{}
+\item{ncmp}{An object of class \code{\link{micomp}}.}
 }
 \value{
-todo
+None.
 }
 \description{
-Title
+For each comparison and output combination, draw a scatter plot containing
+the projection of output observations on the first two dimensions of the
+principal components space.
 }
 \examples{
-#' todo()
+NULL
 }
 

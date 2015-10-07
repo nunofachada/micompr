@@ -1,14 +1,14 @@
-pst <- function(...) paste(..., sep="", collapse="")
+pst <- function(...) paste(..., sep = "", collapse = "")
 
 pvalf <- function(pval) {
 
   fval <- ifelse(pval > 0.0005,
-                 formatC(pval, format="f", digits=3),
-                 formatC(pval, format="e", digits=0))
+                 formatC(pval, format = "f", digits = 3),
+                 formatC(pval, format = "e", digits = 0))
   fval <- ifelse(pval < 0.01,
-                 paste("\\uuline{", fval, "}", sep=""),
+                 paste("\\uuline{", fval, "}", sep = ""),
                  ifelse(pval < 0.05,
-                        paste("\\uline{", fval, "}", sep=""),
+                        paste("\\uline{", fval, "}", sep = ""),
                         fval))
 }
 
@@ -26,7 +26,7 @@ tikscat <- function(data, factors, marks) {
   # Begin figure
   figstr <- paste("\\begin{tikzpicture}[scale=6] \\path (-1.2,-1.2) (1.2,1.2);",
                   "\\draw[very thin,color=gray] (0,1.1)--(0,-1.1); ",
-                  "\\draw[very thin,color=gray] (1.1,0)--(-1.1,0);", sep="");
+                  "\\draw[very thin,color=gray] (1.1,0)--(-1.1,0);", sep = "");
 
   # Cycle
   for (i in 1:length(ugrps)) {
@@ -56,7 +56,7 @@ tscat_apply <- function(cmps, marks) {
 
   scores <- lapply(cmps, function(x) x$scores)
   factors <- lapply(cmps, function(x) x$factors)
-  plts <- mapply(tikscat, scores, factors, MoreArgs=list(marks))
+  plts <- mapply(tikscat, scores, factors, MoreArgs = list(marks))
   paste("\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {", plts, "}}")
 
 }
@@ -82,17 +82,17 @@ tscat_apply <- function(cmps, marks) {
 #' NULL
 toLatex.micomp <-
   function(mic,
-           data.show=c("npcs", "mnvp", "parp", "nparp", "scoreplot"),
-           table.placement="ht",
-           latex.environments=c("center"),
-           booktabs=F,
-           booktabs.cmalign="l",
-           caption=NULL,
-           label=NULL,
-           col.width=F,
-           digits=3,
-           pvalformat=pvalf,
-           scoreplot.marks=c(
+           data.show = c("npcs", "mnvp", "parp", "nparp", "scoreplot"),
+           table.placement = "ht",
+           latex.environments = c("center"),
+           booktabs = F,
+           booktabs.cmalign = "l",
+           caption = NULL,
+           label = NULL,
+           col.width = F,
+           digits = 3,
+           pvalformat = pvalf,
+           scoreplot.marks = c(
              "mark=square*,mark options={color=red},mark size=0.8pt",
              "mark=*,mark size=0.6pt",
              "mark=o,mark size=0.7pt"),
@@ -101,10 +101,10 @@ toLatex.micomp <-
 
     ndata <- length(data.show)
     hlines <- if (booktabs) {
-      list(top="\\toprule", mid="\\midrule", bot="\\bottomrule",
-           c=pst("\\cmidrule(", booktabs.cmalign, ")"))
+      list(top = "\\toprule", mid = "\\midrule", bot = "\\bottomrule",
+           c = pst("\\cmidrule(", booktabs.cmalign, ")"))
     } else {
-      list(top="\\hline", mid="\\hline", bot="\\hline", c="\\cline")
+      list(top = "\\hline", mid = "\\hline", bot = "\\hline", c = "\\cline")
     }
 
     nout <- dim(mic)[1]
@@ -137,7 +137,8 @@ toLatex.micomp <-
     ltxtab[[idx]] <- pst(hlines$c, "{3-", 2 + nout, "}")
     idx <- idx + 1
 
-    ltxtab[[idx]] <- pst(" & & ", paste(rownames(mic), collapse=" & ", sep=""),
+    ltxtab[[idx]] <- pst(" & & ", paste(rownames(mic), collapse = " & ",
+                                        sep = ""),
                          "\\\\")
     idx <- idx + 1
 
@@ -148,7 +149,7 @@ toLatex.micomp <-
       ltxtab[[idx]] <- hlines$mid
       idx <- idx + 1
 
-      # Adjust formating for specific number of significant digits
+      # Adjust formatting for specific number of significant digits
       smicf <- smic[[cmp]]
 
       # Multi-row with comparison name
@@ -159,20 +160,20 @@ toLatex.micomp <-
       for (cdata in data.show) {
         ltxtab[[idx]] <-
           switch(cdata,
-                 npcs=pst(" & $\\#$PCs ",
-                          pst(" & ", as.integer(smicf["#PCs",])), "\\\\"),
-                 mnvp=pst(" & MNV ",
-                          pst(" & ", pvalf(unlist(smicf["MNV",]))), "\\\\"),
-                 parp=pst(" & $t$-test ",
-                          pst(" & ",
-                              pvalf(unlist(smicf["Par.test",]))), "\\\\"),
-                 nparp=pst(" & MW  ",
-                           pst(" & ",
-                               pvalf(unlist(smicf["NonParTest",]))), "\\\\"),
-                 scoreplot=pst(" & PCS ",
-                               pst(" & ",
-                                   tscat_apply(mic[,cmp], scoreplot.marks)),
-                               "\\\\"))
+                 npcs = pst(" & $\\#$PCs ",
+                            pst(" & ", as.integer(smicf["#PCs",])), "\\\\"),
+                 mnvp = pst(" & MNV ",
+                            pst(" & ", pvalf(unlist(smicf["MNV",]))), "\\\\"),
+                 parp = pst(" & $t$-test ",
+                            pst(" & ",
+                                pvalf(unlist(smicf["Par.test",]))), "\\\\"),
+                 nparp = pst(" & MW  ",
+                             pst(" & ",
+                                 pvalf(unlist(smicf["NonParTest",]))), "\\\\"),
+                 scoreplot = pst(" & PCS ",
+                                 pst(" & ",
+                                     tscat_apply(mic[,cmp], scoreplot.marks)),
+                                 "\\\\"))
         idx <- idx + 1
       }
 

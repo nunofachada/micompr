@@ -2,11 +2,11 @@
 
 S3method(assumptions,cmpoutput)
 S3method(assumptions,micomp)
+S3method(plot,assumptions_cmpoutput)
 S3method(plot,assumptions_manova)
 S3method(plot,assumptions_micomp)
 S3method(plot,assumptions_paruv)
 S3method(plot,cmpoutput)
-S3method(plot,cmpoutput_assumptions)
 S3method(plot,grpoutputs)
 S3method(plot,micomp)
 S3method(print,assumptions_manova)

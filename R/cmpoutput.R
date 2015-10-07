@@ -14,48 +14,46 @@
 #' @return  Object of class \code{cmpoutput} containing the following data:
 #' \describe{
 #'  \item{scores}{\emph{n} x \emph{n} matrix containing projections of
-#'                simulation output data in the principal components space.
-#'                Rows correspond to observations, columns to principal
-#'                components. }
+#'        simulation output data in the principal components space. Rows
+#'        correspond to observations, columns to principal components. }
 #'  \item{factors}{Factors (or groups) associated with each observation.}
 #'  \item{varexp}{Percentage of variance explained by each principal component.}
 #'  \item{npcs}{Number of principal components which explain \code{ve}
-#'              percentage of variance.}
+#'        percentage of variance.}
 #'  \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
-#'            principal components (i.e. number of dimensions) used in MANOVA.}
+#'        principal components (i.e. number of dimensions) used in MANOVA.}
 #'  \item{name}{Comparison name (useful when calling this function to perform
-#'              multiple comparisons).}
+#'        multiple comparisons).}
 #'  \item{p.values}{\emph{P}-values for the performed statistical tests, namely:
 #'    \describe{
 #'      \item{manova}{\emph{P}-values for the MANOVA test for \code{npcs}
-#'                    principal components.}
+#'            principal components.}
 #'      \item{parametric}{Vector of \emph{p}-values for the parametric test
-#'                        applied to groups along each principal component
-#'                        (\emph{t}-test for 2 groups, ANOVA for more than 2
-#'                        groups).}
+#'            applied to groups along each principal component (\emph{t}-test
+#'            for 2 groups, ANOVA for more than 2 groups).}
 #'      \item{nonparametric}{Vector of \emph{p}-values for the non-parametric
-#'                           test applied to groups along each principal
-#'                           component (Mann-Whitney U test for 2 groups,
-#'                           Kruskal-Wallis test for more than 2 groups).}
+#'            test applied to groups along each principal component
+#'            (Mann-Whitney U test for 2 groups, Kruskal-Wallis test for more
+#'            than 2 groups).}
 #'    }
 #'  }
 #'  \item{tests}{
 #'    \describe{
 #'      \item{manova}{Object returned by the \code{\link{manova}} function.}
 #'      \item{parametric}{List of objects returned by applying
-#'                        \code{\link{t.test}} (two groups) or \code{\link{aov}}
-#'                        (more than two groups) to each principal component.}
+#'            \code{\link{t.test}} (two groups) or \code{\link{aov}} (more than
+#'            two groups) to each principal component.}
 #'      \item{nonparametric}{List of objects returned by applying
-#'                           \code{\link{wilcox.test}} (two groups) or
-#'                           \code{\link{kruskal.test}} (more than two groups)
-#'                           to each principal component.}
+#'            \code{\link{wilcox.test}} (two groups) or
+#'            \code{\link{kruskal.test}} (more than two groups) to each
+#'            principal component.}
 #'    }
 #'  }
-#'  \item{assumptions}{Object of class \code{cmpoutput_assumptions}. Basically
-#'                     a list containing the assumptions for the MANOVA (object
-#'                     of class \code{\link{assumptions_manova}}) and
-#'                     univariate parametric tests for each principal component
-#'                     (object of class \code{\link{assumptions_paruv}}).}
+#'  \item{assumptions}{Object of class \code{assumptions_cmpoutput}. Basically
+#'        a list containing the assumptions for the MANOVA (object of class
+#'        \code{\link{assumptions_manova}}) and univariate parametric tests for
+#'        each principal component (object of class
+#'        \code{\link{assumptions_paruv}}).}
 #' }
 #'
 #' @export
@@ -84,7 +82,7 @@ cmpoutput <- function(name, ve, data, factors) {
 
   # Assumptions list
   assumptions <- list()
-  class(assumptions) <- "cmpoutput_assumptions"
+  class(assumptions) <- "assumptions_cmpoutput"
 
   # Manova
   if (npcs > 1) {
@@ -99,9 +97,9 @@ cmpoutput <- function(name, ve, data, factors) {
     assumptions$manova <- NULL
   }
 
-  parpvals <- vector(mode="numeric", length=npcs)
+  parpvals <- vector(mode = "numeric", length = npcs)
   partests <- list()
-  nonparpvals <- vector(mode="numeric", length=npcs)
+  nonparpvals <- vector(mode = "numeric", length = npcs)
   nonpartests <- list()
 
   if (nlevels(factors) == 2) {
@@ -141,12 +139,13 @@ cmpoutput <- function(name, ve, data, factors) {
   }
 
   # Return
-  cmpout <- list(scores=pca$x, factors=factors, varexp=varexp, npcs=npcs, ve=ve,
-                 name=name, p.values=list(manova=mnvpval, parametric=parpvals,
-                                          nonparametric=nonparpvals),
-                 tests=list(manova=mnvtest, parametric=partests,
-                            nonparametric=nonpartests),
-                 assumptions=assumptions)
+  cmpout <- list(scores = pca$x, factors = factors, varexp = varexp,
+                 npcs = npcs, ve = ve, name = name,
+                 p.values = list(manova = mnvpval, parametric = parpvals,
+                                 nonparametric = nonparpvals),
+                 tests = list(manova = mnvtest, parametric = partests,
+                            nonparametric = nonpartests),
+                 assumptions = assumptions)
   class(cmpout) <- "cmpoutput"
   cmpout
 
@@ -176,7 +175,7 @@ print.cmpoutput <- function(cmpout) {
 
   cat("Output name:", cmpout$name, "\n")
   cat("Number of PCs which explain ", cmpout$ve * 100, "% of variance: ",
-      cmpout$npcs, "\n", sep="")
+      cmpout$npcs, "\n", sep = "")
   if (cmpout$npcs > 1) {
     cat("P-Value for MANOVA along", cmpout$npcs, "dimensions:",
         cmpout$p.values$manova, "\n")
@@ -199,16 +198,16 @@ print.cmpoutput <- function(cmpout) {
 #' @return A list with the following components:
 #' \describe{
 #'  \item{num.pcs}{Number of principal components which explain \code{var.exp}
-#'                 percentage of variance.}
+#'        percentage of variance.}
 #'  \item{var.exp}{Minimum percentage of variance which must be explained by the
-#'                 number of principal components used for the MANOVA test.}
+#'        number of principal components used for the MANOVA test.}
 #'  \item{manova.pval}{\emph{P}-value of the MANOVA test.}
 #'  \item{parametric.test}{Name of the used parametric test.}
 #'  \item{parametric.pvals}{Vector of $p$-values returned by applying the
-#'                          parametric test to each principal component.}
+#'        parametric test to each principal component.}
 #'  \item{nonparametric.test}{Name of the used non-parametric test.}
 #'  \item{nonparametric.pvals}{Vector of $p$-values returned by applying the
-#'                          non-parametric test to each principal component.}
+#'        non-parametric test to each principal component.}
 #' }
 #'
 #' @export
@@ -224,14 +223,14 @@ summary.cmpoutput <- function(cmpout) {
     test_names <- c("ANOVA", "Kruskal-Wallis")
   }
 
-  list(output.name=cmpout$name,
-       num.pcs=cmpout$npcs,
-       var.exp=cmpout$ve,
-       manova.pval=cmpout$p.values$manova,
-       parametric.test=test_names[1],
-       parametric.pvals=cmpout$p.values$parametric,
-       nonparametric.test=test_names[2],
-       nonparametric.pvals=cmpout$p.values$nonparametric)
+  list(output.name = cmpout$name,
+       num.pcs = cmpout$npcs,
+       var.exp = cmpout$ve,
+       manova.pval = cmpout$p.values$manova,
+       parametric.test = test_names[1],
+       parametric.pvals = cmpout$p.values$parametric,
+       nonparametric.test = test_names[2],
+       nonparametric.pvals = cmpout$p.values$nonparametric)
 }
 
 #' Plot comparison of simulation output
@@ -262,30 +261,34 @@ summary.cmpoutput <- function(cmpout) {
 #' @examples
 #' NULL
 #'
-plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
+plot.cmpoutput <- function(cmpout, col = micomp:::plotcols(), ...) {
 
-  par(mfrow=c(2,2))
+  par(mfrow = c(2,2))
 
   # Score plot (first two PCs)
   plot.default(cmpout$scores[,1], cmpout$scores[,2],
-               col=col[as.numeric(cmpout$factors)],
-               xlab=paste("PC1 (", round(cmpout$varexp[1] * 100, 2), "%)",
+               col = col[as.numeric(cmpout$factors)],
+               xlab = paste("PC1 (", round(cmpout$varexp[1] * 100, 2), "%)",
                           sep = ""),
-               ylab=paste("PC2 (", round(cmpout$varexp[2] * 100, 2), "%)",
+               ylab = paste("PC2 (", round(cmpout$varexp[2] * 100, 2), "%)",
                           sep = ""),
-               main="Score plot", ...)
+               main = "Score plot", ...)
 
   # Explained variance bar plot
-  barplot(cmpout$varexp[1:cmpout$npcs], names.arg=as.character(1:cmpout$npcs),
-          main="Explained variance by PC", xlab="PC", ylab="Var. exp. (%)", ...)
+  barplot(cmpout$varexp[1:cmpout$npcs], names.arg = as.character(1:cmpout$npcs),
+          main = "Explained variance by PC",
+          xlab = "PC", ylab = "Var. exp. (%)", ...)
 
   # Parametric p-values bar plot
-  barplot(cmpout$p.values$parametric, names.arg=as.character(1:cmpout$npcs),
-          main="Parametric p-values by PC", xlab="PC", ylab="Prob.", ...)
+  barplot(cmpout$p.values$parametric, names.arg = as.character(1:cmpout$npcs),
+          main = "Parametric p-values by PC",
+          xlab = "PC", ylab = "Prob.", ...)
 
   # Non-parametric p-values bar plot
-  barplot(cmpout$p.values$nonparametric, names.arg=as.character(1:cmpout$npcs),
-          main="Non-parametric p-values by PC", xlab="PC", ylab="Prob.", ...)
+  barplot(cmpout$p.values$nonparametric,
+          names.arg = as.character(1:cmpout$npcs),
+          main = "Non-parametric p-values by PC",
+          xlab = "PC", ylab = "Prob.", ...)
 
   invisible(NULL)
 }
@@ -293,7 +296,7 @@ plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
 #' Plot \emph{p}-values for testing the assumptions of the parametric tests used
 #' in simulation output comparison
 #'
-#' Plot method for objects of class \code{\link{cmpoutput_assumptions}}
+#' Plot method for objects of class \code{\link{assumptions_cmpoutput}}
 #' containing \emph{p}-values produced by testing the assumptions of the
 #' parametric tests used for comparing simulation output.
 #'
@@ -316,7 +319,7 @@ plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
 #'        considered.
 #' }
 #'
-#' @param cmpoass Objects of class \code{\link{cmpoutput_assumptions}}.
+#' @param cmpoass Objects of class \code{\link{assumptions_cmpoutput}}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.
@@ -325,10 +328,10 @@ plot.cmpoutput <- function(cmpout, col=micomp:::plotcols(), ...) {
 #'
 #' @examples
 #' NULL
-plot.cmpoutput_assumptions <- function(cmpoass, ...) {
+plot.assumptions_cmpoutput <- function(cmpoass, ...) {
 
-  if (exists("manova", where=cmpoass)) {
-    plot(cmpoass$ttest, extra=1, ...)
+  if (exists("manova", where = cmpoass)) {
+    plot(cmpoass$ttest, extra = 1, ...)
     plot(cmpoass$manova, ...)
   } else {
     # No extra for multivariate assumptions, just plot univariate stuff
@@ -347,7 +350,7 @@ plot.cmpoutput_assumptions <- function(cmpoass, ...) {
 #' @param cmpout Object of class \code{cmpoutput}.
 #' @param ... Currently ignored.
 #'
-#' @return Object of class \code{cmpoutput_assumptions} containing the
+#' @return Object of class \code{assumptions_cmpoutput} containing the
 #' assumptions for parametric tests performed on an output comparisons
 #' Basically a list containing the assumptions for the MANOVA (object of class
 #' \code{\link{assumptions_manova}}) and univariate parametric tests for each

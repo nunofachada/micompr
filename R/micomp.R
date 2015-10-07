@@ -2,29 +2,46 @@
 #'
 #' Perform multiple model-independent comparisons of simulation outputs.
 #'
-#' @param nout
-#' @param nvars
-#' @param ve
-#' @param comps
+#' @param outputs A vector with the labels of each output, or an integer with
+#' the number of outputs (in which case output labels will be assigned
+#' automatically).
+#' @param nvars Number of variables (i.e. length of each output).
+#' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
+#' principal components (i.e. number of dimensions) used in MANOVA.
+#' @param ... A set of lists, where each list contains information regarding an
+#' individual comparison, namely:
+#' \describe{
+#'   \item{name}{A string describing the comparison name.}
+#'   \item{folders}{Vector of folder names where to read files from. These are
+#'         recycled if \code{length(folders) < length(files)}.}
+#'   \item{files}{Vector of filenames (with wildcards) to load in each folder.}
+#'   \item{lvls}{Vector of factor (group) names, must be the same length as
+#'         \code{files}, i.e. each file set will be associated with a different
+#'         group. If not given, default group names will be set.}
+#' }
+#' @param concat Create an additional, concatenated output?
 #'
-#' @return Some stuff
+#' @return An object of class \code{\link{micomp}}, which is a multi-dimensional list
+#' of \code{cmpoutput} objects. Rows are associated with individual outputs,
+#' while columns are associated with separate comparisons.
+#'
 #' @export
 #'
 #' @examples
 #' NULL
-micomp <- function(outputs, nvars, ve, ..., concat=F) {
+micomp <- function(outputs, nvars, ve, ..., concat = F) {
 
   # Put comparisons in a list
   comps <- list(...)
 
-  # Determine number of comparions
+  # Determine number of comparisons
   ncomp <- length(comps)
-  cmp_names <- vector(mode="character", length=ncomp)
+  cmp_names <- vector(mode = "character", length = ncomp)
 
   #
   if (length(outputs) == 1) {
     nout <- outputs
-    outputs <- paste("out", 1:nout, sep="")
+    outputs <- paste("out", 1:nout, sep = "")
   } else {
     nout <- length(outputs)
   }
@@ -40,12 +57,12 @@ micomp <- function(outputs, nvars, ve, ..., concat=F) {
   for (i in 1:ncomp) {
 
     grpd_outputs[[i]] <-
-      grpoutputs(outputs=outputs,
-                 nvars=nvars,
-                 folders=unlist(comps[[i]]$folders),
-                 files=unlist(comps[[i]]$files),
-                 lvls=comps[[i]]$lvls,
-                 concat=concat)
+      grpoutputs(outputs = outputs,
+                 nvars = nvars,
+                 folders = unlist(comps[[i]]$folders),
+                 files = unlist(comps[[i]]$files),
+                 lvls = comps[[i]]$lvls,
+                 concat = concat)
 
     cmp_names[i] <-
       if (!is.null(comps[[i]]$name)) {
@@ -77,36 +94,64 @@ micomp <- function(outputs, nvars, ve, ..., concat=F) {
 
 }
 
-#' Title
+#' Print information about multiple comparisons of simulation output
 #'
-#' @param mcmp
+#' Print information about objects of class \code{\link{micomp}}.
 #'
-#' @return todo
+#' @param mcmp Object of class \code{\link{micomp}}.
+#'
+#' @return The argument \code{mcmp}, invisibly, as for all \code{\link{print}}.
+#' methods.
+#'
 #' @export
 #'
-#' @examples #' todo()
+#' @examples
+#' NULL
+#'
 print.micomp <- function(mcmp) {
 
+  # Use summary to get the info to be printed
   smic <- summary(mcmp)
 
   # Cycle through comparisons
   for (cmpname in names(smic)) {
 
     cat("====", cmpname, "====\n")
-    print(smic[[cmpname]], digits=5, print.gap=2)
+    print(smic[[cmpname]], digits = 5, print.gap = 2)
 
   }
 
+  invisible(mcmp)
+
 }
 
-#' Title
+#' Summary method for multiple comparisons of simulation output
 #'
-#' @param mcmp
+#' Summary method for objects of class \code{\link{micomp}}.
 #'
-#' @return todo
+#' @param mcmp Object of class \code{\link{micomp}}.
+#'
+#' @return A list in which each component is associated with a distinct
+#' comparison. Each component contains a data frame, in which columns represent
+#' individual simulation outputs and rows have information about the outputs.
+#' More specifically, each data frame has four rows with the following
+#' information:
+#' \describe{
+#'  \item{#PCs}{Number of principal components required to explain the
+#'        percentage of variance specified when creating the
+#'        \code{\link{micomp}} object.}
+#'  \item{MNV}{\emph{P}-value for the MANOVA test (\code{#PCs}).}
+#'  \item{par.test}{\emph{P}-value for the parametric test (first principal
+#'        component).}
+#'  \item{nonpar.test}{\emph{P}-value for the non-parametric test (first
+#'        principal component).}
+#' }
+#'
 #' @export
 #'
-#' @examples #' todo()
+#' @examples
+#' NULL
+#'
 summary.micomp <- function(mcmp) {
 
   dims <- dim(mcmp)
@@ -118,15 +163,15 @@ summary.micomp <- function(mcmp) {
   # Cycle through comparisons
   for (i in 1:ncomp) {
 
-    npcs <- sapply(mcmp[,i], function (mc) return (mc$npcs))
-    p_mnv <- sapply(mcmp[,i], function (mc) return (mc$p.values$manova))
-    p_par <- sapply(mcmp[,i], function (mc) return (mc$p.values$parametric[1]))
-    p_npar <- sapply(mcmp[,i],
-                     function (mc) return (mc$p.values$nonparametric[1]))
+    npcs <- sapply(mcmp[, i], function(mc) return(mc$npcs))
+    p_mnv <- sapply(mcmp[, i], function(mc) return(mc$p.values$manova))
+    p_par <- sapply(mcmp[, i], function(mc) return(mc$p.values$parametric[1]))
+    p_npar <- sapply(mcmp[, i],
+                     function(mc) return(mc$p.values$nonparametric[1]))
 
 
     df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F,
-                     row.names = c("#PCs", "MNV", "Par.test", "NonParTest"))
+                     row.names = c("#PCs", "MNV", "par.test", "nonpar.test"))
     names(df) <- rownames(mcmp)
 
     smic[[cmpnames[i]]] <- df
@@ -137,27 +182,33 @@ summary.micomp <- function(mcmp) {
 
 }
 
-
-# TODO The color vector could be some kind of global
-#' Title
+#' Plot projection of output observations on the first two dimensions of the
+#' principal components space
 #'
-#' @param mcmp
-#' @param col
-#' @param ...
+#' For each comparison and output combination, draw a scatter plot containing
+#' the projection of output observations on the first two dimensions of the
+#' principal components space.
 #'
-#' @return todo
+#' @param ncmp An object of class \code{\link{micomp}}.
+#' @param col Vector of colors to use on observations of different groups.
+#' @param ... Extra options passed to \code{\link{plot.default}}.
+#'
+#' @return None.
+#'
 #' @export
 #'
-#' @examples #' todo()
-plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
+#' @examples
+#' NULL
+#'
+plot.micomp <- function(mcmp, col = micomp:::plotcols(), ...) {
 
   dims <- dim(mcmp)
   nout <- dims[1]
   ncomp <- dims[2]
   nplots <- nout * ncomp
 
-  m <- matrix(1:(nplots + ncomp), nrow=ncomp, ncol=nout + 1, byrow=T)
-  layout(mat=m)
+  m <- matrix(1:(nplots + ncomp), nrow = ncomp, ncol = nout + 1, byrow = T)
+  layout(mat = m)
 
   for (i in 1:ncomp) {
 
@@ -165,9 +216,9 @@ plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
     facts <- mcmp[[1,i]]$factors
 
     # Set title and legend for current comparison
-    plot(0, type = "n", axes=FALSE, xlab="", ylab="")
-    text(1,1, pos=1,labels=paste("Comp. ", i))
-    legend("center", legend=unique(facts), fill=col, horiz=F)
+    plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
+    text(1,1, pos = 1,labels = paste("Comp. ", i))
+    legend("center", legend = unique(facts), fill = col, horiz = F)
 
     for (j in 1:nout) {
 
@@ -176,44 +227,64 @@ plot.micomp <- function(mcmp, col=micomp:::plotcols(), ...) {
       varexp <- mcmp[[j,i]]$varexp
 
       # Score plot (first two PCs)
-      plot.default(scores[,1], scores[,2], col=col[as.numeric(facts)],
-                   xlab=paste("PC1 (", round(varexp[1] * 100, 2), "%)",
+      plot.default(scores[,1], scores[,2], col = col[as.numeric(facts)],
+                   xlab = paste("PC1 (", round(varexp[1] * 100, 2), "%)",
                               sep = ""),
-                   ylab=paste("PC2 (", round(varexp[2] * 100, 2), "%)",
+                   ylab = paste("PC2 (", round(varexp[2] * 100, 2), "%)",
                               sep = ""),
-                   main=mcmp[[j,i]]$name, ...)
+                   main = mcmp[[j,i]]$name, ...)
     }
   }
 
+  invisible(NULL)
+
 }
 
-#' Title
+#' Get assumptions for parametric tests performed on each comparisons.
 #'
-#' @param obj
-#' @param ...
+#' Get assumptions for parametric tests performed on multiple comparisons (i.e.
+#' from objects of class \code{\link{micomp}}).
 #'
-#' @return todo
+#' @param mcmp Object of class \code{\link{micomp}}.
+#' @param ... Currently ignored.
+#'
+#' @return Object of class \code{assumptions_micomp} containing the
+#' assumptions for parametric tests performed for the multiple comparisons held
+#' by the \code{mcmp} object. This object is a multi-dimensional list of
+#' \code{assumptions_cmpoutput} objects. Rows are associated with individual
+#' outputs, while columns are associated with separate comparisons.
+#'
 #' @export
 #'
-#' @examples #' todo
-assumptions.micomp <- function(obj, ...) {
-  micas <- lapply(obj, function(x) x$assumptions)
-  dim(micas) <- dim(obj)
-  colnames(micas) <- colnames(obj)
-  rownames(micas) <- rownames(obj)
+#' @examples
+#' NULL
+#'
+assumptions.micomp <- function(mcmp, ...) {
+  micas <- lapply(mcmp, function(x) x$assumptions)
+  dim(micas) <- dim(mcmp)
+  colnames(micas) <- colnames(mcmp)
+  rownames(micas) <- rownames(mcmp)
   class(micas) <- "assumptions_micomp"
   micas
 }
 
-#' Title
+#' Print information about the assumptions concerning the parametric tests
+#' performed on multiple comparisons of simulation output
 #'
-#' @param micas
-#' @param ...
+#' Print information about objects of class \code{assumptions_micomp}, which
+#' represent the assumptions concerning the parametric tests performed on
+#' multiple comparisons of simulation output.
 #'
-#' @return todo
+#' @param micas Object of class \code{assumptions_micomp}.
+#'
+#' @return The argument \code{micas}, invisibly, as for all \code{\link{print}}
+#' methods.
+#'
 #' @export
 #'
-#' @examples #' todo
+#' @examples
+#' NULL
+#'
 print.assumptions_micomp <- function(micas, ...) {
 
   sm <- summary(micas)
@@ -222,23 +293,42 @@ print.assumptions_micomp <- function(micas, ...) {
   for (cmp in names(sm)) {
 
      cat("==== ", cmp, "====\n")
-     print(sm[[cmp]], digits=5, print.gap=2)
+     print(sm[[cmp]], digits = 5, print.gap = 2)
      cat("\n")
 
   }
 
 }
 
-#' Title
+#' Plot \emph{p}-values for testing the assumptions of the parametric tests used
+#' in multiple output comparison
 #'
-#' @param micas
-#' @param ...
+#' Plot method for objects of class \code{\link{assumptions_cmpoutput}}
+#' containing \emph{p}-values produced by testing the assumptions of the
+#' parametric tests used for multiple output comparisons.
 #'
-#' @return todo
+#' Several bar plots are presented, one for each comparison, showing the
+#' \emph{p}-values yielded by the Shapiro-Wilk (\code{\link{shapiro.test}}) and
+#' Royston tests (\code{\link[MVN]{roystonTest}}) for univariate and
+#' multivariate normality of each group, respectively, and for the Bartlett
+#' (\code{\link{bartlett.test}}) and Box's M (\code{\link[biotools]{boxM}}) for
+#' testing homogeneity of variances and of covariance matrices, respectively.
+#' \emph{P}-values are aggregated by output in each plot. Note that the
+#' \emph{p-values} plotted for the Shapiro-Wilk and Bartlett tests correspond to
+#' group observations along the first principal component.
+#'
+#' @param micas Object of class \code{assumptions_micomp}.
+#' @param col Vector of colors to use for different tests (and groups in the
+#' case of normality tests).
+#' @param ... Extra options passed to \code{\link{barplot}}.
+#'
+#' @return None.
+#'
 #' @export
 #'
-#' @examples #' todo
-plot.assumptions_micomp <- function(micas, col=micomp:::plotcols(), ...) {
+#' @examples
+#' NULL
+plot.assumptions_micomp <- function(micas, col = micomp:::plotcols(), ...) {
 
   sm <- summary(micas)
 
@@ -250,29 +340,55 @@ plot.assumptions_micomp <- function(micas, col=micomp:::plotcols(), ...) {
   # Plot matrix side dimension
   side_dim <- ceiling(sqrt(nplots))
 
-  par(mfrow=c(side_dim, side_dim))
+  par(mfrow = c(side_dim, side_dim))
 
   # Cycle through comparisons
   for (cmp in names(sm)) {
     par(mar = rep(2, 4))
-    barplot(sm[[cmp]], col=col, beside=T, main=cmp, ...)
+    barplot(sm[[cmp]], col = col, beside = T, main = cmp, ...)
   }
 
-  plot(0, type = "n", axes=FALSE, xlab="", ylab="")
-  legend("top", legend=rownames(sm[[1]]), fill=col)
+  # Show legend
+  plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
+  legend("top", legend = rownames(sm[[1]]), fill = col)
+
+  invisible(NULL)
 
 }
 
-#' Title
+#' Summary method for the assumptions of parametric tests used in multiple
+#' comparisons of simulation output
 #'
-#' @param micas
-#' @param ...
+#' Summary method for objects of class \code{assumptions_micomp}, which
+#' contain the assumptions for the parametric tests used in multiple comparisons
+#' of simulation output.
 #'
-#' @return todo
+#' @param micas Object of class \code{assumptions_micomp}.
+#'
+#' @return A list in which each component is associated with a distinct
+#' comparison. Each component contains a data frame, in which columns represent
+#' individual simulation outputs and rows have information about the assumptions
+#' of the parametric tests used in each output. More specifically, each data
+#' frame has rows with the following information:
+#' \describe{
+#'  \item{Royston(\emph{group})}{\emph{s} rows, one per group, with the
+#'        \emph{p}-value yielded by the Royston test
+#'        (\code{\link[MVN]{roystonTest}}) for the respective group.}
+#'  \item{BoxM(Var.)}{One row with the \emph{p}-value yielded by Box's M test
+#'        (\code{\link[biotools]{boxM}}).}
+#'  \item{Shapiro-Wilk(\emph{group})}{\emph{s} rows, one per group, with the
+#'        \emph{p}-value yielded by the Shapiro-Wilk test
+#'        (\code{\link{shapiro.test}}) for the respective group.}
+#'  \item{Bartlett(Var.)}{One row with the \emph{p}-value yielded by Bartlett's
+#'        test (\code{\link{bartlett.test}}).}
+#' }
+#'
 #' @export
 #'
-#' @examples #' todo
-summary.assumptions_micomp <- function(micas, ...) {
+#' @examples
+#' NULL
+#'
+summary.assumptions_micomp <- function(micas) {
 
   dims <- dim(micas)
   ncomp <- dims[2]
@@ -284,14 +400,14 @@ summary.assumptions_micomp <- function(micas, ...) {
   for (i in 1:ncomp) {
 
     # Get the p-values for the MANOVA assumptions
-    mnv <- lapply(micas[,i], function (ma) {
+    mnv <- lapply(micas[,i], function(ma) {
       # Was MANOVA performed?
-      if (exists("manova", where=ma)) {
+      if (exists("manova", where = ma)) {
         # Get the Royston test p-values
         pvals <- sapply(ma$manova$mvntest, function(x) return(x@p.value))
-        names(pvals) <- paste("Royston(",names(pvals),")", sep="")
+        names(pvals) <- paste("Royston(", names(pvals), ")", sep = "")
         # Get the Box test p-values
-        pvals <- c(pvals, `BoxM(Var.)`=ma$manova$vartest$p.value)
+        pvals <- c(pvals, `BoxM(Var.)` = ma$manova$vartest$p.value)
       } else {
         # Number of compared models
         ncmpmod <- length(ma$ttest$uvntest)
@@ -302,10 +418,10 @@ summary.assumptions_micomp <- function(micas, ...) {
     })
 
     # Get the p-values for for t-test assumptions
-    ttst <- lapply(micas[,i], function (ma) {
+    ttst <- lapply(micas[, i], function(ma) {
       pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
-      names(pvals) <- paste("Shapiro-Wilk(",names(pvals),")", sep="")
-      pvals <- c(pvals, `Bartlett(Var.)`=ma$ttest$vartest[[1]]$p.value)
+      names(pvals) <- paste("Shapiro-Wilk(", names(pvals), ")", sep = "")
+      pvals <- c(pvals, `Bartlett(Var.)` = ma$ttest$vartest[[1]]$p.value)
       return(pvals)
     })
 
