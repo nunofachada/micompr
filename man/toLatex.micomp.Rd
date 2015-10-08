@@ -10,7 +10,8 @@
   col.width = F, digits = 3, pvalformat = pvalf,
   scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot.scale = 6,
-  ...)
+  scoreplot.before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
+  scoreplot.after = "}}", ...)
 }
 \arguments{
 \item{mic}{}
@@ -23,17 +24,27 @@
 
 \item{booktabs}{}
 
+\item{booktabs.cmalign}{}
+
+\item{caption}{}
+
+\item{label}{}
+
 \item{col.width}{}
 
 \item{digits}{}
 
 \item{pvalformat}{}
 
+\item{scoreplot.marks}{}
+
+\item{scoreplot.scale}{}
+
+\item{scoreplot.before}{}
+
+\item{scoreplot.after}{}
+
 \item{...}{}
-
-\item{btalign}{}
-
-\item{marks}{}
 }
 \value{
 todo
