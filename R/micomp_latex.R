@@ -1,5 +1,42 @@
-pst <- function(...) paste(..., sep = "", collapse = "")
+#' Concatenate strings without any separator characters
+#'
+#' Concatenate strings without any separator characters.
+#'
+#' This function simply calls \code{\link{paste}} with the \code{sep} and
+#' \code{collapse} options set to \code{""}.
+#'
+#' @param ... one or more \R objects, to be converted to character vectors.
+#'
+#' @return A character vector of the concatenated values without any separator
+#' characters.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' micomp:::pst("a","b","c",c("a","b","c"))
+#' # [1] "abcaabcbabcc"
+#'
+pst <- function(...) {
+  paste(..., sep = "", collapse = "")
+}
 
+#' Format a \emph{p}-value for printing in a \code{LaTeX} table.
+#'
+#' Format a \emph{p}-value for printing in a \code{LaTeX} table. Requires the
+#' \emph{ulem} \code{LaTeX} package for underlining the \emph{p}-values.
+#'
+#' @param pval Numeric value between 0 and 1.
+#'
+#' @return A string representing the formatted \code{pval}.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' micomp:::pvalf(0.1)
+#' # [1] "0.100"
+#' micomp:::pvalf(0.000001)
+#' # [1] "\\uuline{1e-06}"
+#'
 pvalf <- function(pval) {
 
   fval <- ifelse(pval > 0.0005,
@@ -10,12 +47,51 @@ pvalf <- function(pval) {
                  ifelse(pval < 0.05,
                         paste("\\uline{", fval, "}", sep = ""),
                         fval))
+  fval
 }
 
-tikscat <- function(data, factors, marks) {
+#' Simple \code{TikZ} scatter plot
+#'
+#' Create a simple 2D \code{TikZ} scatter plot, useful for plotting PCA data.
+#'
+#' This function creates a simple \code{TikZ} 2D scatter plot within a
+#' \code{tikzpicture} environment. The points are plotted on a normalized
+#' figure with \emph{x} and \emph{y} axes bounded between [-1,1].
+#'
+#' @param data Data to plot, \emph{m} x 2 numeric matrix, where \emph{m} is the
+#' number of observations or points to plot.
+#' @param factors Factors determining to which group observations in \code{data}
+#' belong to.
+#' @param marks Character vector determining how to draw the points in
+#' \code{TikZ}, for example: \code{
+#' c("mark=square*,mark options={color=red},mark size=0.8pt",
+#'   "mark=*,mark size=0.6pt",
+#'   "mark=o,mark size=0.7pt")}.
+#' @param tscale The \code{scale} property of the \code{TikZ} figure.
+#' @param axes.color Axes color (must be a \code{LaTeX}/\code{TikZ} color).
+#'
+#' @return A string containing the \code{TikZ} figure code for plotting the
+#' specified \code{data}.
+#'
+#' @export
+#'
+#' @examples
+#' tikzscat(rbind(c(1.5, 2), c(0.5, 1)), factor(c(1,2)),
+#'          c("mark=square*,mark options={color=red},mark size=0.8pt",
+#'            "mark=*,mark size=0.6pt"),
+#'          6)
+#' # [1] "\\begin{tikzpicture}[scale=6] \\path (-1.2,-1.2) (1.2,1.2);
+#' # \\draw[very thin,color=gray] (0,1.1)--(0,-1.1);
+#' # \\draw[very thin,color=gray] (1.1,0)--(-1.1,0);
+#' # \\path plot[mark=square*,mark options={color=red},mark size=0.8pt]
+#' # coordinates { (0.750,1.000)};
+#' # \\path plot[mark=*,mark size=0.6pt] coordinates { (0.250,0.500)};
+#' # \\end{tikzpicture}"
+#'
+tikzscat <- function(data, factors, marks, tscale, axes.color = "gray") {
 
   # Only two first dimensions
-  data <- data[,1:2]
+  data <- data[, 1:2]
 
   # Normalize
   data <- data / max(abs(data))
@@ -23,16 +99,22 @@ tikscat <- function(data, factors, marks) {
   # Unique groups
   ugrps <- unique(factors)
 
-  # Begin figure
-  figstr <- paste("\\begin{tikzpicture}[scale=6] \\path (-1.2,-1.2) (1.2,1.2);",
-                  "\\draw[very thin,color=gray] (0,1.1)--(0,-1.1); ",
-                  "\\draw[very thin,color=gray] (1.1,0)--(-1.1,0);", sep = "");
+  # Begin tikzfigure
+  figstr <- paste("\\begin{tikzpicture}[scale=", tscale, "] ",
+                  "\\path (-1.2,-1.2) (1.2,1.2);",
+                  "\\draw[very thin,color=", axes.color, "] ",
+                  "(0,1.1)--(0,-1.1); ",
+                  "\\draw[very thin,color=", axes.color, "] ",
+                  "(1.1,0)--(-1.1,0);",
+                  sep = "");
 
   # Cycle
   for (i in 1:length(ugrps)) {
 
-    # Get points in group
-    pts_in_grp <- data[factors == ugrps[i], ]
+    # Get points in group (make sure result is a matrix if only one point
+    # available)
+    pts_in_grp <- matrix(data = data[factors == ugrps[i], ],
+                         nrow = sum(factors == ugrps[i]))
 
     # Begin plotting points in current group
     figstr <- sprintf("%s \\path plot[%s] coordinates {", figstr, marks[i])
@@ -48,15 +130,19 @@ tikscat <- function(data, factors, marks) {
   }
 
 
+  # Close tikzpicture environment
   figstr <- sprintf("%s \\end{tikzpicture}", figstr);
+
+  # Return figure
+  figstr
 
 }
 
-tscat_apply <- function(cmps, marks) {
+tscat_apply <- function(cmps, marks, tscale) {
 
   scores <- lapply(cmps, function(x) x$scores)
   factors <- lapply(cmps, function(x) x$factors)
-  plts <- mapply(tikscat, scores, factors, MoreArgs = list(marks))
+  plts <- mapply(tikzscat, scores, factors, MoreArgs = list(marks, tscale))
   paste("\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {", plts, "}}")
 
 }
@@ -96,6 +182,7 @@ toLatex.micomp <-
              "mark=square*,mark options={color=red},mark size=0.8pt",
              "mark=*,mark size=0.6pt",
              "mark=o,mark size=0.7pt"),
+           scoreplot.scale = 6,
            ...) {
 
 
@@ -172,7 +259,8 @@ toLatex.micomp <-
                                  pvalf(unlist(smicf["NonParTest",]))), "\\\\"),
                  scoreplot = pst(" & PCS ",
                                  pst(" & ",
-                                     tscat_apply(mic[,cmp], scoreplot.marks)),
+                                     tscat_apply(mic[,cmp], scoreplot.marks,
+                                                 scoreplot.scale)),
                                  "\\\\"))
         idx <- idx + 1
       }

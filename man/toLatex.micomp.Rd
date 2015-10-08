@@ -9,7 +9,8 @@
   booktabs = F, booktabs.cmalign = "l", caption = NULL, label = NULL,
   col.width = F, digits = 3, pvalformat = pvalf,
   scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
-  "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), ...)
+  "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot.scale = 6,
+  ...)
 }
 \arguments{
 \item{mic}{}
