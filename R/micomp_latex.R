@@ -29,12 +29,14 @@ pst <- function(...) {
 #'
 #' @return A string representing the formatted \code{pval}.
 #'
+#' @export
+#'
 #' @keywords internal
 #'
 #' @examples
-#' micomp:::pvalf(0.1)
+#' pvalf(0.1)
 #' # [1] "0.100"
-#' micomp:::pvalf(0.000001)
+#' pvalf(0.000001)
 #' # [1] "\\uuline{1e-06}"
 #'
 pvalf <- function(pval) {
@@ -162,8 +164,6 @@ tikzscat <- function(data, factors, marks, tscale, axes.color = "gray") {
 #' @export
 #' @keywords internal
 #'
-#' @examples
-#' NULL
 tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 
   # Get data and factors to produce figures
@@ -181,26 +181,52 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 
 }
 
-#' Title
+#' Convert \code{micomp} object to \code{LaTeX} table.
 #'
-#' @param mic
-#' @param data.show
-#' @param table.placement
-#' @param latex.environments
-#' @param booktabs
-#' @param booktabs.cmalign
-#' @param caption
-#' @param label
-#' @param col.width
-#' @param digits
-#' @param pvalformat
-#' @param scoreplot.marks
-#' @param scoreplot.scale
-#' @param scoreplot.before
-#' @param scoreplot.after
-#' @param ...
+#' This method converts \code{\link{micomp}} objects to character vectors
+#' representing \code{LaTeX} tables.
 #'
-#' @return todo
+#' This method is inspired by the functionality provided by the \code{xtable}
+#' and \code{print.xtable} (both from the
+#' \href{https://cran.r-project.org/web/packages/xtable/index.html}{xtable})
+#' package), but follows the standard behavior of the \code{\link{toLatex}}
+#' generic.
+#'
+#' @param mic A \code{\link{micomp}} object.
+#' @param data.show Vector of strings specifying what data to show. Available
+#' options are:
+#' \describe{
+#'   \item{npcs}{Number of principal components required to explain the
+#'         percentage of variance specified when \code{mic} was created.}
+#'   \item{mnvp}{MANOVA \emph{p}-values.}
+#'   \item{parp}{Parametric test \emph{p}-values.}
+#'   \item{nparp}{Non-parametric test \emph{p}-values.}
+#'   \item{scoreplot}{Output projection on the first two principal components.}
+#' }
+#' @param table.placement \code{LaTeX} table placement.
+#' @param latex.environments Wrap table in the specified \code{LaTeX}
+#' environments.
+#' @param booktabs Use \code{booktabs} table beautifier package?
+#' @param booktabs.cmalign How to align \code{cmidule} when using the
+#' \code{booktabs} package.
+#' @param caption Table caption.
+#' @param label Table label for cross-referencing.
+#' @param col.width Resize table to page column width?
+#' @param pvalff \emph{P}-value formatter function, which receives a numeric
+#' value between 0 and 1 and returns a string containing the formatted value.
+#' Default is \code{\link{pvalf}} (requires \code{ulem} \code{LaTeX} package).
+#' @param scoreplot.marks Vector of strings specifying how \code{TikZ} should
+#' draw points belonging to each group in the score plot.
+#' @param scoreplot.scale \code{TikZ} scale for each score plot figure.
+#' @param scoreplot.before \code{LaTeX} code to paste before each \code{TikZ}
+#' score plot figure.
+#' @param scoreplot.after \code{LaTeX} code to paste after each \code{TikZ}
+#' score plot figure.
+#' @param ... Currently ignored.
+#'
+#' @return A character vector where each element holds one line of the
+#' corresponding \code{LaTeX} table.
+#'
 #' @export
 #'
 #' @examples
@@ -215,8 +241,7 @@ toLatex.micomp <- function(
   caption = NULL,
   label = NULL,
   col.width = F,
-  digits = 3,
-  pvalformat = pvalf,
+  pvalff = pvalf,
   scoreplot.marks = c(
     "mark=square*,mark options={color=red},mark size=0.8pt",
     "mark=*,mark size=0.6pt",
@@ -290,13 +315,13 @@ toLatex.micomp <- function(
                npcs = pst(" & $\\#$PCs ",
                           pst(" & ", as.integer(smicf["#PCs",])), "\\\\"),
                mnvp = pst(" & MNV ",
-                          pst(" & ", pvalf(unlist(smicf["MNV",]))), "\\\\"),
+                          pst(" & ", pvalff(unlist(smicf["MNV",]))), "\\\\"),
                parp = pst(" & $t$-test ",
                           pst(" & ",
-                              pvalf(unlist(smicf["Par.test",]))), "\\\\"),
+                              pvalff(unlist(smicf["par.test",]))), "\\\\"),
                nparp = pst(" & MW  ",
                            pst(" & ",
-                               pvalf(unlist(smicf["NonParTest",]))), "\\\\"),
+                               pvalff(unlist(smicf["nonpar.test",]))), "\\\\"),
                scoreplot = pst(" & PCS ",
                                pst(" & ",
                                    tscat_apply(mic[, cmp],

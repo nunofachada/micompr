@@ -2,55 +2,78 @@
 % Please edit documentation in R/micomp_latex.R
 \name{toLatex.micomp}
 \alias{toLatex.micomp}
-\title{Title}
+\title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
 \method{toLatex}{micomp}(mic, data.show = c("npcs", "mnvp", "parp", "nparp",
   "scoreplot"), table.placement = "ht", latex.environments = c("center"),
   booktabs = F, booktabs.cmalign = "l", caption = NULL, label = NULL,
-  col.width = F, digits = 3, pvalformat = pvalf,
+  col.width = F, pvalff = pvalf,
   scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot.scale = 6,
   scoreplot.before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
   scoreplot.after = "}}", ...)
 }
 \arguments{
-\item{mic}{}
+\item{mic}{A \code{\link{micomp}} object.}
 
-\item{data.show}{}
+\item{data.show}{Vector of strings specifying what data to show. Available
+options are:
+\describe{
+  \item{npcs}{Number of principal components required to explain the
+        percentage of variance specified when \code{mic} was created.}
+  \item{mnvp}{MANOVA \emph{p}-values.}
+  \item{parp}{Parametric test \emph{p}-values.}
+  \item{nparp}{Non-parametric test \emph{p}-values.}
+  \item{scoreplot}{Output projection on the first two principal components.}
+}}
 
-\item{table.placement}{}
+\item{table.placement}{\code{LaTeX} table placement.}
 
-\item{latex.environments}{}
+\item{latex.environments}{Wrap table in the specified \code{LaTeX}
+environments.}
 
-\item{booktabs}{}
+\item{booktabs}{Use \code{booktabs} table beautifier package?}
 
-\item{booktabs.cmalign}{}
+\item{booktabs.cmalign}{How to align \code{cmidule} when using the
+\code{booktabs} package.}
 
-\item{caption}{}
+\item{caption}{Table caption.}
 
-\item{label}{}
+\item{label}{Table label for cross-referencing.}
 
-\item{col.width}{}
+\item{col.width}{Resize table to page column width?}
 
-\item{digits}{}
+\item{pvalff}{\emph{P}-value formatter function, which receives a numeric
+value between 0 and 1 and returns a string containing the formatted value.
+Default is \code{\link{pvalf}} (requires \code{ulem} \code{LaTeX} package).}
 
-\item{pvalformat}{}
+\item{scoreplot.marks}{Vector of strings specifying how \code{TikZ} should
+draw points belonging to each group in the score plot.}
 
-\item{scoreplot.marks}{}
+\item{scoreplot.scale}{\code{TikZ} scale for each score plot figure.}
 
-\item{scoreplot.scale}{}
+\item{scoreplot.before}{\code{LaTeX} code to paste before each \code{TikZ}
+score plot figure.}
 
-\item{scoreplot.before}{}
+\item{scoreplot.after}{\code{LaTeX} code to paste after each \code{TikZ}
+score plot figure.}
 
-\item{scoreplot.after}{}
-
-\item{...}{}
+\item{...}{Currently ignored.}
 }
 \value{
-todo
+A character vector where each element holds one line of the
+corresponding \code{LaTeX} table.
 }
 \description{
-Title
+This method converts \code{\link{micomp}} objects to character vectors
+representing \code{LaTeX} tables.
+}
+\details{
+This method is inspired by the functionality provided by the \code{xtable}
+and \code{print.xtable} (both from the
+\href{https://cran.r-project.org/web/packages/xtable/index.html}{xtable})
+package), but follows the standard behavior of the \code{\link{toLatex}}
+generic.
 }
 \examples{
 NULL

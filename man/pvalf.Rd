@@ -17,9 +17,9 @@ Format a \emph{p}-value for printing in a \code{LaTeX} table. Requires the
 \emph{ulem} \code{LaTeX} package for underlining the \emph{p}-values.
 }
 \examples{
-micomp:::pvalf(0.1)
+pvalf(0.1)
 # [1] "0.100"
-micomp:::pvalf(0.000001)
+pvalf(0.000001)
 # [1] "\\\\uuline{1e-06}"
 }
 \keyword{internal}

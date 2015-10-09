@@ -33,8 +33,5 @@ Produce multiple \code{TikZ} 2D scatter plots for a list of
 This function is mainly to be used by the \code{\link{toLatex.micomp}}
 method.
 }
-\examples{
-NULL
-}
 \keyword{internal}
 
