@@ -4,7 +4,7 @@
 \alias{pvalcol}
 \title{Associate colors to \emph{p}-values}
 \usage{
-pvalcol(pvals, col = c("darkgreen", "yellow", "red"), pvlims = c(1, 0.05,
+pvalcol(pvals, col = c("darkgreen", "yellow", "red"), pvlims = c(0.05,
   0.01))
 }
 \arguments{

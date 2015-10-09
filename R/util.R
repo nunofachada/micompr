@@ -15,12 +15,10 @@
 #' # [1] "darkgreen" "darkgreen" "red"       "darkgreen" "darkgreen" "yellow"
 #'
 pvalcol <- function(pvals, col = c("darkgreen", "yellow", "red"),
-                    pvlims = c(1, 0.05, 0.01)) {
+                    pvlims = c(0.05, 0.01)) {
 
-  colors <- ifelse(pvals < pvlims[3], col[3],
-         ifelse(pvals < pvlims[2], col[2],
-                col[1]))
-
+  idxs <- sapply(pvals, function(p) { match(F, p < c(pvlims,-Inf))})
+  colors <- col[idxs]
   colors
 }
 
