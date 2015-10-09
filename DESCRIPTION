@@ -8,6 +8,7 @@ Maintainer: Nuno Fachada <faken@fakenmc.com>
 Description: Compares simulation output in a model-independent fashion
 Depends: R (>= 2.0.0)
 Imports: MVN, biotools
+Suggests: testthat
 License: MIT + file LICENSE
 URL: http://github.com/fakenmc/micomp-r
 BugReports: https://github.com/fakenmc/micomp-r/issues
