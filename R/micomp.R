@@ -9,21 +9,44 @@
 #' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
 #' principal components (i.e. number of dimensions) used in MANOVA.
 #' @param ... A set of lists, where each list contains information regarding an
-#' individual comparison, namely:
-#' \describe{
-#'   \item{name}{A string describing the comparison name.}
-#'   \item{folders}{Vector of folder names where to read files from. These are
-#'         recycled if \code{length(folders) < length(files)}.}
-#'   \item{files}{Vector of filenames (with wildcards) to load in each folder.}
-#'   \item{lvls}{Vector of factor (group) names, must be the same length as
-#'         \code{files}, i.e. each file set will be associated with a different
-#'         group. If not given, default group names will be set.}
+#' individual comparison. Each list can have one of two configurations:
+#' \enumerate{
+#'   \item Lists with the first configuration are used to load data from files,
+#'         and require the following fields:
+#'     \describe{
+#'       \item{name}{A string specifying the comparison name.}
+#'       \item{folders}{Vector of folder names where to read files from. These
+#'             are recycled if \code{length(folders) < length(files)}.}
+#'       \item{files}{Vector of filenames (with wildcards) to load in each
+#'             folder.}
+#'       \item{lvls}{Vector of factor (group) names, must be the same length as
+#'             \code{files}, i.e. each file set will be associated with a
+#'             different group. If not given, default group names will be set.}
+#'     }
+#'   \item Lists with the second configuration are used to load data from
+#'         environment variables, and require the following fields:
+#'     \describe{
+#'       \item{name}{A string specifying the comparison name.}
+#'       \item{grpout}{Either an object of class \code{\link{grpoutputs}} or a
+#'             list with the following two fields:
+#'         \describe{
+#'           \item{data}{List of all outputs, where tags correspond to output
+#'                 names and values correspond to the output data. Output data
+#'                 is a \emph{n} x \emph{m} matrix, where \emph{n} is the total
+#'                 number of output observations and \emph{m} is the number of
+#'                 variables (i.e. output length). }
+#'           \item{factors}{Factors (or groups) associated with each
+#'                 observation.}
+#'         }
+#'       }
+#'     }
 #' }
+#'
 #' @param concat Create an additional, concatenated output?
 #'
-#' @return An object of class \code{\link{micomp}}, which is a multi-dimensional list
-#' of \code{cmpoutput} objects. Rows are associated with individual outputs,
-#' while columns are associated with separate comparisons.
+#' @return An object of class \code{\link{micomp}}, which is a multi-dimensional
+#' list of \code{cmpoutput} objects. Rows are associated with individual
+#' outputs, while columns are associated with separate comparisons.
 #'
 #' @export
 #'
@@ -38,7 +61,7 @@ micomp <- function(outputs, nvars, ve, ..., concat = F) {
   ncomp <- length(comps)
   cmp_names <- vector(mode = "character", length = ncomp)
 
-  #
+  # Did the user specify output names? Or should we provide some default names?
   if (length(outputs) == 1) {
     nout <- outputs
     outputs <- paste("out", 1:nout, sep = "")
@@ -56,20 +79,64 @@ micomp <- function(outputs, nvars, ve, ..., concat = F) {
   # Group outputs for each comparison
   for (i in 1:ncomp) {
 
-    grpd_outputs[[i]] <-
-      grpoutputs(outputs = outputs,
-                 nvars = nvars,
-                 folders = unlist(comps[[i]]$folders),
-                 files = unlist(comps[[i]]$files),
-                 lvls = comps[[i]]$lvls,
-                 concat = concat)
+    # What kind of configuration does the current comparison have? File or
+    # matrix?
+    if (exists('name', where=comps[[i]]) &&
+        exists('folders', where=comps[[i]]) &&
+        exists('files', where=comps[[i]]) &&
+        exists('lvls', where=comps[[i]])) {
 
+      # First configuration: load data from files
+
+      grpd_outputs[[i]] <-
+        grpoutputs(outputs = outputs,
+                   nvars = nvars,
+                   folders = unlist(comps[[i]]$folders),
+                   files = unlist(comps[[i]]$files),
+                   lvls = comps[[i]]$lvls,
+                   concat = concat)
+
+    } else if (exists('name', where=comps[[i]]) &&
+               exists('grpout', where=comps[[i]])) {
+
+      # Second configuration: load data from environment variables
+
+      # Is the object in the grpout field of class grpoutputs?
+      if (is(comps[[i]], "grpoutputs")) {
+
+        # Yes, so use it directly
+        grpd_outputs[[i]] <- comps[[i]]
+
+      } else {
+
+        # No, so build it using the provided data
+        fcts <- comps[[i]]$grpout$factors
+        grpd_outputs[[i]] <- structure(
+          list(data = comps[[i]]$grpout$data,
+               groups = sapply(unique(fcts),
+                               function(onefac, facts) sum(facts == onefac),
+                               fcts),
+               factors = fcts,
+               lvls = levels(unique(fcts)),
+               concat = F),
+          class = "grpoutputs")
+
+      }
+    } else {
+
+      # Unknown configuration, throw error
+      stop("Invalid object passed as ...")
+
+    }
+
+    # Keep comparison names
     cmp_names[i] <-
       if (!is.null(comps[[i]]$name)) {
         comps[[i]]$name
       } else {
         paste("Comp", i)
       }
+
 
   }
 

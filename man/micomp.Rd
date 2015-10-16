@@ -17,23 +17,45 @@ automatically).}
 principal components (i.e. number of dimensions) used in MANOVA.}
 
 \item{...}{A set of lists, where each list contains information regarding an
-individual comparison, namely:
-\describe{
-  \item{name}{A string describing the comparison name.}
-  \item{folders}{Vector of folder names where to read files from. These are
-        recycled if \code{length(folders) < length(files)}.}
-  \item{files}{Vector of filenames (with wildcards) to load in each folder.}
-  \item{lvls}{Vector of factor (group) names, must be the same length as
-        \code{files}, i.e. each file set will be associated with a different
-        group. If not given, default group names will be set.}
+individual comparison. Each list can have one of two configurations:
+\enumerate{
+  \item Lists with the first configuration are used to load data from files,
+        and require the following fields:
+    \describe{
+      \item{name}{A string specifying the comparison name.}
+      \item{folders}{Vector of folder names where to read files from. These
+            are recycled if \code{length(folders) < length(files)}.}
+      \item{files}{Vector of filenames (with wildcards) to load in each
+            folder.}
+      \item{lvls}{Vector of factor (group) names, must be the same length as
+            \code{files}, i.e. each file set will be associated with a
+            different group. If not given, default group names will be set.}
+    }
+  \item Lists with the second configuration are used to load data from
+        environment variables, and require the following fields:
+    \describe{
+      \item{name}{A string specifying the comparison name.}
+      \item{grpout}{Either an object of class \code{\link{grpoutputs}} or a
+            list with the following two fields:
+        \describe{
+          \item{data}{List of all outputs, where tags correspond to output
+                names and values correspond to the output data. Output data
+                is a \emph{n} x \emph{m} matrix, where \emph{n} is the total
+                number of output observations and \emph{m} is the number of
+                variables (i.e. output length). }
+          \item{factors}{Factors (or groups) associated with each
+                observation.}
+        }
+      }
+    }
 }}
 
 \item{concat}{Create an additional, concatenated output?}
 }
 \value{
-An object of class \code{\link{micomp}}, which is a multi-dimensional list
-of \code{cmpoutput} objects. Rows are associated with individual outputs,
-while columns are associated with separate comparisons.
+An object of class \code{\link{micomp}}, which is a multi-dimensional
+list of \code{cmpoutput} objects. Rows are associated with individual
+outputs, while columns are associated with separate comparisons.
 }
 \description{
 Perform multiple model-independent comparisons of simulation outputs.
