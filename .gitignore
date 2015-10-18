@@ -3,6 +3,7 @@
 .RData
 .Rhistory
 .Rproj.user
-.Rbuildignore
-*.Rproj
+.Rapp.history
+vignettes/*.html
+vignettes/*.pdf
 

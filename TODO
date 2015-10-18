@@ -1,8 +1,7 @@
-- Add examples to doccomments
 - Add data/ folder and some datasets
+- Add examples to doccomments
 - Add tests
 - Turn some list fields into attributes
 - Warning in both MANOVA and mv assumptions when nvars >= nobs (e.g. "requires more samples")
-- Allow loading data from matrices (not only files)
 - Allow outputs to have different lengths
 - Either separate assumptions into a different package or make dependencies optional
