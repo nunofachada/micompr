@@ -22,6 +22,9 @@ If not given, default group names will be set.}
 
 \item{concat}{If TRUE add an additional output which corresponds to the
 concatenation of all outputs, properly range scaled.}
+
+\item{...}{Options passed to \code{\link{read.table}}, which is used to read
+the files specified in \code{files}.}
 }
 \value{
 Object of class \code{grpoutputs} containing the following data:

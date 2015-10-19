@@ -11,7 +11,7 @@
 #' \code{pvals}.
 #'
 #' @examples
-#' micomp:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02))
+#' micompr:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02))
 #' # [1] "darkgreen" "darkgreen" "red"       "darkgreen" "darkgreen" "yellow"
 #'
 pvalcol <- function(pvals, col = c("darkgreen", "yellow", "red"),
@@ -29,7 +29,7 @@ pvalcol <- function(pvals, col = c("darkgreen", "yellow", "red"),
 #' @return Default colors for plots in \code{micomp} package.
 #'
 #' @examples
-#' micomp:::plotcols()
+#' micompr:::plotcols()
 #' # [1] "blue"   "red"    "green"  "gold"   "violet" "cyan"
 #'
 plotcols <- function() {

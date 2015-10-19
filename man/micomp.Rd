@@ -4,7 +4,7 @@
 \alias{micomp}
 \title{Model-independent comparison of simulation output}
 \usage{
-micomp(outputs, ve, ..., concat = F)
+micomp(outputs, ve, comps, concat = F, ...)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
@@ -14,8 +14,8 @@ automatically).}
 \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
 principal components (i.e. number of dimensions) used in MANOVA.}
 
-\item{...}{A set of lists, where each list contains information regarding an
-individual comparison. Each list can have one of two configurations:
+\item{comps}{A list of lists, where each list contains information regarding
+an individual comparison. Each list can have one of two configurations:
 \enumerate{
   \item Lists with the first configuration are used to load data from files,
         and require the following fields:
@@ -49,6 +49,10 @@ individual comparison. Each list can have one of two configurations:
 }}
 
 \item{concat}{Create an additional, concatenated output?}
+
+\item{...}{Options passed to \code{\link{read.table}}, which is used to read
+the files specified in lists using the first configuration in the
+\code{comp} parameter.}
 }
 \value{
 An object of class \code{\link{micomp}}, which is a multi-dimensional

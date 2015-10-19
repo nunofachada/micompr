@@ -5,7 +5,7 @@
 \title{Plot projection of output observations on the first two dimensions of the
 principal components space}
 \usage{
-\method{plot}{micomp}(mcmp, col = micomp:::plotcols(), ...)
+\method{plot}{micomp}(mcmp, col = micompr:::plotcols(), ...)
 }
 \arguments{
 \item{mcmp}{An object of class \code{\link{micomp}}.}

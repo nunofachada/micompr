@@ -4,7 +4,7 @@
 \alias{plot.cmpoutput}
 \title{Plot comparison of simulation output}
 \usage{
-\method{plot}{cmpoutput}(cmpout, col = micomp:::plotcols(), ...)
+\method{plot}{cmpoutput}(cmpout, col = micompr:::plotcols(), ...)
 }
 \arguments{
 \item{cmpout}{Object of class \code{cmpoutput}.}

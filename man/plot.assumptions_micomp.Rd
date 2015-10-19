@@ -5,7 +5,7 @@
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
 in multiple output comparison}
 \usage{
-\method{plot}{assumptions_micomp}(micas, col = micomp:::plotcols(), ...)
+\method{plot}{assumptions_micomp}(micas, col = micompr:::plotcols(), ...)
 }
 \arguments{
 \item{micas}{Object of class \code{assumptions_micomp}.}

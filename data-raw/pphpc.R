@@ -10,19 +10,19 @@ dir_jex_diff <- "inst/extdata/j_ex_diff"
 
 files <- "stats400v1*.tsv"
 
-pphpc_ok <- grpoutputs(outputs, 201,
+pphpc_ok <- grpoutputs(outputs,
                        c(dir_nl_ok, dir_jex_ok),
                        c(files, files),
                        lvls = c("NLOK", "JEXOK"),
                        concat = T)
 
-pphpc_noshuff <- grpoutputs(outputs, 201,
+pphpc_noshuff <- grpoutputs(outputs,
                             c(dir_nl_ok, dir_jex_noshuff),
                             c(files, files),
                             lvls = c("NLOK", "JEXNOSHUF"),
                             concat = T)
 
-pphpc_diff <- grpoutputs(outputs, 201,
+pphpc_diff <- grpoutputs(outputs,
                          c(dir_nl_ok,dir_jex_diff),
                          c(files, files),
                          lvls = c("NLOK", "JEXDIFF"),

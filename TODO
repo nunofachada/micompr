@@ -1,4 +1,3 @@
-- Allow to pass options to read.table (via grpoutputs) from micomp
 - Add examples to doccomments
 - Add tests
 - Turn some list fields into attributes

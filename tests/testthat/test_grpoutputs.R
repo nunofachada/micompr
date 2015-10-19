@@ -1,3 +1,3 @@
-library(micomp)
+library(micompr)
 context("grpoutputs")
 

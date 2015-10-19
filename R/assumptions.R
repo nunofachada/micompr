@@ -217,7 +217,7 @@ plot.assumptions_manova <- function(asmnv, ...) {
 
   pvals <- sapply(asmnv$mvntest, function(x) x@p.value)
   barplot(pvals, main = "Royston test p-values", sub = "Multivariate normality",
-          xlab = "Groups", ylab = "Probability", col = micomp:::pvalcol(pvals),
+          xlab = "Groups", ylab = "Probability", col = micompr:::pvalcol(pvals),
           ...)
 
   invisible(NULL)
@@ -267,14 +267,15 @@ plot.assumptions_paruv <- function(aspuv, extra = 0, ...) {
           main = "p-values for the Bartlett test",
           sub = "Homogeneity of Variances",
           xlab = "PC", ylab = "Probability",
-          col = micomp:::pvalcol(vardata), ...)
+          col = micompr:::pvalcol(vardata), ...)
 
   # Plot the Shapiro-Wilk p-values by PC for each factor
   for (grp in names(aspuv$uvntest)) {
     normdata <- sapply(aspuv$uvntest[[grp]], function(x) x$p.value)
     barplot(normdata, names.arg = as.character(1:nvars),
             sub = grp, main = "p-values for the SW normality test",
-            xlab = "PC", ylab = "Probability", col = micomp:::pvalcol(normdata),
+            xlab = "PC", ylab = "Probability",
+            col = micompr:::pvalcol(normdata),
             ...)
   }
 

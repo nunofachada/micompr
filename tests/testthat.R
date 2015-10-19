@@ -1,3 +1,3 @@
 library(testthat)
 
-test_check("micomp")
+test_check("micompr")

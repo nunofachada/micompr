@@ -13,7 +13,7 @@
 #' @keywords internal
 #'
 #' @examples
-#' micomp:::pst("a","b","c",c("a","b","c"))
+#' micompr:::pst("a","b","c",c("a","b","c"))
 #' # [1] "abcaabcbabcc"
 #'
 pst <- function(...) {

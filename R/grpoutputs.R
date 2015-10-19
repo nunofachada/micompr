@@ -13,6 +13,8 @@
 #' If not given, default group names will be set.
 #' @param concat If TRUE add an additional output which corresponds to the
 #' concatenation of all outputs, properly range scaled.
+#' @param ... Options passed to \code{\link{read.table}}, which is used to read
+#' the files specified in \code{files}.
 #'
 #' @return Object of class \code{grpoutputs} containing the following data:
 #' \describe{

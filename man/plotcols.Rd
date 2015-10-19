@@ -13,7 +13,7 @@ Default colors for plots in \code{micomp} package.
 Default colors for plots in \code{micomp} package.
 }
 \examples{
-micomp:::plotcols()
+micompr:::plotcols()
 # [1] "blue"   "red"    "green"  "gold"   "violet" "cyan"
 }
 

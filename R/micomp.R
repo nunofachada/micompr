@@ -7,8 +7,8 @@
 #' automatically).
 #' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
 #' principal components (i.e. number of dimensions) used in MANOVA.
-#' @param ... A set of lists, where each list contains information regarding an
-#' individual comparison. Each list can have one of two configurations:
+#' @param comps A list of lists, where each list contains information regarding
+#' an individual comparison. Each list can have one of two configurations:
 #' \enumerate{
 #'   \item Lists with the first configuration are used to load data from files,
 #'         and require the following fields:
@@ -40,8 +40,10 @@
 #'       }
 #'     }
 #' }
-#'
 #' @param concat Create an additional, concatenated output?
+#' @param ... Options passed to \code{\link{read.table}}, which is used to read
+#' the files specified in lists using the first configuration in the
+#' \code{comp} parameter.
 #'
 #' @return An object of class \code{\link{micomp}}, which is a multi-dimensional
 #' list of \code{cmpoutput} objects. Rows are associated with individual
@@ -51,10 +53,7 @@
 #'
 #' @examples
 #' NULL
-micomp <- function(outputs, ve, ..., concat = F) {
-
-  # Put comparisons in a list
-  comps <- list(...)
+micomp <- function(outputs, ve, comps, concat = F, ...) {
 
   # Determine number of comparisons
   ncomp <- length(comps)
@@ -92,7 +91,8 @@ micomp <- function(outputs, ve, ..., concat = F) {
                    folders = unlist(comps[[i]]$folders),
                    files = unlist(comps[[i]]$files),
                    lvls = comps[[i]]$lvls,
-                   concat = concat)
+                   concat = concat,
+                   ...)
 
     } else if (exists('name', where = comps[[i]]) &&
                exists('grpout', where = comps[[i]])) {
@@ -266,7 +266,7 @@ summary.micomp <- function(mcmp) {
 #' @examples
 #' NULL
 #'
-plot.micomp <- function(mcmp, col = micomp:::plotcols(), ...) {
+plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 
   dims <- dim(mcmp)
   nout <- dims[1]
@@ -395,7 +395,7 @@ print.assumptions_micomp <- function(micas, ...) {
 #'
 #' @examples
 #' NULL
-plot.assumptions_micomp <- function(micas, col = micomp:::plotcols(), ...) {
+plot.assumptions_micomp <- function(micas, col = micompr:::plotcols(), ...) {
 
   sm <- summary(micas)
 

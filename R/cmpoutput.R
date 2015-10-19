@@ -261,7 +261,7 @@ summary.cmpoutput <- function(cmpout) {
 #' @examples
 #' NULL
 #'
-plot.cmpoutput <- function(cmpout, col = micomp:::plotcols(), ...) {
+plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
 
   par(mfrow = c(2,2))
 
