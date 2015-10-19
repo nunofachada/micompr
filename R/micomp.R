@@ -5,7 +5,6 @@
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
 #' automatically).
-#' @param nvars Number of variables (i.e. length of each output).
 #' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
 #' principal components (i.e. number of dimensions) used in MANOVA.
 #' @param ... A set of lists, where each list contains information regarding an
@@ -52,7 +51,7 @@
 #'
 #' @examples
 #' NULL
-micomp <- function(outputs, nvars, ve, ..., concat = F) {
+micomp <- function(outputs, ve, ..., concat = F) {
 
   # Put comparisons in a list
   comps <- list(...)
@@ -81,23 +80,22 @@ micomp <- function(outputs, nvars, ve, ..., concat = F) {
 
     # What kind of configuration does the current comparison have? File or
     # matrix?
-    if (exists('name', where=comps[[i]]) &&
-        exists('folders', where=comps[[i]]) &&
-        exists('files', where=comps[[i]]) &&
-        exists('lvls', where=comps[[i]])) {
+    if (exists('name', where = comps[[i]]) &&
+        exists('folders', where = comps[[i]]) &&
+        exists('files', where = comps[[i]]) &&
+        exists('lvls', where = comps[[i]])) {
 
       # First configuration: load data from files
 
       grpd_outputs[[i]] <-
         grpoutputs(outputs = outputs,
-                   nvars = nvars,
                    folders = unlist(comps[[i]]$folders),
                    files = unlist(comps[[i]]$files),
                    lvls = comps[[i]]$lvls,
                    concat = concat)
 
-    } else if (exists('name', where=comps[[i]]) &&
-               exists('grpout', where=comps[[i]])) {
+    } else if (exists('name', where = comps[[i]]) &&
+               exists('grpout', where = comps[[i]])) {
 
       # Second configuration: load data from environment variables
 
@@ -122,6 +120,7 @@ micomp <- function(outputs, nvars, ve, ..., concat = F) {
           class = "grpoutputs")
 
       }
+
     } else {
 
       # Unknown configuration, throw error

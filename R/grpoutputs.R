@@ -5,7 +5,6 @@
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
 #' automatically).
-#' @param nvars Number of variables (i.e. length of each output).
 #' @param folders Vector of folder names where to read files from. These are
 #' recycled if \code{length(folders) < length(files)}.
 #' @param files Vector of filenames (with wildcards) to load in each folder.
@@ -34,8 +33,7 @@
 #' @examples
 #' NULL
 #'
-grpoutputs <- function(outputs, nvars, folders,
-                       files, lvls = NULL, concat = F) {
+grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
 
   # Determine number of file sets (i.e. number of unique factors or levels)
   nfilesets <- length(files)
@@ -45,9 +43,10 @@ grpoutputs <- function(outputs, nvars, folders,
 
     # If lvls is not NULL, check if the number of levels corresponds to the
     # number of file sets
-    if (length(lvls) != nfilesets)
+    if (length(lvls) != nfilesets) {
       stop("Number of file sets is not the same as the given number",
            " of factors.")
+    }
 
   } else {
 
@@ -100,10 +99,9 @@ grpoutputs <- function(outputs, nvars, folders,
 
   # Create grouped outputs list
   data <- list()
-  for (i in 1:nout) {
-    out <- outputs[i]
-    data[[out]] <- matrix(nrow = nobs, ncol = nvars)
-  }
+
+  # Is this the first file to be opened?
+  first <- TRUE
 
   # Cycle through all file sets
   for (i in 1:nfilesets) {
@@ -125,12 +123,54 @@ grpoutputs <- function(outputs, nvars, folders,
       cfile <- file.path(folders[i], curr_files[j])
 
       # Read file data
-      tdata <- read.table(cfile)
+      tdata <- read.table(cfile, ...)
+
+      # Check that the number of outputs specified by the user is the same or
+      # less than the number of outputs available
+      if (nout > dim(tdata)[2]) {
+        stop(paste("Specified number of outputs is larger than the number ",
+                   "of outputs in file '", cfile, "'.", sep = ""))
+      }
+
+      # Is this the first file to be opened?
+      if (first) {
+        # Yes, it's the first file, create required data structures
+
+        # Keep name of first file
+        firstfilename <- cfile
+
+        # Next one won't be the first
+        first <- FALSE
+
+        # Determine the length of each output
+        outlen <- colSums(!is.na(tdata))
+
+        # Create grouped outputs matrix for each output
+        for (k in 1:nout) {
+          out <- outputs[k]
+          data[[out]] <- matrix(nrow = nobs, ncol = outlen[k])
+        }
+
+      } else {
+        # Not the first file, check that individual outputs in current file
+        # have the same length as the same outputs in the first file
+
+        if (any(colSums(!is.na(tdata)) != outlen)) {
+          stop(paste("Length of outputs in file '", cfile, "' does not match ",
+                     "the length of outputs in file '", firstfilename, "'.",
+                     sep = ""))
+        }
+
+      }
 
       # Organize data
       for (k in 1:nout) {
+        # Current output name
         out <- outputs[k]
-        data[[out]][bidx + j, ] <- t(tdata[, k])
+        # Get current output vector
+        o <- tdata[, k]
+        # Keep current output vector, transposed and removed of NAs
+        data[[out]][bidx + j, ] <- t(o[!is.na(o)])
       }
     }
 
@@ -138,10 +178,10 @@ grpoutputs <- function(outputs, nvars, folders,
 
   # Perform output concatenation?
   if (concat) {
-    outconcat <- matrix(nrow = nobs,ncol = nvars * nout)
+    outconcat <- matrix(nrow = nobs, ncol = sum(outlen))
     for (i in 1:nobs) {
-      outconcat[i,] <- unlist(sapply(data, function(x, row)
-        (x[row,] - mean(x[row, ])) / (max(x[row, ]) - min(x[row, ])), i))
+      outconcat[i, ] <- unlist(sapply(data, function(x, row)
+        (x[row, ] - mean(x[row, ])) / (max(x[row, ]) - min(x[row, ])), i))
     }
     nout <- nout + 1
     data[[outputs[nout]]] <- outconcat

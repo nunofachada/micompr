@@ -111,7 +111,7 @@ cmpoutput <- function(name, ve, data, factors) {
       # Parametric test (t-test) for each PC
       partests[[i]] <- t.test(pca$x[,i] ~ factors, var.equal = T)
       parpvals[i] <- partests[[i]]$p.value
-      assumptions$ttest <- assumptions_paruv(pca$x[,1:npcs], factors)
+      assumptions$ttest <- assumptions_paruv(pca$x[, 1:npcs], factors)
 
       # Non-parametric test (Mann-Whitney) for each PC
       nonpartests[[i]] <- wilcox.test(pca$x[,i] ~ factors)

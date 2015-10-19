@@ -4,14 +4,12 @@
 \alias{micomp}
 \title{Model-independent comparison of simulation output}
 \usage{
-micomp(outputs, nvars, ve, ..., concat = F)
+micomp(outputs, ve, ..., concat = F)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
 the number of outputs (in which case output labels will be assigned
 automatically).}
-
-\item{nvars}{Number of variables (i.e. length of each output).}
 
 \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
 principal components (i.e. number of dimensions) used in MANOVA.}

@@ -4,14 +4,12 @@
 \alias{grpoutputs}
 \title{Group outputs}
 \usage{
-grpoutputs(outputs, nvars, folders, files, lvls = NULL, concat = F)
+grpoutputs(outputs, folders, files, lvls = NULL, concat = F, ...)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
 the number of outputs (in which case output labels will be assigned
 automatically).}
-
-\item{nvars}{Number of variables (i.e. length of each output).}
 
 \item{folders}{Vector of folder names where to read files from. These are
 recycled if \code{length(folders) < length(files)}.}
