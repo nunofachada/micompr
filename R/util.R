@@ -17,7 +17,10 @@
 pvalcol <- function(pvals, col = c("darkgreen", "yellow", "red"),
                     pvlims = c(0.05, 0.01)) {
 
-  idxs <- sapply(pvals, function(p) { match(F, p < c(pvlims,-Inf))})
+  idxs <- sapply(pvals,
+                 function(p) {
+                   match(F, p < c(pvlims,-Inf))
+                 })
   colors <- col[idxs]
   colors
 }

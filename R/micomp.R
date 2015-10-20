@@ -79,10 +79,10 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
 
     # What kind of configuration does the current comparison have? File or
     # matrix?
-    if (exists('name', where = comps[[i]]) &&
-        exists('folders', where = comps[[i]]) &&
-        exists('files', where = comps[[i]]) &&
-        exists('lvls', where = comps[[i]])) {
+    if (exists("name", where = comps[[i]]) &&
+        exists("folders", where = comps[[i]]) &&
+        exists("files", where = comps[[i]]) &&
+        exists("lvls", where = comps[[i]])) {
 
       # First configuration: load data from files
 
@@ -94,8 +94,8 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
                    concat = concat,
                    ...)
 
-    } else if (exists('name', where = comps[[i]]) &&
-               exists('grpout', where = comps[[i]])) {
+    } else if (exists("name", where = comps[[i]]) &&
+               exists("grpout", where = comps[[i]])) {
 
       # Second configuration: load data from environment variables
 

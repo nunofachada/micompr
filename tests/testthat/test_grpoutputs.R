@@ -1,3 +1,2 @@
 library(micompr)
 context("grpoutputs")
-
