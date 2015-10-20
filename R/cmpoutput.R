@@ -296,7 +296,7 @@ plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
 #' Plot \emph{p}-values for testing the assumptions of the parametric tests used
 #' in simulation output comparison
 #'
-#' Plot method for objects of class \code{\link{assumptions_cmpoutput}}
+#' Plot method for objects of class \code{assumptions_cmpoutput}
 #' containing \emph{p}-values produced by testing the assumptions of the
 #' parametric tests used for comparing simulation output.
 #'

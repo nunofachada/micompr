@@ -30,7 +30,7 @@ assumptions <- function(obj, ...) UseMethod("assumptions")
 #' @return An object of class \code{assumptions_manova} which is a list
 #' containing two elements:
 #' \describe{
-#'  \item{\code{mvntest}}{List of resuls from the Royston multivariate
+#'  \item{\code{mvntest}}{List of results from the Royston multivariate
 #'        normality test (\code{\link[MVN]{roystonTest}}), one result per
 #'        group.}
 #'  \item{\code{vartest}}{Result of Box's M test for homogeneity of covariance
@@ -82,7 +82,7 @@ assumptions_manova <- function(data, factors) {
 #' @return An object of class \code{assumptions_paruv} which is a list
 #' containing two elements:
 #' \describe{
-#'  \item{\code{uvntest}}{List of resuls from the Shapiro-Wilk normality test
+#'  \item{\code{uvntest}}{List of results from the Shapiro-Wilk normality test
 #'  (\code{\link{shapiro.test}}), one result per group per principal component.}
 #'  \item{\code{vartest}}{Result of Bartlett test for homogeneity of variances
 #'        (\code{\link{bartlett.test}}).}

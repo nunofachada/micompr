@@ -295,9 +295,9 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
       # Score plot (first two PCs)
       plot.default(scores[,1], scores[,2], col = col[as.numeric(facts)],
                    xlab = paste("PC1 (", round(varexp[1] * 100, 2), "%)",
-                              sep = ""),
+                                sep = ""),
                    ylab = paste("PC2 (", round(varexp[2] * 100, 2), "%)",
-                              sep = ""),
+                                sep = ""),
                    main = mcmp[[j,i]]$name, ...)
     }
   }
@@ -359,9 +359,9 @@ print.assumptions_micomp <- function(micas, ...) {
   # Cycle through comparisons
   for (cmp in names(sm)) {
 
-     cat("==== ", cmp, "====\n")
-     print(sm[[cmp]], digits = 5, print.gap = 2)
-     cat("\n")
+    cat("==== ", cmp, "====\n")
+    print(sm[[cmp]], digits = 5, print.gap = 2)
+    cat("\n")
 
   }
 

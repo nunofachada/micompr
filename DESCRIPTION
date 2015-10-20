@@ -5,8 +5,8 @@ Date: 2015-10-19
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
-Description: Compares simulation output in a model-independent fashion
-Depends: R (>= 2.0.0)
+Description: Compares simulation output in a model-independent fashion.
+Depends: R (>= 2.0.0), utils
 Imports: MVN, biotools
 Suggests: testthat
 License: MIT + file LICENSE
