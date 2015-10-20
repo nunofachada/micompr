@@ -412,7 +412,8 @@ plot.assumptions_micomp <- function(micas, col = micompr:::plotcols(), ...) {
   # Cycle through comparisons
   for (cmp in names(sm)) {
     par(mar = rep(2, 4))
-    barplot(sm[[cmp]], col = col, beside = T, main = cmp, ...)
+    barplot(sm[[cmp]], col = col[1:dim(sm[[cmp]])[1]],
+            beside = T, main = cmp, ...)
   }
 
   # Show legend
@@ -492,8 +493,18 @@ summary.assumptions_micomp <- function(micas) {
       return(pvals)
     })
 
-    # Merge...
-    mrgd <- mapply(function(x,y) c(x,y), mnv, ttst)
+    # Does any multivariate assumption exists?
+    if (any(!is.na(unlist(mnv)))) {
+
+      # Merge multivariate and univariate assumptions
+      mrgd <- mapply(function(x,y) c(x,y), mnv, ttst)
+
+    } else {
+
+      # Use only univariate assumptions
+      mrgd <- sapply(ttst, function(x) x)
+
+    }
     #... and save to list
     all[[cmpnames[i]]] <- mrgd
 

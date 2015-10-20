@@ -44,6 +44,14 @@ assumptions <- function(obj, ...) UseMethod("assumptions")
 #'
 assumptions_manova <- function(data, factors) {
 
+  return(NULL)
+  # Don't return MANOVA assumptions if the required packages are not installed.
+  if (!requireNamespace("MVN", quietly = TRUE) ||
+      !requireNamespace("biotools", quietly = TRUE) ) {
+    message("MANOVA assumptions require 'MVN' and 'biotools' packages.")
+    return(NULL)
+  }
+
   # `assumpt` will be a list containing the test for multivariate normality
   # and the test for the homogeneity of covariance matrices
   assumpt <- list()
