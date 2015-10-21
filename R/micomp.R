@@ -312,7 +312,6 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 #' from objects of class \code{\link{micomp}}).
 #'
 #' @param mcmp Object of class \code{\link{micomp}}.
-#' @param ... Currently ignored.
 #'
 #' @return Object of class \code{assumptions_micomp} containing the
 #' assumptions for parametric tests performed for the multiple comparisons held
@@ -325,7 +324,7 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 #' @examples
 #' NULL
 #'
-assumptions.micomp <- function(mcmp, ...) {
+assumptions.micomp <- function(mcmp) {
   micas <- lapply(mcmp, function(x) assumptions(x))
   dim(micas) <- dim(mcmp)
   colnames(micas) <- colnames(mcmp)

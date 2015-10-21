@@ -334,7 +334,6 @@ plot.assumptions_cmpoutput <- function(cmpoass, ...) {
 #' from objects of class \code{\link{cmpoutput}}).
 #'
 #' @param cmpout Object of class \code{cmpoutput}.
-#' @param ... Currently ignored.
 #'
 #' @return Object of class \code{assumptions_cmpoutput} containing the
 #' assumptions for parametric tests performed on an output comparisons
@@ -347,7 +346,7 @@ plot.assumptions_cmpoutput <- function(cmpoass, ...) {
 #' @examples
 #' NULL
 #'
-assumptions.cmpoutput <- function(cmpout, ...) {
+assumptions.cmpoutput <- function(cmpout) {
 
   # Does the assumptions object already exist?
   if (!exists('assumptions', where = cmpout)) {
@@ -377,11 +376,9 @@ assumptions.cmpoutput <- function(cmpout, ...) {
     # Parametric test (t-test) for each PC
     assumptions$ttest <- assumptions_paruv(scores[, 1:npcs], factors)
 
-    # Keep the assumptions in the cmpoutput object
-    cmpout$assumptions <- assumptions
   }
 
   # Return assumptions
-  cmpout$assumptions
+  assumptions
 
 }

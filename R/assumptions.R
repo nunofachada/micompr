@@ -5,7 +5,6 @@
 #' comparison of simulation outputs.
 #'
 #' @param obj Object from which to get the assumptions.
-#' @param ... Further arguments passed to concrete methods.
 #'
 #' @return Assumptions for parametric tests applied to the comparison of
 #' simulation outputs.
@@ -15,7 +14,7 @@
 #' @examples
 #' NULL
 #'
-assumptions <- function(obj, ...) UseMethod("assumptions")
+assumptions <- function(obj) UseMethod("assumptions")
 
 #' Determine the assumptions for the MANOVA test
 #'

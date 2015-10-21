@@ -4,12 +4,10 @@
 \alias{assumptions.cmpoutput}
 \title{Get assumptions for parametric tests performed on output comparisons.}
 \usage{
-\method{assumptions}{cmpoutput}(cmpout, ...)
+\method{assumptions}{cmpoutput}(cmpout)
 }
 \arguments{
 \item{cmpout}{Object of class \code{cmpoutput}.}
-
-\item{...}{Currently ignored.}
 }
 \value{
 Object of class \code{assumptions_cmpoutput} containing the

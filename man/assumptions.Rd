@@ -5,12 +5,10 @@
 \title{Get assumptions for parametric tests applied to the comparison of simulation
 outputs}
 \usage{
-assumptions(obj, ...)
+assumptions(obj)
 }
 \arguments{
 \item{obj}{Object from which to get the assumptions.}
-
-\item{...}{Further arguments passed to concrete methods.}
 }
 \value{
 Assumptions for parametric tests applied to the comparison of
