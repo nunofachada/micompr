@@ -348,35 +348,29 @@ plot.assumptions_cmpoutput <- function(cmpoass, ...) {
 #'
 assumptions.cmpoutput <- function(cmpout) {
 
-  # Does the assumptions object already exist?
-  if (!exists('assumptions', where = cmpout)) {
-    # No, so create it.
+  # Create assumptions object
+  assumptions <- list()
+  class(assumptions) <- "assumptions_cmpoutput"
 
-    # Create assumptions object
-    assumptions <- list()
-    class(assumptions) <- "assumptions_cmpoutput"
+  npcs <- cmpout$npcs
+  factors <- cmpout$factors
+  scores <- cmpout$scores
 
-    npcs <- cmpout$npcs
-    factors <- cmpout$factors
-    scores <- cmpout$scores
+  # Manova
+  if (npcs > 1) {
 
-    # Manova
-    if (npcs > 1) {
+    # Can only use manova if more than one variable
+    assumptions$manova <- assumptions_manova(scores[, 1:npcs], factors)
 
-      # Can only use manova if more than one variable
-      assumptions$manova <- assumptions_manova(scores[, 1:npcs], factors)
+  } else {
 
-    } else {
-
-      # Only one variable, can't use manova
-      assumptions$manova <- NULL
-
-    }
-
-    # Parametric test (t-test) for each PC
-    assumptions$ttest <- assumptions_paruv(scores[, 1:npcs], factors)
+    # Only one variable, can't use manova
+    assumptions$manova <- NULL
 
   }
+
+  # Parametric test (t-test) for each PC
+  assumptions$ttest <- assumptions_paruv(scores[, 1:npcs], factors)
 
   # Return assumptions
   assumptions
