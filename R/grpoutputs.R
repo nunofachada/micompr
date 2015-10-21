@@ -285,7 +285,7 @@ summary.grpoutputs <- function(go) {
 #' @examples
 #' NULL
 #'
-plot.grpoutputs <- function(go, col = micomp:::plotcols(), ...) {
+plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
 
   # TODO: Mean plot, max/min plot
 
