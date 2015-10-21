@@ -58,11 +58,6 @@ Object of class \code{cmpoutput} containing the following data:
            principal component.}
    }
  }
- \item{assumptions}{Object of class \code{assumptions_cmpoutput}. Basically
-       a list containing the assumptions for the MANOVA (object of class
-       \code{\link{assumptions_manova}}) and univariate parametric tests for
-       each principal component (object of class
-       \code{\link{assumptions_paruv}}).}
 }
 }
 \description{

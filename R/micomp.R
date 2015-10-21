@@ -326,7 +326,7 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 #' NULL
 #'
 assumptions.micomp <- function(mcmp, ...) {
-  micas <- lapply(mcmp, function(x) x$assumptions)
+  micas <- lapply(mcmp, function(x) assumptions(x))
   dim(micas) <- dim(mcmp)
   colnames(micas) <- colnames(mcmp)
   rownames(micas) <- rownames(mcmp)

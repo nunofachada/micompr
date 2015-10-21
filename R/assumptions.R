@@ -44,7 +44,6 @@ assumptions <- function(obj, ...) UseMethod("assumptions")
 #'
 assumptions_manova <- function(data, factors) {
 
-  return(NULL)
   # Don't return MANOVA assumptions if the required packages are not installed.
   if (!requireNamespace("MVN", quietly = TRUE) ||
       !requireNamespace("biotools", quietly = TRUE) ) {

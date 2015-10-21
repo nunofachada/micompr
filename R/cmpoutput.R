@@ -49,11 +49,6 @@
 #'            principal component.}
 #'    }
 #'  }
-#'  \item{assumptions}{Object of class \code{assumptions_cmpoutput}. Basically
-#'        a list containing the assumptions for the MANOVA (object of class
-#'        \code{\link{assumptions_manova}}) and univariate parametric tests for
-#'        each principal component (object of class
-#'        \code{\link{assumptions_paruv}}).}
 #' }
 #'
 #' @export
@@ -80,21 +75,15 @@ cmpoutput <- function(name, ve, data, factors) {
   cumvar <- cumsum(varexp)
   npcs <- which(cumvar > ve)[1]
 
-  # Assumptions list
-  assumptions <- list()
-  class(assumptions) <- "assumptions_cmpoutput"
-
   # Manova
   if (npcs > 1) {
     # Can only use manova if more than one variable
     mnvtest <- manova(pca$x[,1:npcs] ~ factors)
     mnvpval <- summary(mnvtest)$stats[1,6]
-    assumptions$manova <- assumptions_manova(pca$x[,1:npcs], factors)
   } else {
     # Only one variable, can't use manova
     mnvtest <- NULL
     mnvpval <- NA
-    assumptions$manova <- NULL
   }
 
   parpvals <- vector(mode = "numeric", length = npcs)
@@ -111,7 +100,6 @@ cmpoutput <- function(name, ve, data, factors) {
       # Parametric test (t-test) for each PC
       partests[[i]] <- t.test(pca$x[,i] ~ factors, var.equal = T)
       parpvals[i] <- partests[[i]]$p.value
-      assumptions$ttest <- assumptions_paruv(pca$x[, 1:npcs], factors)
 
       # Non-parametric test (Mann-Whitney) for each PC
       nonpartests[[i]] <- wilcox.test(pca$x[,i] ~ factors)
@@ -128,7 +116,6 @@ cmpoutput <- function(name, ve, data, factors) {
       # Parametric test (ANOVA) for each PC
       partests[[i]] <- aov(pca$x[,i] ~ factors)
       parpvals[i] <- summary(partests[[i]])[[1]]$"Pr(>F)"[1]
-      assumptions$ttest <- assumptions_paruv(pca$x[,1:npcs], factors)
 
       # Non-parametric test (Kruskal-Wallis) for each PC
       nonpartests[[i]] <- kruskal.test(pca$x[,i] ~ factors)
@@ -144,8 +131,7 @@ cmpoutput <- function(name, ve, data, factors) {
                  p.values = list(manova = mnvpval, parametric = parpvals,
                                  nonparametric = nonparpvals),
                  tests = list(manova = mnvtest, parametric = partests,
-                            nonparametric = nonpartests),
-                 assumptions = assumptions)
+                            nonparametric = nonpartests))
   class(cmpout) <- "cmpoutput"
   cmpout
 
@@ -362,5 +348,40 @@ plot.assumptions_cmpoutput <- function(cmpoass, ...) {
 #' NULL
 #'
 assumptions.cmpoutput <- function(cmpout, ...) {
+
+  # Does the assumptions object already exist?
+  if (!exists('assumptions', where = cmpout)) {
+    # No, so create it.
+
+    # Create assumptions object
+    assumptions <- list()
+    class(assumptions) <- "assumptions_cmpoutput"
+
+    npcs <- cmpout$npcs
+    factors <- cmpout$factors
+    scores <- cmpout$scores
+
+    # Manova
+    if (npcs > 1) {
+
+      # Can only use manova if more than one variable
+      assumptions$manova <- assumptions_manova(scores[, 1:npcs], factors)
+
+    } else {
+
+      # Only one variable, can't use manova
+      assumptions$manova <- NULL
+
+    }
+
+    # Parametric test (t-test) for each PC
+    assumptions$ttest <- assumptions_paruv(scores[, 1:npcs], factors)
+
+    # Keep the assumptions in the cmpoutput object
+    cmpout$assumptions <- assumptions
+  }
+
+  # Return assumptions
   cmpout$assumptions
+
 }

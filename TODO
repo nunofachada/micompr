@@ -2,5 +2,4 @@
 - Add tests
 - Turn some list fields into attributes
 - Warning in both MANOVA and mv assumptions when nvars >= nobs (e.g. "requires more samples")
-- Make assumptions lazy, i.e. only determine them when requested
 - Be more coherent in the assumptions generics
