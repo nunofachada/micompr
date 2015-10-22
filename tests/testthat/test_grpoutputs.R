@@ -112,5 +112,14 @@ test_that("grpoutputs throws errors when improperly invoked", {
     fixed = TRUE
   )
 
+  # Should expect error because at least 3 outputs are required when requesting
+  # output concatenation
+  expect_error(
+    grpoutputs(2, c(system.file("extdata", "nl_ok", package = "micompr"),
+                    system.file("extdata", "j_ex_ok", package = "micompr")),
+               c("stats400v1*.tsv", "stats400v1*.tsv"), concat = T),
+    paste("A minimum of 3 outputs must be specified in order to use ",
+          "output concatenation.", sep = "")
+  )
 
 })

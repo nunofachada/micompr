@@ -4,7 +4,9 @@
 #'
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
-#' automatically).
+#' automatically). In either case, the number of outputs should account for
+#' an additional concatenated output, as specified in the \code{concat}
+#' parameter.
 #' @param folders Vector of folder names where to read files from. These are
 #' recycled if \code{length(folders) < length(files)}.
 #' @param files Vector of filenames (with wildcards) to load in each folder.
@@ -103,12 +105,28 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
   # Determine total number of files for all sets (i.e. observations)
   nobs <- sum(groups)
 
-  # Set default output names if not given
-  if (length(outputs) == 1) {
-    nout <- outputs - concat
-    outputs <- paste("out", 1:nout, sep = "")
+  # Did user specify output names or a number of outputs?
+  if ((length(outputs) == 1) && (is.numeric(outputs))) {
+
+    # User specified number of outputs, set default names
+    nout <- trunc(outputs) - concat
+    outputs <- paste("out", 1:trunc(outputs), sep = "")
+
   } else {
+
+    # User specified output names, determine number of outputs
     nout <- length(outputs) - concat
+
+  }
+
+  # User must specify at least 3 outputs to use output concatenation, such that
+  # there is output 1, output 2 and their concatenation.
+  if ((nout < 2) && concat) {
+    # We check for nout < 2 because nout is the number of outputs minus the
+    # concatenated output.
+    stop(paste("A minimum of 3 outputs must be specified in order to use ",
+               "output concatenation.", sep = ""))
+
   }
 
   # Create grouped outputs list
@@ -139,11 +157,22 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
       # Read file data
       tdata <- read.table(cfile, ...)
 
-      # Check that the number of outputs specified by the user is the same or
-      # less than the number of outputs available
+      # Check that the number of outputs specified by the user is not larger
+      # than the number of outputs available
       if (nout > dim(tdata)[2]) {
         stop(paste("Specified number of outputs is larger than the number ",
                    "of outputs in file '", cfile, "'.", sep = ""))
+      }
+
+      # If the user specified less outputs than those available in the file,
+      # discard extra outputs.
+      if (nout < dim(tdata)[2]) {
+        tdata <- tdata[, 1:nout]
+      }
+
+      # Make sure tdata is in matrix form even if it only has one output
+      if (nout == 1) {
+        tdata <- matrix(tdata, ncol = nout)
       }
 
       # Is this the first file to be opened?
@@ -298,8 +327,6 @@ summary.grpoutputs <- function(go) {
 #' NULL
 #'
 plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
-
-  # TODO: Mean plot, max/min plot
 
   # Get required data
   nout <- length(go$data);

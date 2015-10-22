@@ -9,7 +9,9 @@ grpoutputs(outputs, folders, files, lvls = NULL, concat = F, ...)
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
 the number of outputs (in which case output labels will be assigned
-automatically).}
+automatically). In either case, the number of outputs should account for
+an additional concatenated output, as specified in the \code{concat}
+parameter.}
 
 \item{folders}{Vector of folder names where to read files from. These are
 recycled if \code{length(folders) < length(files)}.}
