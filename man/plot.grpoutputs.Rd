@@ -4,7 +4,7 @@
 \alias{plot.grpoutputs}
 \title{Plot grouped outputs}
 \usage{
-\method{plot}{grpoutputs}(go, col = micomp:::plotcols(), ...)
+\method{plot}{grpoutputs}(go, col = micompr:::plotcols(), ...)
 }
 \arguments{
 \item{go}{Object of class \code{grpoutputs}.}
