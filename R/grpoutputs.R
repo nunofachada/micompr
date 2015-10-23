@@ -334,42 +334,48 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
   ncols <- min(2, nout)
   outputs <- names(go$data)
 
-  # Build layout matrix =======================================
+  # One output or more?
+  if (nout == 1) {
+    # If only one output, just draw a simple plot with legend included
 
-  # One plot space for each normal output
-  l1 <- 1:nout_simpl
-  totsp <- nout_simpl
+    leginc <- T
+    m <- matrix(1, nrow = 1)
 
-  # Make adjustment if number of plots is not pair
-  l2 <- if (nout_simpl %% 2 != 0) {
-    totsp <- totsp + 1;
-    totsp
   } else {
-    NULL
+    # Otherwise, make several subplots
+
+    leginc <- F
+
+    # One plot space for each non-concatenated output
+    m <- 1:nout_simpl
+
+    # Is number of non-concatenated outputs odd?
+    if (nout_simpl %% 2 != 0) {
+
+      # If so, put a zero so there is an empty subplot
+      m <- c(m, 0)
+
+    }
+
+    # Do we have a concatenated output?
+    if (go$concat) {
+      # If so, find space for it
+      m <- c(m, rep(max(m) + 1, 2))
+    }
+
+    # Space for legend
+    m <- c(m, rep(max(m) + 1, 2))
+
+    # Put m in matrix form
+    m <- matrix(m, ncol = ncols, byrow = T)
+
   }
-
-  # Get plot space for concatenated output
-  l3 <- if (go$concat) {
-    totsp <- totsp + ncols;
-    rep(totsp - (ncols == 2), ncols)
-  } else {
-    NULL
-  }
-
-  # Get plot space for legend
-  l4 <- rep(totsp + 1 - (ncols == 2), ncols)
-
-  # Concatenate layout vector
-  lv <- c(l1, l2, l3, l4)
-
-  # Create layout matrix
-  m <- matrix(lv, ncol = ncols, byrow = T)
 
   # Set layout and plot outputs  ===================================
 
   # Set layout
-  nrows <- length(lv) / ncols
-  layout(mat = m, heights = c(rep(0.85 / nrows, nrows), 0.15))
+  nrows <- dim(m)[1]
+  layout(m)
 
   # Plot each output separately
   for (i in 1:nout) {
@@ -381,13 +387,8 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
     ymin <- min(go$data[[out]])
     xlen <- length(go$data[[out]][1,])
 
-    # Take into account non-pair number of simple outputs
-    if ((go$concat) && (i == nout) && (nout_simpl %% 2 != 0)) {
-      plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-    }
-
     # Prepare plot
-    plot.default(0, xlim = c(0,xlen), ylim = c(ymin,ymax),
+    plot.default(0, xlim = c(0, xlen), ylim = c(ymin, ymax),
                  main = out, type = "n", ...)
 
     # Plot lines
@@ -395,17 +396,19 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
       lines(go$data[[out]][i,], col = col[unclass(go$factors)[i]])
     }
 
+    # Include legend in plot?
+    if (leginc) {
+      legend("top", legend = go$lvls, fill = col, horiz = T)
+    }
+
   }
 
-  # Take into account non-pair number of simple outputs
-  if ((!go$concat) && (nout_simpl %% 2 != 0)) {
+  # Plot legend in own subplot?
+  if (!leginc) {
+    par(mar = rep(2, 4))
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
+    legend("top", legend = go$lvls, fill = col, horiz = T)
   }
-
-  # Plot legend showing colors assigned to groups
-  par(mar = rep(2, 4))
-  plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-  legend("top", legend = go$lvls, fill = col, horiz = T)
 
   invisible(NULL)
 
