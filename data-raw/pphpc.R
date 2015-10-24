@@ -28,7 +28,14 @@ pphpc_diff <- grpoutputs(outputs,
                          lvls = c("NLOK", "JEXDIFF"),
                          concat = T)
 
+pphpc_testvlo <- grpoutputs(outputs,
+                            system.file("extdata", "testdata", "NA",
+                                        package = "micompr"),
+                            c("stats400v1*n20A.tsv", "stats400v1*n20B.tsv"),
+                            concat = T)
+
 save(pphpc_ok, file = "data/pphcp_ok.rdata")
 save(pphpc_noshuff, file = "data/pphcp_noshuff.rdata")
 save(pphpc_diff, file = "data/pphcp_diff.rdata")
+save(pphpc_testvlo, file = "data/pphpc_testvlo.rdata")
 

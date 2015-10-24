@@ -26,4 +26,5 @@ Associate colors to \emph{p}-values according to their value.
 micompr:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02))
 # [1] "darkgreen" "darkgreen" "red"       "darkgreen" "darkgreen" "yellow"
 }
+\keyword{internal}
 

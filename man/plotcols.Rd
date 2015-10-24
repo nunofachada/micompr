@@ -16,4 +16,5 @@ Default colors for plots in \code{micomp} package.
 micompr:::plotcols()
 # [1] "blue"   "red"    "green"  "gold"   "violet" "cyan"
 }
+\keyword{internal}
 

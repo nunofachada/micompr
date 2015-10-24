@@ -10,6 +10,8 @@
 #' @return A vector of colors associated with \emph{p}-values given in
 #' \code{pvals}.
 #'
+#' @keywords internal
+#'
 #' @examples
 #' micompr:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02))
 #' # [1] "darkgreen" "darkgreen" "red"       "darkgreen" "darkgreen" "yellow"
@@ -30,6 +32,8 @@ pvalcol <- function(pvals, col = c("darkgreen", "yellow", "red"),
 #' Default colors for plots in \code{micomp} package.
 #'
 #' @return Default colors for plots in \code{micomp} package.
+#'
+#' @keywords internal
 #'
 #' @examples
 #' micompr:::plotcols()
