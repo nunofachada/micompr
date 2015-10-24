@@ -27,6 +27,18 @@ colors (which can be controlled through the \code{col} parameter).
 This function can be very slow for a large number of observations.
 }
 \examples{
-NULL
+# Determine paths for the data folder containing outputs of different
+# lengths
+dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
+# Sets of files A and B have 3 files each
+filesA <- "stats400v1*n20A.tsv"
+filesB <- "stats400v1*n20B.tsv"
+
+# Instantiate grpoutputs object
+go <-
+ grpoutputs(7, dir_na, c(filesA, filesB), lvls = c("A", "B"), concat = TRUE)
+
+# Plot grpoutputs object
+plot(go)
 }
 

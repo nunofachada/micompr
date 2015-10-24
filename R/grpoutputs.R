@@ -253,7 +253,28 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
 #' @export
 #'
 #' @examples
-#' NULL
+#' # Determine paths for data folders, each containing outputs for 10 runs of
+#' # the PPHPC model
+#' dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
+#' dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
+#' files <- "stats400v1*.tsv"
+#'
+#' # Create a grpoutputs object
+#' go <- grpoutputs(6, c(dir_nl_ok, dir_jex_diff), c(files, files))
+#'
+#' # Print information about object (could just type "go" instead)
+#' print(go)
+#' ## Number of outputs:  6
+#' ##
+#' ## Output dimensions:
+#' ##        out1 out2 out3 out4 out5 out6
+#' ## N.Obs    20   20   20   20   20   20
+#' ## N.Vars  201  201  201  201  201  201
+#' ##
+#' ## Group size by factor:
+#' ##   group.size
+#' ## 1         10
+#' ## 2         10
 #'
 print.grpoutputs <- function(go) {
 
@@ -288,7 +309,29 @@ print.grpoutputs <- function(go) {
 #' @export
 #'
 #' @examples
-#' NULL
+#' # Determine paths for data folders, each containing outputs for 10 runs of
+#' # the PPHPC model
+#' dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
+#' dir_jex_noshuff <-
+#'  system.file("extdata", "j_ex_noshuff", package = "micompr")
+#' files <- "stats400v1*.tsv"
+#'
+#' # Create a grpoutputs object
+#' go <-
+#'  grpoutputs(c("o1", "o2"), c(dir_nl_ok, dir_jex_noshuff), c(files, files))
+#'
+#' # Obtain summary
+#' summary(go)
+#' ## $output.dims
+#' ##         o1  o2
+#' ## N.Obs   20  20
+#' ## N.Vars 201 201
+#' ##
+#' ## $group.sizes
+#' ##   group.size
+#' ## 1         10
+#' ## 2         10
+#' ##
 #'
 summary.grpoutputs <- function(go) {
 
@@ -324,7 +367,19 @@ summary.grpoutputs <- function(go) {
 #' @export
 #'
 #' @examples
-#' NULL
+#' # Determine paths for the data folder containing outputs of different
+#' # lengths
+#' dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
+#' # Sets of files A and B have 3 files each
+#' filesA <- "stats400v1*n20A.tsv"
+#' filesB <- "stats400v1*n20B.tsv"
+#'
+#' # Instantiate grpoutputs object
+#' go <-
+#'  grpoutputs(7, dir_na, c(filesA, filesB), lvls = c("A", "B"), concat = TRUE)
+#'
+#' # Plot grpoutputs object
+#' plot(go)
 #'
 plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
 
@@ -374,7 +429,6 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
   # Set layout and plot outputs  ===================================
 
   # Set layout
-  nrows <- dim(m)[1]
   layout(m)
 
   # Plot each output separately

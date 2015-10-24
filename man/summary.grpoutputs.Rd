@@ -21,6 +21,28 @@ A list with the following components:
 Summary method for objects of class \code{grpoutputs}.
 }
 \examples{
-NULL
+# Determine paths for data folders, each containing outputs for 10 runs of
+# the PPHPC model
+dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
+dir_jex_noshuff <-
+ system.file("extdata", "j_ex_noshuff", package = "micompr")
+files <- "stats400v1*.tsv"
+
+# Create a grpoutputs object
+go <-
+ grpoutputs(c("o1", "o2"), c(dir_nl_ok, dir_jex_noshuff), c(files, files))
+
+# Obtain summary
+summary(go)
+## $output.dims
+##         o1  o2
+## N.Obs   20  20
+## N.Vars 201 201
+##
+## $group.sizes
+##   group.size
+## 1         10
+## 2         10
+##
 }
 

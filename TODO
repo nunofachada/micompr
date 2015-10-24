@@ -1,5 +1,3 @@
-- Fix bug in grpoutputs plotting for certain numbers of outputs when concatenation
-if off
 - Add examples to doccomments
 - Add tests
 - Turn some list fields into attributes
