@@ -29,20 +29,71 @@ test_that("cmpoutput constructs the expected objects", {
                         pphpc_testvlo$data[["Energy.Grass"]],
                         pphpc_testvlo$factors)
 
+  # Instantiate a cmpoutput object with output from four pphpc implementations
+  # Instantiate a grpobjects first
+  go_quad <-
+    grpoutputs(6,
+               c(system.file("extdata", "nl_ok", package = "micompr"),
+                 system.file("extdata", "j_ex_ok", package = "micompr"),
+                 system.file("extdata", "j_ex_noshuff", package = "micompr"),
+                 system.file("extdata", "j_ex_diff", package = "micompr")),
+               rep("stats400v1*.tsv", 4))
+
+  cmp_quad3 <- cmpoutput("GrassQty",
+                         minvar,
+                         go_quad$data[["out3"]],
+                         go_quad$factors)
+
   #### Start testing ####
 
-  # Test if the minimum percentage of variance to be explained matches what was
-  # set at instantiation time
-  expect_equal(cmp_ok1$ve, minvar)
-  expect_equal(cmp_noshuff2$ve, minvar)
-  expect_equal(cmp_diff7$ve, minvar)
-  expect_equal(cmp_vlo6$ve, minvar)
+  ## Common tests for the five cmpoutput objects ##
+  for (ccmp in list(cmp_ok1, cmp_noshuff2, cmp_diff7, cmp_vlo6, cmp_quad3)) {
+
+    # Check if cmpoutput objects have the correct type
+    expect_is(ccmp, "cmpoutput")
+
+    # Test if the minimum percentage of variance to be explained matches what
+    # was set at instantiation time
+    expect_equal(ccmp$ve, minvar)
+
+    # Check that the number of PCs which explain the specified minimum
+    # percentage of variance has the expected value
+    expect_equal(ccmp$npcs,
+                 match(TRUE, cumsum(ccmp$varexp) > minvar))
+
+    # Check that the tests objects are what is expected and p-values are within
+    # the 0-1 range
+    if (ccmp$npcs > 1) {
+      expect_is(ccmp$tests$manova, "manova")
+      expect_true((ccmp$p.values$manova >= 0) && (ccmp$p.values$manova <= 1),
+                  "MANOVA p-value not between 0 and 1.")
+    } else {
+      expect_null(ccmp$tests$manova)
+    }
+    for (i in ccmp$npcs) {
+      if (length(levels(ccmp$factors)) == 2) {
+        expect_is(ccmp$tests$parametric[[i]], "htest")
+      } else {
+        expect_is(ccmp$tests$parametric[[i]], "aov")
+      }
+      expect_is(ccmp$tests$nonparametric[[i]], "htest")
+      expect_true((ccmp$p.values$parametric[i] >= 0)
+                  && (ccmp$p.values$parametric[i] <= 1),
+                  "Parametric test p-value not between 0 and 1.")
+      expect_true((ccmp$p.values$nonparametric[i] >= 0)
+                  && (ccmp$p.values$nonparametric[i] <= 1),
+                  "Non-parametric test p-value not between 0 and 1.")
+    }
+  }
+
+  ## Different tests for the cmpoutput objects ##
 
   # Check the names given to the comparisons
   expect_equal(cmp_ok1$name, "SheepPop")
   expect_equal(cmp_noshuff2$name, "WolfPop")
   expect_equal(cmp_diff7$name, "Concat")
   expect_equal(cmp_vlo6$name, "GrassEn")
+  expect_equal(cmp_quad3$name, "GrassQty")
 
   # Check that the dimensions of the scores (PCA) matrix are limited by the
   # number of factors (i.e. number of observations)
@@ -56,22 +107,46 @@ test_that("cmpoutput constructs the expected objects", {
                c(length(pphpc_diff$factors), length(pphpc_diff$factors)))
   expect_equal(dim(cmp_vlo6$scores),
                c(length(pphpc_testvlo$factors), length(pphpc_testvlo$factors)))
+  expect_equal(dim(cmp_quad3$scores),
+               c(length(go_quad$factors), length(go_quad$factors)))
 
   # Check if the factors are the same as in the original data
   expect_equal(cmp_ok1$factors, pphpc_ok$factors)
   expect_equal(cmp_noshuff2$factors, pphpc_noshuff$factors)
   expect_equal(cmp_diff7$factors, pphpc_diff$factors)
   expect_equal(cmp_vlo6$factors, pphpc_testvlo$factors)
+  expect_equal(cmp_quad3$factors, go_quad$factors)
 
-  # Check that the number of PCs which explain the specified minimum percentage
-  # of variance has the expected value
-  expect_equal(cmp_ok1$npcs,
-               match(TRUE, cumsum(cmp_ok1$varexp) > minvar))
-  expect_equal(cmp_noshuff2$npcs,
-               match(TRUE, cumsum(cmp_noshuff2$varexp) > minvar))
-  expect_equal(cmp_diff7$npcs,
-               match(TRUE, cumsum(cmp_diff7$varexp) > minvar))
-  expect_equal(cmp_vlo6$npcs,
-               match(TRUE, cumsum(cmp_vlo6$varexp) > minvar))
+})
+
+
+test_that("cmpoutput throws errors when improperly invoked", {
+
+  # Test for incorrect 've' parameter
+  expect_error(
+    cmpoutput("A", 1.1, pphpc_ok$data[[1]], pphpc_ok$factors),
+    "'ve' parameter must be between 0 and 1.",
+    fixed = TRUE
+  )
+  expect_error(
+    cmpoutput("B", -0.01, pphpc_ok$data[[2]], pphpc_ok$factors),
+    "'ve' parameter must be between 0 and 1.",
+    fixed = TRUE
+  )
+
+  # Test for invalid number of levels
+  expect_error(
+    cmpoutput("C", 0.5, pphpc_ok$data[[3]], rep(1, length(pphpc_ok$factors))),
+    "At least two factors are required to perform model comparison.",
+    fixed = TRUE
+  )
+
+  # Test for error due to different number of observations in data and factors
+  expect_error(
+    cmpoutput("D", 0.3, pphpc_ok$data[[4]], rep(pphpc_ok$factors, 2)),
+    "Number of observations in 'data' and 'factors' does not match.",
+    fixed = TRUE
+  )
+
 
 })
