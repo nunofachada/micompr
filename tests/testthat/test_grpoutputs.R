@@ -3,11 +3,12 @@ context("grpoutputs")
 
 test_that("grpoutputs constructs the expected objects", {
 
+  # Outputs names
   outputs <- c("PopSheep", "PopWolf", "QtyGrass",
                "EnSheep", "EnWolf", "EnGrass",
                "All")
 
-  # Load data from extdata files
+  # Determine location of extdata files
   dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
   dir_jex_ok <- system.file("extdata", "j_ex_ok", package = "micompr")
   dir_jex_noshuff <- system.file("extdata", "j_ex_noshuff", package = "micompr")

@@ -81,8 +81,7 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
     # matrix?
     if (exists("name", where = comps[[i]]) &&
         exists("folders", where = comps[[i]]) &&
-        exists("files", where = comps[[i]]) &&
-        exists("lvls", where = comps[[i]])) {
+        exists("files", where = comps[[i]])) {
 
       # First configuration: load data from files
 
@@ -124,7 +123,7 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
     } else {
 
       # Unknown configuration, throw error
-      stop("Invalid object passed as ...")
+      stop("Invalid 'comps' parameter")
 
     }
 
