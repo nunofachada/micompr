@@ -158,7 +158,18 @@ cmpoutput <- function(name, ve, data, factors) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Comparing the fifth output of the pphpc_diff dataset, which contains
+#' # simulation output data from two implementations of the PPHPC model executed
+#' # with a different parameter.
+#'
+#' cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$factors)
+#'
+#' ## Output name: WolfPop
+#' ## Number of PCs which explain 70% of variance: 2
+#' ## P-Value for MANOVA along 2 dimensions: 5.533087e-08
+#' ## P-Value for t-test (1st PC): 1.823478e-08
+#' ## P-Value for Mann-Whitney U test (1st PC): 1.082509e-05
 #'
 print.cmpoutput <- function(cmpout) {
 
@@ -208,7 +219,38 @@ print.cmpoutput <- function(cmpout) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Comparing the concatenated output of the pphpc_noshuff dataset, which
+#' # contains simulation output data from two implementations of the PPHPC model
+#' # executed with a minor implementation difference.
+#'
+#' summary(
+#'   cmpoutput("All", 0.6, pphpc_noshuff$data[["All"]], pphpc_noshuff$factors)
+#' )
+#'
+#' ## $output.name
+#' ## [1] "All"
+#' ##
+#' ## $num.pcs
+#' ## [1] 3
+#' ##
+#' ## $var.exp
+#' ## [1] 0.6
+#' ##
+#' ## $manova.pval
+#' ## [1] 0.003540518
+#' ##
+#' ## $parametric.test
+#' ## [1] "t-test"
+#' ##
+#' ## $parametric.pvals
+#' ## [1] 0.001073006 0.788283742 0.172055145
+#' ##
+#' ## $nonparametric.test
+#' ## [1] "Mann-Whitney"
+#' ##
+#' ## $nonparametric.pvals
+#' ## [1] 0.0007252809 0.9117971811 0.3149992422
 #'
 summary.cmpoutput <- function(cmpout) {
 
@@ -254,7 +296,12 @@ summary.cmpoutput <- function(cmpout) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Comparing the concatenated output of the pphpc_ok dataset, which
+#' # contains simulation output data from two similar implementations of the
+#' # PPHPC model.
+#'
+#' plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$factors))
 #'
 plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
 
@@ -286,55 +333,6 @@ plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
           xlab = "PC", ylab = "Prob.", ...)
 
   invisible(NULL)
-}
-
-#' Plot \emph{p}-values for testing the assumptions of the parametric tests used
-#' in simulation output comparison
-#'
-#' Plot method for objects of class \code{assumptions_cmpoutput}
-#' containing \emph{p}-values produced by testing the assumptions of the
-#' parametric tests used for comparing simulation output.
-#'
-#' Several bar plots are presented, showing the \emph{p}-values yielded by the
-#' Shapiro-Wilk (\code{\link{shapiro.test}}) and Royston tests
-#' (\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
-#' respectively, and for the Bartlett (\code{\link{bartlett.test}}) and Box's M
-#' (\code{\link[biotools]{boxM}}) for testing homogeneity of variances and of
-#' covariance matrices, respectively. The following bar plots are shown:
-#'
-#' \itemize{
-#'  \item One bar plot for the \emph{p}-values of the Bartlett test, one bar
-#'        (\emph{p}-value) per individual principal component.
-#'  \item \emph{s} bar plots for \emph{p}-values of the Shapiro-Wilk test, where
-#'        \emph{s} is the number of groups being compared. Individual bars in
-#'        each plot are associated with a principal component.
-#'  \item One bar plot for the \emph{p}-values of the Royston test with \emph{s}
-#'        bars, where \emph{s} is the number of groups being compared. This plot
-#'        will not show if there is only one principal component being
-#'        considered.
-#' }
-#'
-#' @param cmpoass Objects of class \code{assumptions_cmpoutput}.
-#' @param ... Extra options passed to \code{\link{plot.default}}.
-#'
-#' @return None.
-#'
-#' @export
-#'
-#' @examples
-#' NULL
-plot.assumptions_cmpoutput <- function(cmpoass, ...) {
-
-  if (exists("manova", where = cmpoass)) {
-    plot(cmpoass$ttest, extra = 1, ...)
-    plot(cmpoass$manova, ...)
-  } else {
-    # No extra for multivariate assumptions, just plot univariate stuff
-    plot(cmpoass$ttest, ...)
-  }
-
-  invisible(NULL)
-
 }
 
 #' Get assumptions for parametric tests performed on output comparisons.
@@ -383,5 +381,54 @@ assumptions.cmpoutput <- function(cmpout) {
 
   # Return assumptions
   assumptions
+
+}
+
+#' Plot \emph{p}-values for testing the assumptions of the parametric tests used
+#' in simulation output comparison
+#'
+#' Plot method for objects of class \code{assumptions_cmpoutput}
+#' containing \emph{p}-values produced by testing the assumptions of the
+#' parametric tests used for comparing simulation output.
+#'
+#' Several bar plots are presented, showing the \emph{p}-values yielded by the
+#' Shapiro-Wilk (\code{\link{shapiro.test}}) and Royston tests
+#' (\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
+#' respectively, and for the Bartlett (\code{\link{bartlett.test}}) and Box's M
+#' (\code{\link[biotools]{boxM}}) for testing homogeneity of variances and of
+#' covariance matrices, respectively. The following bar plots are shown:
+#'
+#' \itemize{
+#'  \item One bar plot for the \emph{p}-values of the Bartlett test, one bar
+#'        (\emph{p}-value) per individual principal component.
+#'  \item \emph{s} bar plots for \emph{p}-values of the Shapiro-Wilk test, where
+#'        \emph{s} is the number of groups being compared. Individual bars in
+#'        each plot are associated with a principal component.
+#'  \item One bar plot for the \emph{p}-values of the Royston test with \emph{s}
+#'        bars, where \emph{s} is the number of groups being compared. This plot
+#'        will not show if there is only one principal component being
+#'        considered.
+#' }
+#'
+#' @param cmpoass Objects of class \code{assumptions_cmpoutput}.
+#' @param ... Extra options passed to \code{\link{plot.default}}.
+#'
+#' @return None.
+#'
+#' @export
+#'
+#' @examples
+#' NULL
+plot.assumptions_cmpoutput <- function(cmpoass, ...) {
+
+  if (exists("manova", where = cmpoass)) {
+    plot(cmpoass$ttest, extra = 1, ...)
+    plot(cmpoass$manova, ...)
+  } else {
+    # No extra for multivariate assumptions, just plot univariate stuff
+    plot(cmpoass$ttest, ...)
+  }
+
+  invisible(NULL)
 
 }

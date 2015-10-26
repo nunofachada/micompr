@@ -29,6 +29,36 @@ A list with the following components:
 Summary method for objects of class \code{cmpoutput}.
 }
 \examples{
-NULL
+# Comparing the concatenated output of the pphpc_noshuff dataset, which
+# contains simulation output data from two implementations of the PPHPC model
+# executed with a minor implementation difference.
+
+summary(
+  cmpoutput("All", 0.6, pphpc_noshuff$data[["All"]], pphpc_noshuff$factors)
+)
+
+## $output.name
+## [1] "All"
+##
+## $num.pcs
+## [1] 3
+##
+## $var.exp
+## [1] 0.6
+##
+## $manova.pval
+## [1] 0.003540518
+##
+## $parametric.test
+## [1] "t-test"
+##
+## $parametric.pvals
+## [1] 0.001073006 0.788283742 0.172055145
+##
+## $nonparametric.test
+## [1] "Mann-Whitney"
+##
+## $nonparametric.pvals
+## [1] 0.0007252809 0.9117971811 0.3149992422
 }
 
