@@ -97,6 +97,18 @@ test_that("micomp constructs the expected objects", {
                c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
 
   # Check properties of sub-objects
+  for (i in 1:dim(mic1a)[1]) {
+    for (j in 1:dim(mic1a)[2]) {
+
+      # Get current subobject
+      sobj <- mic1a[[i, j]]
+
+      # Is subobject a cmpoutput object?
+      expect_is(sobj, "cmpoutput")
+
+      # Do objects have the
+    }
+  }
 
 
 
