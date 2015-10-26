@@ -2,8 +2,7 @@
 % Please edit documentation in R/assumptions.R
 \name{assumptions}
 \alias{assumptions}
-\title{Get assumptions for parametric tests applied to the comparison of simulation
-outputs}
+\title{Parametric tests assumptions}
 \usage{
 assumptions(obj)
 }
@@ -18,7 +17,8 @@ simulation outputs.
 Generic function to get the assumptions for parametric tests applied to the
 comparison of simulation outputs.
 }
-\examples{
-NULL
+\seealso{
+\code{\link{assumptions.cmpoutput}},
+\code{\link{assumptions.micomp}}
 }
 

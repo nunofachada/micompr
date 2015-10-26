@@ -1,5 +1,4 @@
-#' Get assumptions for parametric tests applied to the comparison of simulation
-#' outputs
+#' Parametric tests assumptions
 #'
 #' Generic function to get the assumptions for parametric tests applied to the
 #' comparison of simulation outputs.
@@ -11,8 +10,8 @@
 #'
 #' @export
 #'
-#' @examples
-#' NULL
+#' @seealso \code{\link{assumptions.cmpoutput}},
+#' \code{\link{assumptions.micomp}}
 #'
 assumptions <- function(obj) UseMethod("assumptions")
 
@@ -37,6 +36,8 @@ assumptions <- function(obj) UseMethod("assumptions")
 #' }
 #'
 #' @export
+#'
+#' @note This function requires the \code{MVN} and \code{biotools} packages.
 #'
 #' @examples
 #' NULL
