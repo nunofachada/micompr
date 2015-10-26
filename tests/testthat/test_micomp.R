@@ -106,10 +106,53 @@ test_that("micomp constructs the expected objects", {
       # Is subobject a cmpoutput object?
       expect_is(sobj, "cmpoutput")
 
-      # Do objects have the
+
+      # Check that the number of PCs which explain the specified minimum
+      # percentage of variance has the expected value
+      expect_equal(sobj$npcs,
+                   match(TRUE, cumsum(sobj$varexp) > minvar))
     }
   }
 
+})
 
+test_that("micomp throws errors when improperly invoked", {
+
+  # Don't specify files in the first list
+  expect_error(
+    micomp(7, 0.6,
+           list(list(name = "A", folders = c("dir1", "dir2")),
+                list(name = "B", files = c("file1", "file2")))),
+    "Invalid 'comps' parameter",
+    fixed = TRUE
+  )
+
+  # Don't specify a comparison name in the second list
+  expect_error(
+    micomp(c("o1", "o2", "o3"), 0.75,
+           list(list(name = "aName", grpout = pphpc_ok),
+                list(grpout = pphpc_noshuff))),
+    "Invalid 'comps' parameter",
+    fixed = TRUE
+  )
+
+  # Don't specify factors in the third list. This will provoke an error in
+  # cmpoutput.
+  expect_error(
+    micomp(6, 0.5,
+           list(
+             list(name = "NLOKvsJEXOK",
+                  grpout = list(data = pphpc_ok$data,
+                                factors = pphpc_ok$factors)),
+             list(name = "NLOKvsJEXNOSHUFF",
+                  grpout = list(data = pphpc_noshuff$data,
+                                factors = pphpc_noshuff$factors)),
+
+             list(name = "NLOKvsJEXDIFF",
+                  grpout = list(data = pphpc_diff$data)))),
+    "Number of observations in 'data' and 'factors' does not match.",
+    fixed = TRUE
+
+  )
 
 })

@@ -48,7 +48,8 @@ an individual comparison. Each list can have one of two configurations:
     }
 }}
 
-\item{concat}{Create an additional, concatenated output?}
+\item{concat}{Create an additional, concatenated output? Ignored for sublists
+passed in the \code{comps} which follow the second configuration.}
 
 \item{...}{Options passed to \code{\link{read.table}}, which is used to read
 the files specified in lists using the first configuration in the
@@ -63,6 +64,52 @@ outputs, while columns are associated with separate comparisons.
 Perform multiple model-independent comparisons of simulation outputs.
 }
 \examples{
-NULL
+# Create a micomp object from existing files and folders
+
+dir_nl_ok <-
+  system.file("extdata", "nl_ok", package = "micompr")
+dir_jex_ok <-
+  system.file("extdata", "j_ex_ok", package = "micompr")
+dir_jex_noshuff <-
+  system.file("extdata", "j_ex_noshuff", package = "micompr")
+dir_jex_diff <-
+  system.file("extdata", "j_ex_diff", package = "micompr")
+files <- "stats400v1*.tsv"
+
+mic <- micomp(7, 0.8,
+              list(list(name = "NLOKvsJEXOK",
+                        folders = c(dir_nl_ok, dir_jex_ok),
+                        files = c(files, files),
+                        lvls = c("NLOK", "JEXOK")),
+                   list(name = "NLOKvsJEXNOSHUFF",
+                        folders = c(dir_nl_ok, dir_jex_noshuff),
+                        files = c(files, files),
+                        lvls = c("NLOK", "JEXNOSHUFF")),
+                   list(name = "NLOKvsJEXDIFF",
+                        folders = c(dir_nl_ok, dir_jex_diff),
+                        files = c(files, files),
+                        lvls = c("NLOK", "JEXDIFF"))),
+              concat = TRUE)
+
+# Create a micomp object from package datasets (i.e. grpoutputs objects)
+# directly
+
+mic <- micomp(c("o1", "o2", "o3", "o4"), 0.9,
+              list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
+                   list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
+                   list(name = "NLOKvsJEXDIFF", grpout = pphpc_diff)))
+
+# Create a micomp object using manually inserted data
+
+mic <- micomp(6, 0.5,
+              list(list(name = "NLOKvsJEXOK",
+                        grpout = list(data = pphpc_ok$data,
+                        factors = pphpc_ok$factors)),
+                   list(name = "NLOKvsJEXNOSHUFF",
+                        grpout = list(data = pphpc_noshuff$data,
+                        factors = pphpc_noshuff$factors)),
+                   list(name = "NLOKvsJEXDIFF",
+                        grpout = list(data = pphpc_diff$data,
+                        factors = pphpc_diff$factors))))
 }
 

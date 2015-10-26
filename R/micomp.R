@@ -40,7 +40,8 @@
 #'       }
 #'     }
 #' }
-#' @param concat Create an additional, concatenated output?
+#' @param concat Create an additional, concatenated output? Ignored for sublists
+#' passed in the \code{comps} which follow the second configuration.
 #' @param ... Options passed to \code{\link{read.table}}, which is used to read
 #' the files specified in lists using the first configuration in the
 #' \code{comp} parameter.
@@ -52,7 +53,55 @@
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Create a micomp object from existing files and folders
+#'
+#' dir_nl_ok <-
+#'   system.file("extdata", "nl_ok", package = "micompr")
+#' dir_jex_ok <-
+#'   system.file("extdata", "j_ex_ok", package = "micompr")
+#' dir_jex_noshuff <-
+#'   system.file("extdata", "j_ex_noshuff", package = "micompr")
+#' dir_jex_diff <-
+#'   system.file("extdata", "j_ex_diff", package = "micompr")
+#' files <- "stats400v1*.tsv"
+#'
+#' mic <- micomp(7, 0.8,
+#'               list(list(name = "NLOKvsJEXOK",
+#'                         folders = c(dir_nl_ok, dir_jex_ok),
+#'                         files = c(files, files),
+#'                         lvls = c("NLOK", "JEXOK")),
+#'                    list(name = "NLOKvsJEXNOSHUFF",
+#'                         folders = c(dir_nl_ok, dir_jex_noshuff),
+#'                         files = c(files, files),
+#'                         lvls = c("NLOK", "JEXNOSHUFF")),
+#'                    list(name = "NLOKvsJEXDIFF",
+#'                         folders = c(dir_nl_ok, dir_jex_diff),
+#'                         files = c(files, files),
+#'                         lvls = c("NLOK", "JEXDIFF"))),
+#'               concat = TRUE)
+#'
+#' # Create a micomp object from package datasets (i.e. grpoutputs objects)
+#' # directly
+#'
+#' mic <- micomp(c("o1", "o2", "o3", "o4"), 0.9,
+#'               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
+#'                    list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
+#'                    list(name = "NLOKvsJEXDIFF", grpout = pphpc_diff)))
+#'
+#' # Create a micomp object using manually inserted data
+#'
+#' mic <- micomp(6, 0.5,
+#'               list(list(name = "NLOKvsJEXOK",
+#'                         grpout = list(data = pphpc_ok$data,
+#'                         factors = pphpc_ok$factors)),
+#'                    list(name = "NLOKvsJEXNOSHUFF",
+#'                         grpout = list(data = pphpc_noshuff$data,
+#'                         factors = pphpc_noshuff$factors)),
+#'                    list(name = "NLOKvsJEXDIFF",
+#'                         grpout = list(data = pphpc_diff$data,
+#'                         factors = pphpc_diff$factors))))
+#'
 micomp <- function(outputs, ve, comps, concat = F, ...) {
 
   # Determine number of comparisons
@@ -171,7 +220,32 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # A micomp object from package datasets (i.e. grpoutputs objects) directly
+#'
+#' micomp(c("outA", "outB", "outC", "outD"), 0.9,
+#'               list(list(name = "Comp1", grpout = pphpc_ok),
+#'                    list(name = "Comp2", grpout = pphpc_noshuff),
+#'                    list(name = "Comp3", grpout = pphpc_diff)))
+#'
+#' ## ==== Comp1 ====
+#' ## outA     outB     outC       outD
+#' ## #PCs         3.00000  2.00000  4.00000  7.0000000
+#' ## MNV          0.26966  0.31754  0.31275  0.0022934
+#' ## par.test     0.82070  0.46962  0.97096  0.4730614
+#' ## nonpar.test  1.00000  0.57874  0.79594  0.3930481
+#' ## ==== Comp2 ====
+#' ## outA       outB        outC        outD
+#' ## #PCs         2.0000e+00  1.0000000  3.0000e+00  1.0000e+00
+#' ## MNV          3.1147e-10         NA  1.0851e-07          NA
+#' ## par.test     2.5455e-06  0.0088667  1.1112e-03  2.0993e-18
+#' ## nonpar.test  1.0825e-05  0.0089307  1.0500e-03  1.0825e-05
+#' ## ==== Comp3 ====
+#' ## outA        outB        outC        outD
+#' ## #PCs         1.0000e+00  1.0000e+00  2.0000e+00  3.0000e+00
+#' ## MNV                  NA          NA  5.3807e-14  4.9585e-09
+#' ## par.test     6.7272e-17  6.5777e-11  1.7047e-15  1.8089e-09
+#' ## nonpar.test  1.0825e-05  1.0825e-05  1.0825e-05  1.0825e-05
 #'
 print.micomp <- function(mcmp) {
 
@@ -215,7 +289,34 @@ print.micomp <- function(mcmp) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # A micomp object from package datasets (i.e. grpoutputs objects) directly
+#'
+#' summary(micomp(5, 0.85,
+#'                list(list(name = "CompEq", grpout = pphpc_ok),
+#'                     list(name = "CompNoShuf", grpout = pphpc_noshuff),
+#'                     list(name = "CompDiff", grpout = pphpc_diff))))
+#'
+#' ## $CompEq
+#' ## out1      out2      out3       out4      out5
+#' ## #PCs        2.0000000 1.0000000 3.0000000 5.00000000 7.0000000
+#' ## MNV         0.4122154        NA 0.4252224 0.04473072 0.5505714
+#' ## par.test    0.8207035 0.4696199 0.9709602 0.47306136 0.3597001
+#' ## nonpar.test 1.0000000 0.5787417 0.7959363 0.39304813 0.5787417
+#' ##
+#' ## $CompNoShuf
+#' ## out1        out2         out3         out4       out5
+#' ## #PCs        2.000000e+00 1.000000000 2.000000e+00 1.000000e+00 7.00000000
+#' ## MNV         3.114719e-10          NA 6.396187e-08           NA 0.18049297
+#' ## par.test    2.545483e-06 0.008866718 1.111168e-03 2.099258e-18 0.05728007
+#' ## nonpar.test 1.082509e-05 0.008930698 1.050034e-03 1.082509e-05 0.07525601
+#' ##
+#' ## $CompDiff
+#' ## out1         out2         out3         out4         out5
+#' ## #PCs        1.000000e+00 1.000000e+00 2.000000e+00 1.000000e+00 5.000000e+00
+#' ## MNV                   NA           NA 5.380703e-14           NA 1.242782e-06
+#' ## par.test    6.727250e-17 6.577743e-11 1.704694e-15 1.808875e-09 1.823478e-08
+#' ## nonpar.test 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05
 #'
 summary.micomp <- function(mcmp) {
 
@@ -263,7 +364,11 @@ summary.micomp <- function(mcmp) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' plot(micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.95,
+#'             list(list(name = "I", grpout = pphpc_ok),
+#'                  list(name = "II", grpout = pphpc_noshuff),
+#'                  list(name = "III", grpout = pphpc_diff))))
 #'
 plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 

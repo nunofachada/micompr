@@ -30,6 +30,32 @@ information:
 Summary method for objects of class \code{\link{micomp}}.
 }
 \examples{
-NULL
+# A micomp object from package datasets (i.e. grpoutputs objects) directly
+
+summary(micomp(5, 0.85,
+               list(list(name = "CompEq", grpout = pphpc_ok),
+                    list(name = "CompNoShuf", grpout = pphpc_noshuff),
+                    list(name = "CompDiff", grpout = pphpc_diff))))
+
+## $CompEq
+## out1      out2      out3       out4      out5
+## #PCs        2.0000000 1.0000000 3.0000000 5.00000000 7.0000000
+## MNV         0.4122154        NA 0.4252224 0.04473072 0.5505714
+## par.test    0.8207035 0.4696199 0.9709602 0.47306136 0.3597001
+## nonpar.test 1.0000000 0.5787417 0.7959363 0.39304813 0.5787417
+##
+## $CompNoShuf
+## out1        out2         out3         out4       out5
+## #PCs        2.000000e+00 1.000000000 2.000000e+00 1.000000e+00 7.00000000
+## MNV         3.114719e-10          NA 6.396187e-08           NA 0.18049297
+## par.test    2.545483e-06 0.008866718 1.111168e-03 2.099258e-18 0.05728007
+## nonpar.test 1.082509e-05 0.008930698 1.050034e-03 1.082509e-05 0.07525601
+##
+## $CompDiff
+## out1         out2         out3         out4         out5
+## #PCs        1.000000e+00 1.000000e+00 2.000000e+00 1.000000e+00 5.000000e+00
+## MNV                   NA           NA 5.380703e-14           NA 1.242782e-06
+## par.test    6.727250e-17 6.577743e-11 1.704694e-15 1.808875e-09 1.823478e-08
+## nonpar.test 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05
 }
 

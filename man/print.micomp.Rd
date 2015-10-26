@@ -17,6 +17,30 @@ methods.
 Print information about objects of class \code{\link{micomp}}.
 }
 \examples{
-NULL
+# A micomp object from package datasets (i.e. grpoutputs objects) directly
+
+micomp(c("outA", "outB", "outC", "outD"), 0.9,
+              list(list(name = "Comp1", grpout = pphpc_ok),
+                   list(name = "Comp2", grpout = pphpc_noshuff),
+                   list(name = "Comp3", grpout = pphpc_diff)))
+
+## ==== Comp1 ====
+## outA     outB     outC       outD
+## #PCs         3.00000  2.00000  4.00000  7.0000000
+## MNV          0.26966  0.31754  0.31275  0.0022934
+## par.test     0.82070  0.46962  0.97096  0.4730614
+## nonpar.test  1.00000  0.57874  0.79594  0.3930481
+## ==== Comp2 ====
+## outA       outB        outC        outD
+## #PCs         2.0000e+00  1.0000000  3.0000e+00  1.0000e+00
+## MNV          3.1147e-10         NA  1.0851e-07          NA
+## par.test     2.5455e-06  0.0088667  1.1112e-03  2.0993e-18
+## nonpar.test  1.0825e-05  0.0089307  1.0500e-03  1.0825e-05
+## ==== Comp3 ====
+## outA        outB        outC        outD
+## #PCs         1.0000e+00  1.0000e+00  2.0000e+00  3.0000e+00
+## MNV                  NA          NA  5.3807e-14  4.9585e-09
+## par.test     6.7272e-17  6.5777e-11  1.7047e-15  1.8089e-09
+## nonpar.test  1.0825e-05  1.0825e-05  1.0825e-05  1.0825e-05
 }
 
