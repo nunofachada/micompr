@@ -1,7 +1,6 @@
 library(micompr)
 context("cmpoutput")
 
-# Test pvalcol
 test_that("cmpoutput constructs the expected objects", {
 
   # Minimum percentage of variance to be explained
