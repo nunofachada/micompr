@@ -40,7 +40,11 @@ assumptions <- function(obj) UseMethod("assumptions")
 #' @note This function requires the \code{MVN} and \code{biotools} packages.
 #'
 #' @examples
-#' NULL
+#'
+#' # Determine the assumptions of applying MANOVA to the iris data
+#' # (i.e. multivariate normality of each group and homogeneity of covariance
+#' # matrices)
+#' a <- assumptions_manova(iris[, 1:4], iris[, 5])
 #'
 assumptions_manova <- function(data, factors) {
 
@@ -98,7 +102,11 @@ assumptions_manova <- function(data, factors) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Determine the assumptions of applying ANOVA to each column (dependent
+#' # variable) of the iris data (i.e. normality of each group and homogeneity of
+#' # variances)
+#' a <- assumptions_paruv(iris[, 1:4], iris[, 5])
 #'
 assumptions_paruv <- function(data, factors) {
 
@@ -152,14 +160,27 @@ assumptions_paruv <- function(data, factors) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Print information concerning the assumptions of applying MANOVA to the iris
+#' # data (i.e. multivariate normality of each group and homogeneity of
+#' # covariance matrices)
+#' assumptions_manova(iris[, 1:4], iris[, 5])
+#'
+#' ## Royston test (Multivariate Normality):
+#' ##         P-value 'setosa': 2.187653e-06
+#' ##         P-value 'versicolor': 0.0847746
+#' ##         P-value 'virginica': 0.06776605
+#' ## Box's M test (Homogeneity of Covariance Matrices):
+#' ##         P-value: 3.352034e-20
 #'
 print.assumptions_manova <- function(asmnv) {
 
+  cat("Royston test (Multivariate Normality):\n")
   for (grp in names(asmnv$mvntest)) {
-    cat(grp, ":", asmnv$mvntest[[grp]]@p.value, "\n")
+    cat("\tP-value '", grp, "': ", asmnv$mvntest[[grp]]@p.value, "\n", sep = "")
   }
-  cat("Var:", asmnv$vartest$p.value, "\n")
+  cat("Box's M test (Homogeneity of Covariance Matrices):\n")
+  cat("\tP-value:", asmnv$vartest$p.value, "\n")
 
   invisible(asmnv)
 }
@@ -179,25 +200,45 @@ print.assumptions_manova <- function(asmnv) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Print information about the assumptions of applying ANOVA to each column
+#' # (dependent variable) of the iris data (i.e. normality of each group and
+#' # homogeneity of variances)
+#' assumptions_paruv(iris[, 1:4], iris[, 5])
+#'
+#' ## Shapiro-Wilk test (Normality):
+#' ##         P-value(s) 'setosa':  0.4595132 0.2715264 0.05481147 8.658573e-07
+#' ##         P-value(s) 'versicolor':  0.464737 0.3379951 0.1584778 0.0272778
+#' ##         P-value(s) 'virginica':  0.2583147 0.180896 0.1097754 0.08695419
+#' ## Bartlett test (Homogeneity of Variances):
+#' ##         P-value(s):  0.0003345076 0.3515028 9.229038e-13 3.054784e-09
 #'
 print.assumptions_paruv <- function(aspuv) {
 
   maxvars <- min(5, length(aspuv$uvntest[[1]]))
 
+  cat("Shapiro-Wilk test (Normality):\n")
   for (grp in names(aspuv$uvntest)) {
-    cat(grp, ": ")
+    cat("\tP-value(s) '", grp, "': ", sep = "")
     for (i in 1:maxvars) {
       cat("", aspuv$uvntest[[grp]][[i]]$p.value)
     }
-    cat(" ... \n")
+    if (length(aspuv$uvntest[[1]]) > 5) {
+      cat(" ... \n")
+    } else {
+      cat("\n")
+    }
   }
 
-  cat("Var :")
+  cat("Bartlett test (Homogeneity of Variances):\n\tP-value(s): ")
   for (i in 1:maxvars) {
     cat("", aspuv$vartest[[i]]$p.value)
   }
-  cat(" ... \n")
+  if (length(aspuv$uvntest[[1]]) > 5) {
+    cat(" ... \n")
+  } else {
+    cat("\n")
+  }
 
   invisible(aspuv)
 }
@@ -218,7 +259,13 @@ print.assumptions_paruv <- function(aspuv) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Plot the Royston test p-value for multivariate normality of each group
+#' # (species) of the iris data
+#' plot(assumptions_manova(iris[, 1:4], iris[, 5]))
+#'
+#' # Plot the same data with logarithmic scale for p-values
+#' plot(assumptions_manova(iris[, 1:4], iris[, 5]), log = "y")
 #'
 plot.assumptions_manova <- function(asmnv, ...) {
 
@@ -254,7 +301,13 @@ plot.assumptions_manova <- function(asmnv, ...) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Plot the Shapiro-Wilk and Bartlett test p-values for each dependent
+#' # variable of the iris data
+#' plot(assumptions_paruv(iris[, 1:4], iris[, 5]))
+#'
+#' # Plot the same data with logarithmic scale for p-values
+#' plot(assumptions_paruv(iris[, 1:4], iris[, 5]), log = "y")
 #'
 plot.assumptions_paruv <- function(aspuv, extra = 0, ...) {
 

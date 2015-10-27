@@ -22,6 +22,11 @@ multivariate normality test (\code{\link[MVN]{roystonTest}}) for each group
 being compared.
 }
 \examples{
-NULL
+# Plot the Royston test p-value for multivariate normality of each group
+# (species) of the iris data
+plot(assumptions_manova(iris[, 1:4], iris[, 5]))
+
+# Plot the same data with logarithmic scale for p-values
+plot(assumptions_manova(iris[, 1:4], iris[, 5]), log = "y")
 }
 

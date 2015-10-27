@@ -28,7 +28,13 @@ containing two elements:
 Determine two assumptions for the MANOVA test: a) multivariate normality
 of each group; b) homogeneity of covariance matrices.
 }
+\note{
+This function requires the \code{MVN} and \code{biotools} packages.
+}
 \examples{
-NULL
+# Determine the assumptions of applying MANOVA to the iris data
+# (i.e. multivariate normality of each group and homogeneity of covariance
+# matrices)
+a <- assumptions_manova(iris[, 1:4], iris[, 5])
 }
 

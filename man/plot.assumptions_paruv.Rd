@@ -32,6 +32,11 @@ compared; individual bars in each plot represent the \emph{p}-values
 associated with each principal component.
 }
 \examples{
-NULL
+# Plot the Shapiro-Wilk and Bartlett test p-values for each dependent
+# variable of the iris data
+plot(assumptions_paruv(iris[, 1:4], iris[, 5]))
+
+# Plot the same data with logarithmic scale for p-values
+plot(assumptions_paruv(iris[, 1:4], iris[, 5]), log = "y")
 }
 

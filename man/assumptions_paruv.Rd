@@ -28,6 +28,9 @@ Determine two assumptions for the parametric comparison tests (i.e. either
 namely: a) univariate normality of each group; b) homogeneity of variances.
 }
 \examples{
-NULL
+# Determine the assumptions of applying ANOVA to each column (dependent
+# variable) of the iris data (i.e. normality of each group and homogeneity of
+# variances)
+a <- assumptions_paruv(iris[, 1:4], iris[, 5])
 }
 
