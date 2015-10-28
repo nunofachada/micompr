@@ -41,6 +41,11 @@ covariance matrices, respectively. The following bar plots are shown:
 }
 }
 \examples{
-NULL
+# Create a cmpoutput object from the provided datasets
+cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+
+# Display a bar plot with the p-values of the assumptions for the parametric
+# tests performed in cmp
+plot(assumptions(cmp))
 }
 

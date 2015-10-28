@@ -21,6 +21,10 @@ Get assumptions for parametric tests performed on output comparisons (i.e.
 from objects of class \code{\link{cmpoutput}}).
 }
 \examples{
-NULL
+# Create a cmpoutput object from the provided datasets
+cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+
+# Get the assumptions for the parametric tests performed in cmp
+acmp <- assumptions(cmp)
 }
 

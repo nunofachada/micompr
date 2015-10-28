@@ -351,7 +351,12 @@ plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Create a cmpoutput object from the provided datasets
+#' cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+#'
+#' # Get the assumptions for the parametric tests performed in cmp
+#' acmp <- assumptions(cmp)
 #'
 assumptions.cmpoutput <- function(cmpout) {
 
@@ -418,7 +423,14 @@ assumptions.cmpoutput <- function(cmpout) {
 #' @export
 #'
 #' @examples
-#' NULL
+#'
+#' # Create a cmpoutput object from the provided datasets
+#' cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+#'
+#' # Display a bar plot with the p-values of the assumptions for the parametric
+#' # tests performed in cmp
+#' plot(assumptions(cmp))
+#'
 plot.assumptions_cmpoutput <- function(cmpoass, ...) {
 
   if (exists("manova", where = cmpoass)) {

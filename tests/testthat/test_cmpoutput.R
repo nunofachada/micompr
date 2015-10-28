@@ -147,5 +147,18 @@ test_that("cmpoutput throws errors when improperly invoked", {
     fixed = TRUE
   )
 
+})
+
+test_that("assumptions.cmpoutput creates the correct object", {
+
+  # Create a cmpoutput object from the provided datasets
+  cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+
+  # Get the assumptions for the parametric tests performed in cmp
+  acmp <- assumptions(cmp)
+
+  expect_is(acmp, "assumptions_cmpoutput")
+  expect_is(acmp$manova, "assumptions_manova")
+  expect_is(acmp$ttest, "assumptions_paruv")
 
 })
