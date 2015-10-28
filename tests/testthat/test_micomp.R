@@ -161,7 +161,7 @@ test_that("micomp throws errors when improperly invoked", {
 test_that("micomp assumptions have the correct properties", {
 
   # Minimum percentage of variance to be explained
-  minvar <- 0.9
+  minvar <- 0.8
 
   # Determine location of extdata files
   dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")

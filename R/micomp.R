@@ -571,11 +571,17 @@ summary.assumptions_micomp <- function(micas) {
   for (i in 1:ncomp) {
 
     # Get the p-values for the MANOVA assumptions
-    mnv <- lapply(micas[,i], function(ma) {
+    mnv <- lapply(micas[, i], function(ma) {
       # Was MANOVA performed?
       if (exists("manova", where = ma)) {
         # Get the Royston test p-values
-        pvals <- sapply(ma$manova$mvntest, function(x) return(x@p.value))
+        pvals <- sapply(ma$manova$mvntest, function(x) {
+          if (!is.na(x)) {
+            return(x@p.value)
+          } else {
+            return(NA)
+          }
+        })
         names(pvals) <- paste("Royston(", names(pvals), ")", sep = "")
         # Get the Box test p-values
         pvals <- c(pvals, `BoxM(Var.)` = ma$manova$vartest$p.value)

@@ -67,25 +67,40 @@ assumptions_manova <- function(data, factors) {
 
   # Cycle through factors for the multivariate normality tests
   for (f in unique(factors)) {
+
     # Indexes of current factor level
     fidx <- factors == f
     nobs <- sum(fidx)
 
+    # Royston test requires at least four observations
     if (nobs > 3) {
+
+      # Royston test requires that there are more observations than variables
+      # for each group
       if (nobs > nvars) {
+
         assumpt$mvntest[[f]] <-
           MVN::roystonTest(data[fidx, ])
+
       } else {
+
+        # If there are no more observations than variables for current group,
+        # then perform test with less variables and warn the user
         assumpt$mvntest[[f]] <-
           MVN::roystonTest(data[fidx, 1:min(nobs - 1, nvars)])
-        warning(paste("Royston test requires more observations (dependent",
-                      "variables) than independent variables (IVs). Reducing",
-                      "number of IVs from", nvars, "to", nobs - 1,"."))
+        warning(paste("Royston test requires more observations than ",
+                      "(dependent) variables (DVs). Reducing number of ",
+                      "variables from ", nvars, " to ", nobs - 1," in group '",
+                      f, "'.", sep = ""), call. = F, immediate. = T)
       }
     } else {
-      assumpt$mvntest[[f]] <- NULL
-      warning(paste("Royston test requires at least 4 observations",
-                    "(independent variables)"))
+
+      # Don't perform test if number of observations is less than 4
+      assumpt$mvntest[[f]] <- NA
+      warning(paste("Royston test requires at least 4 observations ",
+                    "(independent variables), but there are only ", nobs,
+                    " observations in group '", f, "'. Test not performed.",
+                    sep = ""), call. = F, immediate. = T)
     }
   }
 
@@ -193,7 +208,12 @@ print.assumptions_manova <- function(asmnv) {
 
   cat("Royston test (Multivariate Normality):\n")
   for (grp in names(asmnv$mvntest)) {
-    cat("\tP-value '", grp, "': ", asmnv$mvntest[[grp]]@p.value, "\n", sep = "")
+    if (!is.na(asmnv$mvntest[[grp]])) {
+      cat("\tP-value '", grp, "': ",
+          asmnv$mvntest[[grp]]@p.value, "\n", sep = "")
+    } else {
+      cat("\tTest not performed.\n")
+    }
   }
   cat("Box's M test (Homogeneity of Covariance Matrices):\n")
   cat("\tP-value:", asmnv$vartest$p.value, "\n")
