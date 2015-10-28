@@ -70,12 +70,28 @@ assumptions_manova <- function(data, factors) {
     # Indexes of current factor level
     fidx <- factors == f
     nobs <- sum(fidx)
-    assumpt$mvntest[[f]] <- MVN::roystonTest(data[fidx,1:min(nobs - 1, nvars)])
+
+    if (nobs > 3) {
+      if (nobs > nvars) {
+        assumpt$mvntest[[f]] <-
+          MVN::roystonTest(data[fidx, ])
+      } else {
+        assumpt$mvntest[[f]] <-
+          MVN::roystonTest(data[fidx, 1:min(nobs - 1, nvars)])
+        warning(paste("Royston test requires more observations (dependent",
+                      "variables) than independent variables (IVs). Reducing",
+                      "number of IVs from", nvars, "to", nobs - 1,"."))
+      }
+    } else {
+      assumpt$mvntest[[f]] <- NULL
+      warning(paste("Royston test requires at least 4 observations",
+                    "(independent variables)"))
+    }
   }
 
   # Perform the homogeneity of covariance matrices test (Box's M)
   maxvars <- min(table(factors) - 1, nvars)
-  assumpt$vartest <- biotools::boxM(data[,1:maxvars], factors)
+  assumpt$vartest <- biotools::boxM(data[, 1:maxvars], factors)
 
   assumpt
 }

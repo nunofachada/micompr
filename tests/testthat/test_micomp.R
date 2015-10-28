@@ -156,3 +156,123 @@ test_that("micomp throws errors when improperly invoked", {
   )
 
 })
+
+
+test_that("micomp assumptions have the correct properties", {
+
+  # Minimum percentage of variance to be explained
+  minvar <- 0.9
+
+  # Determine location of extdata files
+  dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
+  dir_jex_ok <- system.file("extdata", "j_ex_ok", package = "micompr")
+  dir_jex_noshuff <- system.file("extdata", "j_ex_noshuff", package = "micompr")
+  dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
+  dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
+  files <- "stats400v1*.tsv"
+  filesA_na <- "stats400v1*n20A.tsv"
+  filesB_na <- "stats400v1*n20B.tsv"
+
+  ##### Create micomp objects #####
+
+  # 1 - Build a micomp object using data from extdata files
+
+  # 1a - Use files containing package datasets, three comparisons
+  mic1a <- micomp(7, minvar,
+                  list(
+                    list(name = "NLOKvsJEXOK",
+                         folders = c(dir_nl_ok, dir_jex_ok),
+                         files = c(files, files),
+                         lvls = c("NLOK", "JEXOK")),
+                    list(name = "NLOKvsJEXNOSHUFF",
+                         folders = c(dir_nl_ok, dir_jex_noshuff),
+                         files = c(files, files),
+                         lvls = c("NLOK", "JEXNOSHUFF")),
+                    list(name = "NLOKvsJEXDIFF",
+                         folders = c(dir_nl_ok, dir_jex_diff),
+                         files = c(files, files),
+                         lvls = c("NLOK", "JEXDIFF"))),
+                  concat = T)
+
+  # 1b - Use files containing test dataset, one comparison, just five outputs
+  # (unnamed), no concatenation, unnamed levels
+  mic1b <- micomp(5, minvar,
+                  list(
+                    list(name = "testVLOdata",
+                         folders = dir_na,
+                         files = c(filesA_na, filesB_na))))
+
+  # 2 - Use package datasets (i.e. grpoutputs objects) directly
+  mic2 <- micomp(7, minvar,
+                 list(
+                   list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
+                   list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
+                   list(name = "NLOKvsJEXDIFF", grpout = pphpc_diff)),
+                 concat = T)
+
+  # 3 - Use manually inserted data, unnamed outputs, no concatenation
+  mic3 <- micomp(6, minvar,
+                 list(
+                   list(name = "NLOKvsJEXOK",
+                        grpout = list(data = pphpc_ok$data,
+                                      factors = pphpc_ok$factors)),
+                   list(name = "NLOKvsJEXNOSHUFF",
+                        grpout = list(data = pphpc_noshuff$data,
+                                      factors = pphpc_noshuff$factors)),
+
+                   list(name = "NLOKvsJEXDIFF",
+                        grpout = list(data = pphpc_diff$data,
+                                      factors = pphpc_diff$factors))),
+                 concat = F)
+
+  ##### Create an assumptions_micomp object for each micomp object #####
+
+  am1a <- assumptions(mic1a)
+  am1b <- assumptions(mic1b)
+  am2 <- assumptions(mic2)
+  am3 <- assumptions(mic3)
+
+  ##### Start testing #####
+
+  # Check that the objects are of the correct type
+  expect_is(am1a, "assumptions_micomp")
+  expect_is(am1b, "assumptions_micomp")
+  expect_is(am2, "assumptions_micomp")
+  expect_is(am3, "assumptions_micomp")
+
+  # Check that assumptions objects have the same dimensions as the respective
+  # micomp objects
+  expect_equal(dim(am1a), dim(mic1a))
+  expect_equal(dim(am1b), dim(mic1b))
+  expect_equal(dim(am2), dim(mic2))
+  expect_equal(dim(am3), dim(mic3))
+
+  # Check that assumptions objects have the same row names as the respective
+  # micomp objects
+  expect_equal(rownames(am1a), rownames(mic1a))
+  expect_equal(rownames(am1b), rownames(mic1b))
+  expect_equal(rownames(am2), rownames(mic2))
+  expect_equal(rownames(am3), rownames(mic3))
+
+  # Check that assumptions objects have the same column names as the respective
+  # micomp objects
+  expect_equal(colnames(am1a), colnames(mic1a))
+  expect_equal(colnames(am1b), colnames(mic1b))
+  expect_equal(colnames(am2), colnames(mic2))
+  expect_equal(colnames(am3), colnames(mic3))
+
+  # Check properties of sub-objects
+  for (a in c(am1a, am1b, am2, am3)) {
+    for (i in 1:dim(a)[1]) {
+      for (j in 1:dim(a)[2]) {
+
+        # Get current subobject
+        sobj <- a[[i, j]]
+
+        # Is subobject a assumptions_cmpoutput object?
+        expect_is(sobj, "assumptions_cmpoutput")
+      }
+    }
+  }
+
+})
