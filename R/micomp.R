@@ -576,7 +576,7 @@ summary.assumptions_micomp <- function(micas) {
       if (exists("manova", where = ma)) {
         # Get the Royston test p-values
         pvals <- sapply(ma$manova$mvntest, function(x) {
-          if (!is.na(x)) {
+          if (is(x, "royston")) {
             return(x@p.value)
           } else {
             return(NA)

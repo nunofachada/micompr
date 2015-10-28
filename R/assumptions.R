@@ -208,7 +208,7 @@ print.assumptions_manova <- function(asmnv) {
 
   cat("Royston test (Multivariate Normality):\n")
   for (grp in names(asmnv$mvntest)) {
-    if (!is.na(asmnv$mvntest[[grp]])) {
+    if (is(asmnv$mvntest[[grp]], "royston")) {
       cat("\tP-value '", grp, "': ",
           asmnv$mvntest[[grp]]@p.value, "\n", sep = "")
     } else {
