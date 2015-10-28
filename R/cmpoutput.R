@@ -87,8 +87,8 @@ cmpoutput <- function(name, ve, data, factors) {
   # Manova
   if (npcs > 1) {
     # Can only use manova if more than one variable
-    mnvtest <- manova(pca$x[,1:npcs] ~ factors)
-    mnvpval <- summary(mnvtest)$stats[1,6]
+    mnvtest <- manova(pca$x[, 1:npcs] ~ factors)
+    mnvpval <- summary(mnvtest)$stats[1, 6]
   } else {
     # Only one variable, can't use manova
     mnvtest <- NULL
@@ -107,11 +107,11 @@ cmpoutput <- function(name, ve, data, factors) {
     for (i in 1:npcs) {
 
       # Parametric test (t-test) for each PC
-      partests[[i]] <- t.test(pca$x[,i] ~ factors, var.equal = T)
+      partests[[i]] <- t.test(pca$x[, i] ~ factors, var.equal = T)
       parpvals[i] <- partests[[i]]$p.value
 
       # Non-parametric test (Mann-Whitney) for each PC
-      nonpartests[[i]] <- wilcox.test(pca$x[,i] ~ factors)
+      nonpartests[[i]] <- wilcox.test(pca$x[, i] ~ factors)
       nonparpvals[i] <- nonpartests[[i]]$p.value
 
     }
@@ -123,11 +123,11 @@ cmpoutput <- function(name, ve, data, factors) {
     for (i in 1:npcs) {
 
       # Parametric test (ANOVA) for each PC
-      partests[[i]] <- aov(pca$x[,i] ~ factors)
+      partests[[i]] <- aov(pca$x[, i] ~ factors)
       parpvals[i] <- summary(partests[[i]])[[1]]$"Pr(>F)"[1]
 
       # Non-parametric test (Kruskal-Wallis) for each PC
-      nonpartests[[i]] <- kruskal.test(pca$x[,i] ~ factors)
+      nonpartests[[i]] <- kruskal.test(pca$x[, i] ~ factors)
       nonparpvals[i] <- nonpartests[[i]]$p.value
 
     }
