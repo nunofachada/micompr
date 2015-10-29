@@ -594,6 +594,7 @@ summary.assumptions_micomp <- function(micas) {
         # Set a vector of NAs (+1 for the Box test p-value)
         pvals <- rep(NA, ncmpmod + 1)
       }
+      # Set test names
       names(pvals) <- c(paste("Royston(", lvls, ")", sep = ""), "BoxM(Var.)")
       return(pvals)
     })

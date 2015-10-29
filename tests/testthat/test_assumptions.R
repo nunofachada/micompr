@@ -31,6 +31,43 @@ test_that("assumptions_manova constructs the expected objects", {
 
 })
 
+test_that("assumptions_manova throws the expected warnings", {
+
+  # Create bogus data for testing
+  bogus_data <- matrix(rnorm(100), ncol = 10)
+  factors <- c(rep("A", 3), rep("B", 3), rep("C", 4))
+
+  # Test depends on whether the MVN and biotools packages are present
+  if (!requireNamespace("MVN", quietly = TRUE) ||
+      !requireNamespace("biotools", quietly = TRUE) ) {
+
+    # MVN and biotools packages are NOT present
+
+    expect_message(assumptions_manova(bogus_data, factors),
+                   "MANOVA assumptions require 'MVN' and 'biotools' packages.")
+
+    expect_null(assumptions_manova(bogus_data, factors))
+
+  } else {
+
+    # MVN and biotools packages are present, perform test
+
+    # This warning is thrown twice because of groups A and B
+    expect_warning(assumptions_manova(bogus_data, factors),
+                   "Royston test requires at least 4 observations",
+                   fixed = TRUE)
+
+    # This warning is thrown because of group C, which has more variables (10)
+    # than observations (4)
+    expect_warning(assumptions_manova(bogus_data, factors),
+                   "Royston test requires more observations than (dependent)",
+                   fixed = TRUE)
+
+
+  }
+
+})
+
 test_that("assumptions_paruv constructs the expected objects", {
 
   auv <- assumptions_paruv(iris[, 1:4], iris[, 5])

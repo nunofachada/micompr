@@ -227,10 +227,15 @@ test_that("micomp assumptions have the correct properties", {
 
   ##### Create an assumptions_micomp object for each micomp object #####
 
+  oldw <- getOption("warn")
+  options(warn = -1)
+
   am1a <- assumptions(mic1a)
   am1b <- assumptions(mic1b)
   am2 <- assumptions(mic2)
   am3 <- assumptions(mic3)
+
+  options(warn = oldw)
 
   ##### Start testing #####
 

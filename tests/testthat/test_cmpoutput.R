@@ -151,14 +151,73 @@ test_that("cmpoutput throws errors when improperly invoked", {
 
 test_that("assumptions.cmpoutput creates the correct object", {
 
+  #### No warnings #####
+
   # Create a cmpoutput object from the provided datasets
-  cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+  cmp <- cmpoutput("All", 0.8, pphpc_ok$data[["All"]], pphpc_ok$factors)
 
   # Get the assumptions for the parametric tests performed in cmp
   acmp <- assumptions(cmp)
 
+  # Check that the objects are of the correct type
   expect_is(acmp, "assumptions_cmpoutput")
   expect_is(acmp$manova, "assumptions_manova")
   expect_is(acmp$ttest, "assumptions_paruv")
+
+  #### Warnings about more variables than observations ####
+
+  # Create a cmpoutput object from the provided datasets, set ve to 0.9 such
+  # that more PCs are required than before
+  cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+
+  # Check that the creation of the assumptions object produces the expected
+  # warnings, i.e. that there are more variables (represented by the PCs) than
+  # observations
+  expect_warning(assumptions(cmp),
+                 paste("Royston test requires more observations than",
+                       "(dependent) variables (DVs). Reducing number of",
+                       "variables from 10 to 9 in group"),
+                 fixed = TRUE)
+
+  # Get the assumptions for the parametric tests performed in cmp, disable
+  # warnings this time
+  oldw <- getOption("warn")
+  options(warn = -1)
+
+  acmp <- assumptions(cmp)
+
+  options(warn = oldw)
+
+  # Check that the objects are of the correct type
+  expect_is(acmp, "assumptions_cmpoutput")
+  expect_is(acmp$manova, "assumptions_manova")
+  expect_is(acmp$ttest, "assumptions_paruv")
+
+  #### Test with insufficient observations for the Royston test ####
+
+  # In this case it should not be possible to perform the Royston test
+  cmp <- cmpoutput("GrassEn",
+                   0.9,
+                   pphpc_testvlo$data[["Energy.Grass"]],
+                   pphpc_testvlo$factors)
+
+  # Check that if it is so
+  expect_warning(assumptions(cmp),
+                 "Royston test requires at least 4 observations",
+                 fixed = TRUE)
+
+  # Do create the object and check remaining stuff
+  oldw <- getOption("warn")
+  options(warn = -1)
+
+  acmp <- assumptions(cmp)
+
+  options(warn = oldw)
+
+  # Check that the objects are of the correct type
+  expect_is(acmp, "assumptions_cmpoutput")
+  expect_is(acmp$manova, "assumptions_manova")
+  expect_is(acmp$ttest, "assumptions_paruv")
+
 
 })

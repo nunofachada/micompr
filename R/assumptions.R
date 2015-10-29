@@ -91,7 +91,7 @@ assumptions_manova <- function(data, factors) {
         warning(paste("Royston test requires more observations than ",
                       "(dependent) variables (DVs). Reducing number of ",
                       "variables from ", nvars, " to ", nobs - 1," in group '",
-                      f, "'.", sep = ""), call. = F, immediate. = T)
+                      f, "'.", sep = ""), call. = F)
       }
     } else {
 
@@ -100,7 +100,7 @@ assumptions_manova <- function(data, factors) {
       warning(paste("Royston test requires at least 4 observations ",
                     "(independent variables), but there are only ", nobs,
                     " observations in group '", f, "'. Test not performed.",
-                    sep = ""), call. = F, immediate. = T)
+                    sep = ""), call. = F)
     }
   }
 
