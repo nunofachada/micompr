@@ -267,9 +267,9 @@ test_that("micomp assumptions have the correct properties", {
   expect_equal(colnames(am3), colnames(mic3))
 
   # Check properties of sub-objects
-  for (a in c(am1a, am1b, am2, am3)) {
-    for (i in 1:dim(a)[1]) {
-      for (j in 1:dim(a)[2]) {
+  for (a in list(am1a, am1b, am2, am3)) {
+    for (i in 1:(dim(a)[1])) {
+      for (j in 1:(dim(a)[2])) {
 
         # Get current subobject
         sobj <- a[[i, j]]
@@ -280,4 +280,17 @@ test_that("micomp assumptions have the correct properties", {
     }
   }
 
+  #### Test the summary function
+  sam1a <- summary(am1a)
+  sam1b <- summary(am1b)
+  sam2 <- summary(am2)
+  sam3 <- summary(am3)
+
+  expect_equal(names(sam1a),
+               c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
+  expect_equal(names(sam1b), "testVLOdata")
+  expect_equal(names(sam2),
+               c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
+  expect_equal(names(sam3),
+               c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
 })
