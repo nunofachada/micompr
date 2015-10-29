@@ -1,6 +1,7 @@
 - Add examples to doccomments
 - Add tests
+- Avoid explicit "col" parameter in plot methods
 - Package level doc
 - Check that @return tag is correct for all functions
 - Turn some list fields into attributes
-- Warning in both MANOVA and mv assumptions when nvars >= nobs (e.g. "requires more samples")
+- Warning in MANOVA when nvars >= nobs (e.g. "requires more samples")

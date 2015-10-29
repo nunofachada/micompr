@@ -35,6 +35,13 @@ contain the assumptions for the parametric tests used in multiple comparisons
 of simulation output.
 }
 \examples{
-NULL
+# Create a micomp object, use provided dataset
+mic <- micomp(5, 0.8,
+              list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
+                   list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff)),
+              concat = TRUE)
+
+# Get the assumptions summary
+sam <- summary(assumptions(mic))
 }
 
