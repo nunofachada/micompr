@@ -570,6 +570,10 @@ summary.assumptions_micomp <- function(micas) {
   # Cycle through comparisons
   for (i in 1:ncomp) {
 
+    # Fetch the names of the groups being compared (i.e. levels) from the
+    # first output for the current  comparison
+    lvls <- names(micas[[1, i]]$ttest$uvntest)
+
     # Get the p-values for the MANOVA assumptions
     mnv <- lapply(micas[, i], function(ma) {
       # Was MANOVA performed?
@@ -582,22 +586,22 @@ summary.assumptions_micomp <- function(micas) {
             return(NA)
           }
         })
-        names(pvals) <- paste("Royston(", names(pvals), ")", sep = "")
         # Get the Box test p-values
-        pvals <- c(pvals, `BoxM(Var.)` = ma$manova$vartest$p.value)
+        pvals <- c(pvals, ma$manova$vartest$p.value)
       } else {
         # Number of compared models
         ncmpmod <- length(ma$ttest$uvntest)
         # Set a vector of NAs (+1 for the Box test p-value)
         pvals <- rep(NA, ncmpmod + 1)
       }
+      names(pvals) <- c(paste("Royston(", lvls, ")", sep = ""), "BoxM(Var.)")
       return(pvals)
     })
 
     # Get the p-values for for t-test assumptions
     ttst <- lapply(micas[, i], function(ma) {
       pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
-      names(pvals) <- paste("Shapiro-Wilk(", names(pvals), ")", sep = "")
+      names(pvals) <- paste("Shapiro-Wilk(", lvls, ")", sep = "")
       pvals <- c(pvals, `Bartlett(Var.)` = ma$ttest$vartest[[1]]$p.value)
       return(pvals)
     })
