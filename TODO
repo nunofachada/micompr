@@ -1,5 +1,3 @@
-- Add examples to doccomments
-- Add tests
 - Avoid explicit "col" parameter in plot methods
 - Package level doc
 - Check that @return tag is correct for all functions
