@@ -2,25 +2,22 @@
 % Please edit documentation in R/micomp_latex.R
 \name{pvalf}
 \alias{pvalf}
-\title{Format a \emph{p}-value for printing in a \code{LaTeX} table.}
+\title{Format p-values}
 \usage{
-pvalf(pval)
+pvalf(pval, params)
 }
 \arguments{
-\item{pval}{Numeric value between 0 and 1.}
+\item{pval}{Numeric \emph{p}-value to format (between 0 and 1).}
+
+\item{params}{A list of method-dependent options.}
 }
 \value{
-A string representing the formatted \code{pval}.
+A string representing the formatted \emph{p}-value.
 }
 \description{
-Format a \emph{p}-value for printing in a \code{LaTeX} table. Requires the
-\emph{ulem} \code{LaTeX} package for underlining the \emph{p}-values.
+Generic function to format \emph{p}-values.
 }
-\examples{
-pvalf(0.1)
-# [1] "0.100"
-pvalf(0.000001)
-# [1] "\\\\uuline{1e-06}"
+\seealso{
+\code{\link{pvalf.default}}
 }
-\keyword{internal}
 

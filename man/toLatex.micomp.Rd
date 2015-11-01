@@ -7,7 +7,8 @@
 \method{toLatex}{micomp}(object, ..., data.show = c("npcs", "mnvp", "parp",
   "nparp", "scoreplot"), table.placement = "ht",
   latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
-  caption = NULL, label = NULL, col.width = F, pvalff = pvalf,
+  caption = NULL, label = NULL, col.width = F, pvalf.f = pvalf.default,
+  pvalf.params = list(),
   scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot.scale = 6,
   scoreplot.before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
@@ -45,9 +46,13 @@ environments.}
 
 \item{col.width}{Resize table to page column width?}
 
-\item{pvalff}{\emph{P}-value formatter function, which receives a numeric
+\item{pvalf.f}{\emph{P}-value formatter function, which receives a numeric
 value between 0 and 1 and returns a string containing the formatted value.
-Default is \code{\link{pvalf}} (requires \code{ulem} \code{LaTeX} package).}
+Default is \code{\link{pvalf.default}} (requires \code{ulem} \code{LaTeX}
+package).}
+
+\item{pvalf.params}{Parameters for \code{pvalf.f} function. Default is empty
+list.}
 
 \item{scoreplot.marks}{Vector of strings specifying how \code{TikZ} should
 draw points belonging to each group in the score plot.}

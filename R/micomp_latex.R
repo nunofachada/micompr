@@ -20,36 +20,96 @@ pst <- function(...) {
   paste(..., sep = "", collapse = "")
 }
 
-#' Format a \emph{p}-value for printing in a \code{LaTeX} table.
+#' Format p-values
+#'
+#' Generic function to format \emph{p}-values.
+#'
+#' @param pval Numeric \emph{p}-value to format (between 0 and 1).
+#' @param params A list of method-dependent options.
+#'
+#' @return A string representing the formatted \emph{p}-value.
+#'
+#' @export
+#'
+#' @seealso \code{\link{pvalf.default}}
+#'
+pvalf <- function(pval, params) UseMethod("pvalf")
+
+#' Default p-value formatting method
 #'
 #' Format a \emph{p}-value for printing in a \code{LaTeX} table. Requires the
 #' \emph{ulem} \code{LaTeX} package for underlining the \emph{p}-values.
 #'
 #' @param pval Numeric value between 0 and 1.
+#' @param params A list of options. This function accepts the following options:
+#' \describe{
+#'   \item{minval}{If \emph{p}-value is below this value, return this value
+#'         preceded by a "<" sign instead instead.}
+#'   \item{lim1val}{If \emph{p}-value is below this value, it will be
+#'         double-underlined.}
+#'   \item{lim2val}{If \emph{p}-value is below this value, it will be
+#'         underlined.}
+#' }
 #'
 #' @return A string representing the formatted \code{pval}.
 #'
 #' @export
 #'
-#' @keywords internal
-#'
 #' @examples
 #' pvalf(0.1)
 #' # [1] "0.100"
+#'
 #' pvalf(0.000001)
 #' # [1] "\\uuline{1e-06}"
 #'
-pvalf <- function(pval) {
+#' pvalf(c(0.06, 0.04, 0.005, 0.00001), list(minval = 0.0001))
+#' # [1] "0.060"                 "\\uline{0.040}"        "\\uuline{0.005}"
+#' # [4] "\\uuline{$\\lt$1e-04}"
+#'
+pvalf.default <- function(pval, params = list()) {
+
+  if (exists("minval", where = params)) {
+    minval = params$minval
+  } else {
+    minval = 0
+  }
+
+  if (exists("lim1val", where = params)) {
+    lim1val = params$lim1val
+  } else {
+    lim1val = 0.01
+  }
+
+  if (exists("lim2val", where = params)) {
+    lim2val = params$lim2val
+  } else {
+    lim2val = 0.05
+  }
+
+  if (lim1val >= lim2val) {
+    stop("lim1val must be lower than lim2val.")
+  }
 
   fval <- ifelse(pval > 0.0005,
                  formatC(pval, format = "f", digits = 3),
                  formatC(pval, format = "e", digits = 0))
-  fval <- ifelse(pval < 0.01,
+
+  fval <- ifelse(pval < minval,
+                 paste("<",
+                       ifelse(minval > 0.0005,
+                              formatC(minval, format = "f", digits = 3),
+                              formatC(minval, format = "e", digits = 0)),
+                       sep = ""),
+                 fval)
+
+  fval <- ifelse(pval < lim1val,
                  paste("\\uuline{", fval, "}", sep = ""),
-                 ifelse(pval < 0.05,
+                 ifelse(pval < lim2val,
                         paste("\\uline{", fval, "}", sep = ""),
                         fval))
+
   fval
+
 }
 
 #' Simple \code{TikZ} scatter plot
@@ -213,9 +273,12 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param caption Table caption.
 #' @param label Table label for cross-referencing.
 #' @param col.width Resize table to page column width?
-#' @param pvalff \emph{P}-value formatter function, which receives a numeric
+#' @param pvalf.f \emph{P}-value formatter function, which receives a numeric
 #' value between 0 and 1 and returns a string containing the formatted value.
-#' Default is \code{\link{pvalf}} (requires \code{ulem} \code{LaTeX} package).
+#' Default is \code{\link{pvalf.default}} (requires \code{ulem} \code{LaTeX}
+#' package).
+#' @param pvalf.params Parameters for \code{pvalf.f} function. Default is empty
+#' list.
 #' @param scoreplot.marks Vector of strings specifying how \code{TikZ} should
 #' draw points belonging to each group in the score plot.
 #' @param scoreplot.scale \code{TikZ} scale for each score plot figure.
@@ -253,7 +316,8 @@ toLatex.micomp <- function(
   caption = NULL,
   label = NULL,
   col.width = F,
-  pvalff = pvalf,
+  pvalf.f = pvalf.default,
+  pvalf.params = list(),
   scoreplot.marks = c(
     "mark=square*,mark options={color=red},mark size=0.8pt",
     "mark=*,mark size=0.6pt",
@@ -324,15 +388,21 @@ toLatex.micomp <- function(
       ltxtab[[idx]] <-
         switch(cdata,
                npcs = pst(" & $\\#$PCs ",
-                          pst(" & ", as.integer(smicf["#PCs",])), "\\\\"),
+                          pst(" & ", as.integer(smicf["#PCs", ])), "\\\\"),
                mnvp = pst(" & MNV ",
-                          pst(" & ", pvalff(unlist(smicf["MNV",]))), "\\\\"),
+                          pst(" & ", pvalf.f(unlist(smicf["MNV", ]),
+                                             pvalf.params)),
+                          "\\\\"),
                parp = pst(" & $t$-test ",
                           pst(" & ",
-                              pvalff(unlist(smicf["par.test",]))), "\\\\"),
+                              pvalf.f(unlist(smicf["par.test", ]),
+                                      pvalf.params)),
+                          "\\\\"),
                nparp = pst(" & MW  ",
                            pst(" & ",
-                               pvalff(unlist(smicf["nonpar.test",]))), "\\\\"),
+                               pvalf.f(unlist(smicf["nonpar.test", ]),
+                                       pvalf.params)),
+                           "\\\\"),
                scoreplot = pst(" & PCS ",
                                pst(" & ",
                                    tscat_apply(object[, cmp],
