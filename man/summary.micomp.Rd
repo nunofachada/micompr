@@ -4,10 +4,12 @@
 \alias{summary.micomp}
 \title{Summary method for multiple comparisons of simulation output}
 \usage{
-\method{summary}{micomp}(mcmp)
+\method{summary}{micomp}(object, ...)
 }
 \arguments{
-\item{mcmp}{Object of class \code{\link{micomp}}.}
+\item{object}{Object of class \code{\link{micomp}}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 A list in which each component is associated with a distinct

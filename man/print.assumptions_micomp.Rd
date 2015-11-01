@@ -5,10 +5,10 @@
 \title{Print information about the assumptions concerning the parametric tests
 performed on multiple comparisons of simulation output}
 \usage{
-\method{print}{assumptions_micomp}(micas, ...)
+\method{print}{assumptions_micomp}(x, ...)
 }
 \arguments{
-\item{micas}{Object of class \code{assumptions_micomp}.}
+\item{x}{Object of class \code{assumptions_micomp}.}
 
 \item{...}{Currently ignored.}
 }

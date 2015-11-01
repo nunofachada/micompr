@@ -4,17 +4,19 @@
 \alias{toLatex.micomp}
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
-\method{toLatex}{micomp}(mic, data.show = c("npcs", "mnvp", "parp", "nparp",
-  "scoreplot"), table.placement = "ht", latex.environments = c("center"),
-  booktabs = F, booktabs.cmalign = "l", caption = NULL, label = NULL,
-  col.width = F, pvalff = pvalf,
+\method{toLatex}{micomp}(object, ..., data.show = c("npcs", "mnvp", "parp",
+  "nparp", "scoreplot"), table.placement = "ht",
+  latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
+  caption = NULL, label = NULL, col.width = F, pvalff = pvalf,
   scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot.scale = 6,
   scoreplot.before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
-  scoreplot.after = "}}", ...)
+  scoreplot.after = "}}")
 }
 \arguments{
-\item{mic}{A \code{\link{micomp}} object.}
+\item{object}{A \code{\link{micomp}} object.}
+
+\item{...}{Currently ignored.}
 
 \item{data.show}{Vector of strings specifying what data to show. Available
 options are:
@@ -57,8 +59,6 @@ score plot figure.}
 
 \item{scoreplot.after}{\code{LaTeX} code to paste after each \code{TikZ}
 score plot figure.}
-
-\item{...}{Currently ignored.}
 }
 \value{
 A character vector where each element holds one line of the

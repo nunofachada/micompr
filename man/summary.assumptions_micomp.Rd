@@ -5,10 +5,12 @@
 \title{Summary method for the assumptions of parametric tests used in multiple
 comparisons of simulation output}
 \usage{
-\method{summary}{assumptions_micomp}(micas)
+\method{summary}{assumptions_micomp}(object, ...)
 }
 \arguments{
-\item{micas}{Object of class \code{assumptions_micomp}.}
+\item{object}{Object of class \code{assumptions_micomp}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 A list in which each component is associated with a distinct

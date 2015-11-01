@@ -4,10 +4,12 @@
 \alias{print.assumptions_paruv}
 \title{Print information about the assumptions of the parametric test}
 \usage{
-\method{print}{assumptions_paruv}(aspuv)
+\method{print}{assumptions_paruv}(x, ...)
 }
 \arguments{
-\item{aspuv}{Object of class \code{assumptions_paruv}.}
+\item{x}{Object of class \code{assumptions_paruv}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 The argument \code{aspuv}, invisibly, as for all \code{\link{print}}

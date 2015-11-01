@@ -4,10 +4,12 @@
 \alias{print.grpoutputs}
 \title{Print information about grouped outputs}
 \usage{
-\method{print}{grpoutputs}(go)
+\method{print}{grpoutputs}(x, ...)
 }
 \arguments{
-\item{go}{Object of class \code{grpoutputs}.}
+\item{x}{Object of class \code{grpoutputs}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 The argument \code{go}, invisibly, as for all \code{\link{print}}

@@ -183,7 +183,8 @@ assumptions_paruv <- function(data, factors) {
 #' represent the assumptions of the MANOVA test performed on a comparison of
 #' simulation output.
 #'
-#' @param asmnv Object of class \code{assumptions_manova}.
+#' @param x Object of class \code{assumptions_manova}.
+#' @param ... Currently ignored.
 #'
 #' @return The argument \code{asmnv}, invisibly, as for all \code{\link{print}}
 #' methods.
@@ -204,21 +205,21 @@ assumptions_paruv <- function(data, factors) {
 #' ## Box's M test (Homogeneity of Covariance Matrices):
 #' ##         P-value: 3.352034e-20
 #'
-print.assumptions_manova <- function(asmnv) {
+print.assumptions_manova <- function(x, ...) {
 
   cat("Royston test (Multivariate Normality):\n")
-  for (grp in names(asmnv$mvntest)) {
-    if (is(asmnv$mvntest[[grp]], "royston")) {
+  for (grp in names(x$mvntest)) {
+    if (is(x$mvntest[[grp]], "royston")) {
       cat("\tP-value '", grp, "': ",
-          asmnv$mvntest[[grp]]@p.value, "\n", sep = "")
+          x$mvntest[[grp]]@p.value, "\n", sep = "")
     } else {
       cat("\tTest not performed.\n")
     }
   }
   cat("Box's M test (Homogeneity of Covariance Matrices):\n")
-  cat("\tP-value:", asmnv$vartest$p.value, "\n")
+  cat("\tP-value:", x$vartest$p.value, "\n")
 
-  invisible(asmnv)
+  invisible(x)
 }
 
 #' Print information about the assumptions of the parametric test
@@ -228,7 +229,8 @@ print.assumptions_manova <- function(asmnv) {
 #' \code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
 #' simulation output.
 #'
-#' @param aspuv Object of class \code{assumptions_paruv}.
+#' @param x Object of class \code{assumptions_paruv}.
+#' @param ... Currently ignored.
 #'
 #' @return The argument \code{aspuv}, invisibly, as for all \code{\link{print}}
 #' methods.
@@ -249,17 +251,17 @@ print.assumptions_manova <- function(asmnv) {
 #' ## Bartlett test (Homogeneity of Variances):
 #' ##         P-value(s):  0.0003345076 0.3515028 9.229038e-13 3.054784e-09
 #'
-print.assumptions_paruv <- function(aspuv) {
+print.assumptions_paruv <- function(x, ...) {
 
-  maxvars <- min(5, length(aspuv$uvntest[[1]]))
+  maxvars <- min(5, length(x$uvntest[[1]]))
 
   cat("Shapiro-Wilk test (Normality):\n")
-  for (grp in names(aspuv$uvntest)) {
+  for (grp in names(x$uvntest)) {
     cat("\tP-value(s) '", grp, "': ", sep = "")
     for (i in 1:maxvars) {
-      cat("", aspuv$uvntest[[grp]][[i]]$p.value)
+      cat("", x$uvntest[[grp]][[i]]$p.value)
     }
-    if (length(aspuv$uvntest[[1]]) > 5) {
+    if (length(x$uvntest[[1]]) > 5) {
       cat(" ... \n")
     } else {
       cat("\n")
@@ -268,15 +270,15 @@ print.assumptions_paruv <- function(aspuv) {
 
   cat("Bartlett test (Homogeneity of Variances):\n\tP-value(s): ")
   for (i in 1:maxvars) {
-    cat("", aspuv$vartest[[i]]$p.value)
+    cat("", x$vartest[[i]]$p.value)
   }
-  if (length(aspuv$uvntest[[1]]) > 5) {
+  if (length(x$uvntest[[1]]) > 5) {
     cat(" ... \n")
   } else {
     cat("\n")
   }
 
-  invisible(aspuv)
+  invisible(x)
 }
 
 #' Plot \emph{p}-values for testing the multivariate normality assumptions of

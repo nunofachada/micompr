@@ -4,10 +4,12 @@
 \alias{print.micomp}
 \title{Print information about multiple comparisons of simulation output}
 \usage{
-\method{print}{micomp}(mcmp)
+\method{print}{micomp}(x, ...)
 }
 \arguments{
-\item{mcmp}{Object of class \code{\link{micomp}}.}
+\item{x}{Object of class \code{\link{micomp}}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 The argument \code{mcmp}, invisibly, as for all \code{\link{print}}.

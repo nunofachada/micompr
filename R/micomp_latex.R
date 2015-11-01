@@ -192,7 +192,8 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' package), but follows the standard behavior of the \code{\link{toLatex}}
 #' generic.
 #'
-#' @param mic A \code{\link{micomp}} object.
+#' @param object A \code{\link{micomp}} object.
+#' @param ... Currently ignored.
 #' @param data.show Vector of strings specifying what data to show. Available
 #' options are:
 #' \describe{
@@ -222,7 +223,6 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' score plot figure.
 #' @param scoreplot.after \code{LaTeX} code to paste after each \code{TikZ}
 #' score plot figure.
-#' @param ... Currently ignored.
 #'
 #' @return A character vector where each element holds one line of the
 #' corresponding \code{LaTeX} table.
@@ -243,7 +243,8 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' toLatex(mic)
 #'
 toLatex.micomp <- function(
-  mic,
+  object,
+  ...,
   data.show = c("npcs", "mnvp", "parp", "nparp", "scoreplot"),
   table.placement = "ht",
   latex.environments = c("center"),
@@ -259,8 +260,7 @@ toLatex.micomp <- function(
     "mark=o,mark size=0.7pt"),
   scoreplot.scale = 6,
   scoreplot.before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
-  scoreplot.after = "}}",
-  ...) {
+  scoreplot.after = "}}") {
 
   ndata <- length(data.show)
   hlines <- if (booktabs) {
@@ -270,8 +270,8 @@ toLatex.micomp <- function(
     list(top = "\\hline", mid = "\\hline", bot = "\\hline", c = "\\cline")
   }
 
-  nout <- dim(mic)[1]
-  smic <- summary(mic)
+  nout <- dim(object)[1]
+  smic <- summary(object)
 
   ltxtab <- list()
   idx <- 1
@@ -300,13 +300,13 @@ toLatex.micomp <- function(
   ltxtab[[idx]] <- pst(hlines$c, "{3-", 2 + nout, "}")
   idx <- idx + 1
 
-  ltxtab[[idx]] <- pst(" & & ", paste(rownames(mic), collapse = " & ",
+  ltxtab[[idx]] <- pst(" & & ", paste(rownames(object), collapse = " & ",
                                       sep = ""),
                        "\\\\")
   idx <- idx + 1
 
   # Cycle through comparisons
-  for (cmp in colnames(mic)) {
+  for (cmp in colnames(object)) {
 
     # Put a midrule
     ltxtab[[idx]] <- hlines$mid
@@ -335,7 +335,7 @@ toLatex.micomp <- function(
                                pvalff(unlist(smicf["nonpar.test",]))), "\\\\"),
                scoreplot = pst(" & PCS ",
                                pst(" & ",
-                                   tscat_apply(mic[, cmp],
+                                   tscat_apply(object[, cmp],
                                                scoreplot.marks,
                                                scoreplot.scale,
                                                scoreplot.before,

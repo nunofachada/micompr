@@ -12,19 +12,7 @@ output.
 \note{
 MIT License
 }
-\section{Expected format of output files}{
-
-
-To do.
-}
-
-\section{Comparing one output}{
-
-
-To do.
-}
-
-\section{Multiple comparisons of multiple outputs}{
+\section{Usage}{
 
 
 To do.

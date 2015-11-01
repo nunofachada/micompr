@@ -4,10 +4,12 @@
 \alias{print.assumptions_manova}
 \title{Print information about the assumptions of the MANOVA test}
 \usage{
-\method{print}{assumptions_manova}(asmnv)
+\method{print}{assumptions_manova}(x, ...)
 }
 \arguments{
-\item{asmnv}{Object of class \code{assumptions_manova}.}
+\item{x}{Object of class \code{assumptions_manova}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 The argument \code{asmnv}, invisibly, as for all \code{\link{print}}

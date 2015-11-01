@@ -212,7 +212,8 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
 #'
 #' Print information about objects of class \code{\link{micomp}}.
 #'
-#' @param mcmp Object of class \code{\link{micomp}}.
+#' @param x Object of class \code{\link{micomp}}.
+#' @param ... Currently ignored.
 #'
 #' @return The argument \code{mcmp}, invisibly, as for all \code{\link{print}}.
 #' methods.
@@ -247,10 +248,10 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
 #' ## par.test     6.7272e-17  6.5777e-11  1.7047e-15  1.8089e-09
 #' ## nonpar.test  1.0825e-05  1.0825e-05  1.0825e-05  1.0825e-05
 #'
-print.micomp <- function(mcmp) {
+print.micomp <- function(x, ...) {
 
   # Use summary to get the info to be printed
-  smic <- summary(mcmp)
+  smic <- summary(x)
 
   # Cycle through comparisons
   for (cmpname in names(smic)) {
@@ -260,7 +261,7 @@ print.micomp <- function(mcmp) {
 
   }
 
-  invisible(mcmp)
+  invisible(x)
 
 }
 
@@ -268,7 +269,8 @@ print.micomp <- function(mcmp) {
 #'
 #' Summary method for objects of class \code{\link{micomp}}.
 #'
-#' @param mcmp Object of class \code{\link{micomp}}.
+#' @param object Object of class \code{\link{micomp}}.
+#' @param ... Currently ignored.
 #'
 #' @return A list in which each component is associated with a distinct
 #' comparison. Each component contains a data frame, in which columns represent
@@ -318,27 +320,28 @@ print.micomp <- function(mcmp) {
 #' ## par.test    6.727250e-17 6.577743e-11 1.704694e-15 1.808875e-09 1.823478e-08
 #' ## nonpar.test 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05
 #'
-summary.micomp <- function(mcmp) {
+summary.micomp <- function(object, ...) {
 
-  dims <- dim(mcmp)
+  dims <- dim(object)
   ncomp <- dims[2]
-  cmpnames <- colnames(mcmp)
+  cmpnames <- colnames(object)
 
   smic <- list()
 
   # Cycle through comparisons
   for (i in 1:ncomp) {
 
-    npcs <- sapply(mcmp[, i], function(mc) return(mc$npcs))
-    p_mnv <- sapply(mcmp[, i], function(mc) return(mc$p.values$manova))
-    p_par <- sapply(mcmp[, i], function(mc) return(mc$p.values$parametric[1]))
-    p_npar <- sapply(mcmp[, i],
+    npcs <- sapply(object[, i], function(mc) return(mc$npcs))
+    p_mnv <- sapply(object[, i], function(mc) return(mc$p.values$manova))
+    p_par <- sapply(object[, i],
+                    function(mc) return(mc$p.values$parametric[1]))
+    p_npar <- sapply(object[, i],
                      function(mc) return(mc$p.values$nonparametric[1]))
 
 
     df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F,
                      row.names = c("#PCs", "MNV", "par.test", "nonpar.test"))
-    names(df) <- rownames(mcmp)
+    names(df) <- rownames(object)
 
     smic[[cmpnames[i]]] <- df
 
@@ -415,7 +418,7 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 #' Get assumptions for parametric tests performed on multiple comparisons (i.e.
 #' from objects of class \code{\link{micomp}}).
 #'
-#' @param mcmp Object of class \code{\link{micomp}}.
+#' @param obj Object of class \code{\link{micomp}}.
 #'
 #' @return Object of class \code{assumptions_micomp} containing the
 #' assumptions for parametric tests performed for the multiple comparisons held
@@ -437,11 +440,11 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
 #' # of the comparisons performed in the mic object
 #' a <- assumptions(mic)
 #'
-assumptions.micomp <- function(mcmp) {
-  micas <- lapply(mcmp, function(x) assumptions(x))
-  dim(micas) <- dim(mcmp)
-  colnames(micas) <- colnames(mcmp)
-  rownames(micas) <- rownames(mcmp)
+assumptions.micomp <- function(obj) {
+  micas <- lapply(obj, function(x) assumptions(x))
+  dim(micas) <- dim(obj)
+  colnames(micas) <- colnames(obj)
+  rownames(micas) <- rownames(obj)
   class(micas) <- "assumptions_micomp"
   micas
 }
@@ -453,7 +456,7 @@ assumptions.micomp <- function(mcmp) {
 #' represent the assumptions concerning the parametric tests performed on
 #' multiple comparisons of simulation output.
 #'
-#' @param micas Object of class \code{assumptions_micomp}.
+#' @param x Object of class \code{assumptions_micomp}.
 #' @param ... Currently ignored.
 #'
 #' @return The argument \code{micas}, invisibly, as for all \code{\link{print}}
@@ -497,9 +500,9 @@ assumptions.micomp <- function(mcmp) {
 #' # Shapiro-Wilk(JEXDIFF)   0.59586  0.74384  0.031037
 #' # Bartlett(Var.)          0.79618  0.94746  0.222738
 #'
-print.assumptions_micomp <- function(micas, ...) {
+print.assumptions_micomp <- function(x, ...) {
 
-  sm <- summary(micas)
+  sm <- summary(x)
 
   # Cycle through comparisons
   for (cmp in names(sm)) {
@@ -509,6 +512,8 @@ print.assumptions_micomp <- function(micas, ...) {
     cat("\n")
 
   }
+
+  invisible(x)
 
 }
 
@@ -586,7 +591,8 @@ plot.assumptions_micomp <- function(micas, col = micompr:::plotcols(), ...) {
 #' contain the assumptions for the parametric tests used in multiple comparisons
 #' of simulation output.
 #'
-#' @param micas Object of class \code{assumptions_micomp}.
+#' @param object Object of class \code{assumptions_micomp}.
+#' @param ... Currently ignored.
 #'
 #' @return A list in which each component is associated with a distinct
 #' comparison. Each component contains a data frame, in which columns represent
@@ -619,23 +625,23 @@ plot.assumptions_micomp <- function(micas, col = micompr:::plotcols(), ...) {
 #' # Get the assumptions summary
 #' sam <- summary(assumptions(mic))
 #'
-summary.assumptions_micomp <- function(micas) {
+summary.assumptions_micomp <- function(object, ...) {
 
-  dims <- dim(micas)
+  dims <- dim(object)
   ncomp <- dims[2]
 
   all <- list()
-  cmpnames <- colnames(micas)
+  cmpnames <- colnames(object)
 
   # Cycle through comparisons
   for (i in 1:ncomp) {
 
     # Fetch the names of the groups being compared (i.e. levels) from the
     # first output for the current  comparison
-    lvls <- names(micas[[1, i]]$ttest$uvntest)
+    lvls <- names(object[[1, i]]$ttest$uvntest)
 
     # Get the p-values for the MANOVA assumptions
-    mnv <- lapply(micas[, i], function(ma) {
+    mnv <- lapply(object[, i], function(ma) {
       # Was MANOVA performed?
       if (exists("manova", where = ma)) {
         # Get the Royston test p-values
@@ -660,7 +666,7 @@ summary.assumptions_micomp <- function(micas) {
     })
 
     # Get the p-values for for t-test assumptions
-    ttst <- lapply(micas[, i], function(ma) {
+    ttst <- lapply(object[, i], function(ma) {
       pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
       names(pvals) <- paste("Shapiro-Wilk(", lvls, ")", sep = "")
       pvals <- c(pvals, `Bartlett(Var.)` = ma$ttest$vartest[[1]]$p.value)

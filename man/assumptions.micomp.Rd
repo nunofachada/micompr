@@ -4,10 +4,10 @@
 \alias{assumptions.micomp}
 \title{Get assumptions for parametric tests performed on each comparisons.}
 \usage{
-\method{assumptions}{micomp}(mcmp)
+\method{assumptions}{micomp}(obj)
 }
 \arguments{
-\item{mcmp}{Object of class \code{\link{micomp}}.}
+\item{obj}{Object of class \code{\link{micomp}}.}
 }
 \value{
 Object of class \code{assumptions_micomp} containing the

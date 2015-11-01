@@ -245,7 +245,8 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
 #'
 #' Print information about objects of class \code{grpoutputs}.
 #'
-#' @param go Object of class \code{grpoutputs}.
+#' @param x Object of class \code{grpoutputs}.
+#' @param ... Currently ignored.
 #'
 #' @return The argument \code{go}, invisibly, as for all \code{\link{print}}
 #' methods.
@@ -276,20 +277,20 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
 #' ## 1         10
 #' ## 2         10
 #'
-print.grpoutputs <- function(go) {
+print.grpoutputs <- function(x, ...) {
 
   # Use summary to get the info to be printed
-  smgo <- summary(go)
+  smgo <- summary(x)
 
   # Print info
-  cat("Number of outputs: ", length(go$data), "\n")
+  cat("Number of outputs: ", length(x$data), "\n")
   cat("\nOutput dimensions:\n")
   print(smgo$output.dims)
   cat("\nGroup size by factor:\n")
   print(smgo$group.sizes)
 
   # Return input parameter, invisibly
-  invisible(go)
+  invisible(x)
 
 }
 
@@ -297,7 +298,8 @@ print.grpoutputs <- function(go) {
 #'
 #' Summary method for objects of class \code{grpoutputs}.
 #'
-#' @param go Object of class \code{grpoutputs}.
+#' @param object Object of class \code{grpoutputs}.
+#' @param ... Currently ignored.
 #'
 #' @return A list with the following components:
 #' \describe{
@@ -333,15 +335,15 @@ print.grpoutputs <- function(go) {
 #' ## 2         10
 #' ##
 #'
-summary.grpoutputs <- function(go) {
+summary.grpoutputs <- function(object, ...) {
 
   # Get dimensions of each output
-  outptab <- sapply(go$data, function(x) dim(x))
+  outptab <- sapply(object$data, function(x) dim(x))
   rownames(outptab) <- c("N.Obs", "N.Vars")
 
   # Get group sizes
-  grpszbyfact <- data.frame(group.size = go$groups,
-                            row.names = go$lvls,
+  grpszbyfact <- data.frame(group.size = object$groups,
+                            row.names = object$lvls,
                             stringsAsFactors = F)
 
   # Return list with summary information

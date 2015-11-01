@@ -4,10 +4,12 @@
 \alias{summary.cmpoutput}
 \title{Summary method for comparison of simulation outputs}
 \usage{
-\method{summary}{cmpoutput}(cmpout)
+\method{summary}{cmpoutput}(object, ...)
 }
 \arguments{
-\item{cmpout}{Object of class \code{cmpoutput}.}
+\item{object}{Object of class \code{cmpoutput}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 A list with the following components:

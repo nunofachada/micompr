@@ -4,10 +4,12 @@
 \alias{summary.grpoutputs}
 \title{Summary method for grouped outputs}
 \usage{
-\method{summary}{grpoutputs}(go)
+\method{summary}{grpoutputs}(object, ...)
 }
 \arguments{
-\item{go}{Object of class \code{grpoutputs}.}
+\item{object}{Object of class \code{grpoutputs}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 A list with the following components:

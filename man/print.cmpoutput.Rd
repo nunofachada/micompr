@@ -4,10 +4,12 @@
 \alias{print.cmpoutput}
 \title{Print information about comparison of simulation output}
 \usage{
-\method{print}{cmpoutput}(cmpout)
+\method{print}{cmpoutput}(x, ...)
 }
 \arguments{
-\item{cmpout}{Object of class \code{cmpoutput}.}
+\item{x}{Object of class \code{cmpoutput}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 The argument \code{cmpout}, invisibly, as for all \code{\link{print}}

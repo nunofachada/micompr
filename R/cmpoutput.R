@@ -150,7 +150,8 @@ cmpoutput <- function(name, ve, data, factors) {
 #'
 #' Print information about objects of class \code{cmpoutput}.
 #'
-#' @param cmpout Object of class \code{cmpoutput}.
+#' @param x Object of class \code{cmpoutput}.
+#' @param ... Currently ignored.
 #'
 #' @return The argument \code{cmpout}, invisibly, as for all \code{\link{print}}
 #' methods.
@@ -171,27 +172,27 @@ cmpoutput <- function(name, ve, data, factors) {
 #' ## P-Value for t-test (1st PC): 1.823478e-08
 #' ## P-Value for Mann-Whitney U test (1st PC): 1.082509e-05
 #'
-print.cmpoutput <- function(cmpout) {
+print.cmpoutput <- function(x, ...) {
 
-  if (length(unique(cmpout$factors)) == 2) {
+  if (length(unique(x$factors)) == 2) {
     test_names <- c("t-test", "Mann-Whitney U test")
   } else {
     test_names <- c("ANOVA test", "Kruskal-Wallis test")
   }
 
-  cat("Output name:", cmpout$name, "\n")
-  cat("Number of PCs which explain ", cmpout$ve * 100, "% of variance: ",
-      cmpout$npcs, "\n", sep = "")
-  if (cmpout$npcs > 1) {
-    cat("P-Value for MANOVA along", cmpout$npcs, "dimensions:",
-        cmpout$p.values$manova, "\n")
+  cat("Output name:", x$name, "\n")
+  cat("Number of PCs which explain ", x$ve * 100, "% of variance: ",
+      x$npcs, "\n", sep = "")
+  if (x$npcs > 1) {
+    cat("P-Value for MANOVA along", x$npcs, "dimensions:",
+        x$p.values$manova, "\n")
   }
   cat("P-Value for", test_names[1], "(1st PC):",
-      cmpout$p.values$parametric[1], "\n")
+      x$p.values$parametric[1], "\n")
   cat("P-Value for", test_names[2], "(1st PC):",
-      cmpout$p.values$nonparametric[1], "\n")
+      x$p.values$nonparametric[1], "\n")
 
-  invisible(cmpout)
+  invisible(x)
 
 }
 
@@ -199,7 +200,8 @@ print.cmpoutput <- function(cmpout) {
 #'
 #' Summary method for objects of class \code{cmpoutput}.
 #'
-#' @param cmpout Object of class \code{cmpoutput}.
+#' @param object Object of class \code{cmpoutput}.
+#' @param ... Currently ignored.
 #'
 #' @return A list with the following components:
 #' \describe{
@@ -252,22 +254,22 @@ print.cmpoutput <- function(cmpout) {
 #' ## $nonparametric.pvals
 #' ## [1] 0.0007252809 0.9117971811 0.3149992422
 #'
-summary.cmpoutput <- function(cmpout) {
+summary.cmpoutput <- function(object, ...) {
 
-  if (length(unique(cmpout$factors)) == 2) {
+  if (length(unique(object$factors)) == 2) {
     test_names <- c("t-test", "Mann-Whitney")
   } else {
     test_names <- c("ANOVA", "Kruskal-Wallis")
   }
 
-  list(output.name = cmpout$name,
-       num.pcs = cmpout$npcs,
-       var.exp = cmpout$ve,
-       manova.pval = cmpout$p.values$manova,
+  list(output.name = object$name,
+       num.pcs = object$npcs,
+       var.exp = object$ve,
+       manova.pval = object$p.values$manova,
        parametric.test = test_names[1],
-       parametric.pvals = cmpout$p.values$parametric,
+       parametric.pvals = object$p.values$parametric,
        nonparametric.test = test_names[2],
-       nonparametric.pvals = cmpout$p.values$nonparametric)
+       nonparametric.pvals = object$p.values$nonparametric)
 }
 
 #' Plot comparison of simulation output
@@ -340,7 +342,7 @@ plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
 #' Get assumptions for parametric tests performed on output comparisons (i.e.
 #' from objects of class \code{\link{cmpoutput}}).
 #'
-#' @param cmpout Object of class \code{cmpoutput}.
+#' @param obj Object of class \code{cmpoutput}.
 #'
 #' @return Object of class \code{assumptions_cmpoutput} containing the
 #' assumptions for parametric tests performed on an output comparisons
@@ -358,15 +360,15 @@ plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
 #' # Get the assumptions for the parametric tests performed in cmp
 #' acmp <- assumptions(cmp)
 #'
-assumptions.cmpoutput <- function(cmpout) {
+assumptions.cmpoutput <- function(obj) {
 
   # Create assumptions object
   assumptions <- list()
   class(assumptions) <- "assumptions_cmpoutput"
 
-  npcs <- cmpout$npcs
-  factors <- cmpout$factors
-  scores <- cmpout$scores
+  npcs <- obj$npcs
+  factors <- obj$factors
+  scores <- obj$scores
 
   # Manova
   if (npcs > 1) {
