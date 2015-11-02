@@ -5,14 +5,14 @@
 \title{Plot projection of output observations on the first two dimensions of the
 principal components space}
 \usage{
-\method{plot}{micomp}(mcmp, col = micompr:::plotcols(), ...)
+\method{plot}{micomp}(x, ..., col = micompr:::plotcols())
 }
 \arguments{
-\item{mcmp}{An object of class \code{\link{micomp}}.}
-
-\item{col}{Vector of colors to use on observations of different groups.}
+\item{x}{An object of class \code{\link{micomp}}.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
+
+\item{col}{Vector of colors to use on observations of different groups.}
 }
 \value{
 None.

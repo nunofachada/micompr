@@ -5,15 +5,15 @@
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
 in simulation output comparison}
 \usage{
-\method{plot}{assumptions_paruv}(aspuv, extra = 0, ...)
+\method{plot}{assumptions_paruv}(x, ..., extra = 0)
 }
 \arguments{
-\item{aspuv}{Objects of class \code{\link{assumptions_paruv}}.}
+\item{x}{Objects of class \code{\link{assumptions_paruv}}.}
+
+\item{...}{Extra options passed to \code{\link{plot.default}}.}
 
 \item{extra}{Number of extra sub-plot spaces to create (useful when this
 function is called from another which will produce more plots).}
-
-\item{...}{Extra options passed to \code{\link{plot.default}}.}
 }
 \value{
 None.

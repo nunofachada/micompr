@@ -12,7 +12,7 @@
 \item{...}{Currently ignored.}
 }
 \value{
-The argument \code{aspuv}, invisibly, as for all \code{\link{print}}
+The argument \code{x}, invisibly, as for all \code{\link{print}}
 methods.
 }
 \description{

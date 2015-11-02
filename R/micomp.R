@@ -215,7 +215,7 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
 #' @param x Object of class \code{\link{micomp}}.
 #' @param ... Currently ignored.
 #'
-#' @return The argument \code{mcmp}, invisibly, as for all \code{\link{print}}.
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}.
 #' methods.
 #'
 #' @export
@@ -358,9 +358,9 @@ summary.micomp <- function(object, ...) {
 #' the projection of output observations on the first two dimensions of the
 #' principal components space.
 #'
-#' @param mcmp An object of class \code{\link{micomp}}.
-#' @param col Vector of colors to use on observations of different groups.
+#' @param x An object of class \code{\link{micomp}}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
+#' @param col Vector of colors to use on observations of different groups.
 #'
 #' @return None.
 #'
@@ -373,9 +373,9 @@ summary.micomp <- function(object, ...) {
 #'                  list(name = "II", grpout = pphpc_noshuff),
 #'                  list(name = "III", grpout = pphpc_diff))))
 #'
-plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
+plot.micomp <- function(x, ..., col = micompr:::plotcols()) {
 
-  dims <- dim(mcmp)
+  dims <- dim(x)
   nout <- dims[1]
   ncomp <- dims[2]
   nplots <- nout * ncomp
@@ -386,7 +386,7 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
   for (i in 1:ncomp) {
 
     # Get factors from the first output of the current comparison
-    facts <- mcmp[[1,i]]$factors
+    facts <- x[[1,i]]$factors
 
     # Set title and legend for current comparison
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
@@ -396,8 +396,8 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
     for (j in 1:nout) {
 
       # Get data
-      scores <- mcmp[[j,i]]$scores
-      varexp <- mcmp[[j,i]]$varexp
+      scores <- x[[j,i]]$scores
+      varexp <- x[[j,i]]$varexp
 
       # Score plot (first two PCs)
       plot.default(scores[,1], scores[,2], col = col[as.numeric(facts)],
@@ -405,7 +405,7 @@ plot.micomp <- function(mcmp, col = micompr:::plotcols(), ...) {
                                 sep = ""),
                    ylab = paste("PC2 (", round(varexp[2] * 100, 2), "%)",
                                 sep = ""),
-                   main = mcmp[[j,i]]$name, ...)
+                   main = x[[j,i]]$name, ...)
     }
   }
 
@@ -459,7 +459,7 @@ assumptions.micomp <- function(obj) {
 #' @param x Object of class \code{assumptions_micomp}.
 #' @param ... Currently ignored.
 #'
-#' @return The argument \code{micas}, invisibly, as for all \code{\link{print}}
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #' methods.
 #'
 #' @export
@@ -534,10 +534,10 @@ print.assumptions_micomp <- function(x, ...) {
 #' \emph{p-values} plotted for the Shapiro-Wilk and Bartlett tests correspond to
 #' group observations along the first principal component.
 #'
-#' @param micas Object of class \code{assumptions_micomp}.
+#' @param x Object of class \code{assumptions_micomp}.
+#' @param ... Extra options passed to \code{\link{barplot}}.
 #' @param col Vector of colors to use for different tests (and groups in the
 #' case of normality tests).
-#' @param ... Extra options passed to \code{\link{barplot}}.
 #'
 #' @return None.
 #'
@@ -555,11 +555,11 @@ print.assumptions_micomp <- function(x, ...) {
 #' # comparisons performed in the mic object
 #' plot(assumptions(mic))
 #'
-plot.assumptions_micomp <- function(micas, col = micompr:::plotcols(), ...) {
+plot.assumptions_micomp <- function(x, ..., col = micompr:::plotcols()) {
 
-  sm <- summary(micas)
+  sm <- summary(x)
 
-  dims <- dim(micas)
+  dims <- dim(x)
   ncomp <- dims[2]
   # One plot for each output/comparison pair  + 1 for the legend
   nplots <- ncomp + 1

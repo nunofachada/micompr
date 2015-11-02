@@ -5,10 +5,10 @@
 \title{Plot \emph{p}-values for testing the multivariate normality assumptions of
 the MANOVA test}
 \usage{
-\method{plot}{assumptions_manova}(asmnv, ...)
+\method{plot}{assumptions_manova}(x, ...)
 }
 \arguments{
-\item{asmnv}{Objects of class \code{\link{assumptions_manova}}.}
+\item{x}{Objects of class \code{\link{assumptions_manova}}.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
 }

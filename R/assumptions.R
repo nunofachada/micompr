@@ -186,7 +186,7 @@ assumptions_paruv <- function(data, factors) {
 #' @param x Object of class \code{assumptions_manova}.
 #' @param ... Currently ignored.
 #'
-#' @return The argument \code{asmnv}, invisibly, as for all \code{\link{print}}
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #' methods.
 #'
 #' @export
@@ -232,7 +232,7 @@ print.assumptions_manova <- function(x, ...) {
 #' @param x Object of class \code{assumptions_paruv}.
 #' @param ... Currently ignored.
 #'
-#' @return The argument \code{aspuv}, invisibly, as for all \code{\link{print}}
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #' methods.
 #'
 #' @export
@@ -289,7 +289,7 @@ print.assumptions_paruv <- function(x, ...) {
 #' multivariate normality test (\code{\link[MVN]{roystonTest}}) for each group
 #' being compared.
 #'
-#' @param asmnv Objects of class \code{\link{assumptions_manova}}.
+#' @param x Objects of class \code{\link{assumptions_manova}}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.
@@ -305,9 +305,9 @@ print.assumptions_paruv <- function(x, ...) {
 #' # Plot the same data with logarithmic scale for p-values
 #' plot(assumptions_manova(iris[, 1:4], iris[, 5]), log = "y")
 #'
-plot.assumptions_manova <- function(asmnv, ...) {
+plot.assumptions_manova <- function(x, ...) {
 
-  pvals <- sapply(asmnv$mvntest, function(x) x@p.value)
+  pvals <- sapply(x$mvntest, function(x) x@p.value)
   barplot(pvals, main = "Royston test p-values", sub = "Multivariate normality",
           xlab = "Groups", ylab = "Probability", col = micompr:::pvalcol(pvals),
           ...)
@@ -329,7 +329,7 @@ plot.assumptions_manova <- function(asmnv, ...) {
 #' compared; individual bars in each plot represent the \emph{p}-values
 #' associated with each principal component.
 #'
-#' @param aspuv Objects of class \code{\link{assumptions_paruv}}.
+#' @param x Objects of class \code{\link{assumptions_paruv}}.
 #' @param extra Number of extra sub-plot spaces to create (useful when this
 #' function is called from another which will produce more plots).
 #' @param ... Extra options passed to \code{\link{plot.default}}.
@@ -347,20 +347,20 @@ plot.assumptions_manova <- function(asmnv, ...) {
 #' # Plot the same data with logarithmic scale for p-values
 #' plot(assumptions_paruv(iris[, 1:4], iris[, 5]), log = "y")
 #'
-plot.assumptions_paruv <- function(aspuv, extra = 0, ...) {
+plot.assumptions_paruv <- function(x, ..., extra = 0) {
 
   # Number of vars in the PC plots
-  nvars <- length(aspuv$uvntest[[1]])
+  nvars <- length(x$uvntest[[1]])
 
   # One plot for each factor + 1 for the variance + extra for more plots
-  nplots <- length(aspuv$uvntest) + 1 + extra
+  nplots <- length(x$uvntest) + 1 + extra
 
   # Plot matrix side dimension
   side_dim <- ceiling(sqrt(nplots))
 
   par(mfrow = c(side_dim, side_dim))
   # Plot the Bartlett test p-values by PC
-  vardata <- sapply(aspuv$vartest, function(x) x$p.value)
+  vardata <- sapply(x$vartest, function(x) x$p.value)
   barplot(vardata, names.arg = as.character(1:nvars),
           main = "p-values for the Bartlett test",
           sub = "Homogeneity of Variances",
@@ -368,8 +368,8 @@ plot.assumptions_paruv <- function(aspuv, extra = 0, ...) {
           col = micompr:::pvalcol(vardata), ...)
 
   # Plot the Shapiro-Wilk p-values by PC for each factor
-  for (grp in names(aspuv$uvntest)) {
-    normdata <- sapply(aspuv$uvntest[[grp]], function(x) x$p.value)
+  for (grp in names(x$uvntest)) {
+    normdata <- sapply(x$uvntest[[grp]], function(x) x$p.value)
     barplot(normdata, names.arg = as.character(1:nvars),
             sub = grp, main = "p-values for the SW normality test",
             xlab = "PC", ylab = "Probability",

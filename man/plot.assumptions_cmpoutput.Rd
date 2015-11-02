@@ -5,10 +5,10 @@
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
 in simulation output comparison}
 \usage{
-\method{plot}{assumptions_cmpoutput}(cmpoass, ...)
+\method{plot}{assumptions_cmpoutput}(x, ...)
 }
 \arguments{
-\item{cmpoass}{Objects of class \code{assumptions_cmpoutput}.}
+\item{x}{Objects of class \code{assumptions_cmpoutput}.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
 }

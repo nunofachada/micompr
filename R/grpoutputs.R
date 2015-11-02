@@ -248,7 +248,7 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
 #' @param x Object of class \code{grpoutputs}.
 #' @param ... Currently ignored.
 #'
-#' @return The argument \code{go}, invisibly, as for all \code{\link{print}}
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #' methods.
 #'
 #' @export
@@ -361,9 +361,9 @@ summary.grpoutputs <- function(object, ...) {
 #'
 #' This function can be very slow for a large number of observations.
 #'
-#' @param go Object of class \code{grpoutputs}.
-#' @param col Vector of colors to use on observations of different groups.
+#' @param x Object of class \code{grpoutputs}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
+#' @param col Vector of colors to use on observations of different groups.
 #'
 #' @return None.
 #' @export
@@ -383,13 +383,13 @@ summary.grpoutputs <- function(object, ...) {
 #' # Plot grpoutputs object
 #' plot(go)
 #'
-plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
+plot.grpoutputs <- function(x, ..., col = micompr:::plotcols()) {
 
   # Get required data
-  nout <- length(go$data);
-  nout_simpl <- nout - go$concat
+  nout <- length(x$data);
+  nout_simpl <- nout - x$concat
   ncols <- min(2, nout)
-  outputs <- names(go$data)
+  outputs <- names(x$data)
 
   # One output or more?
   if (nout == 1) {
@@ -415,7 +415,7 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
     }
 
     # Do we have a concatenated output?
-    if (go$concat) {
+    if (x$concat) {
       # If so, find space for it
       m <- c(m, rep(max(m) + 1, 2))
     }
@@ -439,22 +439,22 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
     out <- outputs[i]
 
     # Find the maximum and minimum of the current output
-    ymax <- max(go$data[[out]])
-    ymin <- min(go$data[[out]])
-    xlen <- length(go$data[[out]][1,])
+    ymax <- max(x$data[[out]])
+    ymin <- min(x$data[[out]])
+    xlen <- length(x$data[[out]][1,])
 
     # Prepare plot
     plot.default(0, xlim = c(0, xlen), ylim = c(ymin, ymax),
                  main = out, type = "n", ...)
 
     # Plot lines
-    for (i in 1:length(go$factors)) {
-      lines(go$data[[out]][i,], col = col[unclass(go$factors)[i]])
+    for (i in 1:length(x$factors)) {
+      lines(x$data[[out]][i,], col = col[unclass(x$factors)[i]])
     }
 
     # Include legend in plot?
     if (leginc) {
-      legend("top", legend = go$lvls, fill = col, horiz = T)
+      legend("top", legend = x$lvls, fill = col, horiz = T)
     }
 
   }
@@ -463,7 +463,7 @@ plot.grpoutputs <- function(go, col = micompr:::plotcols(), ...) {
   if (!leginc) {
     par(mar = rep(2, 4))
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-    legend("top", legend = go$lvls, fill = col, horiz = T)
+    legend("top", legend = x$lvls, fill = col, horiz = T)
   }
 
   invisible(NULL)

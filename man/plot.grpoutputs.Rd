@@ -4,14 +4,14 @@
 \alias{plot.grpoutputs}
 \title{Plot grouped outputs}
 \usage{
-\method{plot}{grpoutputs}(go, col = micompr:::plotcols(), ...)
+\method{plot}{grpoutputs}(x, ..., col = micompr:::plotcols())
 }
 \arguments{
-\item{go}{Object of class \code{grpoutputs}.}
-
-\item{col}{Vector of colors to use on observations of different groups.}
+\item{x}{Object of class \code{grpoutputs}.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
+
+\item{col}{Vector of colors to use on observations of different groups.}
 }
 \value{
 None.

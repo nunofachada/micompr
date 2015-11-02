@@ -153,7 +153,7 @@ cmpoutput <- function(name, ve, data, factors) {
 #' @param x Object of class \code{cmpoutput}.
 #' @param ... Currently ignored.
 #'
-#' @return The argument \code{cmpout}, invisibly, as for all \code{\link{print}}
+#' @return The argument \code{x}, invisibly, as for all \code{\link{print}}
 #' methods.
 #'
 #' @export
@@ -288,10 +288,10 @@ summary.cmpoutput <- function(object, ...) {
 #'         principal component.
 #' }
 #'
-#' @param cmpout Object of class \code{cmpoutput}.
+#' @param x Object of class \code{cmpoutput}.
+#' @param ... Extra options passed to \code{\link{plot.default}}.
 #' @param col Vector of colors to use on observations of different groups
 #' (scatter plot only).
-#' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.
 #'
@@ -305,32 +305,32 @@ summary.cmpoutput <- function(object, ...) {
 #'
 #' plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$factors))
 #'
-plot.cmpoutput <- function(cmpout, col = micompr:::plotcols(), ...) {
+plot.cmpoutput <- function(x, ..., col = micompr:::plotcols()) {
 
   par(mfrow = c(2,2))
 
   # Score plot (first two PCs)
-  plot.default(cmpout$scores[,1], cmpout$scores[,2],
-               col = col[as.numeric(cmpout$factors)],
-               xlab = paste("PC1 (", round(cmpout$varexp[1] * 100, 2), "%)",
+  plot.default(x$scores[,1], x$scores[,2],
+               col = col[as.numeric(x$factors)],
+               xlab = paste("PC1 (", round(x$varexp[1] * 100, 2), "%)",
                           sep = ""),
-               ylab = paste("PC2 (", round(cmpout$varexp[2] * 100, 2), "%)",
+               ylab = paste("PC2 (", round(x$varexp[2] * 100, 2), "%)",
                           sep = ""),
                main = "Score plot", ...)
 
   # Explained variance bar plot
-  barplot(cmpout$varexp[1:cmpout$npcs], names.arg = as.character(1:cmpout$npcs),
+  barplot(x$varexp[1:x$npcs], names.arg = as.character(1:x$npcs),
           main = "Explained variance by PC",
           xlab = "PC", ylab = "Var. exp. (%)", ...)
 
   # Parametric p-values bar plot
-  barplot(cmpout$p.values$parametric, names.arg = as.character(1:cmpout$npcs),
+  barplot(x$p.values$parametric, names.arg = as.character(1:x$npcs),
           main = "Parametric p-values by PC",
           xlab = "PC", ylab = "Prob.", ...)
 
   # Non-parametric p-values bar plot
-  barplot(cmpout$p.values$nonparametric,
-          names.arg = as.character(1:cmpout$npcs),
+  barplot(x$p.values$nonparametric,
+          names.arg = as.character(1:x$npcs),
           main = "Non-parametric p-values by PC",
           xlab = "PC", ylab = "Prob.", ...)
 
@@ -417,7 +417,7 @@ assumptions.cmpoutput <- function(obj) {
 #'        considered.
 #' }
 #'
-#' @param cmpoass Objects of class \code{assumptions_cmpoutput}.
+#' @param x Objects of class \code{assumptions_cmpoutput}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.
@@ -433,14 +433,14 @@ assumptions.cmpoutput <- function(obj) {
 #' # tests performed in cmp
 #' plot(assumptions(cmp))
 #'
-plot.assumptions_cmpoutput <- function(cmpoass, ...) {
+plot.assumptions_cmpoutput <- function(x, ...) {
 
-  if (exists("manova", where = cmpoass)) {
-    plot(cmpoass$ttest, extra = 1, ...)
-    plot(cmpoass$manova, ...)
+  if (exists("manova", where = x)) {
+    plot(x$ttest, extra = 1, ...)
+    plot(x$manova, ...)
   } else {
     # No extra for multivariate assumptions, just plot univariate stuff
-    plot(cmpoass$ttest, ...)
+    plot(x$ttest, ...)
   }
 
   invisible(NULL)
