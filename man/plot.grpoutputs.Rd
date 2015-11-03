@@ -4,14 +4,12 @@
 \alias{plot.grpoutputs}
 \title{Plot grouped outputs}
 \usage{
-\method{plot}{grpoutputs}(x, ..., col = micompr:::plotcols())
+\method{plot}{grpoutputs}(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{grpoutputs}.}
 
 \item{...}{Extra options passed to \code{\link{plot.default}}.}
-
-\item{col}{Vector of colors to use on observations of different groups.}
 }
 \value{
 None.
@@ -22,7 +20,8 @@ Plot each grouped output.
 \details{
 Each output is plotted individually, and observations are plotted on top of
 each other. Observations from different groups are plotted with different
-colors (which can be controlled through the \code{col} parameter).
+colors (which can be controlled through the \code{col} parameter given in
+...).
 
 This function can be very slow for a large number of observations.
 }

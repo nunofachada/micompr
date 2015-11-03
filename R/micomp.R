@@ -359,8 +359,8 @@ summary.micomp <- function(object, ...) {
 #' principal components space.
 #'
 #' @param x An object of class \code{\link{micomp}}.
-#' @param ... Extra options passed to \code{\link{plot.default}}.
-#' @param col Vector of colors to use on observations of different groups.
+#' @param ... Extra options passed to \code{\link{plot.default}}. The \code{col}
+#' option determines the colors to use on observations of different groups
 #'
 #' @return None.
 #'
@@ -373,39 +373,50 @@ summary.micomp <- function(object, ...) {
 #'                  list(name = "II", grpout = pphpc_noshuff),
 #'                  list(name = "III", grpout = pphpc_diff))))
 #'
-plot.micomp <- function(x, ..., col = micompr:::plotcols()) {
+plot.micomp <- function(x, ...) {
 
+  # Was a color specified?
+  params <- list(...)
+  if (!exists("col", where = params)) {
+    params$col <- plotcols()
+  }
+  col <- params$col
+
+  # Useful variables
   dims <- dim(x)
   nout <- dims[1]
   ncomp <- dims[2]
   nplots <- nout * ncomp
 
+  # Layout of subplots
   m <- matrix(1:(nplots + ncomp), nrow = ncomp, ncol = nout + 1, byrow = T)
   layout(mat = m)
 
   for (i in 1:ncomp) {
 
     # Get factors from the first output of the current comparison
-    facts <- x[[1,i]]$factors
+    facts <- x[[1, i]]$factors
 
     # Set title and legend for current comparison
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-    text(1,1, pos = 1,labels = paste("Comp. ", i))
+    text(1, 1, pos = 1, labels = paste("Comp. ", i))
     legend("center", legend = unique(facts), fill = col, horiz = F)
 
     for (j in 1:nout) {
 
       # Get data
-      scores <- x[[j,i]]$scores
-      varexp <- x[[j,i]]$varexp
+      scores <- x[[j, i]]$scores
+      varexp <- x[[j, i]]$varexp
 
       # Score plot (first two PCs)
-      plot.default(scores[,1], scores[,2], col = col[as.numeric(facts)],
-                   xlab = paste("PC1 (", round(varexp[1] * 100, 2), "%)",
-                                sep = ""),
-                   ylab = paste("PC2 (", round(varexp[2] * 100, 2), "%)",
-                                sep = ""),
-                   main = x[[j,i]]$name, ...)
+      params$x <- scores[, 1]
+      params$y <- scores[, 2]
+      params$col <- col[as.numeric(facts)]
+      params$xlab <- paste("PC1 (", round(varexp[1] * 100, 2), "%)", sep = "")
+      params$ylab <- paste("PC2 (", round(varexp[2] * 100, 2), "%)", sep = "")
+      params$main <- x[[j, i]]$name
+      do.call("plot.default", params)
+
     }
   }
 
@@ -535,9 +546,9 @@ print.assumptions_micomp <- function(x, ...) {
 #' group observations along the first principal component.
 #'
 #' @param x Object of class \code{assumptions_micomp}.
-#' @param ... Extra options passed to \code{\link{barplot}}.
-#' @param col Vector of colors to use for different tests (and groups in the
-#' case of normality tests).
+#' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
+#' parameter will defines the colors to use for different tests (and groups in
+#' the case of normality tests).
 #'
 #' @return None.
 #'
@@ -555,12 +566,24 @@ print.assumptions_micomp <- function(x, ...) {
 #' # comparisons performed in the mic object
 #' plot(assumptions(mic))
 #'
-plot.assumptions_micomp <- function(x, ..., col = micompr:::plotcols()) {
+plot.assumptions_micomp <- function(x, ...) {
 
+  # Was a color specified?
+  params <- list(...)
+  if (exists("col", where = params)) {
+    col <- params$col
+    params$col <- NULL # We don't want duplicate color specification
+  } else {
+    col <- plotcols()
+  }
+
+  # Get the asssumptions summary
   sm <- summary(x)
 
+  # Useful variables
   dims <- dim(x)
   ncomp <- dims[2]
+
   # One plot for each output/comparison pair  + 1 for the legend
   nplots <- ncomp + 1
 
@@ -572,8 +595,11 @@ plot.assumptions_micomp <- function(x, ..., col = micompr:::plotcols()) {
   # Cycle through comparisons
   for (cmp in names(sm)) {
     par(mar = rep(2, 4))
-    barplot(sm[[cmp]], col = col[1:dim(sm[[cmp]])[1]],
-            beside = T, main = cmp, ...)
+    params$height <- sm[[cmp]]
+    params$col <- col[1:dim(sm[[cmp]])[1]]
+    params$beside <- T
+    params$main <- cmp
+    do.call("barplot", params)
   }
 
   # Show legend

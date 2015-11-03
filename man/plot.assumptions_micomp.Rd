@@ -5,15 +5,14 @@
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
 in multiple output comparison}
 \usage{
-\method{plot}{assumptions_micomp}(x, ..., col = micompr:::plotcols())
+\method{plot}{assumptions_micomp}(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{assumptions_micomp}.}
 
-\item{...}{Extra options passed to \code{\link{barplot}}.}
-
-\item{col}{Vector of colors to use for different tests (and groups in the
-case of normality tests).}
+\item{...}{Extra options passed to \code{\link{barplot}}. The \code{col}
+parameter will defines the colors to use for different tests (and groups in
+the case of normality tests).}
 }
 \value{
 None.

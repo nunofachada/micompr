@@ -4,14 +4,13 @@
 \alias{plot.cmpoutput}
 \title{Plot comparison of simulation output}
 \usage{
-\method{plot}{cmpoutput}(x, ..., col = micompr:::plotcols())
+\method{plot}{cmpoutput}(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{cmpoutput}.}
 
-\item{...}{Extra options passed to \code{\link{plot.default}}.}
-
-\item{col}{Vector of colors to use on observations of different groups
+\item{...}{Extra options passed to \code{\link{plot.default}}. The \code{col}
+option determines the colors to use on observations of different groups
 (scatter plot only).}
 }
 \value{

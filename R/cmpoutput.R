@@ -289,8 +289,8 @@ summary.cmpoutput <- function(object, ...) {
 #' }
 #'
 #' @param x Object of class \code{cmpoutput}.
-#' @param ... Extra options passed to \code{\link{plot.default}}.
-#' @param col Vector of colors to use on observations of different groups
+#' @param ... Extra options passed to \code{\link{plot.default}}. The \code{col}
+#' option determines the colors to use on observations of different groups
 #' (scatter plot only).
 #'
 #' @return None.
@@ -305,34 +305,56 @@ summary.cmpoutput <- function(object, ...) {
 #'
 #' plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$factors))
 #'
-plot.cmpoutput <- function(x, ..., col = micompr:::plotcols()) {
+plot.cmpoutput <- function(x, ...) {
 
+  # Was a color specified?
+  params <- list(...)
+  if (exists("col", where = params)) {
+    col <- params$col
+    params$col <- NULL # We don't want any color in the barplots
+  } else {
+    col <- plotcols()
+  }
+
+  # Set mfrow graphical parameter to setup subplots
   par(mfrow = c(2,2))
 
   # Score plot (first two PCs)
-  plot.default(x$scores[,1], x$scores[,2],
-               col = col[as.numeric(x$factors)],
-               xlab = paste("PC1 (", round(x$varexp[1] * 100, 2), "%)",
-                          sep = ""),
-               ylab = paste("PC2 (", round(x$varexp[2] * 100, 2), "%)",
-                          sep = ""),
-               main = "Score plot", ...)
+  params_sp <- params
+  params_sp$x <- x$scores[, 1]
+  params_sp$y <- x$scores[, 2]
+  params_sp$col <- col[as.numeric(x$factors)]
+  params_sp$xlab <- paste("PC1 (", round(x$varexp[1] * 100, 2), "%)", sep = "")
+  params_sp$ylab <- paste("PC2 (", round(x$varexp[2] * 100, 2), "%)", sep = "")
+  params_sp$main <- "Score plot"
+  do.call("plot.default", params_sp)
 
   # Explained variance bar plot
-  barplot(x$varexp[1:x$npcs], names.arg = as.character(1:x$npcs),
-          main = "Explained variance by PC",
-          xlab = "PC", ylab = "Var. exp. (%)", ...)
+  params_ve <- params
+  params_ve$height <- x$varexp[1:x$npcs]
+  params_ve$names.arg <- as.character(1:x$npcs)
+  params_ve$main <- "Explained variance by PC"
+  params_ve$xlab <- "PC"
+  params_ve$ylab <- "Var. exp. (%)"
+  do.call("barplot", params_ve)
 
   # Parametric p-values bar plot
-  barplot(x$p.values$parametric, names.arg = as.character(1:x$npcs),
-          main = "Parametric p-values by PC",
-          xlab = "PC", ylab = "Prob.", ...)
+  params_ppv <- params
+  params_ppv$height <- x$p.values$parametric
+  params_ppv$names.arg <- as.character(1:x$npcs)
+  params_ppv$main <- "Parametric p-values by PC"
+  params_ppv$xlab <- "PC"
+  params_ppv$ylab <- "Prob."
+  do.call("barplot", params_ppv)
 
   # Non-parametric p-values bar plot
-  barplot(x$p.values$nonparametric,
-          names.arg = as.character(1:x$npcs),
-          main = "Non-parametric p-values by PC",
-          xlab = "PC", ylab = "Prob.", ...)
+  params_nppv <- params
+  params_nppv$height <- x$p.values$nonparametric
+  params_nppv$names.arg <- as.character(1:x$npcs)
+  params_nppv$main <- "Non-parametric p-values by PC"
+  params_nppv$xlab <- "PC"
+  params_nppv$ylab <- "Prob."
+  do.call("barplot", params_nppv)
 
   invisible(NULL)
 }

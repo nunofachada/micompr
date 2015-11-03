@@ -357,13 +357,13 @@ summary.grpoutputs <- function(object, ...) {
 #'
 #' Each output is plotted individually, and observations are plotted on top of
 #' each other. Observations from different groups are plotted with different
-#' colors (which can be controlled through the \code{col} parameter).
+#' colors (which can be controlled through the \code{col} parameter given in
+#' ...).
 #'
 #' This function can be very slow for a large number of observations.
 #'
 #' @param x Object of class \code{grpoutputs}.
 #' @param ... Extra options passed to \code{\link{plot.default}}.
-#' @param col Vector of colors to use on observations of different groups.
 #'
 #' @return None.
 #' @export
@@ -383,13 +383,21 @@ summary.grpoutputs <- function(object, ...) {
 #' # Plot grpoutputs object
 #' plot(go)
 #'
-plot.grpoutputs <- function(x, ..., col = micompr:::plotcols()) {
+plot.grpoutputs <- function(x, ...) {
 
   # Get required data
   nout <- length(x$data);
   nout_simpl <- nout - x$concat
   ncols <- min(2, nout)
   outputs <- names(x$data)
+
+  # Was a color specified?
+  params <- list(...)
+  if (exists("col", where = params)) {
+    col <- params$col
+  } else {
+    col = plotcols()
+  }
 
   # One output or more?
   if (nout == 1) {
