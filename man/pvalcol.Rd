@@ -4,8 +4,7 @@
 \alias{pvalcol}
 \title{Associate colors to \emph{p}-values}
 \usage{
-pvalcol(pvals, col = c("darkgreen", "yellow", "red"), pvlims = c(0.05,
-  0.01))
+pvalcol(pvals, col, pvlims = c(0.05, 0.01))
 }
 \arguments{
 \item{pvals}{Vector of \emph{p}-values to which associate colors.}
@@ -23,7 +22,8 @@ A vector of colors associated with \emph{p}-values given in
 Associate colors to \emph{p}-values according to their value.
 }
 \examples{
-micompr:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02))
+micompr:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02),
+                  c("darkgreen", "yellow", "red"))
 # [1] "darkgreen" "darkgreen" "red"       "darkgreen" "darkgreen" "yellow"
 }
 \keyword{internal}

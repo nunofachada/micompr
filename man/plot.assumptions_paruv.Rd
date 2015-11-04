@@ -10,7 +10,9 @@ in simulation output comparison}
 \arguments{
 \item{x}{Objects of class \code{\link{assumptions_paruv}}.}
 
-\item{...}{Extra options passed to \code{\link{plot.default}}.}
+\item{...}{Extra options passed to \code{\link{barplot}}. The \code{col}
+parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
+respectively.}
 
 \item{extra}{Number of extra sub-plot spaces to create (useful when this
 function is called from another which will produce more plots).}

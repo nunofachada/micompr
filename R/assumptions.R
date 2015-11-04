@@ -290,7 +290,9 @@ print.assumptions_paruv <- function(x, ...) {
 #' being compared.
 #'
 #' @param x Objects of class \code{\link{assumptions_manova}}.
-#' @param ... Extra options passed to \code{\link{plot.default}}.
+#' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
+#' parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
+#' respectively.
 #'
 #' @return None.
 #'
@@ -307,10 +309,26 @@ print.assumptions_paruv <- function(x, ...) {
 #'
 plot.assumptions_manova <- function(x, ...) {
 
+  # Was a color specified?
+  params <- list(...)
+  if (exists("col", where = params)) {
+    col <- params$col
+    params$col <- NULL
+  } else {
+    col = c("darkgreen", "yellow", "red")
+  }
+
+  # Get the p-values to plot
   pvals <- sapply(x$mvntest, function(x) x@p.value)
-  barplot(pvals, main = "Royston test p-values", sub = "Multivariate normality",
-          xlab = "Groups", ylab = "Probability", col = pvalcol(pvals),
-          ...)
+
+  # Plot the p-values in a bar plot
+  params$height <- pvals
+  params$main <- "Royston test p-values"
+  params$sub <- "Multivariate normality"
+  params$xlab <- "Groups"
+  params$ylab <- "Probability"
+  params$col <- pvalcol(pvals, col)
+  do.call("barplot", params)
 
   invisible(NULL)
 }
@@ -330,9 +348,11 @@ plot.assumptions_manova <- function(x, ...) {
 #' associated with each principal component.
 #'
 #' @param x Objects of class \code{\link{assumptions_paruv}}.
+#' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
+#' parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
+#' respectively.
 #' @param extra Number of extra sub-plot spaces to create (useful when this
 #' function is called from another which will produce more plots).
-#' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.
 #'
@@ -349,38 +369,51 @@ plot.assumptions_manova <- function(x, ...) {
 #'
 plot.assumptions_paruv <- function(x, ..., extra = 0) {
 
+  # Was a color specified?
+  params <- list(...)
+  if (exists("col", where = params)) {
+    col <- params$col
+    params$col <- NULL
+  } else {
+    col = c("darkgreen", "yellow", "red")
+  }
+
   # Number of vars in the PC plots
   nvars <- length(x$uvntest[[1]])
 
   # One plot for each factor + 1 for the variance + extra for more plots
   nplots <- length(x$uvntest) + 1 + extra
 
-  # Plot matrix side dimension
+  # Determine layout matrix side dimension
   side_dim <- ceiling(sqrt(nplots))
 
+  # Setup subplot layput
   par(mfrow = c(side_dim, side_dim))
+
   # Plot the Bartlett test p-values by PC
   vardata <- sapply(x$vartest, function(x) x$p.value)
-  barplot(vardata,
-          names.arg = as.character(1:nvars),
-          main = "p-values for the Bartlett test",
-          sub = "Homogeneity of Variances",
-          xlab = "PC",
-          ylab = "Probability",
-          col = pvalcol(vardata),
-          ...)
+  params_bart <- params
+  params_bart$height <- vardata
+  params_bart$names.arg <- as.character(1:nvars)
+  params_bart$main <- "p-values for the Bartlett test"
+  params_bart$sub <- "Homogeneity of Variances"
+  params_bart$xlab <- "PC"
+  params_bart$ylab <- "Probability"
+  params_bart$col <- pvalcol(vardata, col)
+  do.call("barplot", params_bart)
 
   # Plot the Shapiro-Wilk p-values by PC for each factor
   for (grp in names(x$uvntest)) {
     normdata <- sapply(x$uvntest[[grp]], function(x) x$p.value)
-    barplot(normdata,
-            names.arg = as.character(1:nvars),
-            sub = grp,
-            main = "p-values for the SW normality test",
-            xlab = "PC",
-            ylab = "Probability",
-            col = pvalcol(normdata),
-            ...)
+    params_sw <- params
+    params_sw$height <- normdata
+    params_sw$names.arg = as.character(1:nvars)
+    params_sw$sub = grp
+    params_sw$main = "p-values for the SW normality test"
+    params_sw$xlab = "PC"
+    params_sw$ylab = "Probability"
+    params_sw$col = pvalcol(normdata, col)
+    do.call("barplot", params_sw)
   }
 
   invisible(NULL)
