@@ -396,7 +396,7 @@ plot.grpoutputs <- function(x, ...) {
   if (exists("col", where = params)) {
     col <- params$col
   } else {
-    col = plotcols()
+    col <- plotcols()
   }
 
   # One output or more?

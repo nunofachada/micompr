@@ -315,7 +315,7 @@ plot.assumptions_manova <- function(x, ...) {
     col <- params$col
     params$col <- NULL
   } else {
-    col = c("darkgreen", "yellow", "red")
+    col <- c("darkgreen", "yellow", "red")
   }
 
   # Get the p-values to plot
@@ -375,7 +375,7 @@ plot.assumptions_paruv <- function(x, ..., extra = 0) {
     col <- params$col
     params$col <- NULL
   } else {
-    col = c("darkgreen", "yellow", "red")
+    col <- c("darkgreen", "yellow", "red")
   }
 
   # Number of vars in the PC plots
@@ -387,7 +387,7 @@ plot.assumptions_paruv <- function(x, ..., extra = 0) {
   # Determine layout matrix side dimension
   side_dim <- ceiling(sqrt(nplots))
 
-  # Setup subplot layput
+  # Setup subplot layout
   par(mfrow = c(side_dim, side_dim))
 
   # Plot the Bartlett test p-values by PC
@@ -407,12 +407,12 @@ plot.assumptions_paruv <- function(x, ..., extra = 0) {
     normdata <- sapply(x$uvntest[[grp]], function(x) x$p.value)
     params_sw <- params
     params_sw$height <- normdata
-    params_sw$names.arg = as.character(1:nvars)
-    params_sw$sub = grp
-    params_sw$main = "p-values for the SW normality test"
-    params_sw$xlab = "PC"
-    params_sw$ylab = "Probability"
-    params_sw$col = pvalcol(normdata, col)
+    params_sw$names.arg <- as.character(1:nvars)
+    params_sw$sub <- grp
+    params_sw$main <- "p-values for the SW normality test"
+    params_sw$xlab <- "PC"
+    params_sw$ylab <- "Probability"
+    params_sw$col <- pvalcol(normdata, col)
     do.call("barplot", params_sw)
   }
 

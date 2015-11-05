@@ -577,7 +577,7 @@ plot.assumptions_micomp <- function(x, ...) {
     col <- plotcols()
   }
 
-  # Get the asssumptions summary
+  # Get the assumptions summary
   sm <- summary(x)
 
   # Useful variables

@@ -69,21 +69,21 @@ pvalf <- function(pval, params) UseMethod("pvalf")
 pvalf.default <- function(pval, params = list()) {
 
   if (exists("minval", where = params)) {
-    minval = params$minval
+    minval <- params$minval
   } else {
-    minval = 0
+    minval <- 0
   }
 
   if (exists("lim1val", where = params)) {
-    lim1val = params$lim1val
+    lim1val <- params$lim1val
   } else {
-    lim1val = 0.01
+    lim1val <- 0.01
   }
 
   if (exists("lim2val", where = params)) {
-    lim2val = params$lim2val
+    lim2val <- params$lim2val
   } else {
-    lim2val = 0.05
+    lim2val <- 0.05
   }
 
   if (lim1val >= lim2val) {
