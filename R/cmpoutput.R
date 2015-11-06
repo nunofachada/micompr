@@ -135,12 +135,18 @@ cmpoutput <- function(name, ve, data, factors) {
   }
 
   # Return
-  cmpout <- list(scores = pca$x, factors = factors, varexp = varexp,
-                 npcs = npcs, ve = ve, name = name,
-                 p.values = list(manova = mnvpval, parametric = parpvals,
+  cmpout <- list(scores = pca$x,
+                 factors = factors,
+                 varexp = varexp,
+                 npcs = npcs,
+                 ve = ve,
+                 name = name,
+                 p.values = list(manova = mnvpval,
+                                 parametric = parpvals,
                                  nonparametric = nonparpvals),
-                 tests = list(manova = mnvtest, parametric = partests,
-                            nonparametric = nonpartests))
+                 tests = list(manova = mnvtest,
+                              parametric = partests,
+                              nonparametric = nonpartests))
   class(cmpout) <- "cmpoutput"
   cmpout
 
