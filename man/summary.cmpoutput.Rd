@@ -14,6 +14,7 @@
 \value{
 A list with the following components:
 \describe{
+ \item{output.name}{Output name.}
  \item{num.pcs}{Number of principal components which explain \code{var.exp}
        percentage of variance.}
  \item{var.exp}{Minimum percentage of variance which must be explained by the
