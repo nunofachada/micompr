@@ -1,3 +1,2 @@
 - Package level doc, method for doc and for README.md
-- Check that @return tag is correct for all functions
 - Warning in MANOVA when nvars >= nobs (e.g. "requires more samples")
