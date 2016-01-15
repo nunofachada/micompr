@@ -118,7 +118,9 @@ pvalf.default <- function(pval, params = list()) {
 #'
 #' This function creates a simple \code{TikZ} 2D scatter plot within a
 #' \code{tikzpicture} environment. The points are plotted on a normalized
-#' figure with \emph{x} and \emph{y} axes bounded between [-1,1].
+#' figure with \emph{x} and \emph{y} axes bounded between [-1, 1]. To render
+#' adequately, the final \code{LaTeX} document should load the \code{plotmarks}
+#' \code{TikZ} library.
 #'
 #' @param data Data to plot, \emph{m} x 2 numeric matrix, where \emph{m} is the
 #' number of observations or points to plot.
