@@ -33,7 +33,9 @@ Create a simple 2D \code{TikZ} scatter plot, useful for plotting PCA data.
 \details{
 This function creates a simple \code{TikZ} 2D scatter plot within a
 \code{tikzpicture} environment. The points are plotted on a normalized
-figure with \emph{x} and \emph{y} axes bounded between [-1,1].
+figure with \emph{x} and \emph{y} axes bounded between [-1, 1]. To render
+adequately, the final \code{LaTeX} document should load the \code{plotmarks}
+\code{TikZ} library.
 }
 \examples{
 tikzscat(rbind(c(1.5, 2), c(0.5, 1)), factor(c(1,2)),

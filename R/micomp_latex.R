@@ -374,6 +374,16 @@ toLatex.micomp <- function(
   # Cycle through comparisons
   for (cmp in colnames(object)) {
 
+    # Determine univariate test names
+    nfacts <- length(levels(object[, cmp][[1]]$factors))
+    if (nfacts == 2) {
+      uvpartest <- "$t$-test"
+      uvnpartest <- "MW"
+    } else {
+      uvpartest <- "ANOVA"
+      uvnpartest <- "KW"
+    }
+
     # Put a midrule
     ltxtab[[idx]] <- hlines$mid
     idx <- idx + 1
@@ -395,12 +405,12 @@ toLatex.micomp <- function(
                           pst(" & ", pvalf.f(unlist(smicf["MNV", ]),
                                              pvalf.params)),
                           "\\\\"),
-               parp = pst(" & $t$-test ",
+               parp = pst(" & ", uvpartest, " ",
                           pst(" & ",
                               pvalf.f(unlist(smicf["par.test", ]),
                                       pvalf.params)),
                           "\\\\"),
-               nparp = pst(" & MW  ",
+               nparp = pst(" & ", uvnpartest, " ",
                            pst(" & ",
                                pvalf.f(unlist(smicf["nonpar.test", ]),
                                        pvalf.params)),
