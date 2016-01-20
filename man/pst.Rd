@@ -17,11 +17,11 @@ characters.
 Concatenate strings without any separator characters.
 }
 \details{
-This function simply calls \code{\link{paste}} with the \code{sep} and
-\code{collapse} options set to \code{""}.
+This function simply calls \code{\link{paste0}} with the \code{collapse}
+option set to \code{""}.
 }
 \examples{
-micompr:::pst("a","b","c",c("a","b","c"))
+micompr:::pst("a", "b", "c", c("a", "b", "c"))
 # [1] "abcaabcbabcc"
 }
 \keyword{internal}

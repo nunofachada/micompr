@@ -2,8 +2,8 @@
 #'
 #' Concatenate strings without any separator characters.
 #'
-#' This function simply calls \code{\link{paste}} with the \code{sep} and
-#' \code{collapse} options set to \code{""}.
+#' This function simply calls \code{\link{paste0}} with the \code{collapse}
+#' option set to \code{""}.
 #'
 #' @param ... one or more \R objects, to be converted to character vectors.
 #'
@@ -13,11 +13,11 @@
 #' @keywords internal
 #'
 #' @examples
-#' micompr:::pst("a","b","c",c("a","b","c"))
+#' micompr:::pst("a", "b", "c", c("a", "b", "c"))
 #' # [1] "abcaabcbabcc"
 #'
 pst <- function(...) {
-  paste(..., sep = "", collapse = "")
+  paste0(..., collapse = "")
 }
 
 #' Format p-values
