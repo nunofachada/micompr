@@ -346,6 +346,9 @@ plot.cmpoutput <- function(x, ...) {
   # Set mfrow graphical parameter to setup subplots
   par(mfrow = c(2,2))
 
+  # Total number of PCs
+  tpcs <- length(x$varexp)
+
   # Score plot (first two PCs)
   params_sp <- params
   params_sp$x <- x$scores[, 1]
@@ -358,8 +361,8 @@ plot.cmpoutput <- function(x, ...) {
 
   # Explained variance bar plot
   params_ve <- params
-  params_ve$height <- x$varexp[1:x$npcs]
-  params_ve$names.arg <- as.character(1:x$npcs)
+  params_ve$height <- x$varexp
+  params_ve$names.arg <- as.character(1:tpcs)
   params_ve$main <- "Explained variance by PC"
   params_ve$xlab <- "PC"
   params_ve$ylab <- "Var. exp. (%)"
@@ -368,7 +371,7 @@ plot.cmpoutput <- function(x, ...) {
   # Parametric p-values bar plot
   params_ppv <- params
   params_ppv$height <- x$p.values$parametric
-  params_ppv$names.arg <- as.character(1:x$npcs)
+  params_ppv$names.arg <- as.character(1:tpcs)
   params_ppv$main <- "Parametric p-values by PC"
   params_ppv$xlab <- "PC"
   params_ppv$ylab <- "Prob."
@@ -377,7 +380,7 @@ plot.cmpoutput <- function(x, ...) {
   # Non-parametric p-values bar plot
   params_nppv <- params
   params_nppv$height <- x$p.values$nonparametric
-  params_nppv$names.arg <- as.character(1:x$npcs)
+  params_nppv$names.arg <- as.character(1:tpcs)
   params_nppv$main <- "Non-parametric p-values by PC"
   params_nppv$xlab <- "PC"
   params_nppv$ylab <- "Prob."

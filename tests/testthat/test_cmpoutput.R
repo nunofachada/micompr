@@ -76,13 +76,17 @@ test_that("cmpoutput constructs the expected objects", {
         expect_is(ccmp$tests$parametric[[i]], "aov")
       }
       expect_is(ccmp$tests$nonparametric[[i]], "htest")
-      expect_true((ccmp$p.values$parametric[i] >= 0)
-                  && (ccmp$p.values$parametric[i] <= 1),
-                  "Parametric test p-value not between 0 and 1.")
-      expect_true((ccmp$p.values$nonparametric[i] >= 0)
-                  && (ccmp$p.values$nonparametric[i] <= 1),
-                  "Non-parametric test p-value not between 0 and 1.")
     }
+    expect_true((ccmp$p.values$parametric[i] >= 0)
+                && (ccmp$p.values$parametric[i] <= 1),
+                "Parametric test p-value not between 0 and 1.")
+    expect_true((ccmp$p.values$nonparametric[i] >= 0)
+                && (ccmp$p.values$nonparametric[i] <= 1),
+                "Non-parametric test p-value not between 0 and 1.")
+    expect_equal(ccmp$p.values$parametric_adjusted,
+                 pmin(ccmp$p.values$parametric / ccmp$varexp, 1))
+    expect_equal(ccmp$p.values$nonparametric_adjusted,
+                 pmin(ccmp$p.values$nonparametric / ccmp$varexp, 1))
   }
 
   ## Different tests for the cmpoutput objects ##
