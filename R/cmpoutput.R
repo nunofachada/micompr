@@ -197,6 +197,8 @@ cmpoutput <- function(name, ve, data, factors) {
 #' ## P-Value for MANOVA along 2 dimensions: 5.533087e-08
 #' ## P-Value for t-test (1st PC): 1.823478e-08
 #' ## P-Value for Mann-Whitney U test (1st PC): 1.082509e-05
+#' ## Adjusted p-Value for t-test (1st PC): 3.144908e-08
+#' ## Adjusted p-Value for Mann-Whitney U test (1st PC): 1.866977e-05
 #'
 print.cmpoutput <- function(x, ...) {
 
@@ -217,6 +219,10 @@ print.cmpoutput <- function(x, ...) {
       x$p.values$parametric[1], "\n")
   cat("P-Value for", test_names[2], "(1st PC):",
       x$p.values$nonparametric[1], "\n")
+  cat("Adjusted p-Value for", test_names[1], "(1st PC):",
+      x$p.values$parametric_adjusted[1], "\n")
+  cat("Adjusted p-Value for", test_names[2], "(1st PC):",
+      x$p.values$nonparametric_adjusted[1], "\n")
 
   invisible(x)
 
