@@ -286,6 +286,12 @@ print.micomp <- function(x, ...) {
 #'        component).}
 #'  \item{nonpar.test}{\emph{P}-value for the non-parametric test (first
 #'        principal component).}
+#'  \item{par.test.adjust}{\emph{P}-value for the parametric test (first
+#'        principal component), adjusted with the weighted Bonferroni procedure,
+#'        percentage of explained variance used as weight.}
+#'  \item{nonpar.test.adjust}{\emph{P}-value for the non-parametric test (first
+#'        principal component), adjusted with the weighted Bonferroni procedure,
+#'        percentage of explained variance used as weight.}
 #' }
 #'
 #' @export
@@ -300,25 +306,31 @@ print.micomp <- function(x, ...) {
 #'                     list(name = "CompDiff", grpout = pphpc_diff))))
 #'
 #' ## $CompEq
-#' ## out1      out2      out3       out4      out5
-#' ## #PCs        2.0000000 1.0000000 3.0000000 5.00000000 7.0000000
-#' ## MNV         0.4122154        NA 0.4252224 0.04473072 0.5505714
-#' ## par.test    0.8207035 0.4696199 0.9709602 0.47306136 0.3597001
-#' ## nonpar.test 1.0000000 0.5787417 0.7959363 0.39304813 0.5787417
+#' ##                         out1      out2      out3       out4      out5
+#' ## #PCs               2.0000000 1.0000000 3.0000000 5.00000000 7.0000000
+#' ## MNV                0.4122154        NA 0.4252224 0.04473072 0.5505714
+#' ## par.test           0.8207035 0.4696199 0.9709602 0.47306136 0.3597001
+#' ## nonpar.test        1.0000000 0.5787417 0.7959363 0.39304813 0.5787417
+#' ## par.test.adjust    1.0000000 0.5345224 1.0000000 1.00000000 0.9293843
+#' ## nonpar.test.adjust 1.0000000 0.6587251 1.0000000 1.00000000 1.0000000
 #' ##
 #' ## $CompNoShuf
-#' ## out1        out2         out3         out4       out5
-#' ## #PCs        2.000000e+00 1.000000000 2.000000e+00 1.000000e+00 7.00000000
-#' ## MNV         3.114719e-10          NA 6.396187e-08           NA 0.18049297
-#' ## par.test    2.545483e-06 0.008866718 1.111168e-03 2.099258e-18 0.05728007
-#' ## nonpar.test 1.082509e-05 0.008930698 1.050034e-03 1.082509e-05 0.07525601
+#' ##                            out1        out2         out3         out4       out5
+#' ## #PCs               2.000000e+00 1.000000000 2.000000e+00 1.000000e+00 7.00000000
+#' ## MNV                3.114719e-10          NA 6.396187e-08           NA 0.18049297
+#' ## par.test           2.545483e-06 0.008866718 1.111168e-03 2.099258e-18 0.05728007
+#' ## nonpar.test        1.082509e-05 0.008930698 1.050034e-03 1.082509e-05 0.07525601
+#' ## par.test.adjust    4.887558e-06 0.009509753 2.220151e-03 2.311375e-18 0.13788432
+#' ## nonpar.test.adjust 2.078515e-05 0.009578372 2.098003e-03 1.191890e-05 0.18115591
 #' ##
 #' ## $CompDiff
-#' ## out1         out2         out3         out4         out5
-#' ## #PCs        1.000000e+00 1.000000e+00 2.000000e+00 1.000000e+00 5.000000e+00
-#' ## MNV                   NA           NA 5.380703e-14           NA 1.242782e-06
-#' ## par.test    6.727250e-17 6.577743e-11 1.704694e-15 1.808875e-09 1.823478e-08
-#' ## nonpar.test 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05
+#' ##                            out1         out2         out3         out4         out5
+#' ## #PCs               1.000000e+00 1.000000e+00 2.000000e+00 1.000000e+00 5.000000e+00
+#' ## MNV                          NA           NA 5.380703e-14           NA 1.242782e-06
+#' ## par.test           6.727250e-17 6.577743e-11 1.704694e-15 1.808875e-09 1.823478e-08
+#' ## nonpar.test        1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05 1.082509e-05
+#' ## par.test.adjust    6.868160e-17 6.655293e-11 2.174285e-15 2.112548e-09 3.144908e-08
+#' ## nonpar.test.adjust 1.105183e-05 1.095271e-05 1.380707e-05 1.264240e-05 1.866977e-05
 #'
 summary.micomp <- function(object, ...) {
 
@@ -337,10 +349,16 @@ summary.micomp <- function(object, ...) {
                     function(mc) return(mc$p.values$parametric[1]))
     p_npar <- sapply(object[, i],
                      function(mc) return(mc$p.values$nonparametric[1]))
+    p_apar <- sapply(object[, i],
+                     function(mc) return(mc$p.values$parametric_adjusted[1]))
+    p_anpar <- sapply(object[, i],
+                      function(mc)
+                        return(mc$p.values$nonparametric_adjusted[1]))
 
-
-    df <- data.frame(rbind(npcs,p_mnv,p_par,p_npar), stringsAsFactors = F,
-                     row.names = c("#PCs", "MNV", "par.test", "nonpar.test"))
+    df <- data.frame(rbind(npcs, p_mnv, p_par, p_npar, p_apar, p_anpar),
+                     stringsAsFactors = F,
+                     row.names = c("#PCs", "MNV", "par.test", "nonpar.test",
+                                   "par.test.adjust", "nonpar.test.adjust"))
     names(df) <- rownames(object)
 
     smic[[cmpnames[i]]] <- df
