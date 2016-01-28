@@ -35,6 +35,12 @@
 #'            test applied to groups along each principal component
 #'            (Mann-Whitney U test for 2 groups, Kruskal-Wallis test for more
 #'            than 2 groups).}
+#'      \item{parametric_adjusted}{Same as field \code{parametric}, but
+#'            \emph{p}-values are adjusted using weighted Bonferroni procedure.
+#'            Percentages of explained variance are used as weights.}
+#'      \item{nonparametric_adjusted}{Same as field \code{nonparametric}, but
+#'            \emph{p}-values are adjusted using weighted Bonferroni procedure.
+#'            Percentages of explained variance are used as weights.}
 #'    }
 #'  }
 #'  \item{tests}{
@@ -82,7 +88,12 @@ cmpoutput <- function(name, ve, data, factors) {
   eig <- (pca$sdev) ^ 2
   varexp <- eig / sum(eig)
   cumvar <- cumsum(varexp)
+
+  # Number of PCs required to explain the specified percentage of variance
   npcs <- which(cumvar > ve)[1]
+
+  # Total number of PCs returned by PCA operation
+  tpcs <-length(eig);
 
   # Manova
   if (npcs > 1) {
@@ -95,16 +106,18 @@ cmpoutput <- function(name, ve, data, factors) {
     mnvpval <- NA
   }
 
-  parpvals <- vector(mode = "numeric", length = npcs)
+  parpvals <- vector(mode = "numeric", length = tpcs)
+  parpvals_adjusted <- vector(mode = "numeric", length = tpcs)
   partests <- list()
-  nonparpvals <- vector(mode = "numeric", length = npcs)
+  nonparpvals <- vector(mode = "numeric", length = tpcs)
+  nonparpvals_adjusted <- vector(mode = "numeric", length = tpcs)
   nonpartests <- list()
 
   if (nlevels(factors) == 2) {
     # Use two-group tests
 
     # Cycle through each PC
-    for (i in 1:npcs) {
+    for (i in 1:tpcs) {
 
       # Parametric test (t-test) for each PC
       partests[[i]] <- t.test(pca$x[, i] ~ factors, var.equal = T)
@@ -120,7 +133,7 @@ cmpoutput <- function(name, ve, data, factors) {
     # Use multi-group tests (npcs > 2)
 
     # Cycle through each PC
-    for (i in 1:npcs) {
+    for (i in 1:tpcs) {
 
       # Parametric test (ANOVA) for each PC
       partests[[i]] <- aov(pca$x[, i] ~ factors)
@@ -134,6 +147,11 @@ cmpoutput <- function(name, ve, data, factors) {
 
   }
 
+  # Determine adjusted univariate p-values using the weighted Bonferroni
+  # procedure, explained variances used as weights
+  parpvals_adjusted <- pmin(parpvals / varexp, 1)
+  nonparpvals_adjusted <- pmin(nonparpvals / varexp, 1)
+
   # Return
   cmpout <- list(scores = pca$x,
                  factors = factors,
@@ -143,7 +161,9 @@ cmpoutput <- function(name, ve, data, factors) {
                  name = name,
                  p.values = list(manova = mnvpval,
                                  parametric = parpvals,
-                                 nonparametric = nonparpvals),
+                                 nonparametric = nonparpvals,
+                                 parametric_adjusted = parpvals_adjusted,
+                                 nonparametric_adjusted = nonparpvals_adjusted),
                  tests = list(manova = mnvtest,
                               parametric = partests,
                               nonparametric = nonpartests))

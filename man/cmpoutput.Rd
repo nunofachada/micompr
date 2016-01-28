@@ -44,6 +44,12 @@ Object of class \code{cmpoutput} containing the following data:
            test applied to groups along each principal component
            (Mann-Whitney U test for 2 groups, Kruskal-Wallis test for more
            than 2 groups).}
+     \item{parametric_adjusted}{Same as field \code{parametric}, but
+           \emph{p}-values are adjusted using weighted Bonferroni procedure.
+           Percentages of explained variance are used as weights.}
+     \item{nonparametric_adjusted}{Same as field \code{nonparametric}, but
+           \emph{p}-values are adjusted using weighted Bonferroni procedure.
+           Percentages of explained variance are used as weights.}
    }
  }
  \item{tests}{
