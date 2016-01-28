@@ -23,9 +23,17 @@ A list with the following components:
  \item{parametric.test}{Name of the used parametric test.}
  \item{parametric.pvals}{Vector of $p$-values returned by applying the
        parametric test to each principal component.}
+ \item{parametric.pvals.adjusted}{Vector of $p$-values returned by applying
+       the parametric test to each principal component, adjusted with the
+       weighted Bonferroni procedure, percentage of explained variance used
+       as weight.}
  \item{nonparametric.test}{Name of the used non-parametric test.}
  \item{nonparametric.pvals}{Vector of $p$-values returned by applying the
        non-parametric test to each principal component.}
+ \item{nonparametric.pvals.adjusted}{Vector of $p$-values returned by
+       applying the non-parametric test to each principal component, adjusted
+       with the weighted Bonferroni procedure, percentage of explained
+       variance used as weight.}
 }
 }
 \description{
@@ -56,12 +64,30 @@ summary(
 ## [1] "t-test"
 ##
 ## $parametric.pvals
-## [1] 0.001073006 0.788283742 0.172055145
+## [1] 0.001073006 0.788283742 0.172055145 0.015365691 0.773125277 0.583483779
+## [7] 0.280891952 0.401184318 0.762945000 0.819349320 0.836000197 0.896432613
+## [13] 0.866970948 0.984995459 0.868931537 0.734285342 0.748539168 0.913470280
+## [19] 0.994646303 0.774178244
+##
+## $parametric.pvals.adjusted
+## [1] 0.002592554 1.000000000 1.000000000 0.210669418 1.000000000 1.000000000
+## [7] 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000
+## [13] 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000
+## [19] 1.000000000 1.000000000
 ##
 ## $nonparametric.test
 ## [1] "Mann-Whitney"
 ##
 ## $nonparametric.pvals
-## [1] 0.0007252809 0.9117971811 0.3149992422
+## [1] 0.0007252809 0.9117971811 0.3149992422 0.0185433761 0.7393643508 0.6842105263
+## [7] 0.2474506917 0.3526813744 0.7393643508 1.0000000000 0.7959362619 0.6305289138
+## [13] 0.6305289138 0.7959362619 0.9705124597 0.5787416917 0.6305289138 0.9705124597
+## [19] 0.8534283054 0.9117971811
+##
+## $nonparametric.pvals.adjusted
+## [1] 0.001752394 1.000000000 1.000000000 0.254236683 1.000000000 1.000000000
+## [7] 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000
+## [13] 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000 1.000000000
+## [19] 1.000000000 1.000000000
 }
 
