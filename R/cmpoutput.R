@@ -344,7 +344,7 @@ plot.cmpoutput <- function(x, ...) {
   }
 
   # Set mfrow graphical parameter to setup subplots
-  par(mfrow = c(2,2))
+  par(mfrow = c(3,2))
 
   # Total number of PCs
   tpcs <- length(x$varexp)
@@ -385,6 +385,24 @@ plot.cmpoutput <- function(x, ...) {
   params_nppv$xlab <- "PC"
   params_nppv$ylab <- "Prob."
   do.call("barplot", params_nppv)
+
+  # Parametric adjusted p-values bar plot
+  params_papv <- params
+  params_papv$height <- x$p.values$parametric_adjusted
+  params_papv$names.arg <- as.character(1:tpcs)
+  params_papv$main <- "Parametric p-values by PC (adjusted)"
+  params_papv$xlab <- "PC"
+  params_papv$ylab <- "Prob."
+  do.call("barplot", params_papv)
+
+  # Non-parametric adjusted p-values bar plot
+  params_npapv <- params
+  params_npapv$height <- x$p.values$nonparametric_adjusted
+  params_npapv$names.arg <- as.character(1:tpcs)
+  params_npapv$main <- "Non-parametric p-values by PC (adjusted)"
+  params_npapv$xlab <- "PC"
+  params_npapv$ylab <- "Prob."
+  do.call("barplot", params_npapv)
 
   invisible(NULL)
 }
