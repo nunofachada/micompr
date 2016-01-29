@@ -262,8 +262,15 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'   \item{npcs}{Number of principal components required to explain the
 #'         percentage of variance specified when \code{mic} was created.}
 #'   \item{mnvp}{MANOVA \emph{p}-values.}
-#'   \item{parp}{Parametric test \emph{p}-values.}
-#'   \item{nparp}{Non-parametric test \emph{p}-values.}
+#'   \item{parp-i}{Parametric test \emph{p}-values for the i-th principal
+#'         component.}
+#'   \item{nparp-i}{Non-parametric test \emph{p}-values for the i-th principal
+#'         component.}
+#'   \item{aparp-i}{Parametric test \emph{p}-values adjusted with weighted
+#'         Bonferroni procedure for the i-th principal component.}
+#'   \item{anparp-i}{Non-parametric test \emph{p}-values adjusted with weighted
+#'         Bonferroni procedure for the i-th principal component.}
+#'   \item{varexp-i}{Explained variance for the i-th principal component.}
 #'   \item{scoreplot}{Output projection on the first two principal components.}
 #' }
 #' @param table.placement \code{LaTeX} table placement.
@@ -310,7 +317,7 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 toLatex.micomp <- function(
   object,
   ...,
-  data.show = c("npcs", "mnvp", "parp", "nparp", "scoreplot"),
+  data.show = c("npcs", "mnvp", "parp-1", "nparp-1", "scoreplot"),
   table.placement = "ht",
   latex.environments = c("center"),
   booktabs = F,
@@ -388,8 +395,8 @@ toLatex.micomp <- function(
     ltxtab[[idx]] <- hlines$mid
     idx <- idx + 1
 
-    # Adjust formatting for specific number of significant digits
-    smicf <- smic[[cmp]]
+    # Get list of compared outputs for current comparison
+    micmp <- object[, cmp]
 
     # Multi-row with comparison name
     ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
@@ -397,24 +404,75 @@ toLatex.micomp <- function(
 
     # Rows with comparison data
     for (cdata in data.show) {
+
+      # Split field name
+      cdata_split <- unlist(strsplit(cdata, "-"))
+
+      # Get first part of field name
+      cdata_cmd <- cdata_split[1]
+
+      # Does a second part of the field name exist? If so, it represents the
+      # principal component.
+      cdata_pc <- if (length(cdata_split) > 1) { as.numeric(cdata_split[2]) }
+
+      # Add row to table, determine type of row to add
       ltxtab[[idx]] <-
-        switch(cdata,
+        switch(cdata_cmd,
+
+               # Number of principal components
                npcs = pst(" & $\\#$PCs ",
-                          pst(" & ", as.integer(smicf["#PCs", ])), "\\\\"),
+                          pst(" & ", sapply(micmp, function(mc) mc$npcs)),
+                          "\\\\"),
+
+               # MANOVA p-values
                mnvp = pst(" & MNV ",
-                          pst(" & ", pvalf.f(unlist(smicf["MNV", ]),
-                                             pvalf.params)),
+                          pst(" & ", pvalf.f(
+                            sapply(micmp, function(mc)
+                              mc$p.values$manova),
+                            pvalf.params)),
                           "\\\\"),
-               parp = pst(" & ", uvpartest, " ",
-                          pst(" & ",
-                              pvalf.f(unlist(smicf["par.test", ]),
-                                      pvalf.params)),
+
+               # Parametric p-values (raw)
+               parp = pst(" & ", uvpartest, " (PC", cdata_pc, ") ",
+                          pst(" & ", pvalf.f(
+                            sapply(micmp, function(mc)
+                              mc$p.values$parametric[cdata_pc]),
+                            pvalf.params)),
                           "\\\\"),
-               nparp = pst(" & ", uvnpartest, " ",
-                           pst(" & ",
-                               pvalf.f(unlist(smicf["nonpar.test", ]),
-                                       pvalf.params)),
+
+               # Non-parametric p-values (raw)
+               nparp = pst(" & ", uvnpartest, " (PC", cdata_pc, ") ",
+                           pst(" & ", pvalf.f(
+                             sapply(micmp, function(mc)
+                               mc$p.values$nonparametric[cdata_pc]),
+                             pvalf.params)),
                            "\\\\"),
+
+               # Parametric p-values (adjusted)
+               aparp = pst(" & ", uvpartest, " (PC", cdata_pc, ") ",
+                           pst(" & ", pvalf.f(
+                             sapply(micmp, function(mc)
+                               mc$p.values$parametric_adjusted[cdata_pc]),
+                             pvalf.params)),
+                           "\\\\"),
+
+               # Non-parametric p-values (adjusted)
+               anparp = pst(" & ", uvnpartest, " (PC", cdata_pc, ") ",
+                            pst(" & ", pvalf.f(
+                              sapply(micmp, function(mc)
+                                mc$p.values$nonparametric_adjusted[cdata_pc]),
+                              pvalf.params)),
+                            "\\\\"),
+
+               # Percentage of explained variance
+               varexp = pst(" & \\% var. (PC", cdata_pc, ") ",
+                            pst(" & ", sapply(micmp, function(x)
+                              if (x$varexp[cdata_pc] < 0.0001) "<0.1"
+                              else sprintf("%6.1f", x$varexp[cdata_pc] * 100)),
+                              "\\%"),
+                            "\\\\"),
+
+               # Score plot
                scoreplot = pst(" & PCS ",
                                pst(" & ",
                                    tscat_apply(object[, cmp],
@@ -423,6 +481,8 @@ toLatex.micomp <- function(
                                                scoreplot.before,
                                                scoreplot.after)),
                                "\\\\"))
+
+      # Next row
       idx <- idx + 1
     }
 
