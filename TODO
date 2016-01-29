@@ -1,2 +1,4 @@
+- toLatex.micomp: optional output-level p-value correction
+- toLatex.micomp: optionally print another string instead of NAs
 - Package level doc, method for doc and for README.md
 - Warning in MANOVA when nvars >= nobs (e.g. "requires more samples")

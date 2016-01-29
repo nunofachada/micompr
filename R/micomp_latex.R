@@ -335,7 +335,10 @@ toLatex.micomp <- function(
   scoreplot.before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
   scoreplot.after = "}}") {
 
+  # How many rows will the table have?
   ndata <- length(data.show)
+
+  # Determine type of lines/rules to use in table
   hlines <- if (booktabs) {
     list(top = "\\toprule", mid = "\\midrule", bot = "\\bottomrule",
          c = pst("\\cmidrule(", booktabs.cmalign, ")"))
@@ -343,36 +346,48 @@ toLatex.micomp <- function(
     list(top = "\\hline", mid = "\\hline", bot = "\\hline", c = "\\cline")
   }
 
+  # Number of outputs
   nout <- dim(object)[1]
+
+  # Get micomp object summary
   smic <- summary(object)
 
+  # Initialize table variable
   ltxtab <- list()
   idx <- 1
 
+  # Set table float environment
   ltxtab[[idx]] <- pst("\\begin{table}[", table.placement, "]")
   idx <- idx + 1
 
+  # Set specified LaTeX environments
   ltxtab[[idx]] <- pst("\\begin{", latex.environments ,"}")
   idx <- idx + 1
 
+  # Set a resize box?
   if (col.width) {
     ltxtab[[idx]] <- "\\resizebox{\\columnwidth}{!}{%"
     idx <- idx + 1
   }
 
+  # Set tabular environment
   ltxtab[[idx]] <- pst("\\begin{tabular}{cl", pst(rep("r", nout)), "}")
   idx <- idx + 1
 
+  # Add top line/rule
   ltxtab[[idx]] <- hlines$top
   idx <- idx + 1
 
+  # Add header
   ltxtab[[idx]] <- pst("\\multirow{2}{*}{Comp.} & \\multirow{2}{*}{Test} & ",
                        "\\multicolumn{", nout, "}{c}{Outputs} \\\\")
   idx <- idx + 1
 
+  # Add intermediate line/rule
   ltxtab[[idx]] <- pst(hlines$c, "{3-", 2 + nout, "}")
   idx <- idx + 1
 
+  # Add output names
   ltxtab[[idx]] <- pst(" & & ", paste(rownames(object), collapse = " & ",
                                       sep = ""),
                        "\\\\")
@@ -449,7 +464,7 @@ toLatex.micomp <- function(
                            "\\\\"),
 
                # Parametric p-values (adjusted)
-               aparp = pst(" & ", uvpartest, " (PC", cdata_pc, ") ",
+               aparp = pst(" & ", uvpartest, "* (PC", cdata_pc, ") ",
                            pst(" & ", pvalf.f(
                              sapply(micmp, function(mc)
                                mc$p.values$parametric_adjusted[cdata_pc]),
@@ -457,7 +472,7 @@ toLatex.micomp <- function(
                            "\\\\"),
 
                # Non-parametric p-values (adjusted)
-               anparp = pst(" & ", uvnpartest, " (PC", cdata_pc, ") ",
+               anparp = pst(" & ", uvnpartest, "* (PC", cdata_pc, ") ",
                             pst(" & ", pvalf.f(
                               sapply(micmp, function(mc)
                                 mc$p.values$nonparametric_adjusted[cdata_pc]),
@@ -488,37 +503,45 @@ toLatex.micomp <- function(
 
   }
 
+  # Set the bottom line
   ltxtab[[idx]] <- hlines$bot
   idx <- idx + 1
 
+  # Close the tabular environment
   ltxtab[[idx]] <- "\\end{tabular}"
   idx <- idx + 1
 
+  # If open, close the resize box
   if (col.width) {
     ltxtab[[idx]] <- "} % resize box"
     idx <- idx + 1
   }
 
-
+  # Add a caption, if specified
   if (!is.null(caption)) {
     ltxtab[[idx]] <- pst("\\caption{", caption,"}")
     idx <- idx + 1
   }
 
+  # Add reference label, if specified
   if (!is.null(label)) {
     ltxtab[[idx]] <- pst("\\label{", label,"}")
     idx <- idx + 1
   }
 
+  # Close specified LaTeX environments
   ltxtab[[idx]] <- pst("\\end{", rev(latex.environments) ,"}")
   idx <- idx + 1
 
+  # Close table float environment
   ltxtab[[idx]] <- "\\end{table}"
   idx <- idx + 1
 
+  # Setup final table object
   ltxtab <- unlist(ltxtab)
   class(ltxtab) <- "Latex"
 
+  # Return table
   ltxtab
 
 }
