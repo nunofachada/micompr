@@ -256,6 +256,10 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'
 #' @param object A \code{\link{micomp}} object.
 #' @param ... Currently ignored.
+#' @param p.adjust.noutputs Method for adjusting \emph{p}-values to account for
+#' multiple output comparison. Can be one of the methods accepted by the
+#' \code{\link{p.adjust}} function. Does not consider the optional extra
+#' concatenated output.
 #' @param data.show Vector of strings specifying what data to show. Available
 #' options are:
 #' \describe{
@@ -318,6 +322,7 @@ toLatex.micomp <- function(
   object,
   ...,
   data.show = c("npcs", "mnvp", "parp-1", "nparp-1", "scoreplot"),
+  p.adjust.noutputs = NULL,
   table.placement = "ht",
   latex.environments = c("center"),
   booktabs = F,
