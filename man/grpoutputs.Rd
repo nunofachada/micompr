@@ -4,7 +4,8 @@
 \alias{grpoutputs}
 \title{Group outputs}
 \usage{
-grpoutputs(outputs, folders, files, lvls = NULL, concat = F, ...)
+grpoutputs(outputs, folders, files, lvls = NULL, concat = F,
+  centscal = "range", ...)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
@@ -23,7 +24,12 @@ recycled if \code{length(folders) < length(files)}.}
 If not given, default group names will be set.}
 
 \item{concat}{If TRUE add an additional output which corresponds to the
-concatenation of all outputs, properly range scaled.}
+concatenation of all outputs, properly centered and scaled.}
+
+\item{centscal}{Method for centering and scaling outputs if \code{concat} is
+TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
+"vast", "pareto" or "level". Centering and scaling is performed by the
+\code{\link{centerscale}} function.}
 
 \item{...}{Options passed to \code{\link{read.table}}, which is used to read
 the files specified in \code{files}.}

@@ -14,7 +14,11 @@
 #' \code{files}, i.e. each file set will be associated with a different group.
 #' If not given, default group names will be set.
 #' @param concat If TRUE add an additional output which corresponds to the
-#' concatenation of all outputs, properly range scaled.
+#' concatenation of all outputs, properly centered and scaled.
+#' @param centscal Method for centering and scaling outputs if \code{concat} is
+#' TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
+#' "vast", "pareto" or "level". Centering and scaling is performed by the
+#' \code{\link{centerscale}} function.
 #' @param ... Options passed to \code{\link{read.table}}, which is used to read
 #' the files specified in \code{files}.
 #'
@@ -49,7 +53,8 @@
 #' # Do the same, but specify output names and don't specify levels
 #' go <- grpoutputs(c("a", "b", "c", "d", "e", "f"),
 #'                  c(dir_nl_ok, dir_jex_ok), c(files, files))
-grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
+grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
+                       centscal = "range", ...) {
 
   # Determine number of file sets (i.e. number of unique factors or levels)
   nfilesets <- length(files)
@@ -223,8 +228,8 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F, ...) {
   if (concat) {
     outconcat <- matrix(nrow = nobs, ncol = sum(outlen))
     for (i in 1:nobs) {
-      outconcat[i, ] <- unlist(sapply(data, function(x, row)
-        (x[row, ] - mean(x[row, ])) / (max(x[row, ]) - min(x[row, ])), i))
+      outconcat[i, ] <- unlist(sapply(data, function(x)
+        centerscale(x[i, ], type = centscal)))
     }
     nout <- nout + 1
     data[[outputs[nout]]] <- outconcat

@@ -4,7 +4,7 @@
 \alias{micomp}
 \title{Model-independent comparison of simulation output}
 \usage{
-micomp(outputs, ve, comps, concat = F, ...)
+micomp(outputs, ve, comps, concat = F, centscal = "range", ...)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
@@ -50,6 +50,11 @@ an individual comparison. Each list can have one of two configurations:
 
 \item{concat}{Create an additional, concatenated output? Ignored for sublists
 passed in the \code{comps} which follow the second configuration.}
+
+\item{centscal}{Method for centering and scaling outputs if \code{concat} is
+TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
+"vast", "pareto" or "level". Centering and scaling is performed by the
+\code{\link{centerscale}} function.}
 
 \item{...}{Options passed to \code{\link{read.table}}, which is used to read
 the files specified in lists using the first configuration in the

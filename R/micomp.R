@@ -42,6 +42,10 @@
 #' }
 #' @param concat Create an additional, concatenated output? Ignored for sublists
 #' passed in the \code{comps} which follow the second configuration.
+#' @param centscal Method for centering and scaling outputs if \code{concat} is
+#' TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
+#' "vast", "pareto" or "level". Centering and scaling is performed by the
+#' \code{\link{centerscale}} function.
 #' @param ... Options passed to \code{\link{read.table}}, which is used to read
 #' the files specified in lists using the first configuration in the
 #' \code{comp} parameter.
@@ -102,7 +106,7 @@
 #'                         grpout = list(data = pphpc_diff$data,
 #'                         factors = pphpc_diff$factors))))
 #'
-micomp <- function(outputs, ve, comps, concat = F, ...) {
+micomp <- function(outputs, ve, comps, concat = F, centscal = "range", ...) {
 
   # Determine number of comparisons
   ncomp <- length(comps)
@@ -140,6 +144,7 @@ micomp <- function(outputs, ve, comps, concat = F, ...) {
                    files = unlist(comps[[i]]$files),
                    lvls = comps[[i]]$lvls,
                    concat = concat,
+                   centscal = centscal,
                    ...)
 
     } else if (exists("name", where = comps[[i]]) &&
