@@ -5,6 +5,7 @@ test_that("cmpoutput constructs the expected objects", {
 
   # Minimum percentage of variance to be explained
   minvar <- 0.9
+  multvar <- c(0.3, 0.5, 0.7, 0.9)
 
   # Instantiate several cmpoutput objects for testing using the datasets
   # provided with the package
@@ -28,6 +29,11 @@ test_that("cmpoutput constructs the expected objects", {
                         pphpc_testvlo$data[["Energy.Grass"]],
                         pphpc_testvlo$factors)
 
+  cmp_multve <- cmpoutput("WolfEn",
+                          multvar,
+                          pphpc_ok$data[["Energy.Wolf"]],
+                          pphpc_ok$factors)
+
   # Instantiate a cmpoutput object with output from four pphpc implementations
   # Instantiate a grpobjects first
   go_quad <-
@@ -46,30 +52,54 @@ test_that("cmpoutput constructs the expected objects", {
   #### Start testing ####
 
   ## Common tests for the five cmpoutput objects ##
-  for (ccmp in list(cmp_ok1, cmp_noshuff2, cmp_diff7, cmp_vlo6, cmp_quad3)) {
+  for (ccmp in list(cmp_ok1, cmp_noshuff2, cmp_diff7,
+                    cmp_vlo6, cmp_multve , cmp_quad3)) {
 
     # Check if cmpoutput objects have the correct type
     expect_is(ccmp, "cmpoutput")
 
-    # Test if the minimum percentage of variance to be explained matches what
-    # was set at instantiation time
-    expect_equal(ccmp$ve, minvar)
+    if (length(ccmp$ve) == 1) {
 
-    # Check that the number of PCs which explain the specified minimum
-    # percentage of variance has the expected value
-    expect_equal(ccmp$npcs,
-                 match(TRUE, cumsum(ccmp$varexp) > minvar))
+      # Test if the minimum percentage of variance to be explained matches what
+      # was set at instantiation time
+      expect_equal(ccmp$ve, minvar)
+
+      # Check that the number of PCs which explain the specified minimum
+      # percentage of variance has the expected value
+      expect_equal(ccmp$npcs,
+                   match(TRUE, cumsum(ccmp$varexp) > minvar))
+
+    } else {
+
+      # Test if the minimum percentage of variance to be explained matches what
+      # was set at instantiation time
+      expect_equal(ccmp$ve, multvar)
+
+      # Check that the number of PCs which explain the specified minimum
+      # percentage of variance has the expected value
+      expect_equal(ccmp$npcs, sapply(multvar,
+                                     function(mv, ve) match(T, cumsum(ve) > mv),
+                                     ccmp$varexp))
+
+    }
 
     # Check that the tests objects are what is expected and p-values are within
     # the 0-1 range
-    if (ccmp$npcs > 1) {
-      expect_is(ccmp$tests$manova, "manova")
-      expect_true((ccmp$p.values$manova >= 0) && (ccmp$p.values$manova <= 1),
-                  "MANOVA p-value not between 0 and 1.")
-    } else {
-      expect_null(ccmp$tests$manova)
+    for (i in 1:length(ccmp$npcs)) {
+
+      if (ccmp$npcs[i] > 1) {
+        expect_is(ccmp$tests$manova[[i]], "manova")
+        expect_true((ccmp$p.values$manova[i] >= 0)
+                    && (ccmp$p.values$manova[i] <= 1),
+                    "MANOVA p-value not between 0 and 1.")
+      } else {
+        if (length(ccmp$ccmp$tests$manova) > 1) {
+          expect_null(ccmp$tests$manova[[i]])
+        }
+      }
     }
-    for (i in ccmp$npcs) {
+
+    for (i in length(ccmp$varexp)) {
       if (length(levels(ccmp$factors)) == 2) {
         expect_is(ccmp$tests$parametric[[i]], "htest")
       } else {
@@ -87,8 +117,8 @@ test_that("cmpoutput constructs the expected objects", {
                  pmin(ccmp$p.values$parametric / ccmp$varexp, 1))
     expect_equal(ccmp$p.values$nonparametric_adjusted,
                  pmin(ccmp$p.values$nonparametric / ccmp$varexp, 1))
-  }
 
+  }
   ## Different tests for the cmpoutput objects ##
 
   # Check the names given to the comparisons
@@ -128,12 +158,12 @@ test_that("cmpoutput throws errors when improperly invoked", {
   # Test for incorrect 've' parameter
   expect_error(
     cmpoutput("A", 1.1, pphpc_ok$data[[1]], pphpc_ok$factors),
-    "'ve' parameter must be between 0 and 1.",
+    "'ve' parameter must be in the interval [0, 1[.",
     fixed = TRUE
   )
   expect_error(
     cmpoutput("B", -0.01, pphpc_ok$data[[2]], pphpc_ok$factors),
-    "'ve' parameter must be between 0 and 1.",
+    "'ve' parameter must be in the interval [0, 1[.",
     fixed = TRUE
   )
 
