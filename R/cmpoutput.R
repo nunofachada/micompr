@@ -205,7 +205,7 @@ cmpoutput <- function(name, ve, data, factors) {
 #'
 #' ## Output name: WolfPop
 #' ## Number of PCs which explain 70% of variance: 2
-#' ## P-Value for MANOVA along 2 dimensions: 5.533087e-08
+#' ## P-Value for MANOVA along 2 dimensions: 5.53309e-08
 #' ## P-Value for t-test (1st PC): 1.823478e-08
 #' ## P-Value for Mann-Whitney U test (1st PC): 1.082509e-05
 #' ## Adjusted p-Value for t-test (1st PC): 3.144908e-08
@@ -219,13 +219,23 @@ print.cmpoutput <- function(x, ...) {
     test_names <- c("ANOVA test", "Kruskal-Wallis test")
   }
 
-  cat("Output name:", x$name, "\n")
-  cat("Number of PCs which explain ", x$ve * 100, "% of variance: ",
-      x$npcs, "\n", sep = "")
-  if (x$npcs > 1) {
-    cat("P-Value for MANOVA along", x$npcs, "dimensions:",
-        x$p.values$manova, "\n")
+  if (length(x$npcs) == 1) {
+    chopen <- ""
+    chclose <- ""
+  } else {
+    chopen <- "["
+    chclose <- "]"
   }
+
+  cat("Output name:", x$name, "\n")
+  cat("Number of PCs which explain ", chopen,
+      paste(x$ve * 100, collapse = ", "), chclose,
+      "% of variance: ", chopen, paste(x$npcs, collapse = ", "), chclose,
+      "\n", sep = "")
+  cat("P-Value for MANOVA along ", chopen, paste(x$npcs, collapse = ", "),
+      chclose, " dimensions: ", chopen,
+      paste(sprintf("%g", x$p.values$manova), collapse = ", "),
+      chclose, "\n", sep = "")
   cat("P-Value for", test_names[1], "(1st PC):",
       x$p.values$parametric[1], "\n")
   cat("P-Value for", test_names[2], "(1st PC):",
