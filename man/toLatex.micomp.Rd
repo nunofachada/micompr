@@ -5,7 +5,7 @@
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
 \method{toLatex}{micomp}(object, ..., data.show = c("npcs", "mnvp", "parp-1",
-  "nparp-1", "scoreplot"), p.adjust.noutputs = NULL, table.placement = "ht",
+  "nparp-1", "scoreplot"), table.placement = "ht",
   latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
   caption = NULL, label = NULL, col.width = F, pvalf.f = pvalf.default,
   pvalf.params = list(),
@@ -36,11 +36,6 @@ options are:
   \item{varexp-i}{Explained variance for the i-th principal component.}
   \item{scoreplot}{Output projection on the first two principal components.}
 }}
-
-\item{p.adjust.noutputs}{Method for adjusting \emph{p}-values to account for
-multiple output comparison. Can be one of the methods accepted by the
-\code{\link{p.adjust}} function. Does not consider the optional extra
-concatenated output.}
 
 \item{table.placement}{\code{LaTeX} table placement.}
 
