@@ -74,8 +74,8 @@
 cmpoutput <- function(name, ve, data, factors) {
 
   # Check parameters
-  if (ve < 0 || ve > 1)
-    stop("'ve' parameter must be between 0 and 1.")
+  if (ve < 0 || ve >= 1)
+    stop("'ve' parameter must be in the interval [0, 1[.")
   if (length(factors) != dim(data)[1])
     stop("Number of observations in 'data' and 'factors' does not match.")
   if (nlevels(factors) < 2)
