@@ -12,9 +12,10 @@
 \value{
 Object of class \code{assumptions_cmpoutput} containing the
 assumptions for parametric tests performed on an output comparisons
-Basically a list containing the assumptions for the MANOVA (object of class
-\code{\link{assumptions_manova}}) and univariate parametric tests for each
-principal component (object of class \code{\link{assumptions_paruv}}).
+Basically a list containing the assumptions for the MANOVA (list of objects
+of class \code{\link{assumptions_manova}}, one per explained variance) and
+univariate parametric tests for each principal component (object of class
+\code{\link{assumptions_paruv}}).
 }
 \description{
 Get assumptions for parametric tests performed on output comparisons (i.e.

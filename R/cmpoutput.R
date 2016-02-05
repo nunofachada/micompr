@@ -5,7 +5,10 @@
 #' @param name Comparison name (useful when calling this function to perform
 #' multiple comparisons).
 #' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
-#' principal components (i.e. number of dimensions) used in MANOVA.
+#' principal components (i.e. number of dimensions) used in MANOVA. Can be a
+#' vector, in which case the MANOVA test will be applied multiple times, one per
+#' number of principal components required to explain each of the variance
+#' percentages passed in the vector.
 #' @param data An \emph{n} x \emph{m} matrix, where \emph{n} is the total number
 #' of output observations (runs) and \emph{m} is the number of variables (i.e.
 #' output length).
@@ -26,8 +29,8 @@
 #'        multiple comparisons).}
 #'  \item{p.values}{\emph{P}-values for the performed statistical tests, namely:
 #'    \describe{
-#'      \item{manova}{\emph{P}-values for the MANOVA test for \code{npcs}
-#'            principal components.}
+#'      \item{manova}{List of \emph{p}-values for the MANOVA test for each
+#'            principal component in \code{npcs}.}
 #'      \item{parametric}{Vector of \emph{p}-values for the parametric test
 #'            applied to groups along each principal component (\emph{t}-test
 #'            for 2 groups, ANOVA for more than 2 groups).}
@@ -471,9 +474,10 @@ plot.cmpoutput <- function(x, ...) {
 #'
 #' @return Object of class \code{assumptions_cmpoutput} containing the
 #' assumptions for parametric tests performed on an output comparisons
-#' Basically a list containing the assumptions for the MANOVA (object of class
-#' \code{\link{assumptions_manova}}) and univariate parametric tests for each
-#' principal component (object of class \code{\link{assumptions_paruv}}).
+#' Basically a list containing the assumptions for the MANOVA (list of objects
+#' of class \code{\link{assumptions_manova}}, one per explained variance) and
+#' univariate parametric tests for each principal component (object of class
+#' \code{\link{assumptions_paruv}}).
 #'
 #' @export
 #'
@@ -491,25 +495,34 @@ assumptions.cmpoutput <- function(obj) {
   assumptions <- list()
   class(assumptions) <- "assumptions_cmpoutput"
 
+  # Get stuff from cmpoutput object
   npcs <- obj$npcs
+  tpcs <- length(obj$varexp)
   factors <- obj$factors
   scores <- obj$scores
+  nve <- length(npcs)
 
-  # Manova
-  if (npcs > 1) {
+  # Allocate vector for Manova assumptions
+  assumptions$manova <- vector(mode = "list", length = nve)
 
-    # Can only use manova if more than one variable
-    assumptions$manova <- assumptions_manova(scores[, 1:npcs], factors)
+  # Determine Manova assumptions
+  for (i in 1:nve) {
+    if (npcs[i] > 1) {
 
-  } else {
+      # Can only use manova if more than one variable
+      assumptions$manova[[i]] <-
+        assumptions_manova(scores[, 1:npcs[i]], factors)
 
-    # Only one variable, can't use manova
-    assumptions$manova <- NULL
+    } else {
 
+      # Only one variable, can't use manova
+      assumptions$manova[[i]] <- NULL
+
+    }
   }
 
   # Parametric test (t-test) for each PC
-  assumptions$ttest <- assumptions_paruv(scores[, 1:npcs], factors)
+  assumptions$ttest <- assumptions_paruv(scores[, 1:tpcs], factors)
 
   # Return assumptions
   assumptions

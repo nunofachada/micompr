@@ -11,7 +11,10 @@ cmpoutput(name, ve, data, factors)
 multiple comparisons).}
 
 \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
-principal components (i.e. number of dimensions) used in MANOVA.}
+principal components (i.e. number of dimensions) used in MANOVA. Can be a
+vector, in which case the MANOVA test will be applied multiple times, one per
+number of principal components required to explain each of the variance
+percentages passed in the vector.}
 
 \item{data}{An \emph{n} x \emph{m} matrix, where \emph{n} is the total number
 of output observations (runs) and \emph{m} is the number of variables (i.e.
@@ -35,8 +38,8 @@ Object of class \code{cmpoutput} containing the following data:
        multiple comparisons).}
  \item{p.values}{\emph{P}-values for the performed statistical tests, namely:
    \describe{
-     \item{manova}{\emph{P}-values for the MANOVA test for \code{npcs}
-           principal components.}
+     \item{manova}{List of \emph{p}-values for the MANOVA test for each
+           principal component in \code{npcs}.}
      \item{parametric}{Vector of \emph{p}-values for the parametric test
            applied to groups along each principal component (\emph{t}-test
            for 2 groups, ANOVA for more than 2 groups).}
