@@ -88,24 +88,35 @@ cmpoutput <- function(name, ve, data, factors) {
   eig <- (pca$sdev) ^ 2
   varexp <- eig / sum(eig)
   cumvar <- cumsum(varexp)
+  nve <- length(ve)
 
-  # Number of PCs required to explain the specified percentage of variance
-  npcs <- which(cumvar > ve)[1]
+  # Pre-allocate vectors for Manova test
+  npcs = vector(mode = "integer", length = nve)
+  mnvtest = vector(mode = "list", length = nve)
+  mnvpval = vector(mode = "numeric", length = nve)
+
+  # Perform a Manova test for each specified ve (variance to explain)
+  for (i in 1:nve) {
+
+    # Number of PCs required to explain the specified percentage of variance
+    npcs[i] <- which(cumvar > ve[i])[1]
+
+    # Manova
+    if (npcs[i] > 1) {
+      # Can only use Manova with more than one dimension
+      mnvtest[[i]] <- manova(pca$x[, 1:npcs[i]] ~ factors)
+      mnvpval[i] <- summary(mnvtest[[i]])$stats[1, 6]
+    } else {
+      # Only one dimension, can't use Manova
+      mnvtest[[i]] <- NULL
+      mnvpval[i] <- NA
+    }
+  }
 
   # Total number of PCs returned by PCA operation
   tpcs <-length(eig);
 
-  # Manova
-  if (npcs > 1) {
-    # Can only use manova if more than one variable
-    mnvtest <- manova(pca$x[, 1:npcs] ~ factors)
-    mnvpval <- summary(mnvtest)$stats[1, 6]
-  } else {
-    # Only one variable, can't use manova
-    mnvtest <- NULL
-    mnvpval <- NA
-  }
-
+  # Univariate tests
   parpvals <- vector(mode = "numeric", length = tpcs)
   parpvals_adjusted <- vector(mode = "numeric", length = tpcs)
   partests <- list()
