@@ -697,24 +697,26 @@ summary.assumptions_micomp <- function(object, ...) {
 
     # Get the p-values for the MANOVA assumptions
     mnv <- lapply(object[, i], function(ma) {
-      # Was MANOVA performed?
-      if (exists("manova", where = ma)) {
-        # Get the Royston test p-values
-        pvals <- sapply(ma$manova$mvntest, function(x) {
-          if (is(x, "royston")) {
-            return(x@p.value)
-          } else {
-            return(NA)
-          }
-        })
-        # Get the Box test p-values
-        pvals <- c(pvals, ma$manova$vartest$p.value)
-      } else {
-        # Number of compared models
-        ncmpmod <- length(ma$ttest$uvntest)
-        # Set a vector of NAs (+1 for the Box test p-value)
-        pvals <- rep(NA, ncmpmod + 1)
-      }
+
+      # Get the Royston test p-values
+      pvals <- sapply(ma$manova$mvntest, function(x) {
+        if (is(x, "royston")) {
+          return(x@p.value)
+        } else {
+          return(NA)
+        }
+      })
+      # Get the Box test p-values
+      pvals <- c(pvals, ma$manova$vartest$p.value)
+
+
+#       } else {
+#         # Number of compared models
+#         ncmpmod <- length(ma$ttest$uvntest)
+#         # Set a vector of NAs (+1 for the Box test p-value)
+#         pvals <- rep(NA, ncmpmod + 1)
+#       }
+
       # Set test names
       names(pvals) <- c(paste("Royston(", lvls, ")", sep = ""), "BoxM(Var.)")
       return(pvals)
@@ -732,7 +734,7 @@ summary.assumptions_micomp <- function(object, ...) {
     if (any(!is.na(unlist(mnv)))) {
 
       # Merge multivariate and univariate assumptions
-      mrgd <- mapply(function(x,y) c(x,y), mnv, ttst)
+      mrgd <- mapply(function(x, y) c(x, y), mnv, ttst)
 
     } else {
 

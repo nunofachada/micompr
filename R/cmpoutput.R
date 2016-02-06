@@ -117,7 +117,7 @@ cmpoutput <- function(name, ve, data, factors) {
   }
 
   # Total number of PCs returned by PCA operation
-  tpcs <-length(eig);
+  tpcs <- length(eig);
 
   # Univariate tests
   parpvals <- vector(mode = "numeric", length = tpcs)
@@ -578,44 +578,35 @@ assumptions.cmpoutput <- function(obj) {
 plot.assumptions_cmpoutput <- function(x, ...) {
 
   # Multivariate assumptions
-  if (exists("manova", where = x)) {
 
-    # How many PCs did each MANOVA test?
-    npcs <- sapply(x$manova,
-                   function(y) {
-                     if (!is.null(y)) {
-                       dim(y$mvntest$NLOK@dataframe)[2]
-                     } else {
-                       1
-                     }
-                   })
+  # How many PCs did each MANOVA test?
+  npcs <- sapply(x$manova,
+                 function(y) {
+                   if (!is.null(y)) {
+                     dim(y$mvntest$NLOK@dataframe)[2]
+                   } else {
+                     1
+                   }
+                 })
 
-    # We don't need to re-plot for the same number of PCs
-    npcs[duplicated(npcs)] <- 1
+  # We don't need to re-plot for the same number of PCs
+  npcs[duplicated(npcs)] <- 1
 
-    # How many are greater than 1?
-    nmnvmvplt <- sum(npcs > 1)
+  # How many are greater than 1?
+  nmnvmvplt <- sum(npcs > 1)
 
-    # Filter number of MANOVA multivariate assumptions to plot
-    mnvmv <- x$manova[npcs > 1]
+  # Filter number of MANOVA multivariate assumptions to plot
+  mnvmv <- x$manova[npcs > 1]
 
-    # More than one? Then plot also Box's M p-values for different number of PCs
-    if (length(mnvmv) > 1) {
+  # More than one? Then plot also Box's M p-values for different number of PCs
+  if (length(mnvmv) > 1) {
 
-      nmnvboxplt <- 1
-      mnvboxp <- sapply(mnvmv, function(x) x$vartest$p.value)
-
-    } else {
-
-      # No Box's M p-values plot
-      nmnvboxplt <- 0
-
-    }
+    nmnvboxplt <- 1
+    mnvboxp <- sapply(mnvmv, function(x) x$vartest$p.value)
 
   } else {
 
-    # No MANOVA assumptions plots
-    nmnvmvplt <- 0
+    # No Box's M p-values plot
     nmnvboxplt <- 0
 
   }
@@ -663,4 +654,79 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 
   invisible(NULL)
 
+}
+
+#' Summary method for the assumptions of parametric tests used in a comparison
+#' of simulation outputs.
+#'
+#' Summary method for objects of class \code{assumptions_cmpoutput}, which
+#' contain the assumptions for the parametric tests used in a comparison of
+#' simulation output.
+#'
+#' @param object Object of class \code{assumptions_cmpoutput}.
+#' @param ... Currently ignored.
+#'
+#' @return A vector with the following \emph{p}-values:
+#' \describe{
+#'  \item{Royston(\emph{npcs,group})}{One per \emph{npcs x group} combination,
+#'        yielded by the Royston test (\code{\link[MVN]{roystonTest}}) for the
+#'        respective number of principal components (for a given explained
+#'        variance) and group combination.}
+#'  \item{BoxM(npcs)}{One per \emph{npcs}, yielded by Box's M test
+#'        (\code{\link[biotools]{boxM}}).}
+#'  \item{Shapiro-Wilk(\emph{group})}{One per group, yielded by the Shapiro-Wilk
+#'        test (\code{\link{shapiro.test}}) for the first principal component of
+#'        the respective group.}
+#'  \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's
+#'        test (\code{\link{bartlett.test}}) for the first principal component.}
+#' }
+#'
+#' @export
+#'
+#' @examples
+#'
+#' # TODO
+#'
+summary.assumptions_cmpoutput <- function(object, ...) {
+
+  # Multivariate assumptions
+
+  # How many PCs did each MANOVA test?
+  npcs <- sapply(object$manova,
+                 function(y) {
+                   if (!is.null(y)) {
+                     dim(y$mvntest$NLOK@dataframe)[2]
+                   } else {
+                     1
+                   }
+                 })
+
+  # We don't need to repeat the p-values for the same number of PCs
+  npcs[duplicated(npcs)] <- 1
+
+  # Filter number of MANOVA multivariate assumptions to consider
+  mnvmv <- object$manova[npcs > 1]
+
+  # Get p-values for multivariate assumptions
+  mvpvals <- sapply(mnvmv,
+                    function(mnv) {
+                      npv <- sapply(mnv$mvntest, function(roy) { roy@p.value })
+                      pv <- c(npv, mnv$vartest$p.value)
+                      names(pv) <-
+                        c(paste0("Royston (", names(mnv$mvntest), ")"),
+                          "Box's M")
+                      pv
+                    })
+  colnames(mvpvals) <- paste0("NPCs=", npcs[npcs > 1])
+
+  # Univariate assumptions
+
+  # Get the p-values for for t-test assumptions
+  nuvpvals <- sapply(object$ttest$uvntest, function(grp) grp[[1]]$p.value)
+  uvpvals <- c(nuvpvals, object$ttest$vartest[[1]]$p.value)
+  names(uvpvals) <-  c(paste0("Shapiro-Wilk (",
+                              names(object$ttest$uvntest), ")"),
+                       "Bartlett")
+
+  list(mvpvals, uvpvals)
 }
