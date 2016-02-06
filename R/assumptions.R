@@ -323,7 +323,8 @@ plot.assumptions_manova <- function(x, ...) {
 
   # Plot the p-values in a bar plot
   params$height <- pvals
-  params$main <- "Royston test p-values"
+  params$main <- sprintf("Royston test p-values (%d PCs)",
+                         dim(x$mvntest$NLOK@dataframe)[2])
   params$sub <- "Multivariate normality"
   params$xlab <- "Groups"
   params$ylab <- "Probability"
@@ -336,9 +337,9 @@ plot.assumptions_manova <- function(x, ...) {
 #' Plot \emph{p}-values for testing the assumptions of the parametric tests used
 #' in simulation output comparison
 #'
-#' Plot method for objects of class \code{\link{assumptions_paruv}}
-#' containing \emph{p}-values produced by testing the assumptions of the
-#' parametric tests used for comparing simulation output.
+#' Plot method for objects of class \code{\link{assumptions_paruv}} containing
+#' \emph{p}-values produced by testing the assumptions of the parametric tests
+#' used for comparing simulation output.
 #'
 #' One bar plot is presented for the Bartlett test
 #' (\code{\link{bartlett.test}}), showing the respective \emph{p}-values along
@@ -351,8 +352,6 @@ plot.assumptions_manova <- function(x, ...) {
 #' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
 #' parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
 #' respectively.
-#' @param extra Number of extra sub-plot spaces to create (useful when this
-#' function is called from another which will produce more plots).
 #'
 #' @return None.
 #'
@@ -367,7 +366,7 @@ plot.assumptions_manova <- function(x, ...) {
 #' # Plot the same data with logarithmic scale for p-values
 #' plot(assumptions_paruv(iris[, 1:4], iris[, 5]), log = "y")
 #'
-plot.assumptions_paruv <- function(x, ..., extra = 0) {
+plot.assumptions_paruv <- function(x, ...) {
 
   # Was a color specified?
   params <- list(...)
@@ -380,15 +379,6 @@ plot.assumptions_paruv <- function(x, ..., extra = 0) {
 
   # Number of vars in the PC plots
   nvars <- length(x$uvntest[[1]])
-
-  # One plot for each factor + 1 for the variance + extra for more plots
-  nplots <- length(x$uvntest) + 1 + extra
-
-  # Determine layout matrix side dimension
-  side_dim <- ceiling(sqrt(nplots))
-
-  # Setup subplot layout
-  par(mfrow = c(side_dim, side_dim))
 
   # Plot the Bartlett test p-values by PC
   vardata <- sapply(x$vartest, function(x) x$p.value)

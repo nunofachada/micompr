@@ -195,7 +195,11 @@ test_that("assumptions.cmpoutput creates the correct object", {
 
   # Check that the objects are of the correct type
   expect_is(acmp, "assumptions_cmpoutput")
-  expect_is(acmp$manova, "assumptions_manova")
+  for (amnv in acmp$manova) {
+    if (!is.null(amnv)) {
+      expect_is(amnv, "assumptions_manova")
+    }
+  }
   expect_is(acmp$ttest, "assumptions_paruv")
 
   #### Warnings about more variables than observations ####
@@ -224,7 +228,11 @@ test_that("assumptions.cmpoutput creates the correct object", {
 
   # Check that the objects are of the correct type
   expect_is(acmp, "assumptions_cmpoutput")
-  expect_is(acmp$manova, "assumptions_manova")
+  for (amnv in acmp$manova) {
+    if (!is.null(amnv)) {
+      expect_is(amnv, "assumptions_manova")
+    }
+  }
   expect_is(acmp$ttest, "assumptions_paruv")
 
   #### Test with insufficient observations for the Royston test ####
@@ -250,7 +258,11 @@ test_that("assumptions.cmpoutput creates the correct object", {
 
   # Check that the objects are of the correct type
   expect_is(acmp, "assumptions_cmpoutput")
-  expect_is(acmp$manova, "assumptions_manova")
+  for (amnv in acmp$manova) {
+    if (!is.null(amnv)) {
+      expect_is(amnv, "assumptions_manova")
+    }
+  }
   expect_is(acmp$ttest, "assumptions_paruv")
 
 

@@ -34,10 +34,14 @@ covariance matrices, respectively. The following bar plots are shown:
  \item \emph{s} bar plots for \emph{p}-values of the Shapiro-Wilk test, where
        \emph{s} is the number of groups being compared. Individual bars in
        each plot are associated with a principal component.
- \item One bar plot for the \emph{p}-values of the Royston test with \emph{s}
-       bars, where \emph{s} is the number of groups being compared. This plot
-       will not show if there is only one principal component being
-       considered.
+ \item \emph{t} bar plot for the \emph{p}-values of the Royston test with
+       \emph{s} bars each, where \emph{t} is the number of unique MANOVA
+       tests performed (one per requested explained variances) and \emph{s}
+       is the number of groups being compared. These plots will not show if
+       there is only one principal component being considered.
+ \item One plot for the \emph{p}-values of the Box's M test, one bar
+       (\emph{p}-value) per unique MANOVA tests performed  (one per requested
+       explained variances).
 }
 }
 \examples{

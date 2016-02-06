@@ -473,7 +473,7 @@ plot.cmpoutput <- function(x, ...) {
 #' @param obj Object of class \code{cmpoutput}.
 #'
 #' @return Object of class \code{assumptions_cmpoutput} containing the
-#' assumptions for parametric tests performed on an output comparisons
+#' assumptions for parametric tests performed on an output comparison.
 #' Basically a list containing the assumptions for the MANOVA (list of objects
 #' of class \code{\link{assumptions_manova}}, one per explained variance) and
 #' univariate parametric tests for each principal component (object of class
@@ -549,10 +549,14 @@ assumptions.cmpoutput <- function(obj) {
 #'  \item \emph{s} bar plots for \emph{p}-values of the Shapiro-Wilk test, where
 #'        \emph{s} is the number of groups being compared. Individual bars in
 #'        each plot are associated with a principal component.
-#'  \item One bar plot for the \emph{p}-values of the Royston test with \emph{s}
-#'        bars, where \emph{s} is the number of groups being compared. This plot
-#'        will not show if there is only one principal component being
-#'        considered.
+#'  \item \emph{t} bar plot for the \emph{p}-values of the Royston test with
+#'        \emph{s} bars each, where \emph{t} is the number of unique MANOVA
+#'        tests performed (one per requested explained variances) and \emph{s}
+#'        is the number of groups being compared. These plots will not show if
+#'        there is only one principal component being considered.
+#'  \item One plot for the \emph{p}-values of the Box's M test, one bar
+#'        (\emph{p}-value) per unique MANOVA tests performed  (one per requested
+#'        explained variances).
 #' }
 #'
 #' @param x Objects of class \code{assumptions_cmpoutput}.
@@ -573,12 +577,88 @@ assumptions.cmpoutput <- function(obj) {
 #'
 plot.assumptions_cmpoutput <- function(x, ...) {
 
+  # Multivariate assumptions
   if (exists("manova", where = x)) {
-    plot(x$ttest, extra = 1, ...)
-    plot(x$manova, ...)
+
+    # How many PCs did each MANOVA test?
+    npcs <- sapply(x$manova,
+                   function(y) {
+                     if (!is.null(y)) {
+                       dim(y$mvntest$NLOK@dataframe)[2]
+                     } else {
+                       1
+                     }
+                   })
+
+    # We don't need to re-plot for the same number of PCs
+    npcs[duplicated(npcs)] <- 1
+
+    # How many are greater than 1?
+    nmnvmvplt <- sum(npcs > 1)
+
+    # Filter number of MANOVA multivariate assumptions to plot
+    mnvmv <- x$manova[npcs > 1]
+
+    # More than one? Then plot also Box's M p-values for different number of PCs
+    if (length(mnvmv) > 1) {
+
+      nmnvboxplt <- 1
+      mnvboxp <- sapply(mnvmv, function(x) x$vartest$p.value)
+
+    } else {
+
+      # No Box's M p-values plot
+      nmnvboxplt <- 0
+
+    }
+
   } else {
-    # No extra for multivariate assumptions, just plot univariate stuff
-    plot(x$ttest, ...)
+
+    # No MANOVA assumptions plots
+    nmnvmvplt <- 0
+    nmnvboxplt <- 0
+
+  }
+
+  # How many plots?
+  nplots <- length(x$uvntest) + 1 + nmnvmvplt + nmnvboxplt
+
+  # Determine layout matrix side dimension
+  side_dim <- ceiling(sqrt(nplots))
+
+  # Setup subplot layout
+  par(mfrow = c(side_dim, side_dim))
+
+  # Plot univariate assumptions
+  plot(x$ttest, ...)
+
+  # Plot multivariate assumptions
+  for (amnv in mnvmv) {
+    plot(amnv, ...)
+  }
+
+  # Plot Box's M in case there are several p-values to plot
+  if (nmnvboxplt) {
+
+    # Was a color specified?
+    params <- list(...)
+    if (exists("col", where = params)) {
+      col <- params$col
+      params$col <- NULL
+    } else {
+      col <- c("darkgreen", "yellow", "red")
+    }
+
+    # Plot the p-values in a bar plot
+    params$height <- mnvboxp
+    params$main <- "Box's M test p-values"
+    params$sub <- "Homogeneity of Covariance Matrices"
+    params$xlab <- "Number of PCs"
+    params$names.arg <- npcs[npcs > 1]
+    params$ylab <- "Probability"
+    params$col <- pvalcol(mnvboxp, col)
+    do.call("barplot", params)
+
   }
 
   invisible(NULL)

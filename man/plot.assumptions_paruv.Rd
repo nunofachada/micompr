@@ -5,7 +5,7 @@
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
 in simulation output comparison}
 \usage{
-\method{plot}{assumptions_paruv}(x, ..., extra = 0)
+\method{plot}{assumptions_paruv}(x, ...)
 }
 \arguments{
 \item{x}{Objects of class \code{\link{assumptions_paruv}}.}
@@ -13,17 +13,14 @@ in simulation output comparison}
 \item{...}{Extra options passed to \code{\link{barplot}}. The \code{col}
 parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
 respectively.}
-
-\item{extra}{Number of extra sub-plot spaces to create (useful when this
-function is called from another which will produce more plots).}
 }
 \value{
 None.
 }
 \description{
-Plot method for objects of class \code{\link{assumptions_paruv}}
-containing \emph{p}-values produced by testing the assumptions of the
-parametric tests used for comparing simulation output.
+Plot method for objects of class \code{\link{assumptions_paruv}} containing
+\emph{p}-values produced by testing the assumptions of the parametric tests
+used for comparing simulation output.
 }
 \details{
 One bar plot is presented for the Bartlett test
