@@ -582,8 +582,8 @@ plot.assumptions_cmpoutput <- function(x, ...) {
   # How many PCs did each MANOVA test?
   npcs <- sapply(x$manova,
                  function(y) {
-                   if (!is.null(y)) {
-                     dim(y$mvntest$NLOK@dataframe)[2]
+                   if (!is.null(y) && is(y$mvntest[[1]], "royston")) {
+                     dim(y$mvntest[[1]]@dataframe)[2]
                    } else {
                      1
                    }
@@ -764,8 +764,8 @@ summary.assumptions_cmpoutput <- function(object, ..., tnpcs = 1) {
   # How many PCs did each MANOVA test?
   npcs <- sapply(object$manova,
                  function(y) {
-                   if (!is.null(y)) {
-                     dim(y$mvntest$NLOK@dataframe)[2]
+                   if (!is.null(y) && is(y$mvntest[[1]], "royston")) {
+                     dim(y$mvntest[[1]]@dataframe)[2]
                    } else {
                      1
                    }

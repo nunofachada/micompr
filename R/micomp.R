@@ -682,10 +682,12 @@ plot.assumptions_micomp <- function(x, ...) {
 #'
 summary.assumptions_micomp <- function(object, ...) {
 
-  assumpt_all <- lapply(object, function(cmp) summary(cmp))
+  assum <- lapply(object, function(cmp) summary(cmp))
 
-  dim(assumpt_all) <- dim(object)
+  dim(assum) <- dim(object)
+  rownames(assum) <- rownames(object)
+  colnames(assum) <- colnames(object)
 
-  assumpt_all
+  assum
 
 }
