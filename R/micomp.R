@@ -682,70 +682,10 @@ plot.assumptions_micomp <- function(x, ...) {
 #'
 summary.assumptions_micomp <- function(object, ...) {
 
-  dims <- dim(object)
-  ncomp <- dims[2]
+  assumpt_all <- lapply(object, function(cmp) summary(cmp))
 
-  all <- list()
-  cmpnames <- colnames(object)
+  dim(assumpt_all) <- dim(object)
 
-  # Cycle through comparisons
-  for (i in 1:ncomp) {
+  assumpt_all
 
-    # Fetch the names of the groups being compared (i.e. levels) from the
-    # first output for the current  comparison
-    lvls <- names(object[[1, i]]$ttest$uvntest)
-
-    # Get the p-values for the MANOVA assumptions
-    mnv <- lapply(object[, i], function(ma) {
-
-      # Get the Royston test p-values
-      pvals <- sapply(ma$manova$mvntest, function(x) {
-        if (is(x, "royston")) {
-          return(x@p.value)
-        } else {
-          return(NA)
-        }
-      })
-      # Get the Box test p-values
-      pvals <- c(pvals, ma$manova$vartest$p.value)
-
-
-#       } else {
-#         # Number of compared models
-#         ncmpmod <- length(ma$ttest$uvntest)
-#         # Set a vector of NAs (+1 for the Box test p-value)
-#         pvals <- rep(NA, ncmpmod + 1)
-#       }
-
-      # Set test names
-      names(pvals) <- c(paste("Royston(", lvls, ")", sep = ""), "BoxM(Var.)")
-      return(pvals)
-    })
-
-    # Get the p-values for for t-test assumptions
-    ttst <- lapply(object[, i], function(ma) {
-      pvals <- sapply(ma$ttest$uvntest, function(x) return(x[[1]]$p.value))
-      names(pvals) <- paste("Shapiro-Wilk(", lvls, ")", sep = "")
-      pvals <- c(pvals, `Bartlett(Var.)` = ma$ttest$vartest[[1]]$p.value)
-      return(pvals)
-    })
-
-    # Does any multivariate assumption exists?
-    if (any(!is.na(unlist(mnv)))) {
-
-      # Merge multivariate and univariate assumptions
-      mrgd <- mapply(function(x, y) c(x, y), mnv, ttst)
-
-    } else {
-
-      # Use only univariate assumptions
-      mrgd <- sapply(ttst, function(x) x)
-
-    }
-    #... and save to list
-    all[[cmpnames[i]]] <- mrgd
-
-  }
-
-  all
 }

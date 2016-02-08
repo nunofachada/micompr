@@ -656,6 +656,59 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 
 }
 
+#' Print method for the assumptions of parametric tests used in a comparison
+#' of simulation outputs.
+#'
+#' Print method for objects of class \code{assumptions_cmpoutput}, which
+#' contain the assumptions for the parametric tests used in a comparison of
+#' simulation output.
+#'
+#' @param object Object of class \code{assumptions_cmpoutput}.
+#' @param ... Currently ignored.
+#'
+#' @return None.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' # Create a cmpoutput object from the provided datasets
+#' cmp <- cmpoutput("All", c(0.7, 0.8, 0.9),
+#'                  pphpc_diff$data[["All"]], pphpc_diff$factors)
+#'
+#' # Print assumptions of the cmpoutput object
+#' assumptions(cmp)
+#' # === MANOVA assumptions ===
+#' #                        NPCs=3      NPCs=6
+#' # Royston (NLOK)    0.967376020 0.752854092
+#' # Royston (JEXDIFF) 0.372754346 0.684937716
+#' # Box's M           0.001429117 0.003463109
+#' #
+#' # === T-test assumptions ===
+#' #                              PC1
+#' # Shapiro-Wilk (NLOK)    0.9439295
+#' # Shapiro-Wilk (JEXDIFF) 0.8742052
+#' # Bartlett               0.2434757
+#'
+print.assumptions_cmpoutput <- function(object, ...) {
+
+  # Obtain object summary
+  sa <- summary(object)
+
+  # Nice print of object summary
+  cat("=== MANOVA assumptions ===\n")
+  if (is.null(sa$manova)) {
+    cat("No MANOVA tests were performed.\n")
+  } else {
+    print(sa$manova)
+  }
+  cat("\n=== T-test assumptions ===\n")
+  print(sa$ttest)
+
+  invisible(NULL)
+
+}
+
 #' Summary method for the assumptions of parametric tests used in a comparison
 #' of simulation outputs.
 #'
@@ -665,29 +718,46 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 #'
 #' @param object Object of class \code{assumptions_cmpoutput}.
 #' @param ... Currently ignored.
+#' @param tnpcs Number of principal components to summarize for the
+#' \empth{t}-test.
 #'
-#' @return A vector with the following \emph{p}-values:
+#' @return A list with the following items:
 #' \describe{
-#'  \item{Royston(\emph{npcs,group})}{One per \emph{npcs x group} combination,
-#'        yielded by the Royston test (\code{\link[MVN]{roystonTest}}) for the
-#'        respective number of principal components (for a given explained
-#'        variance) and group combination.}
-#'  \item{BoxM(npcs)}{One per \emph{npcs}, yielded by Box's M test
-#'        (\code{\link[biotools]{boxM}}).}
-#'  \item{Shapiro-Wilk(\emph{group})}{One per group, yielded by the Shapiro-Wilk
-#'        test (\code{\link{shapiro.test}}) for the first principal component of
-#'        the respective group.}
-#'  \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's
-#'        test (\code{\link{bartlett.test}}) for the first principal component.}
+#'  \item{manova}{A matrix of \emph{p}-values for the MANOVA assumptions. All
+#'        rows, expect the last one, correspond to the Royston test for
+#'        multivariate normality for each group; the last row corresponds to
+#'        Box's M test for homogeneity of covariance matrices. Columns
+#'        correspond to number of principal components required to explain the
+#'        percentage of user-specified variance.}
+#'  \item{ttest}{A matrix of \emph{p}-values for the \emph{t}-test assumptions.
+#'        All rows, expect the last one, correspond to the Shapiro-Wilk
+#'        normality test for each group; the last row corresponds to Bartlett's
+#'        for equality of variances. Columns correspond to the principal
+#'        components on which the \emph{t}-test was applied.}
 #' }
 #'
 #' @export
 #'
 #' @examples
 #'
-#' # TODO
+#' # Create a cmpoutput object from the provided datasets
+#' cmp <- cmpoutput("All", c(0.5, 0.6, 0.7),
+#'                  pphpc_ok$data[["All"]], pphpc_ok$factors)
 #'
-summary.assumptions_cmpoutput <- function(object, ...) {
+#' # Obtain the summary of the assumptions of the cmpoutput object
+#' summary(assumptions(cmp))
+#' # $manova                   NPCs=3    NPCs=4    NPCs=5
+#' # Royston (NLOK)  0.8620220 0.9418449 0.9675661
+#' # Royston (JEXOK) 0.0962350 0.1333937 0.2041443
+#' # Box's M         0.6354237 0.5986707 0.8875114
+#' #
+#' # $ttest
+#' #                            PC1
+#' # Shapiro-Wilk (NLOK)  0.5795776
+#' # Shapiro-Wilk (JEXOK) 0.7482611
+#' # Bartlett             0.3506609
+#'
+summary.assumptions_cmpoutput <- function(object, ..., tnpcs = 1) {
 
   # Multivariate assumptions
 
@@ -708,25 +778,48 @@ summary.assumptions_cmpoutput <- function(object, ...) {
   mnvmv <- object$manova[npcs > 1]
 
   # Get p-values for multivariate assumptions
-  mvpvals <- sapply(mnvmv,
-                    function(mnv) {
-                      npv <- sapply(mnv$mvntest, function(roy) { roy@p.value })
-                      pv <- c(npv, mnv$vartest$p.value)
-                      names(pv) <-
-                        c(paste0("Royston (", names(mnv$mvntest), ")"),
-                          "Box's M")
-                      pv
-                    })
-  colnames(mvpvals) <- paste0("NPCs=", npcs[npcs > 1])
+  if (length(mnvmv) > 0) {
+    mvpvals <- sapply(mnvmv,
+                      function(mnv) {
+                        npv <- sapply(mnv$mvntest,
+                                      function(roy) { roy@p.value })
+                        pv <- c(npv, mnv$vartest$p.value)
+                        names(pv) <-
+                          c(paste0("Royston (", names(mnv$mvntest), ")"),
+                            "Box's M")
+                        pv
+                      })
+    colnames(mvpvals) <- paste0("NPCs=", npcs[npcs > 1])
+  } else {
+    mvpvals <- NULL
+  }
 
   # Univariate assumptions
 
-  # Get the p-values for for t-test assumptions
-  nuvpvals <- sapply(object$ttest$uvntest, function(grp) grp[[1]]$p.value)
-  uvpvals <- c(nuvpvals, object$ttest$vartest[[1]]$p.value)
-  names(uvpvals) <-  c(paste0("Shapiro-Wilk (",
-                              names(object$ttest$uvntest), ")"),
-                       "Bartlett")
+  # How many PCs?
+  tnpcs <- min(tnpcs, length(object$ttest$uvntest[[1]]))
 
-  list(mvpvals, uvpvals)
+  # How many p-values per PC? Number of groups (normality) + Bartlett (variance)
+  npvals <- length(object$ttest$uvntest) + 1
+
+  # Allocate p-value matrix and set row and col names
+  uvpvals <- matrix(nrow = npvals, ncol = tnpcs)
+  rownames(uvpvals) <-
+    c(paste0("Shapiro-Wilk (", names(object$ttest$uvntest), ")"), "Bartlett")
+  colnames(uvpvals) <- paste0("PC", 1:tnpcs)
+
+  # Get the p-values for for t-test assumptions and put them into matrix
+  for (i in 1:tnpcs) {
+
+    # Normality assumption p-values (Shapiro-Wilk)
+    uvpvals[1:(npvals - 1), i] <-
+      sapply(object$ttest$uvntest, function(grp) grp[[i]]$p.value)
+
+    # Variance assumption p-value (Bartlett)
+    uvpvals[npvals, i] <- object$ttest$vartest[[i]]$p.value
+
+  }
+
+  # Return summary
+  list(manova = mvpvals, ttest = uvpvals)
 }

@@ -5,27 +5,30 @@
 \title{Summary method for the assumptions of parametric tests used in a comparison
 of simulation outputs.}
 \usage{
-\method{summary}{assumptions_cmpoutput}(object, ...)
+\method{summary}{assumptions_cmpoutput}(object, ..., tnpcs = 1)
 }
 \arguments{
 \item{object}{Object of class \code{assumptions_cmpoutput}.}
 
 \item{...}{Currently ignored.}
+
+\item{tnpcs}{Number of principal components to summarize for the
+\empth{t}-test.}
 }
 \value{
-A vector with the following \emph{p}-values:
+A list with the following items:
 \describe{
- \item{Royston(\emph{npcs,group})}{One per \emph{npcs x group} combination,
-       yielded by the Royston test (\code{\link[MVN]{roystonTest}}) for the
-       respective number of principal components (for a given explained
-       variance) and group combination.}
- \item{BoxM(npcs)}{One per \emph{npcs}, yielded by Box's M test
-       (\code{\link[biotools]{boxM}}).}
- \item{Shapiro-Wilk(\emph{group})}{One per group, yielded by the Shapiro-Wilk
-       test (\code{\link{shapiro.test}}) for the first principal component of
-       the respective group.}
- \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's
-       test (\code{\link{bartlett.test}}) for the first principal component.}
+ \item{manova}{A matrix of \emph{p}-values for the MANOVA assumptions. All
+       rows, expect the last one, correspond to the Royston test for
+       multivariate normality for each group; the last row corresponds to
+       Box's M test for homogeneity of covariance matrices. Columns
+       correspond to number of principal components required to explain the
+       percentage of user-specified variance.}
+ \item{ttest}{A matrix of \emph{p}-values for the \emph{t}-test assumptions.
+       All rows, expect the last one, correspond to the Shapiro-Wilk
+       normality test for each group; the last row corresponds to Bartlett's
+       for equality of variances. Columns correspond to the principal
+       components on which the \emph{t}-test was applied.}
 }
 }
 \description{
@@ -34,6 +37,21 @@ contain the assumptions for the parametric tests used in a comparison of
 simulation output.
 }
 \examples{
-# TODO
+# Create a cmpoutput object from the provided datasets
+cmp <- cmpoutput("All", c(0.5, 0.6, 0.7),
+                 pphpc_ok$data[["All"]], pphpc_ok$factors)
+
+# Obtain the summary of the assumptions of the cmpoutput object
+summary(assumptions(cmp))
+# $manova                   NPCs=3    NPCs=4    NPCs=5
+# Royston (NLOK)  0.8620220 0.9418449 0.9675661
+# Royston (JEXOK) 0.0962350 0.1333937 0.2041443
+# Box's M         0.6354237 0.5986707 0.8875114
+#
+# $ttest
+#                            PC1
+# Shapiro-Wilk (NLOK)  0.5795776
+# Shapiro-Wilk (JEXOK) 0.7482611
+# Bartlett             0.3506609
 }
 
