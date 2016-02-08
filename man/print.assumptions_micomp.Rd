@@ -31,29 +31,5 @@ mic <- micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.7,
 # Print the results (p-values) of the statistic tests evaluating the
 # assumptions of the comparisons performed in the mic object
 assumptions(mic)
-
-# ====  NLOKvsJEXOK ====
-#                      SheepPop  WolfPop  GrassQty
-# Royston(NLOK)         0.77700       NA   0.74179
-# Royston(JEXOK)        0.44269       NA   0.99929
-# BoxM(Var.)            0.39447       NA   0.53784
-# Shapiro-Wilk(NLOK)    0.76439  0.89515   0.59944
-# Shapiro-Wilk(JEXOK)   0.21066  0.37138   0.93121
-# Bartlett(Var.)        0.60978  0.50718   0.75038
-#
-# ====  NLOKvsJEXNOSHUFF ====
-#                          SheepPop   WolfPop  GrassQty
-# Royston(NLOK)             0.69937        NA   0.59028
-# Royston(JEXNOSHUF)        0.30411        NA   0.26403
-# BoxM(Var.)                0.98024        NA   0.94787
-# Shapiro-Wilk(NLOK)        0.79665  0.901555   0.45444
-# Shapiro-Wilk(JEXNOSHUF)   0.16652  0.063163   0.10723
-# Bartlett(Var.)            0.65936  0.628952   0.63016
-#
-# ====  NLOKvsJEXDIFF ====
-#                        SheepPop  WolfPop  GrassQty
-# Shapiro-Wilk(NLOK)      0.57921  0.91407  0.118657
-# Shapiro-Wilk(JEXDIFF)   0.59586  0.74384  0.031037
-# Bartlett(Var.)          0.79618  0.94746  0.222738
 }
 

@@ -5,31 +5,20 @@
 \title{Summary method for the assumptions of parametric tests used in multiple
 comparisons of simulation output}
 \usage{
-\method{summary}{assumptions_micomp}(object, ...)
+\method{summary}{assumptions_micomp}(object, ..., tnpcs = 1)
 }
 \arguments{
 \item{object}{Object of class \code{assumptions_micomp}.}
 
 \item{...}{Currently ignored.}
+
+\item{tnpcs}{Number of principal components to summarize for the
+\emph{t}-test.}
 }
 \value{
-A list in which each component is associated with a distinct
-comparison. Each component contains a data frame, in which columns represent
-individual simulation outputs and rows have information about the assumptions
-of the parametric tests used in each output. More specifically, each data
-frame has rows with the following information:
-\describe{
- \item{Royston(\emph{group})}{\emph{s} rows, one per group, with the
-       \emph{p}-value yielded by the Royston test
-       (\code{\link[MVN]{roystonTest}}) for the respective group.}
- \item{BoxM(Var.)}{One row with the \emph{p}-value yielded by Box's M test
-       (\code{\link[biotools]{boxM}}).}
- \item{Shapiro-Wilk(\emph{group})}{\emph{s} rows, one per group, with the
-       \emph{p}-value yielded by the Shapiro-Wilk test
-       (\code{\link{shapiro.test}}) for the respective group.}
- \item{Bartlett(Var.)}{One row with the \emph{p}-value yielded by Bartlett's
-       test (\code{\link{bartlett.test}}).}
-}
+A multi-dimensional list of \code{assumptions_cmpoutput} summaries.
+Rows are associated with individual outputs, while columns are associated
+with separate comparisons.
 }
 \description{
 Summary method for objects of class \code{assumptions_micomp}, which

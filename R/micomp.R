@@ -516,40 +516,24 @@ assumptions.micomp <- function(obj) {
 #' # assumptions of the comparisons performed in the mic object
 #' assumptions(mic)
 #'
-#' # ====  NLOKvsJEXOK ====
-#' #                      SheepPop  WolfPop  GrassQty
-#' # Royston(NLOK)         0.77700       NA   0.74179
-#' # Royston(JEXOK)        0.44269       NA   0.99929
-#' # BoxM(Var.)            0.39447       NA   0.53784
-#' # Shapiro-Wilk(NLOK)    0.76439  0.89515   0.59944
-#' # Shapiro-Wilk(JEXOK)   0.21066  0.37138   0.93121
-#' # Bartlett(Var.)        0.60978  0.50718   0.75038
-#' #
-#' # ====  NLOKvsJEXNOSHUFF ====
-#' #                          SheepPop   WolfPop  GrassQty
-#' # Royston(NLOK)             0.69937        NA   0.59028
-#' # Royston(JEXNOSHUF)        0.30411        NA   0.26403
-#' # BoxM(Var.)                0.98024        NA   0.94787
-#' # Shapiro-Wilk(NLOK)        0.79665  0.901555   0.45444
-#' # Shapiro-Wilk(JEXNOSHUF)   0.16652  0.063163   0.10723
-#' # Bartlett(Var.)            0.65936  0.628952   0.63016
-#' #
-#' # ====  NLOKvsJEXDIFF ====
-#' #                        SheepPop  WolfPop  GrassQty
-#' # Shapiro-Wilk(NLOK)      0.57921  0.91407  0.118657
-#' # Shapiro-Wilk(JEXDIFF)   0.59586  0.74384  0.031037
-#' # Bartlett(Var.)          0.79618  0.94746  0.222738
-#'
 print.assumptions_micomp <- function(x, ...) {
 
-  sm <- summary(x)
-
   # Cycle through comparisons
-  for (cmp in names(sm)) {
+  for (cmp in colnames(x)) {
 
-    cat("==== ", cmp, "====\n")
-    print(sm[[cmp]], digits = 5, print.gap = 2)
-    cat("\n")
+    # Cycle through outputs
+    for (out in rownames(x)) {
+
+      # Show assumptions for current comparison/output
+
+      cat("### Comp.:", cmp, "\n")
+      cat("### Output:", out, "\n\n")
+
+      toshow <- capture.output(x[[out, cmp]])
+
+      cat(paste0("    ", toshow, "\n", collapse = ""))
+      cat("\n")
+    }
 
   }
 
@@ -648,24 +632,12 @@ plot.assumptions_micomp <- function(x, ...) {
 #'
 #' @param object Object of class \code{assumptions_micomp}.
 #' @param ... Currently ignored.
+#' @param tnpcs Number of principal components to summarize for the
+#' \emph{t}-test.
 #'
-#' @return A list in which each component is associated with a distinct
-#' comparison. Each component contains a data frame, in which columns represent
-#' individual simulation outputs and rows have information about the assumptions
-#' of the parametric tests used in each output. More specifically, each data
-#' frame has rows with the following information:
-#' \describe{
-#'  \item{Royston(\emph{group})}{\emph{s} rows, one per group, with the
-#'        \emph{p}-value yielded by the Royston test
-#'        (\code{\link[MVN]{roystonTest}}) for the respective group.}
-#'  \item{BoxM(Var.)}{One row with the \emph{p}-value yielded by Box's M test
-#'        (\code{\link[biotools]{boxM}}).}
-#'  \item{Shapiro-Wilk(\emph{group})}{\emph{s} rows, one per group, with the
-#'        \emph{p}-value yielded by the Shapiro-Wilk test
-#'        (\code{\link{shapiro.test}}) for the respective group.}
-#'  \item{Bartlett(Var.)}{One row with the \emph{p}-value yielded by Bartlett's
-#'        test (\code{\link{bartlett.test}}).}
-#' }
+#' @return A multi-dimensional list of \code{assumptions_cmpoutput} summaries.
+#' Rows are associated with individual outputs, while columns are associated
+#' with separate comparisons.
 #'
 #' @export
 #'
@@ -680,11 +652,15 @@ plot.assumptions_micomp <- function(x, ...) {
 #' # Get the assumptions summary
 #' sam <- summary(assumptions(mic))
 #'
-summary.assumptions_micomp <- function(object, ...) {
+summary.assumptions_micomp <- function(object, ..., tnpcs = 1) {
 
-  assum <- lapply(object, function(cmp) summary(cmp))
+  # Get summaries from all underlying assumptions_cmpoutput objects
+  assum <- lapply(object, function(cmp) summary(cmp, tnpcs = tnpcs))
 
+  # Set the dimensions of the output object to be the same as the input object
   dim(assum) <- dim(object)
+
+  # As well as the row and column names
   rownames(assum) <- rownames(object)
   colnames(assum) <- colnames(object)
 

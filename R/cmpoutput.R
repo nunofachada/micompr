@@ -663,7 +663,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 #' contain the assumptions for the parametric tests used in a comparison of
 #' simulation output.
 #'
-#' @param object Object of class \code{assumptions_cmpoutput}.
+#' @param x Object of class \code{assumptions_cmpoutput}.
 #' @param ... Currently ignored.
 #'
 #' @return None.
@@ -690,10 +690,10 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 #' # Shapiro-Wilk (JEXDIFF) 0.8742052
 #' # Bartlett               0.2434757
 #'
-print.assumptions_cmpoutput <- function(object, ...) {
+print.assumptions_cmpoutput <- function(x, ...) {
 
   # Obtain object summary
-  sa <- summary(object)
+  sa <- summary(x)
 
   # Nice print of object summary
   cat("=== MANOVA assumptions ===\n")
@@ -719,7 +719,7 @@ print.assumptions_cmpoutput <- function(object, ...) {
 #' @param object Object of class \code{assumptions_cmpoutput}.
 #' @param ... Currently ignored.
 #' @param tnpcs Number of principal components to summarize for the
-#' \empth{t}-test.
+#' \emph{t}-test.
 #'
 #' @return A list with the following items:
 #' \describe{

@@ -324,7 +324,7 @@ plot.assumptions_manova <- function(x, ...) {
   # Plot the p-values in a bar plot
   params$height <- pvals
   params$main <- sprintf("Royston test p-values (%d PCs)",
-                         dim(x$mvntest$NLOK@dataframe)[2])
+                         dim(x$mvntest[[1]]@dataframe)[2])
   params$sub <- "Multivariate normality"
   params$xlab <- "Groups"
   params$ylab <- "Probability"

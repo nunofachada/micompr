@@ -5,10 +5,10 @@
 \title{Print method for the assumptions of parametric tests used in a comparison
 of simulation outputs.}
 \usage{
-\method{print}{assumptions_cmpoutput}(object, ...)
+\method{print}{assumptions_cmpoutput}(x, ...)
 }
 \arguments{
-\item{object}{Object of class \code{assumptions_cmpoutput}.}
+\item{x}{Object of class \code{assumptions_cmpoutput}.}
 
 \item{...}{Currently ignored.}
 }

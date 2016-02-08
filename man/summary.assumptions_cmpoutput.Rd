@@ -13,7 +13,7 @@ of simulation outputs.}
 \item{...}{Currently ignored.}
 
 \item{tnpcs}{Number of principal components to summarize for the
-\empth{t}-test.}
+\emph{t}-test.}
 }
 \value{
 A list with the following items:
