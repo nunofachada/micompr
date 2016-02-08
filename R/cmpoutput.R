@@ -612,7 +612,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
   }
 
   # How many plots?
-  nplots <- length(x$uvntest) + 1 + nmnvmvplt + nmnvboxplt
+  nplots <- length(x$ttest) + 1 + nmnvmvplt + nmnvboxplt
 
   # Determine layout matrix side dimension
   side_dim <- ceiling(sqrt(nplots))
