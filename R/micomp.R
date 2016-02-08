@@ -548,20 +548,12 @@ print.assumptions_micomp <- function(x, ...) {
 #' containing \emph{p}-values produced by testing the assumptions of the
 #' parametric tests used for multiple output comparisons.
 #'
-#' Several bar plots are presented, one for each comparison, showing the
-#' \emph{p}-values yielded by the Shapiro-Wilk (\code{\link{shapiro.test}}) and
-#' Royston tests (\code{\link[MVN]{roystonTest}}) for univariate and
-#' multivariate normality of each group, respectively, and for the Bartlett
-#' (\code{\link{bartlett.test}}) and Box's M (\code{\link[biotools]{boxM}}) for
-#' testing homogeneity of variances and of covariance matrices, respectively.
-#' \emph{P}-values are aggregated by output in each plot. Note that the
-#' \emph{p-values} plotted for the Shapiro-Wilk and Bartlett tests correspond to
-#' group observations along the first principal component.
+#' Several bar plots are presented, one for each comparison and output
+#' combination, showing the several statistical tests employed to verify
+#' the assumptions of the parametric tests.
 #'
 #' @param x Object of class \code{assumptions_micomp}.
-#' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
-#' parameter will defines the colors to use for different tests (and groups in
-#' the case of normality tests).
+#' @param ... Extra options passed to \code{\link{barplot}}.
 #'
 #' @return None.
 #'
@@ -581,43 +573,45 @@ print.assumptions_micomp <- function(x, ...) {
 #'
 plot.assumptions_micomp <- function(x, ...) {
 
-  # Was a color specified?
-  params <- list(...)
-  if (exists("col", where = params)) {
-    col <- params$col
-    params$col <- NULL # We don't want duplicate color specification
-  } else {
-    col <- plotcols()
-  }
-
   # Get the assumptions summary
   sm <- summary(x)
 
-  # Useful variables
-  dims <- dim(x)
-  ncomp <- dims[2]
-
-  # One plot for each output/comparison pair  + 1 for the legend
-  nplots <- ncomp + 1
-
-  # Plot matrix side dimension
-  side_dim <- ceiling(sqrt(nplots))
-
-  par(mfrow = c(side_dim, side_dim))
+  # Set layout for plots
+  par(mfcol = dim(x))
 
   # Cycle through comparisons
-  for (cmp in names(sm)) {
-    par(mar = rep(2, 4))
-    params$height <- sm[[cmp]]
-    params$col <- col[1:dim(sm[[cmp]])[1]]
-    params$beside <- T
-    params$main <- cmp
-    do.call("barplot", params)
-  }
+  for (cmp in colnames(sm)) {
 
-  # Show legend
-  plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-  legend("top", legend = rownames(sm[[1]]), fill = col)
+    # Cycle through outputs
+    for (out in rownames(sm)) {
+
+      # Current output comparison
+      sco <- sm[[out, cmp]]
+      par(mar = c(2, 4, 2, 4))
+
+      # Determine names and values of bars in plot
+      b1 <- NULL
+      if (!is.null(sco$manova)) {
+        b1 <- sapply(sco$manova, function(x) x)
+        names(b1) <- mapply(function(x, y) paste(x, y),
+                            row(sco$manova, T), col(sco$manova, T))
+      }
+      b2 <- sapply(sco$ttest, function(x) x)
+      names(b2) <- mapply(function(x, y) paste(x, y),
+                          row(sco$ttest, T), col(sco$ttest, T))
+      b <- c(b1, b2)
+
+      # Set bar plot parameters
+      params <- list()
+      params$height <- b
+      params$col <- pvalcol(b, c("darkgreen", "yellow", "red"))
+      params$beside <- T
+      params$main <- paste(cmp, out)
+      params$las = 2
+      params$horiz = TRUE
+      do.call("barplot", params)
+    }
+  }
 
   invisible(NULL)
 
