@@ -4,8 +4,8 @@
 \alias{toLatex.micomp}
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
-\method{toLatex}{micomp}(object, ..., data.show = c("npcs", "mnvp", "parp-1",
-  "nparp-1", "scoreplot"), table.placement = "ht",
+\method{toLatex}{micomp}(object, ..., data.show = c("npcs", "mnvp-1",
+  "parp-1", "nparp-1", "scoreplot"), table.placement = "ht",
   latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
   caption = NULL, label = NULL, col.width = F, pvalf.f = pvalf.default,
   pvalf.params = list(),
@@ -24,7 +24,8 @@ options are:
 \describe{
   \item{npcs}{Number of principal components required to explain the
         percentage of variance specified when \code{mic} was created.}
-  \item{mnvp}{MANOVA \emph{p}-values.}
+  \item{mnvp-i}{MANOVA \emph{p}-values for the i-th user-specified variance
+        to explain.}
   \item{parp-i}{Parametric test \emph{p}-values for the i-th principal
         component.}
   \item{nparp-i}{Non-parametric test \emph{p}-values for the i-th principal

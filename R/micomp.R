@@ -354,8 +354,8 @@ summary.micomp <- function(object, ...) {
   # Cycle through comparisons
   for (i in 1:ncomp) {
 
-    npcs <- sapply(object[, i], function(mc) return(mc$npcs))
-    p_mnv <- sapply(object[, i], function(mc) return(mc$p.values$manova))
+    npcs <- sapply(object[, i], function(mc) return(mc$npcs[1]))
+    p_mnv <- sapply(object[, i], function(mc) return(mc$p.values$manova[1]))
     p_par <- sapply(object[, i],
                     function(mc) return(mc$p.values$parametric[1]))
     p_npar <- sapply(object[, i],
