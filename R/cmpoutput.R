@@ -513,6 +513,9 @@ assumptions.cmpoutput <- function(obj) {
       assumptions$manova[[i]] <-
         assumptions_manova(scores[, 1:npcs[i]], factors)
 
+      # Keep number of PCs
+      attr(assumptions$manova[[i]], "npcs") <- npcs[i]
+
     } else {
 
       # Only one variable, can't use manova
