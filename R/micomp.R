@@ -209,6 +209,7 @@ micomp <- function(outputs, ve, comps, concat = F, centscal = "range", ...) {
   colnames(comp_res) <- cmp_names
   rownames(comp_res) <- outputs
   class(comp_res) <- "micomp"
+  attr(comp_res, "ve") <- ve
   comp_res
 
 }
@@ -269,6 +270,7 @@ print.micomp <- function(x, ...) {
 
     cat("====", cmpname, "====\n")
     print(smic[[cmpname]], digits = 5, print.gap = 2)
+    cat("\n")
 
   }
 
@@ -330,9 +332,7 @@ summary.micomp <- function(object, ...) {
   names(smic) <- cmpnames
 
   # How many variances to explain?
-  # TODO We obtain this info from the first element, but we should use an
-  # attribute in the micomp object instead
-  ve <- object[[1, 1]]$ve
+  ve <- attr(object, "ve")
   nve <- length(ve)
 
   # Cycle through comparisons
