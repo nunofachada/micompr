@@ -488,6 +488,7 @@ assumptions.micomp <- function(obj) {
   colnames(micas) <- colnames(obj)
   rownames(micas) <- rownames(obj)
   class(micas) <- "assumptions_micomp"
+  attr(micas, "ve") <- attr(obj, "ve")
   micas
 }
 
@@ -650,16 +651,98 @@ plot.assumptions_micomp <- function(x, ...) {
 #'
 summary.assumptions_micomp <- function(object, ..., tnpcs = 1) {
 
-  # Get summaries from all underlying assumptions_cmpoutput objects
-  assum <- lapply(object, function(cmp) summary(cmp, tnpcs = tnpcs))
+  dims <- dim(object)
+  nout <- dims[1]
+  ncomp <- dims[2]
+  cmpnames <- colnames(object)
 
-  # Set the dimensions of the output object to be the same as the input object
-  dim(assum) <- dim(object)
+  samic <- vector(mode = "list", length = ncomp)
+  names(samic) <- cmpnames
 
-  # As well as the row and column names
-  rownames(assum) <- rownames(object)
-  colnames(assum) <- colnames(object)
+  # How many variances to explain?
+  ve <- attr(object, "ve")
+  nve <- length(ve)
 
-  assum
+  # Cycle through comparisons
+  for (i in 1:ncomp) {
+
+    # Number of groups compared in current comparison
+    grps <- names(object[[1, i]]$ttest$uvntest)
+    ngrps <- length(grps)
+
+    # Number of Royston tests performed: one per group per variance to explain
+    nroytests <- ngrps * nve
+
+    # Allocate summary matrix for current comparison
+    smat <- matrix(nrow = nroytests + nve + ngrps + 1, ncol = nout)
+    colnames(smat) <- rownames(object)
+    rnames <- NULL
+    idx <- 0
+
+    # Royston tests (ngrps) and Box's M tests (1) per requested variance to
+    # explain
+    for (j in 1:nve) {
+
+      # One Royston test per group
+      for (k in 1:ngrps) {
+
+        # Update summary matrix index
+        idx <- idx + 1
+
+        # Get Royston p-values
+        smat[idx, ] <- sapply(object[, i], function(aco)
+          if (length(aco$manova) > 0) {
+            if (!is.null(aco$manova[[j]])) {
+              aco$manova[[j]]$mvntest[[k]]@p.value
+            } else { NA }
+          } else { NA })
+
+        # Compose row name
+        rnames <- c(rnames, paste0("Royston (", grps[k], ", ve=", ve[j], ")"))
+
+      }
+
+      idx <- idx + 1
+
+      # One Box's M test per requested variance to explain
+      smat[idx, ] <- sapply(object[, i], function(aco)
+        if (length(aco$manova) > 0) aco$manova[[j]]$vartest$p.value
+        else NA)
+
+      # Compose Box's M test row name
+      rnames <- c(rnames, paste0("Box's M (ve=", ve[j], ")"))
+    }
+
+    # One Shapiro-Wilk test per group
+    for (k in 1:ngrps) {
+
+      # Update matrix row index
+      idx <- idx + 1
+
+      # Obtain p-values for the Shapiro-Wilk test for the 1st PC for the current
+      # group
+      smat[idx, ] <-
+        sapply(object[, i], function(aco) aco$ttest$uvntest[[k]][[1]]$p.value)
+
+      # Compose row name
+      rnames <- c(rnames, paste0("Shapiro-Wilk (", grps[k], ")"))
+    }
+
+    # One Bartlett test per comparison
+    idx <- idx + 1
+    smat[idx, ] <-
+      sapply(object[, i], function(aco) aco$ttest$vartest[[1]]$p.value)
+
+    # Compose row name
+    rnames <- c(rnames, "Bartlett")
+
+    # Set summary matrix row names
+    rownames(smat) <- c(rnames)
+
+    samic[[cmpnames[i]]] <- smat
+
+  }
+
+  samic
 
 }
