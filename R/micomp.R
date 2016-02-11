@@ -575,36 +575,42 @@ plot.assumptions_micomp <- function(x, ...) {
   par(mfcol = dim(x))
 
   # Cycle through comparisons
-  for (cmp in colnames(sm)) {
+  for (cmp in names(sm)) {
+
+    # Current comparison
+    sco <- sm[[cmp]]
 
     # Cycle through outputs
-    for (out in rownames(sm)) {
+    for (out in colnames(sco)) {
 
-      # Current output comparison
-      sco <- sm[[out, cmp]]
+      # Set margins
       par(mar = c(2, 4, 2, 4))
 
-      # Determine names and values of bars in plot
-      b1 <- NULL
-      if (!is.null(sco$manova)) {
-        b1 <- sapply(sco$manova, function(x) x)
-        names(b1) <- mapply(function(x, y) paste(x, y),
-                            row(sco$manova, T), col(sco$manova, T))
-      }
-      b2 <- sapply(sco$ttest, function(x) x)
-      names(b2) <- mapply(function(x, y) paste(x, y),
-                          row(sco$ttest, T), col(sco$ttest, T))
-      b <- c(b1, b2)
+      # Get vector to plot, remove NAs
+      pvals <- na.omit(sco[, out])
 
-      # Set bar plot parameters
-      params <- list()
-      params$height <- b
-      params$col <- pvalcol(b, c("darkgreen", "yellow", "red"))
-      params$beside <- T
-      params$main <- paste(cmp, out)
-      params$las = 2
-      params$horiz = TRUE
-      do.call("barplot", params)
+      # Are any p-values left after filtering the NAs?
+      if (length(pvals) > 0) {
+
+        # Seems so, plot the p-values
+        # Set bar plot parameters
+        params <- list()
+        params$height <- c(pvals)
+        params$col <- pvalcol(pvals, c("darkgreen", "yellow", "red"))
+        params$beside <- T
+        params$main <- paste(cmp, out)
+        params$las = 2
+        params$horiz = TRUE
+        do.call("barplot", params)
+
+      } else {
+
+        # No, place an empty plot in this spot
+        plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
+        title(main = paste(cmp, out))
+
+      }
+
     }
   }
 
