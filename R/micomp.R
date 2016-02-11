@@ -691,7 +691,7 @@ summary.assumptions_micomp <- function(object, ..., tnpcs = 1) {
 
         # Get Royston p-values
         smat[idx, ] <- sapply(object[, i], function(aco)
-          if (length(aco$manova) > 0) {
+          if (length(aco$manova) >= j) {
             if (!is.null(aco$manova[[j]])) {
               aco$manova[[j]]$mvntest[[k]]@p.value
             } else { NA }
@@ -706,8 +706,11 @@ summary.assumptions_micomp <- function(object, ..., tnpcs = 1) {
 
       # One Box's M test per requested variance to explain
       smat[idx, ] <- sapply(object[, i], function(aco)
-        if (length(aco$manova) > 0) aco$manova[[j]]$vartest$p.value
-        else NA)
+        if (length(aco$manova) >= j) {
+          if (!is.null(aco$manova[[j]])) {
+            aco$manova[[j]]$vartest$p.value
+          } else { NA }
+        } else { NA })
 
       # Compose Box's M test row name
       rnames <- c(rnames, paste0("Box's M (ve=", ve[j], ")"))
