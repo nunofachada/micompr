@@ -621,19 +621,32 @@ plot.assumptions_micomp <- function(x, ...) {
 #'
 #' @param object Object of class \code{assumptions_micomp}.
 #' @param ... Currently ignored.
-#' @param tnpcs Number of principal components to summarize for the
-#' \emph{t}-test.
 #'
-#' @return A multi-dimensional list of \code{assumptions_cmpoutput} summaries.
-#' Rows are associated with individual outputs, while columns are associated
-#' with separate comparisons.
+#' @return A list in which each component is associated with a distinct
+#' comparison. Each component contains a matrix, in which columns represent
+#' individual simulation outputs and rows correspond to the statistical tests
+#' evaluating the assumptions of the parametric tests used in each output. More
+#' specifically, each matrix has rows with the following information:
+#' \describe{
+#'  \item{Royston (\emph{group}, \emph{ve=\%})}{One row per group per variance
+#'        to explain, with the \emph{p}-value yielded by the Royston test
+#'        (\code{\link[MVN]{roystonTest}}) for the respective group/variance
+#'        combination.}
+#'  \item{BoxM(Var.)}{One row per variance to explain with the \emph{p}-value
+#'        yielded by Box's M test (\code{\link[biotools]{boxM}}).}
+#'  \item{Shapiro-Wilk(\emph{group})}{One row per group, with the \emph{p}-value
+#'        yielded by the Shapiro-Wilk test (\code{\link{shapiro.test}}) for the
+#'        respective group.}
+#'  \item{Bartlett(Var.)}{One row with the \emph{p}-value yielded by Bartlett's
+#'        test (\code{\link{bartlett.test}}).}
+#' }
 #'
 #' @export
 #'
 #' @examples
 #'
 #' # Create a micomp object, use provided dataset
-#' mic <- micomp(5, 0.8,
+#' mic <- micomp(5, c(0.7, 0.8, 0.9),
 #'               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
 #'                    list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff)),
 #'               concat = TRUE)
@@ -641,7 +654,7 @@ plot.assumptions_micomp <- function(x, ...) {
 #' # Get the assumptions summary
 #' sam <- summary(assumptions(mic))
 #'
-summary.assumptions_micomp <- function(object, ..., tnpcs = 1) {
+summary.assumptions_micomp <- function(object, ...) {
 
   dims <- dim(object)
   nout <- dims[1]
