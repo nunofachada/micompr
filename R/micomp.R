@@ -521,22 +521,14 @@ assumptions.micomp <- function(obj) {
 #'
 print.assumptions_micomp <- function(x, ...) {
 
+  sm <- summary(x)
+
   # Cycle through comparisons
-  for (cmp in colnames(x)) {
+  for (cmp in names(sm)) {
 
-    # Cycle through outputs
-    for (out in rownames(x)) {
-
-      # Show assumptions for current comparison/output
-
-      cat("### Comp.:", cmp, "\n")
-      cat("### Output:", out, "\n\n")
-
-      toshow <- capture.output(x[[out, cmp]])
-
-      cat(paste0("    ", toshow, "\n", collapse = ""))
-      cat("\n")
-    }
+    cat("==== ", cmp, "====\n")
+    print(sm[[cmp]], digits = 5, print.gap = 2)
+    cat("\n")
 
   }
 
