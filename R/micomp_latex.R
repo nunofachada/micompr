@@ -302,6 +302,8 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'
 #' @export
 #'
+#' @importFrom utils toLatex
+#'
 #' @examples
 #'
 #' # Create a micomp object, use provided dataset, three first outputs, plus
