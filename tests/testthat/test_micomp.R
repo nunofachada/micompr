@@ -286,11 +286,11 @@ test_that("micomp assumptions have the correct properties", {
   sam2 <- summary(am2)
   sam3 <- summary(am3)
 
-  expect_equal(colnames(sam1a),
+  expect_equal(names(sam1a),
                c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
-  expect_equal(colnames(sam1b), "testVLOdata")
-  expect_equal(colnames(sam2),
+  expect_equal(names(sam1b), "testVLOdata")
+  expect_equal(names(sam2),
                c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
-  expect_equal(colnames(sam3),
+  expect_equal(names(sam3),
                c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
 })

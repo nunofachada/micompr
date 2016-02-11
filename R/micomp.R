@@ -693,7 +693,9 @@ summary.assumptions_micomp <- function(object, ..., tnpcs = 1) {
         smat[idx, ] <- sapply(object[, i], function(aco)
           if (length(aco$manova) >= j) {
             if (!is.null(aco$manova[[j]])) {
-              aco$manova[[j]]$mvntest[[k]]@p.value
+              if (!is.na(aco$manova[[j]]$mvntest[[k]])) {
+                aco$manova[[j]]$mvntest[[k]]@p.value
+              } else { NA }
             } else { NA }
           } else { NA })
 
