@@ -280,6 +280,10 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'   \item{varexp-j}{Explained variance for the j-th principal component.}
 #'   \item{scoreplot}{Output projection on the first two principal components.}
 #' }
+#' @param data.labels Vector of strings specifying the labels of the data to
+#' show. It must be NULL or have the same length as the \code{data.show}
+#' parameter.
+#' @param data.labels.col Show the column containing the data labels?
 #' @param table.placement \code{LaTeX} table placement.
 #' @param latex.environments Wrap table in the specified \code{LaTeX}
 #' environments.
@@ -327,6 +331,8 @@ toLatex.micomp <- function(
   object,
   ...,
   data.show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
+  data.labels = NULL,
+  data.labels.col = T,
   table.placement = "ht",
   latex.environments = c("center"),
   booktabs = F,
@@ -343,6 +349,18 @@ toLatex.micomp <- function(
   scoreplot.scale = 6,
   scoreplot.before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
   scoreplot.after = "}}") {
+
+  # Internal function for displaying data labels
+  dlabels <- function(def, usr) {
+    # Are data labels to be shown?
+    if (data.labels.col) {
+      # Show default or user-specified label?
+      pst(" & ", if (is.null(usr)) { def } else { usr })
+    } else {
+      # Labels are not to be shown
+      ""
+    }
+  }
 
   # How many rows will the table have?
   ndata <- length(data.show)
@@ -376,8 +394,19 @@ toLatex.micomp <- function(
     idx <- idx + 1
   }
 
+  # Do we have a column with the data labels?
+  if (data.labels.col) {
+    dlpos <- "l"
+    dlheader <- " & \\multirow{2}{*}{Test}"
+    dlsep <- " &"
+  } else {
+    dlpos <- ""
+    dlheader <- ""
+    dlsep <- ""
+  }
+
   # Set tabular environment
-  ltxtab[[idx]] <- pst("\\begin{tabular}{cl", pst(rep("r", nout)), "}")
+  ltxtab[[idx]] <- pst("\\begin{tabular}{c", pst(dlpos, rep("r", nout)), "}")
   idx <- idx + 1
 
   # Add top line/rule
@@ -385,17 +414,18 @@ toLatex.micomp <- function(
   idx <- idx + 1
 
   # Add header
-  ltxtab[[idx]] <- pst("\\multirow{2}{*}{Comp.} & \\multirow{2}{*}{Test} & ",
+  ltxtab[[idx]] <- pst("\\multirow{2}{*}{Comp.}", dlheader, " & ",
                        "\\multicolumn{", nout, "}{c}{Outputs} \\\\")
   idx <- idx + 1
 
   # Add intermediate line/rule
-  ltxtab[[idx]] <- pst(hlines$c, "{3-", 2 + nout, "}")
+  ltxtab[[idx]] <- pst(hlines$c, "{", 2 + data.labels.col, "-",
+                       1 + data.labels.col  + nout, "}")
   idx <- idx + 1
 
   # Add output names
-  ltxtab[[idx]] <- pst(" & & ", paste(rownames(object), collapse = " & ",
-                                      sep = ""),
+  ltxtab[[idx]] <- pst(dlsep, " & ", paste(rownames(object), collapse = " & ",
+                                           sep = ""),
                        "\\\\")
   idx <- idx + 1
 
@@ -427,7 +457,17 @@ toLatex.micomp <- function(
     idx <- idx + 1
 
     # Rows with comparison data
-    for (cdata in data.show) {
+    for (didx in 1:length(data.show)) {
+
+      # Data to show in current row
+      cdata <- data.show[didx]
+
+      # Is there a data label?
+      if (is.null(data.labels)) {
+        lbl <- NULL
+      } else {
+        lbl <- data.labels[didx]
+      }
 
       # Split field name
       cdata_split <- unlist(strsplit(cdata, "-"))
@@ -448,68 +488,85 @@ toLatex.micomp <- function(
         switch(cdata_cmd,
 
                # Number of principal components
-               npcs = pst(" & $\\#$PCs (", 100 * ve[cdata_arg], "\\% var.)",
-                          pst(" & ",
-                              sapply(micmp, function(mc) mc$npcs[cdata_arg])),
-                          "\\\\"),
+               npcs = pst(
+                 dlabels(pst("$\\#$PCs (", 100 * ve[cdata_arg], "\\% var.)"),
+                         lbl),
+                 pst(" & ", sapply(micmp, function(mc) mc$npcs[cdata_arg])),
+                 "\\\\"),
 
                # MANOVA p-values
-               mnvp = pst(" & MNV (", 100 * ve[cdata_arg], "\\% var.)",
-                          pst(" & ", pvalf.f(
-                            sapply(micmp, function(mc)
-                              mc$p.values$manova[cdata_arg]),
-                            pvalf.params)),
-                          "\\\\"),
+               mnvp = pst(
+                 dlabels(pst("MNV (", 100 * ve[cdata_arg], "\\% var.)"), lbl),
+                 pst(" & ",
+                     pvalf.f(sapply(micmp,
+                                    function(mc) mc$p.values$manova[cdata_arg]),
+                             pvalf.params)),
+                 "\\\\"),
 
                # Parametric p-values (raw)
-               parp = pst(" & ", uvpartest, " (PC", cdata_arg, ") ",
-                          pst(" & ", pvalf.f(
-                            sapply(micmp, function(mc)
-                              mc$p.values$parametric[cdata_arg]),
-                            pvalf.params)),
-                          "\\\\"),
+               parp = pst(
+                 dlabels(pst(uvpartest, " (PC", cdata_arg, ") "), lbl),
+                 pst(" & ",
+                     pvalf.f(sapply(micmp,
+                                    function(mc)
+                                      mc$p.values$parametric[cdata_arg]),
+                             pvalf.params)),
+                 "\\\\"),
 
                # Non-parametric p-values (raw)
-               nparp = pst(" & ", uvnpartest, " (PC", cdata_arg, ") ",
-                           pst(" & ", pvalf.f(
-                             sapply(micmp, function(mc)
-                               mc$p.values$nonparametric[cdata_arg]),
+               nparp = pst(
+                 dlabels(pst(uvnpartest, " (PC", cdata_arg, ") "), lbl),
+                 pst(" & ",
+                     pvalf.f(sapply(micmp,
+                                    function(mc)
+                                      mc$p.values$nonparametric[cdata_arg]),
                              pvalf.params)),
-                           "\\\\"),
+                 "\\\\"),
 
                # Parametric p-values (adjusted)
-               aparp = pst(" & ", uvpartest, "* (PC", cdata_arg, ") ",
-                           pst(" & ", pvalf.f(
-                             sapply(micmp, function(mc)
-                               mc$p.values$parametric_adjusted[cdata_arg]),
-                             pvalf.params)),
-                           "\\\\"),
+               aparp = pst(
+                 dlabels(pst(uvpartest, "* (PC", cdata_arg, ") "), lbl),
+                 pst(" & ",
+                     pvalf.f(
+                       sapply(micmp,
+                              function(mc)
+                                mc$p.values$parametric_adjusted[cdata_arg]),
+                       pvalf.params)),
+                 "\\\\"),
 
                # Non-parametric p-values (adjusted)
-               anparp = pst(" & ", uvnpartest, "* (PC", cdata_arg, ") ",
-                            pst(" & ", pvalf.f(
-                              sapply(micmp, function(mc)
+               anparp = pst(
+                 dlabels(pst(uvnpartest, "* (PC", cdata_arg, ") "), lbl),
+                 pst(" & ",
+                     pvalf.f(
+                       sapply(micmp,
+                              function(mc)
                                 mc$p.values$nonparametric_adjusted[cdata_arg]),
-                              pvalf.params)),
-                            "\\\\"),
+                       pvalf.params)),
+                 "\\\\"),
 
                # Percentage of explained variance
-               varexp = pst(" & \\% var. (PC", cdata_arg, ") ",
-                            pst(" & ", sapply(micmp, function(x)
-                              if (x$varexp[cdata_arg] < 0.0001) "<0.1"
-                              else sprintf("%6.1f", x$varexp[cdata_arg] * 100)),
-                              "\\%"),
-                            "\\\\"),
+               varexp = pst(
+                 dlabels(pst("\\% var. (PC", cdata_arg, ") "), lbl),
+                 pst(" & ",
+                     sapply(micmp,
+                            function(x) if (x$varexp[cdata_arg] < 0.0001) {
+                              "<0.1"
+                            } else {
+                              sprintf("%6.1f", x$varexp[cdata_arg] * 100)
+                            }),
+                     "\\%"),
+                 "\\\\"),
 
                # Score plot
-               scoreplot = pst(" & PCS ",
-                               pst(" & ",
-                                   tscat_apply(object[, cmp],
-                                               scoreplot.marks,
-                                               scoreplot.scale,
-                                               scoreplot.before,
-                                               scoreplot.after)),
-                               "\\\\"))
+               scoreplot = pst(
+                 dlabels("PCS ", lbl),
+                 pst(" & ", tscat_apply(object[, cmp],
+                                        scoreplot.marks,
+                                        scoreplot.scale,
+                                        scoreplot.before,
+                                        scoreplot.after)),
+                 "\\\\"))
 
       # Next row
       idx <- idx + 1

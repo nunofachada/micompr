@@ -5,7 +5,8 @@
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
 \method{toLatex}{micomp}(object, ..., data.show = c("npcs-1", "mnvp-1",
-  "parp-1", "nparp-1", "scoreplot"), table.placement = "ht",
+  "parp-1", "nparp-1", "scoreplot"), data.labels = NULL,
+  data.labels.col = T, table.placement = "ht",
   latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
   caption = NULL, label = NULL, col.width = F, pvalf.f = pvalf.default,
   pvalf.params = list(),
@@ -37,6 +38,12 @@ options are:
   \item{varexp-j}{Explained variance for the j-th principal component.}
   \item{scoreplot}{Output projection on the first two principal components.}
 }}
+
+\item{data.labels}{Vector of strings specifying the labels of the data to
+show. It must be NULL or have the same length as the \code{data.show}
+parameter.}
+
+\item{data.labels.col}{Show the column containing the data labels?}
 
 \item{table.placement}{\code{LaTeX} table placement.}
 
