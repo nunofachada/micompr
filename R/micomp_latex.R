@@ -49,6 +49,7 @@ pvalf <- function(pval, params) UseMethod("pvalf")
 #'         double-underlined.}
 #'   \item{lim2val}{If \emph{p}-value is below this value, it will be
 #'         underlined.}
+#'   \item{na.str}{String to use for NAs. By default NAs are returned as is.}
 #' }
 #'
 #' @return A string representing the formatted \code{pval}.
@@ -107,6 +108,11 @@ pvalf.default <- function(pval, params = list()) {
                  ifelse(pval < lim2val,
                         paste("\\uline{", fval, "}", sep = ""),
                         fval))
+
+  # Replace NAs with a specific string?
+  if (exists("na.str", where = params)) {
+    fval <- replace(fval, is.na(fval), params$na.str)
+  }
 
   fval
 
