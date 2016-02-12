@@ -259,19 +259,19 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param data.show Vector of strings specifying what data to show. Available
 #' options are:
 #' \describe{
-#'   \item{npcs}{Number of principal components required to explain the
-#'         percentage of variance specified when \code{mic} was created.}
-#'   \item{mnvp-i}{MANOVA \emph{p}-values for the i-th user-specified variance
-#'         to explain.}
-#'   \item{parp-i}{Parametric test \emph{p}-values for the i-th principal
+#'   \item{npcs-i}{Number of principal components required to explain i-th
+#'         user-specified percentage of variance.}
+#'   \item{mnvp-i}{MANOVA \emph{p}-values for the i-th user-specified percentage
+#'         of variance to explain.}
+#'   \item{parp-j}{Parametric test \emph{p}-values for the j-th principal
 #'         component.}
-#'   \item{nparp-i}{Non-parametric test \emph{p}-values for the i-th principal
+#'   \item{nparp-j}{Non-parametric test \emph{p}-values for the j-th principal
 #'         component.}
-#'   \item{aparp-i}{Parametric test \emph{p}-values adjusted with weighted
-#'         Bonferroni procedure for the i-th principal component.}
-#'   \item{anparp-i}{Non-parametric test \emph{p}-values adjusted with weighted
-#'         Bonferroni procedure for the i-th principal component.}
-#'   \item{varexp-i}{Explained variance for the i-th principal component.}
+#'   \item{aparp-j}{Parametric test \emph{p}-values adjusted with weighted
+#'         Bonferroni procedure for the j-th principal component.}
+#'   \item{anparp-j}{Non-parametric test \emph{p}-values adjusted with weighted
+#'         Bonferroni procedure for the j-th principal component.}
+#'   \item{varexp-j}{Explained variance for the j-th principal component.}
 #'   \item{scoreplot}{Output projection on the first two principal components.}
 #' }
 #' @param table.placement \code{LaTeX} table placement.
@@ -320,7 +320,7 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 toLatex.micomp <- function(
   object,
   ...,
-  data.show = c("npcs", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
+  data.show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
   table.placement = "ht",
   latex.environments = c("center"),
   booktabs = F,
@@ -413,6 +413,9 @@ toLatex.micomp <- function(
     # Get list of compared outputs for current comparison
     micmp <- object[, cmp]
 
+    # Get vector of variances to explain
+    ve <- attr(object, "ve")
+
     # Multi-row with comparison name
     ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
     idx <- idx + 1
@@ -427,63 +430,68 @@ toLatex.micomp <- function(
       cdata_cmd <- cdata_split[1]
 
       # Does a second part of the field name exist? If so, it represents the
-      # principal component.
-      cdata_pc <- if (length(cdata_split) > 1) { as.numeric(cdata_split[2]) }
+      # index of the variance to explain for the "npcs" and "mnvp" commands and
+      # the principal component for the "parp", "nparp", "aparp", "anparp" and
+      # "varexp" commands. If not specified, 1 is assumed in both cases.
+      cdata_arg <-
+        if (length(cdata_split) > 1) { as.numeric(cdata_split[2]) }
+        else { 1 }
 
       # Add row to table, determine type of row to add
       ltxtab[[idx]] <-
         switch(cdata_cmd,
 
                # Number of principal components
-               npcs = pst(" & $\\#$PCs ",
-                          pst(" & ", sapply(micmp, function(mc) mc$npcs)),
+               npcs = pst(" & $\\#$PCs (", 100 * ve[cdata_arg], "\\% var.)",
+                          pst(" & ",
+                              sapply(micmp, function(mc) mc$npcs[cdata_arg])),
                           "\\\\"),
 
                # MANOVA p-values
-               mnvp = pst(" & MNV ",
+               mnvp = pst(" & MNV (", 100 * ve[cdata_arg], "\\% var.)",
                           pst(" & ", pvalf.f(
                             sapply(micmp, function(mc)
-                              mc$p.values$manova),
+                              mc$p.values$manova[cdata_arg]),
                             pvalf.params)),
                           "\\\\"),
 
                # Parametric p-values (raw)
-               parp = pst(" & ", uvpartest, " (PC", cdata_pc, ") ",
+               parp = pst(" & ", uvpartest, " (PC", cdata_arg, ") ",
                           pst(" & ", pvalf.f(
                             sapply(micmp, function(mc)
-                              mc$p.values$parametric[cdata_pc]),
+                              mc$p.values$parametric[cdata_arg]),
                             pvalf.params)),
                           "\\\\"),
 
                # Non-parametric p-values (raw)
-               nparp = pst(" & ", uvnpartest, " (PC", cdata_pc, ") ",
+               nparp = pst(" & ", uvnpartest, " (PC", cdata_arg, ") ",
                            pst(" & ", pvalf.f(
                              sapply(micmp, function(mc)
-                               mc$p.values$nonparametric[cdata_pc]),
+                               mc$p.values$nonparametric[cdata_arg]),
                              pvalf.params)),
                            "\\\\"),
 
                # Parametric p-values (adjusted)
-               aparp = pst(" & ", uvpartest, "* (PC", cdata_pc, ") ",
+               aparp = pst(" & ", uvpartest, "* (PC", cdata_arg, ") ",
                            pst(" & ", pvalf.f(
                              sapply(micmp, function(mc)
-                               mc$p.values$parametric_adjusted[cdata_pc]),
+                               mc$p.values$parametric_adjusted[cdata_arg]),
                              pvalf.params)),
                            "\\\\"),
 
                # Non-parametric p-values (adjusted)
-               anparp = pst(" & ", uvnpartest, "* (PC", cdata_pc, ") ",
+               anparp = pst(" & ", uvnpartest, "* (PC", cdata_arg, ") ",
                             pst(" & ", pvalf.f(
                               sapply(micmp, function(mc)
-                                mc$p.values$nonparametric_adjusted[cdata_pc]),
+                                mc$p.values$nonparametric_adjusted[cdata_arg]),
                               pvalf.params)),
                             "\\\\"),
 
                # Percentage of explained variance
-               varexp = pst(" & \\% var. (PC", cdata_pc, ") ",
+               varexp = pst(" & \\% var. (PC", cdata_arg, ") ",
                             pst(" & ", sapply(micmp, function(x)
-                              if (x$varexp[cdata_pc] < 0.0001) "<0.1"
-                              else sprintf("%6.1f", x$varexp[cdata_pc] * 100)),
+                              if (x$varexp[cdata_arg] < 0.0001) "<0.1"
+                              else sprintf("%6.1f", x$varexp[cdata_arg] * 100)),
                               "\\%"),
                             "\\\\"),
 

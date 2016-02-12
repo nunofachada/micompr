@@ -4,7 +4,7 @@
 \alias{toLatex.micomp}
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
-\method{toLatex}{micomp}(object, ..., data.show = c("npcs", "mnvp-1",
+\method{toLatex}{micomp}(object, ..., data.show = c("npcs-1", "mnvp-1",
   "parp-1", "nparp-1", "scoreplot"), table.placement = "ht",
   latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
   caption = NULL, label = NULL, col.width = F, pvalf.f = pvalf.default,
@@ -22,19 +22,19 @@
 \item{data.show}{Vector of strings specifying what data to show. Available
 options are:
 \describe{
-  \item{npcs}{Number of principal components required to explain the
-        percentage of variance specified when \code{mic} was created.}
-  \item{mnvp-i}{MANOVA \emph{p}-values for the i-th user-specified variance
-        to explain.}
-  \item{parp-i}{Parametric test \emph{p}-values for the i-th principal
+  \item{npcs-i}{Number of principal components required to explain i-th
+        user-specified percentage of variance.}
+  \item{mnvp-i}{MANOVA \emph{p}-values for the i-th user-specified percentage
+        of variance to explain.}
+  \item{parp-j}{Parametric test \emph{p}-values for the j-th principal
         component.}
-  \item{nparp-i}{Non-parametric test \emph{p}-values for the i-th principal
+  \item{nparp-j}{Non-parametric test \emph{p}-values for the j-th principal
         component.}
-  \item{aparp-i}{Parametric test \emph{p}-values adjusted with weighted
-        Bonferroni procedure for the i-th principal component.}
-  \item{anparp-i}{Non-parametric test \emph{p}-values adjusted with weighted
-        Bonferroni procedure for the i-th principal component.}
-  \item{varexp-i}{Explained variance for the i-th principal component.}
+  \item{aparp-j}{Parametric test \emph{p}-values adjusted with weighted
+        Bonferroni procedure for the j-th principal component.}
+  \item{anparp-j}{Non-parametric test \emph{p}-values adjusted with weighted
+        Bonferroni procedure for the j-th principal component.}
+  \item{varexp-j}{Explained variance for the j-th principal component.}
   \item{scoreplot}{Output projection on the first two principal components.}
 }}
 
