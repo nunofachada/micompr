@@ -1,2 +1,7 @@
-- toLatex.micomp: optional output-level p-value correction
+- toLatex.micomp:
+  * Optional output-level p-value correction
+  * Optionally don't show comparison name
+  * User-specified table headers
+  * Two-level outputs header optional
+- Add tests to multivarexp changes: cmpoutput, micomp, toLatex, centerscale
 - Package level doc, method for doc and for README.md

@@ -198,13 +198,6 @@ assumptions_paruv <- function(data, factors) {
 #' # covariance matrices)
 #' assumptions_manova(iris[, 1:4], iris[, 5])
 #'
-#' ## Royston test (Multivariate Normality):
-#' ##         P-value 'setosa': 2.187653e-06
-#' ##         P-value 'versicolor': 0.0847746
-#' ##         P-value 'virginica': 0.06776605
-#' ## Box's M test (Homogeneity of Covariance Matrices):
-#' ##         P-value: 3.352034e-20
-#'
 print.assumptions_manova <- function(x, ...) {
 
   cat("Royston test (Multivariate Normality):\n")
@@ -243,13 +236,6 @@ print.assumptions_manova <- function(x, ...) {
 #' # (dependent variable) of the iris data (i.e. normality of each group and
 #' # homogeneity of variances)
 #' assumptions_paruv(iris[, 1:4], iris[, 5])
-#'
-#' ## Shapiro-Wilk test (Normality):
-#' ##         P-value(s) 'setosa':  0.4595132 0.2715264 0.05481147 8.658573e-07
-#' ##         P-value(s) 'versicolor':  0.464737 0.3379951 0.1584778 0.0272778
-#' ##         P-value(s) 'virginica':  0.2583147 0.180896 0.1097754 0.08695419
-#' ## Bartlett test (Homogeneity of Variances):
-#' ##         P-value(s):  0.0003345076 0.3515028 9.229038e-13 3.054784e-09
 #'
 print.assumptions_paruv <- function(x, ...) {
 

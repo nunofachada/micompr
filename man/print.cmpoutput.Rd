@@ -24,13 +24,5 @@ Print information about objects of class \code{cmpoutput}.
 # with a different parameter.
 
 cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$factors)
-
-## Output name: WolfPop
-## Number of PCs which explain 70\% of variance: 2
-## P-Value for MANOVA along 2 dimensions: 5.53309e-08
-## P-Value for t-test (1st PC): 1.823478e-08
-## P-Value for Mann-Whitney U test (1st PC): 1.082509e-05
-## Adjusted p-Value for t-test (1st PC): 3.144908e-08
-## Adjusted p-Value for Mann-Whitney U test (1st PC): 1.866977e-05
 }
 

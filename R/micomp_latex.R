@@ -262,7 +262,7 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'
 #' @param object A \code{\link{micomp}} object.
 #' @param ... Currently ignored.
-#' @param data.show Vector of strings specifying what data to show. Available
+#' @param data_show Vector of strings specifying what data to show. Available
 #' options are:
 #' \describe{
 #'   \item{npcs-i}{Number of principal components required to explain i-th
@@ -280,31 +280,31 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'   \item{varexp-j}{Explained variance for the j-th principal component.}
 #'   \item{scoreplot}{Output projection on the first two principal components.}
 #' }
-#' @param data.labels Vector of strings specifying the labels of the data to
-#' show. It must be NULL or have the same length as the \code{data.show}
+#' @param data_labels Vector of strings specifying the labels of the data to
+#' show. It must be NULL or have the same length as the \code{data_show}
 #' parameter.
-#' @param data.labels.col Show the column containing the data labels?
-#' @param table.placement \code{LaTeX} table placement.
-#' @param latex.environments Wrap table in the specified \code{LaTeX}
+#' @param data_labels_col Show the column containing the data labels?
+#' @param table_placement \code{LaTeX} table placement.
+#' @param latex_envs Wrap table in the specified \code{LaTeX}
 #' environments.
 #' @param booktabs Use \code{booktabs} table beautifier package?
-#' @param booktabs.cmalign How to align \code{cmidule} when using the
+#' @param booktabs_cmalign How to align \code{cmidule} when using the
 #' \code{booktabs} package.
 #' @param caption Table caption.
 #' @param label Table label for cross-referencing.
-#' @param col.width Resize table to page column width?
-#' @param pvalf.f \emph{P}-value formatter function, which receives a numeric
+#' @param col_width Resize table to page column width?
+#' @param pvalf_f \emph{P}-value formatter function, which receives a numeric
 #' value between 0 and 1 and returns a string containing the formatted value.
 #' Default is \code{\link{pvalf.default}} (requires \code{ulem} \code{LaTeX}
 #' package).
-#' @param pvalf.params Parameters for \code{pvalf.f} function. Default is empty
+#' @param pvalf_params Parameters for \code{pvalf_f} function. Default is empty
 #' list.
-#' @param scoreplot.marks Vector of strings specifying how \code{TikZ} should
+#' @param scoreplot_marks Vector of strings specifying how \code{TikZ} should
 #' draw points belonging to each group in the score plot.
-#' @param scoreplot.scale \code{TikZ} scale for each score plot figure.
-#' @param scoreplot.before \code{LaTeX} code to paste before each \code{TikZ}
+#' @param scoreplot_scale \code{TikZ} scale for each score plot figure.
+#' @param scoreplot_before \code{LaTeX} code to paste before each \code{TikZ}
 #' score plot figure.
-#' @param scoreplot.after \code{LaTeX} code to paste after each \code{TikZ}
+#' @param scoreplot_after \code{LaTeX} code to paste after each \code{TikZ}
 #' score plot figure.
 #'
 #' @return A character vector where each element holds one line of the
@@ -330,32 +330,32 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 toLatex.micomp <- function(
   object,
   ...,
-  data.show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
-  data.labels = NULL,
-  data.labels.col = T,
-  table.placement = "ht",
-  latex.environments = c("center"),
+  data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
+  data_labels = NULL,
+  data_labels_col = T,
+  table_placement = "ht",
+  latex_envs = c("center"),
   booktabs = F,
-  booktabs.cmalign = "l",
+  booktabs_cmalign = "l",
   caption = NULL,
   label = NULL,
-  col.width = F,
-  pvalf.f = pvalf.default,
-  pvalf.params = list(),
-  scoreplot.marks = c(
+  col_width = F,
+  pvalf_f = pvalf.default,
+  pvalf_params = list(),
+  scoreplot_marks = c(
     "mark=square*,mark options={color=red},mark size=0.8pt",
     "mark=*,mark size=0.6pt",
     "mark=o,mark size=0.7pt"),
-  scoreplot.scale = 6,
-  scoreplot.before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
-  scoreplot.after = "}}") {
+  scoreplot_scale = 6,
+  scoreplot_before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
+  scoreplot_after = "}}") {
 
   # Internal function for displaying data labels
   dlabels <- function(def, usr) {
     # Are data labels to be shown?
-    if (data.labels.col) {
+    if (data_labels_col) {
       # Show default or user-specified label?
-      pst(" & ", if (is.null(usr)) { def } else { usr })
+      pst(" & ", if (is.null(usr)) def else usr)
     } else {
       # Labels are not to be shown
       ""
@@ -363,12 +363,12 @@ toLatex.micomp <- function(
   }
 
   # How many rows will the table have?
-  ndata <- length(data.show)
+  ndata <- length(data_show)
 
   # Determine type of lines/rules to use in table
   hlines <- if (booktabs) {
     list(top = "\\toprule", mid = "\\midrule", bot = "\\bottomrule",
-         c = pst("\\cmidrule(", booktabs.cmalign, ")"))
+         c = pst("\\cmidrule(", booktabs_cmalign, ")"))
   } else {
     list(top = "\\hline", mid = "\\hline", bot = "\\hline", c = "\\cline")
   }
@@ -381,21 +381,21 @@ toLatex.micomp <- function(
   idx <- 1
 
   # Set table float environment
-  ltxtab[[idx]] <- pst("\\begin{table}[", table.placement, "]")
+  ltxtab[[idx]] <- pst("\\begin{table}[", table_placement, "]")
   idx <- idx + 1
 
   # Set specified LaTeX environments
-  ltxtab[[idx]] <- pst("\\begin{", latex.environments ,"}")
+  ltxtab[[idx]] <- pst("\\begin{", latex_envs ,"}")
   idx <- idx + 1
 
   # Set a resize box?
-  if (col.width) {
+  if (col_width) {
     ltxtab[[idx]] <- "\\resizebox{\\columnwidth}{!}{%"
     idx <- idx + 1
   }
 
   # Do we have a column with the data labels?
-  if (data.labels.col) {
+  if (data_labels_col) {
     dlpos <- "l"
     dlheader <- " & \\multirow{2}{*}{Test}"
     dlsep <- " &"
@@ -419,8 +419,8 @@ toLatex.micomp <- function(
   idx <- idx + 1
 
   # Add intermediate line/rule
-  ltxtab[[idx]] <- pst(hlines$c, "{", 2 + data.labels.col, "-",
-                       1 + data.labels.col  + nout, "}")
+  ltxtab[[idx]] <- pst(hlines$c, "{", 2 + data_labels_col, "-",
+                       1 + data_labels_col  + nout, "}")
   idx <- idx + 1
 
   # Add output names
@@ -457,16 +457,16 @@ toLatex.micomp <- function(
     idx <- idx + 1
 
     # Rows with comparison data
-    for (didx in 1:length(data.show)) {
+    for (didx in 1:length(data_show)) {
 
       # Data to show in current row
-      cdata <- data.show[didx]
+      cdata <- data_show[didx]
 
       # Is there a data label?
-      if (is.null(data.labels)) {
+      if (is.null(data_labels)) {
         lbl <- NULL
       } else {
-        lbl <- data.labels[didx]
+        lbl <- data_labels[didx]
       }
 
       # Split field name
@@ -480,8 +480,8 @@ toLatex.micomp <- function(
       # the principal component for the "parp", "nparp", "aparp", "anparp" and
       # "varexp" commands. If not specified, 1 is assumed in both cases.
       cdata_arg <-
-        if (length(cdata_split) > 1) { as.numeric(cdata_split[2]) }
-        else { 1 }
+        if (length(cdata_split) > 1) as.numeric(cdata_split[2])
+        else 1
 
       # Add row to table, determine type of row to add
       ltxtab[[idx]] <-
@@ -498,51 +498,51 @@ toLatex.micomp <- function(
                mnvp = pst(
                  dlabels(pst("MNV (", 100 * ve[cdata_arg], "\\% var.)"), lbl),
                  pst(" & ",
-                     pvalf.f(sapply(micmp,
+                     pvalf_f(sapply(micmp,
                                     function(mc) mc$p.values$manova[cdata_arg]),
-                             pvalf.params)),
+                             pvalf_params)),
                  "\\\\"),
 
                # Parametric p-values (raw)
                parp = pst(
                  dlabels(pst(uvpartest, " (PC", cdata_arg, ") "), lbl),
                  pst(" & ",
-                     pvalf.f(sapply(micmp,
+                     pvalf_f(sapply(micmp,
                                     function(mc)
                                       mc$p.values$parametric[cdata_arg]),
-                             pvalf.params)),
+                             pvalf_params)),
                  "\\\\"),
 
                # Non-parametric p-values (raw)
                nparp = pst(
                  dlabels(pst(uvnpartest, " (PC", cdata_arg, ") "), lbl),
                  pst(" & ",
-                     pvalf.f(sapply(micmp,
+                     pvalf_f(sapply(micmp,
                                     function(mc)
                                       mc$p.values$nonparametric[cdata_arg]),
-                             pvalf.params)),
+                             pvalf_params)),
                  "\\\\"),
 
                # Parametric p-values (adjusted)
                aparp = pst(
                  dlabels(pst(uvpartest, "* (PC", cdata_arg, ") "), lbl),
                  pst(" & ",
-                     pvalf.f(
+                     pvalf_f(
                        sapply(micmp,
                               function(mc)
                                 mc$p.values$parametric_adjusted[cdata_arg]),
-                       pvalf.params)),
+                       pvalf_params)),
                  "\\\\"),
 
                # Non-parametric p-values (adjusted)
                anparp = pst(
                  dlabels(pst(uvnpartest, "* (PC", cdata_arg, ") "), lbl),
                  pst(" & ",
-                     pvalf.f(
+                     pvalf_f(
                        sapply(micmp,
                               function(mc)
                                 mc$p.values$nonparametric_adjusted[cdata_arg]),
-                       pvalf.params)),
+                       pvalf_params)),
                  "\\\\"),
 
                # Percentage of explained variance
@@ -562,10 +562,10 @@ toLatex.micomp <- function(
                scoreplot = pst(
                  dlabels("PCS ", lbl),
                  pst(" & ", tscat_apply(object[, cmp],
-                                        scoreplot.marks,
-                                        scoreplot.scale,
-                                        scoreplot.before,
-                                        scoreplot.after)),
+                                        scoreplot_marks,
+                                        scoreplot_scale,
+                                        scoreplot_before,
+                                        scoreplot_after)),
                  "\\\\"))
 
       # Next row
@@ -583,7 +583,7 @@ toLatex.micomp <- function(
   idx <- idx + 1
 
   # If open, close the resize box
-  if (col.width) {
+  if (col_width) {
     ltxtab[[idx]] <- "} % resize box"
     idx <- idx + 1
   }
@@ -601,7 +601,7 @@ toLatex.micomp <- function(
   }
 
   # Close specified LaTeX environments
-  ltxtab[[idx]] <- pst("\\end{", rev(latex.environments) ,"}")
+  ltxtab[[idx]] <- pst("\\end{", rev(latex_envs) ,"}")
   idx <- idx + 1
 
   # Close table float environment

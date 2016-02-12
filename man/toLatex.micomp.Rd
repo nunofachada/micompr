@@ -4,23 +4,22 @@
 \alias{toLatex.micomp}
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
-\method{toLatex}{micomp}(object, ..., data.show = c("npcs-1", "mnvp-1",
-  "parp-1", "nparp-1", "scoreplot"), data.labels = NULL,
-  data.labels.col = T, table.placement = "ht",
-  latex.environments = c("center"), booktabs = F, booktabs.cmalign = "l",
-  caption = NULL, label = NULL, col.width = F, pvalf.f = pvalf.default,
-  pvalf.params = list(),
-  scoreplot.marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
-  "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot.scale = 6,
-  scoreplot.before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
-  scoreplot.after = "}}")
+\method{toLatex}{micomp}(object, ..., data_show = c("npcs-1", "mnvp-1",
+  "parp-1", "nparp-1", "scoreplot"), data_labels = NULL,
+  data_labels_col = T, table_placement = "ht", latex_envs = c("center"),
+  booktabs = F, booktabs_cmalign = "l", caption = NULL, label = NULL,
+  col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
+  scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
+  "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot_scale = 6,
+  scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
+  scoreplot_after = "}}")
 }
 \arguments{
 \item{object}{A \code{\link{micomp}} object.}
 
 \item{...}{Currently ignored.}
 
-\item{data.show}{Vector of strings specifying what data to show. Available
+\item{data_show}{Vector of strings specifying what data to show. Available
 options are:
 \describe{
   \item{npcs-i}{Number of principal components required to explain i-th
@@ -39,45 +38,45 @@ options are:
   \item{scoreplot}{Output projection on the first two principal components.}
 }}
 
-\item{data.labels}{Vector of strings specifying the labels of the data to
-show. It must be NULL or have the same length as the \code{data.show}
+\item{data_labels}{Vector of strings specifying the labels of the data to
+show. It must be NULL or have the same length as the \code{data_show}
 parameter.}
 
-\item{data.labels.col}{Show the column containing the data labels?}
+\item{data_labels_col}{Show the column containing the data labels?}
 
-\item{table.placement}{\code{LaTeX} table placement.}
+\item{table_placement}{\code{LaTeX} table placement.}
 
-\item{latex.environments}{Wrap table in the specified \code{LaTeX}
+\item{latex_envs}{Wrap table in the specified \code{LaTeX}
 environments.}
 
 \item{booktabs}{Use \code{booktabs} table beautifier package?}
 
-\item{booktabs.cmalign}{How to align \code{cmidule} when using the
+\item{booktabs_cmalign}{How to align \code{cmidule} when using the
 \code{booktabs} package.}
 
 \item{caption}{Table caption.}
 
 \item{label}{Table label for cross-referencing.}
 
-\item{col.width}{Resize table to page column width?}
+\item{col_width}{Resize table to page column width?}
 
-\item{pvalf.f}{\emph{P}-value formatter function, which receives a numeric
+\item{pvalf_f}{\emph{P}-value formatter function, which receives a numeric
 value between 0 and 1 and returns a string containing the formatted value.
 Default is \code{\link{pvalf.default}} (requires \code{ulem} \code{LaTeX}
 package).}
 
-\item{pvalf.params}{Parameters for \code{pvalf.f} function. Default is empty
+\item{pvalf_params}{Parameters for \code{pvalf_f} function. Default is empty
 list.}
 
-\item{scoreplot.marks}{Vector of strings specifying how \code{TikZ} should
+\item{scoreplot_marks}{Vector of strings specifying how \code{TikZ} should
 draw points belonging to each group in the score plot.}
 
-\item{scoreplot.scale}{\code{TikZ} scale for each score plot figure.}
+\item{scoreplot_scale}{\code{TikZ} scale for each score plot figure.}
 
-\item{scoreplot.before}{\code{LaTeX} code to paste before each \code{TikZ}
+\item{scoreplot_before}{\code{LaTeX} code to paste before each \code{TikZ}
 score plot figure.}
 
-\item{scoreplot.after}{\code{LaTeX} code to paste after each \code{TikZ}
+\item{scoreplot_after}{\code{LaTeX} code to paste after each \code{TikZ}
 score plot figure.}
 }
 \value{

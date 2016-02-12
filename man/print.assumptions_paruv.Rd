@@ -26,12 +26,5 @@ simulation output.
 # (dependent variable) of the iris data (i.e. normality of each group and
 # homogeneity of variances)
 assumptions_paruv(iris[, 1:4], iris[, 5])
-
-## Shapiro-Wilk test (Normality):
-##         P-value(s) 'setosa':  0.4595132 0.2715264 0.05481147 8.658573e-07
-##         P-value(s) 'versicolor':  0.464737 0.3379951 0.1584778 0.0272778
-##         P-value(s) 'virginica':  0.2583147 0.180896 0.1097754 0.08695419
-## Bartlett test (Homogeneity of Variances):
-##         P-value(s):  0.0003345076 0.3515028 9.229038e-13 3.054784e-09
 }
 
