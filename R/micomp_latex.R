@@ -49,7 +49,7 @@ pvalf <- function(pval, params) UseMethod("pvalf")
 #'         double-underlined.}
 #'   \item{lim2val}{If \emph{p}-value is below this value, it will be
 #'         underlined.}
-#'   \item{na.str}{String to use for NAs. By default NAs are returned as is.}
+#'   \item{na_str}{String to use for NAs. By default NAs are returned as is.}
 #' }
 #'
 #' @return A string representing the formatted \code{pval}.
@@ -110,8 +110,8 @@ pvalf.default <- function(pval, params = list()) {
                         fval))
 
   # Replace NAs with a specific string?
-  if (exists("na.str", where = params)) {
-    fval <- replace(fval, is.na(fval), params$na.str)
+  if (exists("na_str", where = params)) {
+    fval <- replace(fval, is.na(fval), params$na_str)
   }
 
   fval
@@ -138,7 +138,7 @@ pvalf.default <- function(pval, params = list()) {
 #'   "mark=*,mark size=0.6pt",
 #'   "mark=o,mark size=0.7pt")}.
 #' @param tscale The \code{scale} property of the \code{TikZ} figure.
-#' @param axes.color Axes color (must be a \code{LaTeX}/\code{TikZ} color).
+#' @param axes_color Axes color (must be a \code{LaTeX}/\code{TikZ} color).
 #'
 #' @return A string containing the \code{TikZ} figure code for plotting the
 #' specified \code{data}.
@@ -158,7 +158,7 @@ pvalf.default <- function(pval, params = list()) {
 #' # \\path plot[mark=*,mark size=0.6pt] coordinates { (0.250,0.500)};
 #' # \\end{tikzpicture}"
 #'
-tikzscat <- function(data, factors, marks, tscale, axes.color = "gray") {
+tikzscat <- function(data, factors, marks, tscale, axes_color = "gray") {
 
   # Only two first dimensions
   data <- data[, 1:2]
@@ -172,9 +172,9 @@ tikzscat <- function(data, factors, marks, tscale, axes.color = "gray") {
   # Begin tikzfigure
   figstr <- paste("\\begin{tikzpicture}[scale=", tscale, "] ",
                   "\\path (-1.2,-1.2) (1.2,1.2);",
-                  "\\draw[very thin,color=", axes.color, "] ",
+                  "\\draw[very thin,color=", axes_color, "] ",
                   "(0,1.1)--(0,-1.1); ",
-                  "\\draw[very thin,color=", axes.color, "] ",
+                  "\\draw[very thin,color=", axes_color, "] ",
                   "(1.1,0)--(-1.1,0);",
                   sep = "");
 
@@ -406,7 +406,7 @@ toLatex.micomp <- function(
   }
 
   # Set tabular environment
-  ltxtab[[idx]] <- pst("\\begin{tabular}{c", pst(dlpos, rep("r", nout)), "}")
+  ltxtab[[idx]] <- pst("\\begin{tabular}{c", dlpos, pst(rep("r", nout)), "}")
   idx <- idx + 1
 
   # Add top line/rule

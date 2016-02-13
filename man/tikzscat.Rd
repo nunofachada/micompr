@@ -4,7 +4,7 @@
 \alias{tikzscat}
 \title{Simple \code{TikZ} scatter plot}
 \usage{
-tikzscat(data, factors, marks, tscale, axes.color = "gray")
+tikzscat(data, factors, marks, tscale, axes_color = "gray")
 }
 \arguments{
 \item{data}{Data to plot, \emph{m} x 2 numeric matrix, where \emph{m} is the
@@ -21,7 +21,7 @@ c("mark=square*,mark options={color=red},mark size=0.8pt",
 
 \item{tscale}{The \code{scale} property of the \code{TikZ} figure.}
 
-\item{axes.color}{Axes color (must be a \code{LaTeX}/\code{TikZ} color).}
+\item{axes_color}{Axes color (must be a \code{LaTeX}/\code{TikZ} color).}
 }
 \value{
 A string containing the \code{TikZ} figure code for plotting the

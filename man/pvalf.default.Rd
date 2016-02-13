@@ -17,7 +17,7 @@
         double-underlined.}
   \item{lim2val}{If \emph{p}-value is below this value, it will be
         underlined.}
-  \item{na.str}{String to use for NAs. By default NAs are returned as is.}
+  \item{na_str}{String to use for NAs. By default NAs are returned as is.}
 }}
 }
 \value{
