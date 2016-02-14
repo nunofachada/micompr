@@ -291,6 +291,7 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param booktabs_cmalign How to align \code{cmidule} when using the
 #' \code{booktabs} package.
 #' @param caption Table caption.
+#' @param caption_cmd Command used for table caption.
 #' @param label Table label for cross-referencing.
 #' @param col_width Resize table to page column width?
 #' @param pvalf_f \emph{P}-value formatter function, which receives a numeric
@@ -338,6 +339,7 @@ toLatex.micomp <- function(
   booktabs = F,
   booktabs_cmalign = "l",
   caption = NULL,
+  caption_cmd = "\\caption",
   label = NULL,
   col_width = F,
   pvalf_f = pvalf.default,
@@ -590,7 +592,7 @@ toLatex.micomp <- function(
 
   # Add a caption, if specified
   if (!is.null(caption)) {
-    ltxtab[[idx]] <- pst("\\caption{", caption,"}")
+    ltxtab[[idx]] <- pst(caption_cmd, "{", caption,"}")
     idx <- idx + 1
   }
 
