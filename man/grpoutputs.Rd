@@ -17,7 +17,9 @@ parameter.}
 \item{folders}{Vector of folder names where to read files from. These are
 recycled if \code{length(folders) < length(files)}.}
 
-\item{files}{Vector of filenames (with wildcards) to load in each folder.}
+\item{files}{Vector of filenames to load in each folder. Filenames can be
+given as \link[=regex]{regular expressions}, or as wildcards by wrapping them
+with \code{\link{glob2rx}}.}
 
 \item{lvls}{Vector of factor (group) names, must be the same length as
 \code{files}, i.e. each file set will be associated with a different group.

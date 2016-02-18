@@ -9,7 +9,9 @@
 #' parameter.
 #' @param folders Vector of folder names where to read files from. These are
 #' recycled if \code{length(folders) < length(files)}.
-#' @param files Vector of filenames (with wildcards) to load in each folder.
+#' @param files Vector of filenames to load in each folder. Filenames can be
+#' given as \link[=regex]{regular expressions}, or as wildcards by wrapping them
+#' with \code{\link{glob2rx}}.
 #' @param lvls Vector of factor (group) names, must be the same length as
 #' \code{files}, i.e. each file set will be associated with a different group.
 #' If not given, default group names will be set.
@@ -90,7 +92,7 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
   for (i in 1:nfilesets) {
 
     # Current file set (i.e. factor)
-    curr_files <- dir(folders[i], pattern = glob2rx(files[i]))
+    curr_files <- dir(folders[i], pattern = files[i])
 
     # How many files in set? (i.e. how many observations for current factor)
     groups[i] <- length(curr_files)
@@ -144,7 +146,7 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
   for (i in 1:nfilesets) {
 
     # Current file set
-    curr_files <- dir(folders[i], pattern = glob2rx(files[i]))
+    curr_files <- dir(folders[i], pattern = files[i])
 
     # Base index for current file set
     bidx <- if (i == 1) {
