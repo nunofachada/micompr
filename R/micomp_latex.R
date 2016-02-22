@@ -576,7 +576,10 @@ toLatex.micomp <- function(
                          1 + data_labels_col  + nout, "}"))
 
       # Next row
-      idx <- idx + 1
+      if (cdata_cmd != "sep") {
+        idx <- idx + 1
+      }
+
     }
 
   }
