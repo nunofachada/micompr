@@ -37,6 +37,7 @@ options are:
         Bonferroni procedure for the j-th principal component.}
   \item{varexp-j}{Explained variance for the j-th principal component.}
   \item{scoreplot}{Output projection on the first two principal components.}
+  \item{sep}{Place a separator (e.g. midrule) between data.}
 }}
 
 \item{data_labels}{Vector of strings specifying the labels of the data to

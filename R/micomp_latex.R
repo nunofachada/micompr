@@ -279,6 +279,7 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'         Bonferroni procedure for the j-th principal component.}
 #'   \item{varexp-j}{Explained variance for the j-th principal component.}
 #'   \item{scoreplot}{Output projection on the first two principal components.}
+#'   \item{sep}{Place a separator (e.g. midrule) between data.}
 #' }
 #' @param data_labels Vector of strings specifying the labels of the data to
 #' show. It must be NULL or have the same length as the \code{data_show}
@@ -483,7 +484,7 @@ toLatex.micomp <- function(
       # "varexp" commands. If not specified, 1 is assumed in both cases.
       cdata_arg <-
         if (length(cdata_split) > 1) as.numeric(cdata_split[2])
-        else 1
+      else 1
 
       # Add row to table, determine type of row to add
       ltxtab[[idx]] <-
@@ -568,7 +569,11 @@ toLatex.micomp <- function(
                                         scoreplot_scale,
                                         scoreplot_before,
                                         scoreplot_after)),
-                 "\\\\"))
+                 "\\\\"),
+
+               # Separator
+               sep = pst(hlines$c, "{", 1 + data_labels_col, "-",
+                         1 + data_labels_col  + nout, "}"))
 
       # Next row
       idx <- idx + 1
