@@ -365,8 +365,8 @@ toLatex.micomp <- function(
     }
   }
 
-  # How many rows will the table have?
-  ndata <- length(data_show)
+  # How many rows each comparison will have
+  ndata <- sum(data_show != "sep")
 
   # Determine type of lines/rules to use in table
   hlines <- if (booktabs) {
@@ -576,9 +576,7 @@ toLatex.micomp <- function(
                          1 + data_labels_col  + nout, "}"))
 
       # Next row
-      if (cdata_cmd != "sep") {
-        idx <- idx + 1
-      }
+      idx <- idx + 1
 
     }
 
