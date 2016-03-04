@@ -368,6 +368,45 @@ toLatex.micomp <- function(
   # How many rows each comparison will have
   ndata <- sum(data_show != "sep")
 
+  # Number of outputs
+  nout <- dim(object)[1]
+
+  # Determine final data labels
+  dlabels_final <- vector(mode = "character", length = length(data_show))
+  for (i in 1:length(data_show)) {
+
+    # Try to use user-specified label, if a valid one was given
+    if (!is.null(data_labels)) {
+      if (length(data_labels) >= i) {
+        if (!is.na(data_labels[i]) && is.character(data_labels[i])) {
+          dlabels_final <- data_labels[i];
+        }
+      }
+    }
+
+    # If we were unable to use a user-specified label, use default label
+    if (dlabels_final == "") {
+
+    }
+  }
+
+  if (is.null(data_labels)) {
+    dlabels_final <-
+  } else {
+    if (length(data_labels) != length(data_show)) {
+      warning(pst("'data_labels' has different length from 'data_show',",
+                  "ignoring it and using default labels."))
+    }
+    dlabels_final <-
+  }
+
+
+  # Create table data array
+  tabdata <- array(dim = c(ndata, nout, dim(object)[2]),
+                   dimnames = list(
+                     c("#PCs", "t-test", "MNV", "PCS"), rownames(object) , colnames(object)))
+
+
   # Determine type of lines/rules to use in table
   hlines <- if (booktabs) {
     list(top = "\\toprule", mid = "\\midrule", bot = "\\bottomrule",
@@ -375,9 +414,6 @@ toLatex.micomp <- function(
   } else {
     list(top = "\\hline", mid = "\\hline", bot = "\\hline", c = "\\cline")
   }
-
-  # Number of outputs
-  nout <- dim(object)[1]
 
   # Initialize table variable
   ltxtab <- list()
