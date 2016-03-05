@@ -353,59 +353,210 @@ toLatex.micomp <- function(
   scoreplot_before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
   scoreplot_after = "}}") {
 
-  # Internal function for displaying data labels
-  dlabels <- function(def, usr) {
-    # Are data labels to be shown?
-    if (data_labels_col) {
-      # Show default or user-specified label?
-      pst(" & ", if (is.null(usr)) def else usr)
-    } else {
-      # Labels are not to be shown
-      ""
-    }
-  }
+  # ######################## #
+  # Obtain basic useful data #
+  # ######################## #
 
-  # How many rows each comparison will have
-  ndata <- sum(data_show != "sep")
+  # How many rows each comparison will have, including separators
+  ndata <- length(data_show)
+
+  # Output names
+  out_names <- rownames(object)
 
   # Number of outputs
-  nout <- dim(object)[1]
+  nout <- length(out_names)
 
-  # Determine final data labels
-  dlabels_final <- vector(mode = "character", length = length(data_show))
+  # Comparison names
+  cmp_names <- colnames(object)
+
+  # Number of comparisons
+  ncmp <- length(cmp_names)
+
+  # Get vector of variances to explain
+  ve <- attr(object, "ve")
+
+  # ########################### #
+  # Determine final data labels #
+  # ########################### #
+
+  # Allocate empty final data labels vector
+  dlabels_final <- vector(mode = "character", length = ndata)
+
+  # Cycle through data to show
   for (i in 1:length(data_show)) {
 
     # Try to use user-specified label, if a valid one was given
+
+    # Is data_labels null?
     if (!is.null(data_labels)) {
+
+      # Is there enough elements in data_labels for current data value?
       if (length(data_labels) >= i) {
+
+        # Is current label a character and not NA?
         if (!is.na(data_labels[i]) && is.character(data_labels[i])) {
-          dlabels_final <- data_labels[i];
+
+          # Use user-specified label
+          dlabels_final[i] <- data_labels[i];
         }
       }
     }
 
     # If we were unable to use a user-specified label, use default label
-    if (dlabels_final == "") {
+    if (dlabels_final[i] == "") {
 
+      # Data to show in current row
+      cdata <- data_show[i]
+
+      # Split field name
+      cdata_split <- unlist(strsplit(cdata, "-"))
+
+      # Get first part of field name
+      cdata_cmd <- cdata_split[1]
+
+      # Does a second part of the field name exist? If so, it represents the
+      # index of the variance to explain for the "npcs" and "mnvp" commands and
+      # the principal component for the "parp", "nparp", "aparp", "anparp" and
+      # "varexp" commands. If not specified, 1 is assumed in both cases.
+      cdata_arg <-
+        if (length(cdata_split) > 1) as.numeric(cdata_split[2])
+      else 1
+
+      # Determine default label for data to show in current row
+      dlabels_final[i] <-
+        switch(cdata_cmd,
+
+               # Number of principal components
+               npcs = pst("$\\#$PCs (", 100 * ve[cdata_arg], "\\% var.)"),
+
+               # MANOVA p-values
+               mnvp = pst("MNV (", 100 * ve[cdata_arg], "\\% var.)"),
+
+               # Parametric p-values (raw)
+               parp = pst("Par. test (PC", cdata_arg, ") "),
+
+               # Non-parametric p-values (raw)
+               nparp = pst("Non-par. test (PC", cdata_arg, ") "),
+
+               # Parametric p-values (adjusted)
+               aparp = pst("Par. test* (PC", cdata_arg, ") "),
+
+               # Non-parametric p-values (adjusted)
+               anparp = pst("Non-par. test* (PC", cdata_arg, ") "),
+
+               # Percentage of explained variance
+               varexp = pst("\\% var. (PC", cdata_arg, ") "),
+
+               # Score plot
+               scoreplot = "PCS ",
+
+               # Separator
+               sep = "")
     }
   }
 
-  if (is.null(data_labels)) {
-    dlabels_final <-
-  } else {
-    if (length(data_labels) != length(data_show)) {
-      warning(pst("'data_labels' has different length from 'data_show',",
-                  "ignoring it and using default labels."))
-    }
-    dlabels_final <-
-  }
-
+  # ################################## #
+  # Populate array with data for table #
+  # ################################## #
 
   # Create table data array
   tabdata <- array(dim = c(ndata, nout, dim(object)[2]),
                    dimnames = list(
-                     c("#PCs", "t-test", "MNV", "PCS"), rownames(object) , colnames(object)))
+                     dlabels_final, out_names, cmp_names))
 
+  # Cycle through comparisons
+  for (cidx in 1:ncmp) {
+
+    # Name of current comparison
+    cmp <- cmp_names[cidx]
+
+    # Get list of compared outputs for current comparison
+    micmp <- object[, cmp]
+
+    # Rows with comparison data
+    for (didx in 1:length(data_show)) {
+
+      # Data to show in current row
+      cdata <- data_show[didx]
+
+      # Split field name
+      cdata_split <- unlist(strsplit(cdata, "-"))
+
+      # Get first part of field name
+      cdata_cmd <- cdata_split[1]
+
+      # Does a second part of the field name exist? If so, it represents the
+      # index of the variance to explain for the "npcs" and "mnvp" commands and
+      # the principal component for the "parp", "nparp", "aparp", "anparp" and
+      # "varexp" commands. If not specified, 1 is assumed in both cases.
+      cdata_arg <-
+        if (length(cdata_split) > 1) as.numeric(cdata_split[2])
+      else 1
+
+      # Obtain data line
+      tabdata[didx, , cidx] <-
+        switch(cdata_cmd,
+
+               # Number of principal components
+               npcs = sapply(micmp, function(mc) mc$npcs[cdata_arg]),
+
+               # MANOVA p-values
+               mnvp = pvalf_f(
+                 sapply(micmp, function(mc) mc$p.values$manova[cdata_arg]),
+                 pvalf_params),
+
+               # Parametric p-values (raw)
+               parp = pvalf_f(
+                 sapply(micmp, function(mc) mc$p.values$parametric[cdata_arg]),
+                 pvalf_params),
+
+               # Non-parametric p-values (raw)
+               nparp = pvalf_f(
+                 sapply(micmp,
+                        function(mc) mc$p.values$nonparametric[cdata_arg]),
+                 pvalf_params),
+
+               # Parametric p-values (adjusted)
+               aparp = pvalf_f(
+                 sapply(
+                   micmp,
+                   function(mc) mc$p.values$parametric_adjusted[cdata_arg]),
+                 pvalf_params),
+
+               # Non-parametric p-values (adjusted)
+               anparp = pvalf_f(
+                 sapply(
+                   micmp,
+                   function(mc) mc$p.values$nonparametric_adjusted[cdata_arg]),
+                 pvalf_params),
+
+               # Percentage of explained variance
+               varexp = sapply(
+                 micmp,
+                 function(x)
+                   if (x$varexp[cdata_arg] < 0.0001) {
+                     "<0.1"
+                   } else {
+                     sprintf("%6.1f", x$varexp[cdata_arg] * 100)
+                   }),
+
+               # Score plot
+               scoreplot = tscat_apply(object[, cmp],
+                                       scoreplot_marks,
+                                       scoreplot_scale,
+                                       scoreplot_before,
+                                       scoreplot_after),
+
+               # Separator
+               sep = "")
+
+    }
+
+  }
+
+  # ########### #
+  # Build table #
+  # ########### #
 
   # Determine type of lines/rules to use in table
   hlines <- if (booktabs) {
@@ -469,17 +620,7 @@ toLatex.micomp <- function(
   idx <- idx + 1
 
   # Cycle through comparisons
-  for (cmp in colnames(object)) {
-
-    # Determine univariate test names
-    nfacts <- length(levels(object[, cmp][[1]]$factors))
-    if (nfacts == 2) {
-      uvpartest <- "$t$-test"
-      uvnpartest <- "MW"
-    } else {
-      uvpartest <- "ANOVA"
-      uvnpartest <- "KW"
-    }
+  for (cmp in cmp_names) {
 
     # Put a midrule
     ltxtab[[idx]] <- hlines$mid
@@ -487,9 +628,6 @@ toLatex.micomp <- function(
 
     # Get list of compared outputs for current comparison
     micmp <- object[, cmp]
-
-    # Get vector of variances to explain
-    ve <- attr(object, "ve")
 
     # Multi-row with comparison name
     ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
