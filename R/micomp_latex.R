@@ -357,8 +357,11 @@ toLatex.micomp <- function(
   # Obtain basic useful data #
   # ######################## #
 
-  # How many rows each comparison will have, including separators
-  ndata <- length(data_show)
+  # How many "lines" each comparison will have, including separators
+  ndata_raw <- length(data_show)
+
+  # How many "lines" each comparison will have, not including separators
+  ndata <- sum(data_show != "sep")
 
   # Output names
   out_names <- rownames(object)
@@ -380,7 +383,7 @@ toLatex.micomp <- function(
   # ########################### #
 
   # Allocate empty final data labels vector
-  dlabels_final <- vector(mode = "character", length = ndata)
+  dlabels_final <- vector(mode = "character", length = ndata_raw)
 
   # Cycle through data to show
   for (i in 1:length(data_show)) {
@@ -460,7 +463,7 @@ toLatex.micomp <- function(
   # ################################## #
 
   # Create table data array
-  tabdata <- array(dim = c(ndata, nout, dim(object)[2]),
+  tabdata <- array(dim = c(ndata_raw, nout, ncmp),
                    dimnames = list(
                      dlabels_final, out_names, cmp_names))
 
@@ -626,128 +629,22 @@ toLatex.micomp <- function(
     ltxtab[[idx]] <- hlines$mid
     idx <- idx + 1
 
-    # Get list of compared outputs for current comparison
-    micmp <- object[, cmp]
-
     # Multi-row with comparison name
     ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
     idx <- idx + 1
 
     # Rows with comparison data
-    for (didx in 1:length(data_show)) {
+    for (dlbl in dlabels_final) {
 
-      # Data to show in current row
-      cdata <- data_show[didx]
+      # Current row
 
-      # Is there a data label?
-      if (is.null(data_labels)) {
-        lbl <- NULL
-      } else {
-        lbl <- data_labels[didx]
-      }
-
-      # Split field name
-      cdata_split <- unlist(strsplit(cdata, "-"))
-
-      # Get first part of field name
-      cdata_cmd <- cdata_split[1]
-
-      # Does a second part of the field name exist? If so, it represents the
-      # index of the variance to explain for the "npcs" and "mnvp" commands and
-      # the principal component for the "parp", "nparp", "aparp", "anparp" and
-      # "varexp" commands. If not specified, 1 is assumed in both cases.
-      cdata_arg <-
-        if (length(cdata_split) > 1) as.numeric(cdata_split[2])
-      else 1
-
-      # Add row to table, determine type of row to add
       ltxtab[[idx]] <-
-        switch(cdata_cmd,
-
-               # Number of principal components
-               npcs = pst(
-                 dlabels(pst("$\\#$PCs (", 100 * ve[cdata_arg], "\\% var.)"),
-                         lbl),
-                 pst(" & ", sapply(micmp, function(mc) mc$npcs[cdata_arg])),
-                 "\\\\"),
-
-               # MANOVA p-values
-               mnvp = pst(
-                 dlabels(pst("MNV (", 100 * ve[cdata_arg], "\\% var.)"), lbl),
-                 pst(" & ",
-                     pvalf_f(sapply(micmp,
-                                    function(mc) mc$p.values$manova[cdata_arg]),
-                             pvalf_params)),
-                 "\\\\"),
-
-               # Parametric p-values (raw)
-               parp = pst(
-                 dlabels(pst(uvpartest, " (PC", cdata_arg, ") "), lbl),
-                 pst(" & ",
-                     pvalf_f(sapply(micmp,
-                                    function(mc)
-                                      mc$p.values$parametric[cdata_arg]),
-                             pvalf_params)),
-                 "\\\\"),
-
-               # Non-parametric p-values (raw)
-               nparp = pst(
-                 dlabels(pst(uvnpartest, " (PC", cdata_arg, ") "), lbl),
-                 pst(" & ",
-                     pvalf_f(sapply(micmp,
-                                    function(mc)
-                                      mc$p.values$nonparametric[cdata_arg]),
-                             pvalf_params)),
-                 "\\\\"),
-
-               # Parametric p-values (adjusted)
-               aparp = pst(
-                 dlabels(pst(uvpartest, "* (PC", cdata_arg, ") "), lbl),
-                 pst(" & ",
-                     pvalf_f(
-                       sapply(micmp,
-                              function(mc)
-                                mc$p.values$parametric_adjusted[cdata_arg]),
-                       pvalf_params)),
-                 "\\\\"),
-
-               # Non-parametric p-values (adjusted)
-               anparp = pst(
-                 dlabels(pst(uvnpartest, "* (PC", cdata_arg, ") "), lbl),
-                 pst(" & ",
-                     pvalf_f(
-                       sapply(micmp,
-                              function(mc)
-                                mc$p.values$nonparametric_adjusted[cdata_arg]),
-                       pvalf_params)),
-                 "\\\\"),
-
-               # Percentage of explained variance
-               varexp = pst(
-                 dlabels(pst("\\% var. (PC", cdata_arg, ") "), lbl),
-                 pst(" & ",
-                     sapply(micmp,
-                            function(x) if (x$varexp[cdata_arg] < 0.0001) {
-                              "<0.1"
-                            } else {
-                              sprintf("%6.1f", x$varexp[cdata_arg] * 100)
-                            }),
-                     "\\%"),
-                 "\\\\"),
-
-               # Score plot
-               scoreplot = pst(
-                 dlabels("PCS ", lbl),
-                 pst(" & ", tscat_apply(object[, cmp],
-                                        scoreplot_marks,
-                                        scoreplot_scale,
-                                        scoreplot_before,
-                                        scoreplot_after)),
-                 "\\\\"),
-
-               # Separator
-               sep = pst(hlines$c, "{", 1 + data_labels_col, "-",
-                         1 + data_labels_col  + nout, "}"))
+        if (dlbl == "sep") {
+          pst(hlines$c, "{", 1 + data_labels_col, "-",
+              1 + data_labels_col  + nout, "}")
+        } else {
+          pst(" & ", dlbl, pst(" & ", tabdata[dlbl, , cmp]), "\\\\")
+        }
 
       # Next row
       idx <- idx + 1
