@@ -1,0 +1,40 @@
+%\VignetteIndexEntry{Examples of generated Latex tables}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=10pt,font=small,labelfont=bf,labelsep=endash]{caption}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{plotmarks}
+
+\title{Examples of generated \LaTeX\ tables}
+
+\author{Nuno Fachada}
+
+\begin{document}
+
+\maketitle
+
+<<table1, results = 'asis', warning = FALSE>>=
+library(micompr)
+mic <- micomp(4, 0.8,
+             list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
+                  list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
+                  list(name = "NLOKvsJEXDIFF", grpout = pphpc_diff)),
+             concat = TRUE)
+toLatex(mic)
+@
+
+\end{document}
+

@@ -6,4 +6,7 @@
 .Rapp.history
 vignettes/*.html
 vignettes/*.pdf
-
+vignettes/*.tex
+vignettes/*.log
+vignettes/*.gz
+inst/doc
