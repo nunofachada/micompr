@@ -23,7 +23,7 @@ Print information about objects of class \code{grpoutputs}.
 # the PPHPC model
 dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
 dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
-files <- "stats400v1*.tsv"
+files <- glob2rx("stats400v1*.tsv")
 
 # Create a grpoutputs object
 go <- grpoutputs(6, c(dir_nl_ok, dir_jex_diff), c(files, files))

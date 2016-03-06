@@ -42,7 +42,7 @@ test_that("cmpoutput constructs the expected objects", {
                  system.file("extdata", "j_ex_ok", package = "micompr"),
                  system.file("extdata", "j_ex_noshuff", package = "micompr"),
                  system.file("extdata", "j_ex_diff", package = "micompr")),
-               rep("stats400v1*.tsv", 4))
+               rep(glob2rx("stats400v1*.tsv"), 4))
 
   cmp_quad3 <- cmpoutput("GrassQty",
                          minvar,

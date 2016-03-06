@@ -17,9 +17,9 @@ test_that("micomp constructs the expected objects", {
   dir_jex_noshuff <- system.file("extdata", "j_ex_noshuff", package = "micompr")
   dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
   dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
-  files <- "stats400v1*.tsv"
-  filesA_na <- "stats400v1*n20A.tsv"
-  filesB_na <- "stats400v1*n20B.tsv"
+  files <- glob2rx("stats400v1*.tsv")
+  filesA_na <- glob2rx("stats400v1*n20A.tsv")
+  filesB_na <- glob2rx("stats400v1*n20B.tsv")
 
   # 1 - Build a micomp object using data from extdata files
 
@@ -169,9 +169,9 @@ test_that("micomp assumptions have the correct properties", {
   dir_jex_noshuff <- system.file("extdata", "j_ex_noshuff", package = "micompr")
   dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
   dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
-  files <- "stats400v1*.tsv"
-  filesA_na <- "stats400v1*n20A.tsv"
-  filesB_na <- "stats400v1*n20B.tsv"
+  files <- glob2rx("stats400v1*.tsv")
+  filesA_na <- glob2rx("stats400v1*n20A.tsv")
+  filesB_na <- glob2rx("stats400v1*n20B.tsv")
 
   ##### Create micomp objects #####
 

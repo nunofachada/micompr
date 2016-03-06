@@ -28,7 +28,7 @@ Summary method for objects of class \code{grpoutputs}.
 dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
 dir_jex_noshuff <-
  system.file("extdata", "j_ex_noshuff", package = "micompr")
-files <- "stats400v1*.tsv"
+files <- glob2rx("stats400v1*.tsv")
 
 # Create a grpoutputs object
 go <-

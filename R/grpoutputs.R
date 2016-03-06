@@ -45,7 +45,7 @@
 #' # the PPHPC model
 #' dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
 #' dir_jex_ok <- system.file("extdata", "j_ex_ok", package = "micompr")
-#' files <- "stats400v1*.tsv"
+#' files <- glob2rx("stats400v1*.tsv")
 #'
 #' # Create a grouped outputs object using outputs from NetLogo and Java
 #' # implementations of the PPHPC model
@@ -265,7 +265,7 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
 #' # the PPHPC model
 #' dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
 #' dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
-#' files <- "stats400v1*.tsv"
+#' files <- glob2rx("stats400v1*.tsv")
 #'
 #' # Create a grpoutputs object
 #' go <- grpoutputs(6, c(dir_nl_ok, dir_jex_diff), c(files, files))
@@ -323,7 +323,7 @@ print.grpoutputs <- function(x, ...) {
 #' dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
 #' dir_jex_noshuff <-
 #'  system.file("extdata", "j_ex_noshuff", package = "micompr")
-#' files <- "stats400v1*.tsv"
+#' files <- glob2rx("stats400v1*.tsv")
 #'
 #' # Create a grpoutputs object
 #' go <-
@@ -380,8 +380,8 @@ summary.grpoutputs <- function(object, ...) {
 #' # lengths
 #' dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
 #' # Sets of files A and B have 3 files each
-#' filesA <- "stats400v1*n20A.tsv"
-#' filesB <- "stats400v1*n20B.tsv"
+#' filesA <- glob2rx("stats400v1*n20A.tsv")
+#' filesB <- glob2rx("stats400v1*n20B.tsv")
 #'
 #' # Instantiate grpoutputs object
 #' go <-

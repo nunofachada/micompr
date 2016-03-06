@@ -79,7 +79,7 @@ dir_jex_noshuff <-
   system.file("extdata", "j_ex_noshuff", package = "micompr")
 dir_jex_diff <-
   system.file("extdata", "j_ex_diff", package = "micompr")
-files <- "stats400v1*.tsv"
+files <- glob2rx("stats400v1*.tsv")
 
 mic <- micomp(7, 0.8,
               list(list(name = "NLOKvsJEXOK",

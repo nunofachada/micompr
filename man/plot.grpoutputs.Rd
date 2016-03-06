@@ -30,8 +30,8 @@ This function can be very slow for a large number of observations.
 # lengths
 dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
 # Sets of files A and B have 3 files each
-filesA <- "stats400v1*n20A.tsv"
-filesB <- "stats400v1*n20B.tsv"
+filesA <- glob2rx("stats400v1*n20A.tsv")
+filesB <- glob2rx("stats400v1*n20B.tsv")
 
 # Instantiate grpoutputs object
 go <-

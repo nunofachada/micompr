@@ -59,7 +59,7 @@ Group outputs from multiple observations of the models to be compared.
 # the PPHPC model
 dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
 dir_jex_ok <- system.file("extdata", "j_ex_ok", package = "micompr")
-files <- "stats400v1*.tsv"
+files <- glob2rx("stats400v1*.tsv")
 
 # Create a grouped outputs object using outputs from NetLogo and Java
 # implementations of the PPHPC model

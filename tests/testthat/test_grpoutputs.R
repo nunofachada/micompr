@@ -14,9 +14,9 @@ test_that("grpoutputs constructs the expected objects", {
   dir_jex_noshuff <- system.file("extdata", "j_ex_noshuff", package = "micompr")
   dir_jex_diff <- system.file("extdata", "j_ex_diff", package = "micompr")
   dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
-  files <- "stats400v1*.tsv"
-  filesA_na <- "stats400v1*n20A.tsv"
-  filesB_na <- "stats400v1*n20B.tsv"
+  files <- glob2rx("stats400v1*.tsv")
+  filesA_na <- glob2rx("stats400v1*n20A.tsv")
+  filesB_na <- glob2rx("stats400v1*n20B.tsv")
 
   # Instantiate several grpoutputs objects
   go_ok <- grpoutputs(outputs, c(dir_nl_ok, dir_jex_ok),
@@ -114,15 +114,17 @@ test_that("grpoutputs throws errors when improperly invoked", {
 
   # Should throw error because number of levels != number of files
   expect_error(
-    grpoutputs(4, c("dir1", "dir2"), c("*.tsv"), lvls = c("A", "B")),
+    grpoutputs(4, c("dir1", "dir2"), glob2rx("*.tsv"), lvls = c("A", "B")),
     "Number of file sets is not the same as the given number of factor levels.",
     fixed = TRUE
   )
 
   # Should throw error because no files were found
   expect_error(
-    grpoutputs(4, "some_fake_folder", c("fake_files*.csv", "also_fakes*.csv")),
-    paste("No files were found: some_fake_folder", fs, "fake_files*.csv",
+    grpoutputs(4, "some_fake_folder",
+               c(glob2rx("fake_files*.csv"), glob2rx("also_fakes*.csv"))),
+    paste("No files were found: some_fake_folder", fs,
+          glob2rx("fake_files*.csv"),
           sep = ""),
     fixed = TRUE
   )
@@ -160,7 +162,8 @@ test_that("grpoutputs throws errors when improperly invoked", {
   expect_error(
     grpoutputs(2, c(system.file("extdata", "nl_ok", package = "micompr"),
                     system.file("extdata", "j_ex_ok", package = "micompr")),
-               c("stats400v1*.tsv", "stats400v1*.tsv"), concat = T),
+               c(glob2rx("stats400v1*.tsv"), glob2rx("stats400v1*.tsv")),
+               concat = T),
     paste("A minimum of 3 outputs must be specified in order to use ",
           "output concatenation.", sep = ""),
     fixed = TRUE
@@ -171,7 +174,7 @@ test_that("grpoutputs throws errors when improperly invoked", {
     grpoutputs(6, c(system.file("extdata", "nl_ok", package = "micompr"),
                     system.file("extdata", "testdata", "NA",
                                 package = "micompr")),
-               c("stats400v1*.tsv", "stats400v1*A.tsv")),
+               c(glob2rx("stats400v1*.tsv"), glob2rx("stats400v1*A.tsv"))),
     paste("Length of outputs in file '",
           system.file("extdata", "testdata", "NA", package = "micompr"), fs,
           "stats400v1r[0-9]+n20A.tsv' ",
