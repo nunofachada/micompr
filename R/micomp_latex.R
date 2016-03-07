@@ -284,7 +284,8 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param data_labels Vector of strings specifying the labels of the data to
 #' show. It must be NULL or have the same length as the \code{data_show}
 #' parameter.
-#' @param data_labels_col Show the column containing the data labels?
+#' @param data_labels_show Show the column/row containing the data labels?
+#' @param cmp_labels_show Show the column/row containing the comparison labels?
 #' @param table_placement \code{LaTeX} table placement.
 #' @param latex_envs Wrap table in the specified \code{LaTeX}
 #' environments.
@@ -334,7 +335,8 @@ toLatex.micomp <- function(
   ...,
   data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
   data_labels = NULL,
-  data_labels_col = T,
+  data_labels_show = T,
+  cmp_labels_show = T,
   table_placement = "ht",
   latex_envs = c("center"),
   booktabs = F,
@@ -587,19 +589,38 @@ toLatex.micomp <- function(
     idx <- idx + 1
   }
 
+  # Do we have a column with the comparison labels?
+  if (cmp_labels_show) {
+    clpos <- "c"
+    clheader <- "\\multirow{2}{*}{Comp.}"
+    clsep <- " & "
+  } else {
+    clpos <- ""
+    clheader <- ""
+    clsep <- ""
+  }
+
   # Do we have a column with the data labels?
-  if (data_labels_col) {
+  if (data_labels_show) {
     dlpos <- "l"
-    dlheader <- " & \\multirow{2}{*}{Test}"
-    dlsep <- " &"
+    dlheader <- pst(clsep, "\\multirow{2}{*}{Test}")
+    dlsep <- " & "
   } else {
     dlpos <- ""
     dlheader <- ""
     dlsep <- ""
   }
 
+  # Do we have either a comparison or data label column?
+  lsep <- if (cmp_labels_show || data_labels_show) {
+    " & "
+  } else {
+    ""
+  }
+
   # Set tabular environment
-  ltxtab[[idx]] <- pst("\\begin{tabular}{c", dlpos, pst(rep("r", nout)), "}")
+  ltxtab[[idx]] <-
+    pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", nout)), "}")
   idx <- idx + 1
 
   # Add top line/rule
@@ -607,17 +628,17 @@ toLatex.micomp <- function(
   idx <- idx + 1
 
   # Add header
-  ltxtab[[idx]] <- pst("\\multirow{2}{*}{Comp.}", dlheader, " & ",
+  ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
                        "\\multicolumn{", nout, "}{c}{Outputs} \\\\")
   idx <- idx + 1
 
   # Add intermediate line/rule
-  ltxtab[[idx]] <- pst(hlines$c, "{", 2 + data_labels_col, "-",
-                       1 + data_labels_col  + nout, "}")
+  ltxtab[[idx]] <- pst(hlines$c, "{", 1 + data_labels_show + cmp_labels_show,
+                       "-", data_labels_show + cmp_labels_show  + nout, "}")
   idx <- idx + 1
 
   # Add output names
-  ltxtab[[idx]] <- pst(dlsep, " & ", paste(rownames(object), collapse = " & ",
+  ltxtab[[idx]] <- pst(clsep, dlsep, paste(rownames(object), collapse = " & ",
                                            sep = ""),
                        "\\\\")
   idx <- idx + 1
@@ -630,8 +651,10 @@ toLatex.micomp <- function(
     idx <- idx + 1
 
     # Multi-row with comparison name
-    ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
-    idx <- idx + 1
+    if (cmp_labels_show) {
+      ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
+      idx <- idx + 1
+    }
 
     # Rows with comparison data
     for (dlbl in dlabels_final) {
@@ -640,10 +663,17 @@ toLatex.micomp <- function(
 
       ltxtab[[idx]] <-
         if (dlbl == "sep") {
-          pst(hlines$c, "{", 1 + data_labels_col, "-",
-              1 + data_labels_col  + nout, "}")
+          pst(hlines$c, "{", data_labels_show + cmp_labels_show, "-",
+              data_labels_show + cmp_labels_show  + nout, "}")
         } else {
-          pst(" & ", dlbl, pst(" & ", tabdata[dlbl, , cmp]), "\\\\")
+          if (data_labels_show) {
+            dlbl_f <- dlbl
+          } else {
+            dlbl_f <- ""
+          }
+          pst(clsep, dlbl_f, dlsep,
+              paste0(tabdata[dlbl, , cmp], collapse = " & "),
+              "\\\\")
         }
 
       # Next row

@@ -1,6 +1,4 @@
 - toLatex.micomp:
-  * Optional output-level p-value correction
-  * Optionally don't show comparison name
   * User-specified table headers
   * Two-level outputs header optional
   * Optionally place outputs along rows and data labels in header, along columns

@@ -6,10 +6,10 @@
 \usage{
 \method{toLatex}{micomp}(object, ..., data_show = c("npcs-1", "mnvp-1",
   "parp-1", "nparp-1", "scoreplot"), data_labels = NULL,
-  data_labels_col = T, table_placement = "ht", latex_envs = c("center"),
-  booktabs = F, booktabs_cmalign = "l", caption = NULL,
-  caption_cmd = "\\\\caption", label = NULL, col_width = F,
-  pvalf_f = pvalf.default, pvalf_params = list(),
+  data_labels_show = T, cmp_labels_show = T, table_placement = "ht",
+  latex_envs = c("center"), booktabs = F, booktabs_cmalign = "l",
+  caption = NULL, caption_cmd = "\\\\caption", label = NULL,
+  col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
   scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot_scale = 6,
   scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
@@ -44,7 +44,9 @@ options are:
 show. It must be NULL or have the same length as the \code{data_show}
 parameter.}
 
-\item{data_labels_col}{Show the column containing the data labels?}
+\item{data_labels_show}{Show the column/row containing the data labels?}
+
+\item{cmp_labels_show}{Show the column/row containing the comparison labels?}
 
 \item{table_placement}{\code{LaTeX} table placement.}
 

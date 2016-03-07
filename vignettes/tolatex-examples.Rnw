@@ -26,14 +26,53 @@
 
 \maketitle
 
-<<table1, results = 'asis', warning = FALSE>>=
+
+
+<<micdata, results = 'asis', warning = FALSE>>=
 library(micompr)
 mic <- micomp(4, 0.8,
-             list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
-                  list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
-                  list(name = "NLOKvsJEXDIFF", grpout = pphpc_diff)),
+             list(list(name = "NLvsJOK", grpout = pphpc_ok),
+                  list(name = "NLvsJNS", grpout = pphpc_noshuff),
+                  list(name = "NLvsJDIF", grpout = pphpc_diff)),
              concat = TRUE)
-toLatex(mic)
+@
+
+\clearpage
+
+<<table1, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        caption = "Default table")
+@
+
+\clearpage
+
+<<table2, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        caption = "Booktabs", booktabs = T)
+@
+
+\clearpage
+
+<<table3, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        booktabs = T, cmp_labels_show = F,
+        caption = "No comparison label")
+@
+
+\clearpage
+
+<<table4, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        booktabs = T, data_labels_show = F,
+        caption = "No data label")
+@
+
+\clearpage
+
+<<table5, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        booktabs = T, cmp_labels_show = F, data_labels_show = F,
+        caption = "No data and comparison labels")
 @
 
 \end{document}
