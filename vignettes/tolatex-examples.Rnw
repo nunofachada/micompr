@@ -46,6 +46,14 @@ toLatex(mic,
 
 \clearpage
 
+<<table01t, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        orientation = F,
+        caption = "Default table, transposed.")
+@
+
+\clearpage
+
 <<table02, results = 'asis', warning = FALSE>>=
 toLatex(mic,
         caption = "Booktabs.", booktabs = T)

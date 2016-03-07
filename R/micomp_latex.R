@@ -608,15 +608,23 @@ toLatex.micomp <- function(
 
   # What type of table orientation?
   if (orientation) {
+    #
+    # Orientation: outputs along columns, data along rows
+    #
     tag_row <- tag_outputs
     tag_col <- tag_data
     ncol_or <- nout
+    nrow_or <- ndata
     labels_in_row <- paste(out_names, collapse = " & ", sep = "")
   } else {
+    #
+    # Orientation: outputs along rows, data along columns
+    #
     tag_row <- tag_data
     tag_col <- tag_outputs
     ncol_or <- ndata
-    labels_in_row <- dlabels_final
+    nrow_or <- nout
+    labels_in_row <- paste(dlabels_final, collapse = " & ", sep = "")
   }
 
   # Do we have a column with the comparison labels?
@@ -643,70 +651,69 @@ toLatex.micomp <- function(
     dlsep <- ""
   }
 
-  # What type of table orientation?
-  if (orientation) {
+  # Do we have either a comparison or data label column?
+  lsep <- if (labels_cmp_show || labels_col_show) {
+    " & "
+  } else {
+    ""
+  }
 
-    #
-    # Orientation: outputs along columns, data along rows
-    #
+  # Set tabular environment
+  ltxtab[[idx]] <-
+    pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", ncol_or)), "}")
+  idx <- idx + 1
 
-    # Do we have either a comparison or data label column?
-    lsep <- if (labels_cmp_show || labels_col_show) {
-      " & "
-    } else {
-      ""
-    }
+  # Add top line/rule
+  ltxtab[[idx]] <- hlines$top
+  idx <- idx + 1
 
-    # Set tabular environment
-    ltxtab[[idx]] <-
-      pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", ncol_or)), "}")
+  # Show output/data tag?
+  if (label_row_show) {
+
+    # Add comparison, data and outputs tags
+    ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
+                         "\\multicolumn{", ncol_or, "}{c}{",
+                         tag_row, "} \\\\")
     idx <- idx + 1
 
-    # Add top line/rule
-    ltxtab[[idx]] <- hlines$top
+    # Add intermediate line/rule
+    ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_col_show + labels_cmp_show,
+                         "-",
+                         labels_col_show + labels_cmp_show  + ncol_or, "}")
     idx <- idx + 1
 
-    # Show output/data tag?
-    if (label_row_show) {
+    # Add output names
+    ltxtab[[idx]] <- pst(clsep, dlsep, labels_in_row, "\\\\")
+    idx <- idx + 1
 
-      # Add comparison, data and outputs tags
-      ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                           "\\multicolumn{", ncol_or, "}{c}{",
-                           tag_row, "} \\\\")
+  } else {
+    # Do not show outputs tag, only output names
+
+    # Add comparison and data tags, and output names
+    ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
+                         paste(out_names, collapse = " & ", sep = ""), " \\\\")
+    idx <- idx + 1
+
+  }
+
+  # Cycle through comparisons
+  for (cmp in cmp_names) {
+
+    # Put a midrule
+    ltxtab[[idx]] <- hlines$mid
+    idx <- idx + 1
+
+    # Multi-row with comparison name
+    if (labels_cmp_show) {
+      ltxtab[[idx]] <- pst("\\multirow{", nrow_or, "}{*}{", cmp, "}")
       idx <- idx + 1
-
-      # Add intermediate line/rule
-      ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_col_show + labels_cmp_show,
-                           "-",
-                           labels_col_show + labels_cmp_show  + ncol_or, "}")
-      idx <- idx + 1
-
-      # Add output names
-      ltxtab[[idx]] <- pst(clsep, dlsep, labels_in_row, "\\\\")
-      idx <- idx + 1
-
-    } else {
-      # Do not show outputs tag, only output names
-
-      # Add comparison and data tags, and output names
-      ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                           paste(out_names, collapse = " & ", sep = ""), " \\\\")
-      idx <- idx + 1
-
     }
 
-    # Cycle through comparisons
-    for (cmp in cmp_names) {
-
-      # Put a midrule
-      ltxtab[[idx]] <- hlines$mid
-      idx <- idx + 1
-
-      # Multi-row with comparison name
-      if (labels_cmp_show) {
-        ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
-        idx <- idx + 1
-      }
+    # What type of table orientation?
+    if (orientation) {
+      #
+      # Orientation: outputs along columns, data along rows
+      #
 
       # Rows with comparison data
       for (dlbl in dlabels_final) {
@@ -733,16 +740,26 @@ toLatex.micomp <- function(
 
       }
 
+    } else {
+      #
+      # Orientation: outputs along rows, data along columns
+      #
+
+      # Rows with compared outputs
+      for (oname in out_names) {
+
+        # Current row
+        ltxtab[[idx]] <-
+            pst(clsep, oname, dlsep,
+                paste0(tabdata[, oname, cmp], collapse = " & "),
+                "\\\\")
+
+        # Next row
+        idx <- idx + 1
+
+      }
+
     }
-
-  } else {
-
-    #
-    # Orientation: outputs along rows, data along columns
-    #
-
-
-
   }
 
   # Set the bottom line
