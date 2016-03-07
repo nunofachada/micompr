@@ -6,12 +6,12 @@
 \usage{
 \method{toLatex}{micomp}(object, ..., orientation = T,
   data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
-  data_labels = NULL, labels_show_col = T, labels_show_cmp = T,
-  tag_comp = "Comp.", tag_data = "Data", tag_row = "Outputs",
-  tag_row_show = T, table_placement = "ht", latex_envs = c("center"),
-  booktabs = F, booktabs_cmalign = "l", caption = NULL,
-  caption_cmd = "\\\\caption", label = NULL, col_width = F,
-  pvalf_f = pvalf.default, pvalf_params = list(),
+  data_labels = NULL, labels_cmp_show = T, labels_col_show = T,
+  label_row_show = T, tag_comp = "Comp.", tag_data = "Data",
+  tag_outputs = "Outputs", table_placement = "ht",
+  latex_envs = c("center"), booktabs = F, booktabs_cmalign = "l",
+  caption = NULL, caption_cmd = "\\\\caption", label = NULL,
+  col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
   scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot_scale = 6,
   scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
@@ -50,22 +50,22 @@ options are:
 show. It must be NULL or have the same length as the \code{data_show}
 parameter.}
 
-\item{labels_show_col}{Show the column containing the data labels
+\item{labels_cmp_show}{Show the column containing the comparison labels?}
+
+\item{labels_col_show}{Show the column containing the data labels
 (\code{orientation == T}) or the output labels (\code{orientation == F})?}
 
-\item{labels_show_cmp}{Show the column containing the comparison labels?}
+\item{label_row_show}{Show the \code{tag_outputs} tag? If TRUE, the row
+identifier part will have two levels, the \code{tag_outputs} label and output
+names (\code{orientation == T}), or the \code{tag_data} and data labels
+(\code{orientation == F}). If FALSE only the output names or data labels are
+shown.}
 
 \item{tag_comp}{Tag identifying comparison labels.}
 
 \item{tag_data}{Tag identifying data labels.}
 
-\item{tag_row}{Tag identifying outputs (\code{orientation == T}) or data
-labels (\code{orientation == F}).}
-
-\item{tag_row_show}{Show the \code{tag_row} tag? If TRUE, the row
-identifier part will have two levels, the \code{tag_row} tag and the output
-names (\code{orientation == T}) / data labels (\code{orientation == F}). If
-FALSE only the output names / data labels are shown.}
+\item{tag_outputs}{Tag identifying outputs.}
 
 \item{table_placement}{\code{LaTeX} table placement.}
 

@@ -55,7 +55,7 @@ toLatex(mic,
 
 <<table03, results = 'asis', warning = FALSE>>=
 toLatex(mic,
-        booktabs = T, labels_show_cmp = F,
+        booktabs = T, labels_cmp_show = F,
         caption = "No comparison label.")
 @
 
@@ -63,7 +63,7 @@ toLatex(mic,
 
 <<table04, results = 'asis', warning = FALSE>>=
 toLatex(mic,
-        booktabs = T, labels_show_col = F,
+        booktabs = T, labels_col_show = F,
         caption = "No data label.")
 @
 
@@ -71,7 +71,7 @@ toLatex(mic,
 
 <<table05, results = 'asis', warning = FALSE>>=
 toLatex(mic,
-        booktabs = T, labels_show_cmp = F, labels_show_col = F,
+        booktabs = T, labels_cmp_show = F, labels_col_show = F,
         caption = "No data and comparison labels.")
 @
 
@@ -81,7 +81,7 @@ toLatex(mic,
 <<table06, results = 'asis', warning = FALSE>>=
 toLatex(mic,
         tag_comp = "Comparisons", tag_data = "What?",
-        tag_row = "Outs.",
+        tag_outputs = "Outs.",
         data_labels = c("No. PCs", "MANOVA", "$t$-test",
                         "Mann-Whitney", "PC1 vs PC2"),
         caption = "Alternative header tags and data labels.")
@@ -91,7 +91,7 @@ toLatex(mic,
 
 <<table07, results = 'asis', warning = FALSE>>=
 toLatex(mic,
-        tag_row_show = F,
+        label_row_show = F,
         caption = "Do not show outputs tag.")
 @
 
@@ -99,8 +99,8 @@ toLatex(mic,
 
 <<table08, results = 'asis', warning = FALSE>>=
 toLatex(mic,
-        booktabs = T, labels_show_cmp = F,
-        labels_show_col = F, tag_row_show = F,
+        booktabs = T, labels_cmp_show = F,
+        labels_col_show = F, label_row_show = F,
         caption = paste0("No data and comparison labels and ",
                          "no outputs tag, with booktabs."))
 @
@@ -123,7 +123,7 @@ toLatex(mic,
         data_show = c("parp-1", "parp-2", "sep",
                       "aparp-1", "aparp-2", "sep",
                       "varexp-1", "varexp-2"),
-        data_labels = c("$t$-test 1", "$t$-test 1", "sep",
+        data_labels = c("$t$-test 1", "$t$-test 2", "sep",
                       "$t$-test 1 (wb)", "$t$-test 2 (wb)", "sep",
                       "Var 1", "Var 2"),
         caption = paste0("Different types of data, booktabs, ",

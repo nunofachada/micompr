@@ -287,17 +287,17 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param data_labels Vector of strings specifying the labels of the data to
 #' show. It must be NULL or have the same length as the \code{data_show}
 #' parameter.
-#' @param labels_show_col Show the column containing the data labels
+#' @param labels_cmp_show Show the column containing the comparison labels?
+#' @param labels_col_show Show the column containing the data labels
 #' (\code{orientation == T}) or the output labels (\code{orientation == F})?
-#' @param labels_show_cmp Show the column containing the comparison labels?
+#' @param label_row_show Show the \code{tag_outputs} tag? If TRUE, the row
+#' identifier part will have two levels, the \code{tag_outputs} label and output
+#' names (\code{orientation == T}), or the \code{tag_data} and data labels
+#' (\code{orientation == F}). If FALSE only the output names or data labels are
+#' shown.
 #' @param tag_comp Tag identifying comparison labels.
 #' @param tag_data Tag identifying data labels.
-#' @param tag_row Tag identifying outputs (\code{orientation == T}) or data
-#' labels (\code{orientation == F}).
-#' @param tag_row_show Show the \code{tag_row} tag? If TRUE, the row
-#' identifier part will have two levels, the \code{tag_row} tag and the output
-#' names (\code{orientation == T}) / data labels (\code{orientation == F}). If
-#' FALSE only the output names / data labels are shown.
+#' @param tag_outputs Tag identifying outputs.
 #' @param table_placement \code{LaTeX} table placement.
 #' @param latex_envs Wrap table in the specified \code{LaTeX}
 #' environments.
@@ -348,12 +348,12 @@ toLatex.micomp <- function(
   orientation = T,
   data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
   data_labels = NULL,
-  labels_show_col = T,
-  labels_show_cmp = T,
+  labels_cmp_show = T,
+  labels_col_show = T,
+  label_row_show = T,
   tag_comp = "Comp.",
   tag_data = "Data",
-  tag_row = "Outputs",
-  tag_row_show = T,
+  tag_outputs = "Outputs",
   table_placement = "ht",
   latex_envs = c("center"),
   booktabs = F,
@@ -608,14 +608,27 @@ toLatex.micomp <- function(
 
 
   # Do we have a column with the comparison labels?
-  if (labels_show_cmp) {
+  if (labels_cmp_show) {
     clpos <- "c"
-    clheader <- pst("\\multirow{", 1 + tag_row_show, "}{*}{", tag_comp, "}")
+    clheader <- pst("\\multirow{", 1 + label_row_show, "}{*}{", tag_comp, "}")
     clsep <- " & "
   } else {
     clpos <- ""
     clheader <- ""
     clsep <- ""
+  }
+
+  # Do we have a column with the data labels (orientation == T) / output names
+  # (orientation == F)?
+  if (labels_col_show) {
+    dlpos <- "l"
+    dlheader <- pst(clsep,
+                    "\\multirow{", 1 + label_row_show, "}{*}{", tag_data, "}")
+    dlsep <- " & "
+  } else {
+    dlpos <- ""
+    dlheader <- ""
+    dlsep <- ""
   }
 
   # What type of table orientation?
@@ -625,20 +638,8 @@ toLatex.micomp <- function(
     # Orientation: outputs along columns, data along rows
     #
 
-    # Do we have a column with the data labels?
-    if (labels_show_col) {
-      dlpos <- "l"
-      dlheader <- pst(clsep,
-                      "\\multirow{", 1 + tag_row_show, "}{*}{", tag_data, "}")
-      dlsep <- " & "
-    } else {
-      dlpos <- ""
-      dlheader <- ""
-      dlsep <- ""
-    }
-
     # Do we have either a comparison or data label column?
-    lsep <- if (labels_show_cmp || labels_show_col) {
+    lsep <- if (labels_cmp_show || labels_col_show) {
       " & "
     } else {
       ""
@@ -654,16 +655,16 @@ toLatex.micomp <- function(
     idx <- idx + 1
 
     # Show output tag?
-    if (tag_row_show) {
+    if (label_row_show) {
 
       # Add comparison, data and outputs tags
       ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                           "\\multicolumn{", nout, "}{c}{", tag_row, "} \\\\")
+                           "\\multicolumn{", nout, "}{c}{", tag_outputs, "} \\\\")
       idx <- idx + 1
 
       # Add intermediate line/rule
-      ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_show_col + labels_show_cmp,
-                           "-", labels_show_col + labels_show_cmp  + nout, "}")
+      ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_col_show + labels_cmp_show,
+                           "-", labels_col_show + labels_cmp_show  + nout, "}")
       idx <- idx + 1
 
       # Add output names
@@ -690,7 +691,7 @@ toLatex.micomp <- function(
       idx <- idx + 1
 
       # Multi-row with comparison name
-      if (labels_show_cmp) {
+      if (labels_cmp_show) {
         ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
         idx <- idx + 1
       }
@@ -702,10 +703,10 @@ toLatex.micomp <- function(
 
         ltxtab[[idx]] <-
           if (dlbl == "sep") {
-            pst(hlines$c, "{", labels_show_col + labels_show_cmp, "-",
-                labels_show_col + labels_show_cmp  + nout, "}")
+            pst(hlines$c, "{", labels_col_show + labels_cmp_show, "-",
+                labels_col_show + labels_cmp_show  + nout, "}")
           } else {
-            if (labels_show_col) {
+            if (labels_col_show) {
               dlbl_f <- dlbl
             } else {
               dlbl_f <- ""
