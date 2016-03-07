@@ -1,5 +1,3 @@
-- toLatex.micomp:
-  * Two-level outputs header optional
-  * Optionally place outputs along rows and data labels in header, along columns
+- toLatex.micomp: Optionally place outputs along rows and data labels in header, along columns
 - Add tests to multivarexp changes: cmpoutput, micomp, toLatex, centerscale
 - Package level doc, method for doc and for README.md

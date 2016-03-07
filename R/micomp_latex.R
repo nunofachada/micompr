@@ -289,6 +289,9 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param tag_comp Tag identifying comparison labels.
 #' @param tag_data Tag identifying data labels.
 #' @param tag_outputs Tag identifying outputs.
+#' @param tag_outputs_show Show the \code{tag_outputs} tag? If TRUE, the output
+#' identifier part will have two levels, the \code{tag_outputs} tag and the
+#' output names themselves. If FALSE only the output names are shown.
 #' @param table_placement \code{LaTeX} table placement.
 #' @param latex_envs Wrap table in the specified \code{LaTeX}
 #' environments.
@@ -343,6 +346,7 @@ toLatex.micomp <- function(
   tag_comp = "Comp.",
   tag_data = "Data",
   tag_outputs = "Outputs",
+  tag_outputs_show = T,
   table_placement = "ht",
   latex_envs = c("center"),
   booktabs = F,
@@ -444,25 +448,25 @@ toLatex.micomp <- function(
                mnvp = pst("MNV (", 100 * ve[cdata_arg], "\\% var.)"),
 
                # Parametric p-values (raw)
-               parp = pst("Par. test (PC", cdata_arg, ") "),
+               parp = pst("Par. test (PC", cdata_arg, ")"),
 
                # Non-parametric p-values (raw)
-               nparp = pst("Non-par. test (PC", cdata_arg, ") "),
+               nparp = pst("Non-par. test (PC", cdata_arg, ")"),
 
                # Parametric p-values (adjusted)
-               aparp = pst("Par. test* (PC", cdata_arg, ") "),
+               aparp = pst("Par. test* (PC", cdata_arg, ")"),
 
                # Non-parametric p-values (adjusted)
-               anparp = pst("Non-par. test* (PC", cdata_arg, ") "),
+               anparp = pst("Non-par. test* (PC", cdata_arg, ")"),
 
                # Percentage of explained variance
-               varexp = pst("\\% var. (PC", cdata_arg, ") "),
+               varexp = pst("\\% var. (PC", cdata_arg, ")"),
 
                # Score plot
                scoreplot = "PCS ",
 
                # Separator
-               sep = "")
+               sep = "sep")
     }
   }
 
@@ -598,7 +602,7 @@ toLatex.micomp <- function(
   # Do we have a column with the comparison labels?
   if (labels_show_cmp) {
     clpos <- "c"
-    clheader <- pst("\\multirow{2}{*}{", tag_comp, "}")
+    clheader <- pst("\\multirow{", 1 + tag_outputs_show, "}{*}{", tag_comp, "}")
     clsep <- " & "
   } else {
     clpos <- ""
@@ -609,7 +613,8 @@ toLatex.micomp <- function(
   # Do we have a column with the data labels?
   if (labels_show_data) {
     dlpos <- "l"
-    dlheader <- pst(clsep, "\\multirow{2}{*}{", tag_data, "}")
+    dlheader <- pst(clsep,
+                    "\\multirow{", 1 + tag_outputs_show, "}{*}{", tag_data, "}")
     dlsep <- " & "
   } else {
     dlpos <- ""
@@ -633,21 +638,34 @@ toLatex.micomp <- function(
   ltxtab[[idx]] <- hlines$top
   idx <- idx + 1
 
-  # Add header
-  ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                       "\\multicolumn{", nout, "}{c}{", tag_outputs, "} \\\\")
-  idx <- idx + 1
+  # Show output tag?
+  if (tag_outputs_show) {
 
-  # Add intermediate line/rule
-  ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_show_data + labels_show_cmp,
-                       "-", labels_show_data + labels_show_cmp  + nout, "}")
-  idx <- idx + 1
+    # Add comparison, data and outputs tags
+    ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
+                         "\\multicolumn{", nout, "}{c}{", tag_outputs, "} \\\\")
+    idx <- idx + 1
 
-  # Add output names
-  ltxtab[[idx]] <- pst(clsep, dlsep, paste(rownames(object), collapse = " & ",
-                                           sep = ""),
-                       "\\\\")
-  idx <- idx + 1
+    # Add intermediate line/rule
+    ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_show_data + labels_show_cmp,
+                         "-", labels_show_data + labels_show_cmp  + nout, "}")
+    idx <- idx + 1
+
+    # Add output names
+    ltxtab[[idx]] <- pst(clsep, dlsep, paste(out_names, collapse = " & ",
+                                             sep = ""),
+                         "\\\\")
+    idx <- idx + 1
+
+  } else {
+    # Do not show outputs tag, only output names
+
+    # Add comparison and data tags, and output names
+    ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
+                         paste(out_names, collapse = " & ", sep = ""), " \\\\")
+    idx <- idx + 1
+
+  }
 
   # Cycle through comparisons
   for (cmp in cmp_names) {

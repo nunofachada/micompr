@@ -7,10 +7,11 @@
 \method{toLatex}{micomp}(object, ..., data_show = c("npcs-1", "mnvp-1",
   "parp-1", "nparp-1", "scoreplot"), data_labels = NULL,
   labels_show_data = T, labels_show_cmp = T, tag_comp = "Comp.",
-  tag_data = "Data", tag_outputs = "Outputs", table_placement = "ht",
-  latex_envs = c("center"), booktabs = F, booktabs_cmalign = "l",
-  caption = NULL, caption_cmd = "\\\\caption", label = NULL,
-  col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
+  tag_data = "Data", tag_outputs = "Outputs", tag_outputs_show = T,
+  table_placement = "ht", latex_envs = c("center"), booktabs = F,
+  booktabs_cmalign = "l", caption = NULL, caption_cmd = "\\\\caption",
+  label = NULL, col_width = F, pvalf_f = pvalf.default,
+  pvalf_params = list(),
   scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot_scale = 6,
   scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
@@ -54,6 +55,10 @@ parameter.}
 \item{tag_data}{Tag identifying data labels.}
 
 \item{tag_outputs}{Tag identifying outputs.}
+
+\item{tag_outputs_show}{Show the \code{tag_outputs} tag? If TRUE, the output
+identifier part will have two levels, the \code{tag_outputs} tag and the
+output names themselves. If FALSE only the output names are shown.}
 
 \item{table_placement}{\code{LaTeX} table placement.}
 
