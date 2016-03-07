@@ -606,6 +606,18 @@ toLatex.micomp <- function(
     idx <- idx + 1
   }
 
+  # What type of table orientation?
+  if (orientation) {
+    tag_row <- tag_outputs
+    tag_col <- tag_data
+    ncol_or <- nout
+    labels_in_row <- paste(out_names, collapse = " & ", sep = "")
+  } else {
+    tag_row <- tag_data
+    tag_col <- tag_outputs
+    ncol_or <- ndata
+    labels_in_row <- dlabels_final
+  }
 
   # Do we have a column with the comparison labels?
   if (labels_cmp_show) {
@@ -623,7 +635,7 @@ toLatex.micomp <- function(
   if (labels_col_show) {
     dlpos <- "l"
     dlheader <- pst(clsep,
-                    "\\multirow{", 1 + label_row_show, "}{*}{", tag_data, "}")
+                    "\\multirow{", 1 + label_row_show, "}{*}{", tag_col, "}")
     dlsep <- " & "
   } else {
     dlpos <- ""
@@ -647,30 +659,30 @@ toLatex.micomp <- function(
 
     # Set tabular environment
     ltxtab[[idx]] <-
-      pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", nout)), "}")
+      pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", ncol_or)), "}")
     idx <- idx + 1
 
     # Add top line/rule
     ltxtab[[idx]] <- hlines$top
     idx <- idx + 1
 
-    # Show output tag?
+    # Show output/data tag?
     if (label_row_show) {
 
       # Add comparison, data and outputs tags
       ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                           "\\multicolumn{", nout, "}{c}{", tag_outputs, "} \\\\")
+                           "\\multicolumn{", ncol_or, "}{c}{",
+                           tag_row, "} \\\\")
       idx <- idx + 1
 
       # Add intermediate line/rule
       ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_col_show + labels_cmp_show,
-                           "-", labels_col_show + labels_cmp_show  + nout, "}")
+                           "-",
+                           labels_col_show + labels_cmp_show  + ncol_or, "}")
       idx <- idx + 1
 
       # Add output names
-      ltxtab[[idx]] <- pst(clsep, dlsep, paste(out_names, collapse = " & ",
-                                               sep = ""),
-                           "\\\\")
+      ltxtab[[idx]] <- pst(clsep, dlsep, labels_in_row, "\\\\")
       idx <- idx + 1
 
     } else {
