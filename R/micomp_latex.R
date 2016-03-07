@@ -262,6 +262,9 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'
 #' @param object A \code{\link{micomp}} object.
 #' @param ... Currently ignored.
+#' @param orientation If TRUE, outputs are placed along columns, while data is
+#' placed along rows. If FALSE, outputs are placed along rows, while data is
+#' placed along columns.
 #' @param data_show Vector of strings specifying what data to show. Available
 #' options are:
 #' \describe{
@@ -284,14 +287,17 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' @param data_labels Vector of strings specifying the labels of the data to
 #' show. It must be NULL or have the same length as the \code{data_show}
 #' parameter.
-#' @param labels_show_data Show the column/row containing the data labels?
-#' @param labels_show_cmp Show the column/row containing the comparison labels?
+#' @param labels_show_col Show the column containing the data labels
+#' (\code{orientation == T}) or the output labels (\code{orientation == F})?
+#' @param labels_show_cmp Show the column containing the comparison labels?
 #' @param tag_comp Tag identifying comparison labels.
 #' @param tag_data Tag identifying data labels.
-#' @param tag_outputs Tag identifying outputs.
-#' @param tag_outputs_show Show the \code{tag_outputs} tag? If TRUE, the output
-#' identifier part will have two levels, the \code{tag_outputs} tag and the
-#' output names themselves. If FALSE only the output names are shown.
+#' @param tag_row Tag identifying outputs (\code{orientation == T}) or data
+#' labels (\code{orientation == F}).
+#' @param tag_row_show Show the \code{tag_row} tag? If TRUE, the row
+#' identifier part will have two levels, the \code{tag_row} tag and the output
+#' names (\code{orientation == T}) / data labels (\code{orientation == F}). If
+#' FALSE only the output names / data labels are shown.
 #' @param table_placement \code{LaTeX} table placement.
 #' @param latex_envs Wrap table in the specified \code{LaTeX}
 #' environments.
@@ -339,14 +345,15 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 toLatex.micomp <- function(
   object,
   ...,
+  orientation = T,
   data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
   data_labels = NULL,
-  labels_show_data = T,
+  labels_show_col = T,
   labels_show_cmp = T,
   tag_comp = "Comp.",
   tag_data = "Data",
-  tag_outputs = "Outputs",
-  tag_outputs_show = T,
+  tag_row = "Outputs",
+  tag_row_show = T,
   table_placement = "ht",
   latex_envs = c("center"),
   booktabs = F,
@@ -599,10 +606,11 @@ toLatex.micomp <- function(
     idx <- idx + 1
   }
 
+
   # Do we have a column with the comparison labels?
   if (labels_show_cmp) {
     clpos <- "c"
-    clheader <- pst("\\multirow{", 1 + tag_outputs_show, "}{*}{", tag_comp, "}")
+    clheader <- pst("\\multirow{", 1 + tag_row_show, "}{*}{", tag_comp, "}")
     clsep <- " & "
   } else {
     clpos <- ""
@@ -610,100 +618,117 @@ toLatex.micomp <- function(
     clsep <- ""
   }
 
-  # Do we have a column with the data labels?
-  if (labels_show_data) {
-    dlpos <- "l"
-    dlheader <- pst(clsep,
-                    "\\multirow{", 1 + tag_outputs_show, "}{*}{", tag_data, "}")
-    dlsep <- " & "
-  } else {
-    dlpos <- ""
-    dlheader <- ""
-    dlsep <- ""
-  }
+  # What type of table orientation?
+  if (orientation) {
 
-  # Do we have either a comparison or data label column?
-  lsep <- if (labels_show_cmp || labels_show_data) {
-    " & "
-  } else {
-    ""
-  }
+    #
+    # Orientation: outputs along columns, data along rows
+    #
 
-  # Set tabular environment
-  ltxtab[[idx]] <-
-    pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", nout)), "}")
-  idx <- idx + 1
-
-  # Add top line/rule
-  ltxtab[[idx]] <- hlines$top
-  idx <- idx + 1
-
-  # Show output tag?
-  if (tag_outputs_show) {
-
-    # Add comparison, data and outputs tags
-    ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                         "\\multicolumn{", nout, "}{c}{", tag_outputs, "} \\\\")
-    idx <- idx + 1
-
-    # Add intermediate line/rule
-    ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_show_data + labels_show_cmp,
-                         "-", labels_show_data + labels_show_cmp  + nout, "}")
-    idx <- idx + 1
-
-    # Add output names
-    ltxtab[[idx]] <- pst(clsep, dlsep, paste(out_names, collapse = " & ",
-                                             sep = ""),
-                         "\\\\")
-    idx <- idx + 1
-
-  } else {
-    # Do not show outputs tag, only output names
-
-    # Add comparison and data tags, and output names
-    ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                         paste(out_names, collapse = " & ", sep = ""), " \\\\")
-    idx <- idx + 1
-
-  }
-
-  # Cycle through comparisons
-  for (cmp in cmp_names) {
-
-    # Put a midrule
-    ltxtab[[idx]] <- hlines$mid
-    idx <- idx + 1
-
-    # Multi-row with comparison name
-    if (labels_show_cmp) {
-      ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
-      idx <- idx + 1
+    # Do we have a column with the data labels?
+    if (labels_show_col) {
+      dlpos <- "l"
+      dlheader <- pst(clsep,
+                      "\\multirow{", 1 + tag_row_show, "}{*}{", tag_data, "}")
+      dlsep <- " & "
+    } else {
+      dlpos <- ""
+      dlheader <- ""
+      dlsep <- ""
     }
 
-    # Rows with comparison data
-    for (dlbl in dlabels_final) {
+    # Do we have either a comparison or data label column?
+    lsep <- if (labels_show_cmp || labels_show_col) {
+      " & "
+    } else {
+      ""
+    }
 
-      # Current row
+    # Set tabular environment
+    ltxtab[[idx]] <-
+      pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", nout)), "}")
+    idx <- idx + 1
 
-      ltxtab[[idx]] <-
-        if (dlbl == "sep") {
-          pst(hlines$c, "{", labels_show_data + labels_show_cmp, "-",
-              labels_show_data + labels_show_cmp  + nout, "}")
-        } else {
-          if (labels_show_data) {
-            dlbl_f <- dlbl
+    # Add top line/rule
+    ltxtab[[idx]] <- hlines$top
+    idx <- idx + 1
+
+    # Show output tag?
+    if (tag_row_show) {
+
+      # Add comparison, data and outputs tags
+      ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
+                           "\\multicolumn{", nout, "}{c}{", tag_row, "} \\\\")
+      idx <- idx + 1
+
+      # Add intermediate line/rule
+      ltxtab[[idx]] <- pst(hlines$c, "{", 1 + labels_show_col + labels_show_cmp,
+                           "-", labels_show_col + labels_show_cmp  + nout, "}")
+      idx <- idx + 1
+
+      # Add output names
+      ltxtab[[idx]] <- pst(clsep, dlsep, paste(out_names, collapse = " & ",
+                                               sep = ""),
+                           "\\\\")
+      idx <- idx + 1
+
+    } else {
+      # Do not show outputs tag, only output names
+
+      # Add comparison and data tags, and output names
+      ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
+                           paste(out_names, collapse = " & ", sep = ""), " \\\\")
+      idx <- idx + 1
+
+    }
+
+    # Cycle through comparisons
+    for (cmp in cmp_names) {
+
+      # Put a midrule
+      ltxtab[[idx]] <- hlines$mid
+      idx <- idx + 1
+
+      # Multi-row with comparison name
+      if (labels_show_cmp) {
+        ltxtab[[idx]] <- pst("\\multirow{", ndata,"}{*}{", cmp, "}")
+        idx <- idx + 1
+      }
+
+      # Rows with comparison data
+      for (dlbl in dlabels_final) {
+
+        # Current row
+
+        ltxtab[[idx]] <-
+          if (dlbl == "sep") {
+            pst(hlines$c, "{", labels_show_col + labels_show_cmp, "-",
+                labels_show_col + labels_show_cmp  + nout, "}")
           } else {
-            dlbl_f <- ""
+            if (labels_show_col) {
+              dlbl_f <- dlbl
+            } else {
+              dlbl_f <- ""
+            }
+            pst(clsep, dlbl_f, dlsep,
+                paste0(tabdata[dlbl, , cmp], collapse = " & "),
+                "\\\\")
           }
-          pst(clsep, dlbl_f, dlsep,
-              paste0(tabdata[dlbl, , cmp], collapse = " & "),
-              "\\\\")
-        }
 
-      # Next row
-      idx <- idx + 1
+        # Next row
+        idx <- idx + 1
+
+      }
 
     }
+
+  } else {
+
+    #
+    # Orientation: outputs along rows, data along columns
+    #
+
+
 
   }
 

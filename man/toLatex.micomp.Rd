@@ -4,14 +4,14 @@
 \alias{toLatex.micomp}
 \title{Convert \code{micomp} object to \code{LaTeX} table.}
 \usage{
-\method{toLatex}{micomp}(object, ..., data_show = c("npcs-1", "mnvp-1",
-  "parp-1", "nparp-1", "scoreplot"), data_labels = NULL,
-  labels_show_data = T, labels_show_cmp = T, tag_comp = "Comp.",
-  tag_data = "Data", tag_outputs = "Outputs", tag_outputs_show = T,
-  table_placement = "ht", latex_envs = c("center"), booktabs = F,
-  booktabs_cmalign = "l", caption = NULL, caption_cmd = "\\\\caption",
-  label = NULL, col_width = F, pvalf_f = pvalf.default,
-  pvalf_params = list(),
+\method{toLatex}{micomp}(object, ..., orientation = T,
+  data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
+  data_labels = NULL, labels_show_col = T, labels_show_cmp = T,
+  tag_comp = "Comp.", tag_data = "Data", tag_row = "Outputs",
+  tag_row_show = T, table_placement = "ht", latex_envs = c("center"),
+  booktabs = F, booktabs_cmalign = "l", caption = NULL,
+  caption_cmd = "\\\\caption", label = NULL, col_width = F,
+  pvalf_f = pvalf.default, pvalf_params = list(),
   scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
   "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot_scale = 6,
   scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
@@ -21,6 +21,10 @@
 \item{object}{A \code{\link{micomp}} object.}
 
 \item{...}{Currently ignored.}
+
+\item{orientation}{If TRUE, outputs are placed along columns, while data is
+placed along rows. If FALSE, outputs are placed along rows, while data is
+placed along columns.}
 
 \item{data_show}{Vector of strings specifying what data to show. Available
 options are:
@@ -46,19 +50,22 @@ options are:
 show. It must be NULL or have the same length as the \code{data_show}
 parameter.}
 
-\item{labels_show_data}{Show the column/row containing the data labels?}
+\item{labels_show_col}{Show the column containing the data labels
+(\code{orientation == T}) or the output labels (\code{orientation == F})?}
 
-\item{labels_show_cmp}{Show the column/row containing the comparison labels?}
+\item{labels_show_cmp}{Show the column containing the comparison labels?}
 
 \item{tag_comp}{Tag identifying comparison labels.}
 
 \item{tag_data}{Tag identifying data labels.}
 
-\item{tag_outputs}{Tag identifying outputs.}
+\item{tag_row}{Tag identifying outputs (\code{orientation == T}) or data
+labels (\code{orientation == F}).}
 
-\item{tag_outputs_show}{Show the \code{tag_outputs} tag? If TRUE, the output
-identifier part will have two levels, the \code{tag_outputs} tag and the
-output names themselves. If FALSE only the output names are shown.}
+\item{tag_row_show}{Show the \code{tag_row} tag? If TRUE, the row
+identifier part will have two levels, the \code{tag_row} tag and the output
+names (\code{orientation == T}) / data labels (\code{orientation == F}). If
+FALSE only the output names / data labels are shown.}
 
 \item{table_placement}{\code{LaTeX} table placement.}
 
