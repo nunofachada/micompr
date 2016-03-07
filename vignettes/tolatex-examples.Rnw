@@ -75,5 +75,16 @@ toLatex(mic,
         caption = "No data and comparison labels")
 @
 
+
+\clearpage
+
+<<table6, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        tag_comp = "Comparisons", tag_data = "What?", tag_outputs = "Outs.",
+        data_labels = c("No. PCs", "MANOVA", "$t$-test",
+                        "Mann-Whitney", "PC1 vs PC2"),
+        caption = "Alternative header tags and data labels")
+@
+
 \end{document}
 

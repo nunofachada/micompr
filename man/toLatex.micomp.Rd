@@ -6,7 +6,8 @@
 \usage{
 \method{toLatex}{micomp}(object, ..., data_show = c("npcs-1", "mnvp-1",
   "parp-1", "nparp-1", "scoreplot"), data_labels = NULL,
-  data_labels_show = T, cmp_labels_show = T, table_placement = "ht",
+  labels_show_data = T, labels_show_cmp = T, tag_comp = "Comp.",
+  tag_data = "Data", tag_outputs = "Outputs", table_placement = "ht",
   latex_envs = c("center"), booktabs = F, booktabs_cmalign = "l",
   caption = NULL, caption_cmd = "\\\\caption", label = NULL,
   col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
@@ -44,9 +45,15 @@ options are:
 show. It must be NULL or have the same length as the \code{data_show}
 parameter.}
 
-\item{data_labels_show}{Show the column/row containing the data labels?}
+\item{labels_show_data}{Show the column/row containing the data labels?}
 
-\item{cmp_labels_show}{Show the column/row containing the comparison labels?}
+\item{labels_show_cmp}{Show the column/row containing the comparison labels?}
+
+\item{tag_comp}{Tag identifying comparison labels.}
+
+\item{tag_data}{Tag identifying data labels.}
+
+\item{tag_outputs}{Tag identifying outputs.}
 
 \item{table_placement}{\code{LaTeX} table placement.}
 
