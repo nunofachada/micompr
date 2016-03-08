@@ -376,11 +376,14 @@ toLatex.micomp <- function(
   # Obtain basic useful data #
   # ######################## #
 
-  # How many "lines" each comparison will have, including separators
-  ndata_raw <- length(data_show)
+  # Data to show, without separators
+  data_show_nosep <- data_show[data_show != "sep"]
 
   # How many "lines" each comparison will have, not including separators
-  ndata <- sum(data_show != "sep")
+  ndata <- length(data_show_nosep)
+
+  # Indexes of separators
+  sep_idxs <- which(data_show == "sep")
 
   # Output names
   out_names <- rownames(object)
@@ -402,10 +405,10 @@ toLatex.micomp <- function(
   # ########################### #
 
   # Allocate empty final data labels vector
-  dlabels_final <- vector(mode = "character", length = ndata_raw)
+  dlabels_final <- vector(mode = "character", length = ndata)
 
-  # Cycle through data to show
-  for (i in 1:length(data_show)) {
+  # Cycle through data labels
+  for (i in 1:ndata) {
 
     # Try to use user-specified label, if a valid one was given
 
@@ -419,7 +422,7 @@ toLatex.micomp <- function(
         if (!is.na(data_labels[i]) && is.character(data_labels[i])) {
 
           # Use user-specified label
-          dlabels_final[i] <- data_labels[i];
+          dlabels_final[i] <- data_labels[i]
         }
       }
     }
@@ -428,7 +431,7 @@ toLatex.micomp <- function(
     if (dlabels_final[i] == "") {
 
       # Data to show in current row
-      cdata <- data_show[i]
+      cdata <- data_show_nosep[i]
 
       # Split field name
       cdata_split <- unlist(strsplit(cdata, "-"))
@@ -472,8 +475,8 @@ toLatex.micomp <- function(
                # Score plot
                scoreplot = "PCS ",
 
-               # Separator
-               sep = "sep")
+               # Default, throw error
+               stop(pst("Unknown data type '", cdata_cmd, "'")))
     }
   }
 
@@ -482,7 +485,7 @@ toLatex.micomp <- function(
   # ################################## #
 
   # Create table data array
-  tabdata <- array(dim = c(ndata_raw, nout, ncmp),
+  tabdata <- array(dim = c(ndata, nout, ncmp),
                    dimnames = list(
                      dlabels_final, out_names, cmp_names))
 
@@ -496,10 +499,10 @@ toLatex.micomp <- function(
     micmp <- object[, cmp]
 
     # Rows with comparison data
-    for (didx in 1:length(data_show)) {
+    for (didx in 1:length(data_show_nosep)) {
 
       # Data to show in current row
-      cdata <- data_show[didx]
+      cdata <- data_show_nosep[didx]
 
       # Split field name
       cdata_split <- unlist(strsplit(cdata, "-"))
@@ -569,8 +572,8 @@ toLatex.micomp <- function(
                                        scoreplot_before,
                                        scoreplot_after),
 
-               # Separator
-               sep = "")
+               # Default, throw error
+               stop(pst("Unknown data type '", cdata_cmd, "'")))
 
     }
 
@@ -658,9 +661,19 @@ toLatex.micomp <- function(
     ""
   }
 
+  # Alignmnet of output/data columns
+  col_align <- rep("r", ncol_or)
+
+  # If orientation = F (i.e. data along columns) we may have separators
+  if (!orientation) {
+    for (sidx in sep_idxs) {
+      col_align <- append(col_align, "|", after = sidx - 1)
+    }
+  }
+
   # Set tabular environment
   ltxtab[[idx]] <-
-    pst("\\begin{tabular}{", clpos, dlpos, pst(rep("r", ncol_or)), "}")
+    pst("\\begin{tabular}{", clpos, dlpos, pst(col_align), "}")
   idx <- idx + 1
 
   # Add top line/rule
@@ -716,27 +729,39 @@ toLatex.micomp <- function(
       # Orientation: outputs along columns, data along rows
       #
 
+      # Aux. variable for separator insertion
+      isep <- 0
+
       # Rows with comparison data
       for (dlbl in dlabels_final) {
 
-        # Current row
+        # Insert a separator?
+        isep <- isep + 1
+        if (any(isep == sep_idxs)) {
+          # Yes, insert a separator
 
-        ltxtab[[idx]] <-
-          if (dlbl == "sep") {
-            pst(hlines$c, "{", labels_col_show + labels_cmp_show, "-",
-                labels_col_show + labels_cmp_show  + nout, "}")
-          } else {
-            if (labels_col_show) {
-              dlbl_f <- dlbl
-            } else {
-              dlbl_f <- ""
-            }
-            pst(clsep, dlbl_f, dlsep,
-                paste0(tabdata[dlbl, , cmp], collapse = " & "),
-                "\\\\")
-          }
+          # Increment aux. variable
+          isep <- isep + 1
 
-        # Next row
+          # Insert separator
+          ltxtab[[idx]] <- pst(hlines$c, "{",
+                               labels_col_show + labels_cmp_show, "-",
+                               labels_col_show + labels_cmp_show  + nout, "}")
+          idx <- idx + 1
+        }
+
+        # Insert a data label?
+        if (labels_col_show) {
+          dlbl_f <- dlbl
+        } else {
+          dlbl_f <- ""
+        }
+
+        # Add data row
+        ltxtab[[idx]] <- pst(clsep, dlbl_f, dlsep,
+                             paste0(tabdata[dlbl, , cmp], collapse = " & "),
+                             "\\\\")
+
         idx <- idx + 1
 
       }

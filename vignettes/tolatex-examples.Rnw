@@ -123,8 +123,8 @@ toLatex(mic,
         data_show = c("parp-1", "parp-2", "sep",
                       "aparp-1", "aparp-2", "sep",
                       "varexp-1", "varexp-2"),
-        data_labels = c("$t$-test 1", "$t$-test 2", "sep",
-                      "$t$-test 1 (wb)", "$t$-test 2 (wb)", "sep",
+        data_labels = c("$t$-test 1", "$t$-test 2",
+                      "$t$-test 1 (wb)", "$t$-test 2 (wb)",
                       "Var 1", "Var 2"),
         caption = paste0("Different types of data, booktabs, ",
                          "custom data labels."))
@@ -169,6 +169,23 @@ toLatex(mic,
         caption = paste0("Transposed table: without score ",
                          "plots, with booktabs, custom ",
                          "p-value parameters."))
+@
+
+\clearpage
+
+<<table14, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        orientation = F,
+        booktabs = T,
+        data_show = c("parp-1", "parp-2", "sep",
+                      "aparp-1", "aparp-2", "sep",
+                      "varexp-1", "varexp-2"),
+        data_labels = c("$t_1$", "$t_2$",
+                      "$t_1\\ast$", "$t_2\\ast$",
+                      "$V_1$", "$V_2$"),
+        caption = paste0("Transposed table, different types ",
+                         "of data, booktabs, ",
+                         "custom data labels."))
 @
 
 \end{document}
