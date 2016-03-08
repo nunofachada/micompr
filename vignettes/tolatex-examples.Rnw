@@ -46,14 +46,6 @@ toLatex(mic,
 
 \clearpage
 
-<<table01t, results = 'asis', warning = FALSE>>=
-toLatex(mic,
-        orientation = F,
-        caption = "Default table, transposed.")
-@
-
-\clearpage
-
 <<table02, results = 'asis', warning = FALSE>>=
 toLatex(mic,
         caption = "Booktabs.", booktabs = T)
@@ -136,6 +128,47 @@ toLatex(mic,
                       "Var 1", "Var 2"),
         caption = paste0("Different types of data, booktabs, ",
                          "custom data labels."))
+@
+
+\clearpage
+
+<<table11, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        orientation = F,
+        data_labels = c("NoPCs", "MNV", "$t$", "MW", NA),
+        scoreplot_before =
+          "\\raisebox{-.5\\height}{\\resizebox {0.7cm} {0.7cm} {",
+        caption = paste0("Transposed table with score plots and ",
+                         "NA in one of the data labels (such ",
+                         "that a default should be used)."))
+@
+
+\clearpage
+
+<<table12, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        orientation = F,
+        booktabs = T,
+        data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1"),
+        data_labels = c("NoPCs", "MNV", "$t$", "MW"),
+        caption = paste0("Transposed table, without score ",
+                         "plots, with booktabs."))
+@
+
+\clearpage
+
+<<table13, results = 'asis', warning = FALSE>>=
+toLatex(mic,
+        orientation = F,
+        booktabs = T,
+        pvalf_params = list(minval = 1e-6, na_str = "$\\times$"),
+        data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1"),
+        data_labels = c("NoPCs", "MNV", "$t$", "MW"),
+        labels_cmp_show = F, labels_col_show = F,
+        label_row_show = F,
+        caption = paste0("Transposed table: without score ",
+                         "plots, with booktabs, custom ",
+                         "p-value parameters."))
 @
 
 \end{document}

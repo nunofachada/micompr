@@ -47,8 +47,8 @@ options are:
 }}
 
 \item{data_labels}{Vector of strings specifying the labels of the data to
-show. It must be NULL or have the same length as the \code{data_show}
-parameter.}
+show. If NULL, default labels are used for all elements. If individual
+elements are set to NA, default labels will be used for those elements.}
 
 \item{labels_cmp_show}{Show the column containing the comparison labels?}
 

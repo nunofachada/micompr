@@ -285,8 +285,8 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #'   \item{sep}{Place a separator (e.g. midrule) between data.}
 #' }
 #' @param data_labels Vector of strings specifying the labels of the data to
-#' show. It must be NULL or have the same length as the \code{data_show}
-#' parameter.
+#' show. If NULL, default labels are used for all elements. If individual
+#' elements are set to NA, default labels will be used for those elements.
 #' @param labels_cmp_show Show the column containing the comparison labels?
 #' @param labels_col_show Show the column containing the data labels
 #' (\code{orientation == T}) or the output labels (\code{orientation == F})?
@@ -691,7 +691,8 @@ toLatex.micomp <- function(
 
     # Add comparison and data tags, and output names
     ltxtab[[idx]] <- pst(clheader, dlheader, lsep,
-                         paste(out_names, collapse = " & ", sep = ""), " \\\\")
+                         paste(labels_in_row, collapse = " & ", sep = ""),
+                         " \\\\")
     idx <- idx + 1
 
   }
@@ -748,9 +749,15 @@ toLatex.micomp <- function(
       # Rows with compared outputs
       for (oname in out_names) {
 
+        if (labels_col_show) {
+          oname_f <- oname
+        } else {
+          oname_f <- ""
+        }
+
         # Current row
         ltxtab[[idx]] <-
-            pst(clsep, oname, dlsep,
+            pst(clsep, oname_f, dlsep,
                 paste0(tabdata[, oname, cmp], collapse = " & "),
                 "\\\\")
 
