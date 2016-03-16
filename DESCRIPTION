@@ -20,3 +20,4 @@ URL: http://github.com/fakenmc/micompr
 BugReports: https://github.com/fakenmc/micompr/issues
 LazyData: true
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1
