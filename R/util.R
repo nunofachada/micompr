@@ -46,7 +46,7 @@ plotcols <- function() {
 #'
 #' @param v Vector to center and scale.
 #' @param type Type of scaling: "center", "auto", "range", "iqrange", "vast",
-#' "pareto" or "level".
+#' "pareto", "level" or "none".
 #'
 #' @return Center and scaled vector using the specified method.
 #'
@@ -89,6 +89,9 @@ plotcols <- function() {
 #' # [1] -2.5193370 -0.9544199 -0.9392265  6.5966851 -0.8480663 -0.6201657
 #' # [7] -1.1215470 -1.5013812  3.8770718 -1.0000000 -0.9696133
 #'
+#' centerscale(v, "none")
+#' # [1] -100    3    4  500   10   25   -8  -33  321    0    2
+#'
 centerscale <- function(v, type) {
   switch(type,
          center = v - mean(v),
@@ -98,5 +101,6 @@ centerscale <- function(v, type) {
          iqrange = (v - mean(v)) / IQR(v, type = 5),
          vast = (v - mean(v)) * mean(v) / var(v),
          pareto = (v - mean(v)) / sqrt(sd(v)),
-         level = (v - mean(v)) / mean(v))
+         level = (v - mean(v)) / mean(v),
+         none = v)
 }

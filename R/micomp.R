@@ -50,7 +50,7 @@
 #' the files specified in lists using the first configuration in the
 #' \code{comp} parameter.
 #'
-#' @return An object of class \code{\link{micomp}}, which is a multi-dimensional
+#' @return An object of class \code{\link{micomp}}, which is a two-dimensional
 #' list of \code{cmpoutput} objects. Rows are associated with individual
 #' outputs, while columns are associated with separate comparisons.
 #'
@@ -95,16 +95,16 @@
 #'
 #' # Create a micomp object using manually inserted data
 #'
-#' mic <- micomp(6, 0.5,
-#'               list(list(name = "NLOKvsJEXOK",
-#'                         grpout = list(data = pphpc_ok$data,
-#'                         factors = pphpc_ok$factors)),
-#'                    list(name = "NLOKvsJEXNOSHUFF",
-#'                         grpout = list(data = pphpc_noshuff$data,
-#'                         factors = pphpc_noshuff$factors)),
-#'                    list(name = "NLOKvsJEXDIFF",
-#'                         grpout = list(data = pphpc_diff$data,
-#'                         factors = pphpc_diff$factors))))
+#' mic <- micomp(6, 0.5, list(
+#'   list(name = "NLOKvsJEXOK",
+#'        grpout = list(data = pphpc_ok$data,
+#'                      factors = pphpc_ok$factors)),
+#'   list(name = "NLOKvsJEXNOSHUFF",
+#'        grpout = list(data = pphpc_noshuff$data,
+#'                      factors = pphpc_noshuff$factors)),
+#'   list(name = "NLOKvsJEXDIFF",
+#'        grpout = list(data = pphpc_diff$data,
+#'                      factors = pphpc_diff$factors))))
 #'
 micomp <- function(outputs, ve, comps, concat = F, centscal = "range", ...) {
 

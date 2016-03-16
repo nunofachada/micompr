@@ -1,2 +1,9 @@
+- grpoutputs should also group existing environment variables and concatenate
+them if necessary. The micomp function should leverage on this instead of
+artificially creating a grpoutputs object when environment data is passed, thus
+allowing to concatenate environment variables, something which it currently does
+not support.
+- micomp should check the grpoutputs objects concat flag and check if it is
+consistent with the concat flag passed to micomp.
 - Add tests to multivarexp changes: cmpoutput, micomp, toLatex, centerscale
 - Package level doc, method for doc and for README.md
