@@ -5,5 +5,7 @@ allowing to concatenate environment variables, something which it currently does
 not support.
 - micomp should check the grpoutputs objects concat flag and check if it is
 consistent with the concat flag passed to micomp.
+- micomp: allow to specify number of PCs for MANOVA instead of percentage of
+variance; do this by passing integers > 1 to the ve parameter...
 - Add tests to multivarexp changes: cmpoutput, micomp, toLatex, centerscale
 - Package level doc, method for doc and for README.md
