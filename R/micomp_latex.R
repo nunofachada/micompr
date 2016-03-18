@@ -444,18 +444,29 @@ toLatex.micomp <- function(
       # the principal component for the "parp", "nparp", "aparp", "anparp" and
       # "varexp" commands. If not specified, 1 is assumed in both cases.
       cdata_arg <-
-        if (length(cdata_split) > 1) as.numeric(cdata_split[2])
-      else 1
+        if (length(cdata_split) > 1) {
+          as.numeric(cdata_split[2])
+        } else {
+          1
+        }
+
+      # Treat value in ve as percentage of variance or as number of PCs?
+      venpcs <-
+        if (ve[cdata_arg] < 1) {
+          pst(100 * ve[cdata_arg], "\\% var.")
+        } else {
+          pst(ve[cdata_arg], " PCs")
+        }
 
       # Determine default label for data to show in current row
       dlabels_final[i] <-
         switch(cdata_cmd,
 
                # Number of principal components
-               npcs = pst("$\\#$PCs (", 100 * ve[cdata_arg], "\\% var.)"),
+               npcs = pst("$\\#$PCs (", venpcs, ")"),
 
                # MANOVA p-values
-               mnvp = pst("MNV (", 100 * ve[cdata_arg], "\\% var.)"),
+               mnvp = pst("MNV (", venpcs, ")"),
 
                # Parametric p-values (raw)
                parp = pst("Par. test (PC", cdata_arg, ")"),

@@ -77,8 +77,8 @@
 cmpoutput <- function(name, ve, data, factors) {
 
   # Check parameters
-  if (ve < 0 || ve >= 1)
-    stop("'ve' parameter must be in the interval [0, 1[.")
+#  if (ve < 0 || ve >= 1)
+#    stop("'ve' parameter must be in the interval [0, 1[.")
   if (length(factors) != dim(data)[1])
     stop("Number of observations in 'data' and 'factors' does not match.")
   if (nlevels(factors) < 2)
@@ -101,8 +101,13 @@ cmpoutput <- function(name, ve, data, factors) {
   # Perform a Manova test for each specified ve (variance to explain)
   for (i in 1:nve) {
 
-    # Number of PCs required to explain the specified percentage of variance
-    npcs[i] <- which(cumvar > ve[i])[1]
+    if (ve[i] < 1) {
+      # Number of PCs required to explain the specified percentage of variance
+      npcs[i] <- which(cumvar > ve[i])[1]
+    } else {
+      npcs[i] <- ve[i]
+      ve[i] <- cumvar[npcs[i]]
+    }
 
     # Manova
     if (npcs[i] > 1) {
