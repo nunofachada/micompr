@@ -19,17 +19,18 @@ individual simulation outputs and rows correspond to the statistical tests
 evaluating the assumptions of the parametric tests used in each output. More
 specifically, each matrix has rows with the following information:
 \describe{
- \item{Royston (\emph{group}, \emph{ve=\%})}{One row per group per variance
-       to explain, with the \emph{p}-value yielded by the Royston test
-       (\code{\link[MVN]{roystonTest}}) for the respective group/variance
-       combination.}
- \item{BoxM(Var.)}{One row per variance to explain with the \emph{p}-value
-       yielded by Box's M test (\code{\link[biotools]{boxM}}).}
- \item{Shapiro-Wilk(\emph{group})}{One row per group, with the \emph{p}-value
-       yielded by the Shapiro-Wilk test (\code{\link{shapiro.test}}) for the
-       respective group.}
- \item{Bartlett(Var.)}{One row with the \emph{p}-value yielded by Bartlett's
-       test (\code{\link{bartlett.test}}).}
+ \item{Royston (\emph{group}, \emph{ve=\%/npcs=})}{One row per group per
+       variance to explain / number of PCs, with the \emph{p}-value yielded
+       by the Royston test (\code{\link[MVN]{roystonTest}}) for the
+       respective group and variance/npcs combination.}
+ \item{Box's M (\emph{ve=\%/npcs=})}{One row per variance to explain with the
+       \emph{p}-value yielded by Box's M test
+       (\code{\link[biotools]{boxM}}).}
+ \item{Shapiro-Wilk (\emph{group})}{One row per group, with the
+       \emph{p}-value yielded by the Shapiro-Wilk test
+       (\code{\link{shapiro.test}}) for the respective group.}
+ \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's test
+       (\code{\link{bartlett.test}}).}
 }
 }
 \description{

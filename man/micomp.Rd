@@ -4,15 +4,19 @@
 \alias{micomp}
 \title{Model-independent comparison of simulation output}
 \usage{
-micomp(outputs, ve, comps, concat = F, centscal = "range", ...)
+micomp(outputs, ve_npcs, comps, concat = F, centscal = "range", ...)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
 the number of outputs (in which case output labels will be assigned
 automatically).}
 
-\item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
-principal components (i.e. number of dimensions) used in MANOVA.}
+\item{ve_npcs}{Percentage (\code{0 < ve_npcs < 1}) of variance explained by
+the \emph{q} principal components (i.e. number of dimensions) used in MANOVA,
+or the number of principal components (\code{ve_npcs > 1}, must be integer).
+Can be a vector, in which case the MANOVA test will be applied multiple
+times, one per specified variance to explain / number of principal
+components.}
 
 \item{comps}{A list of lists, where each list contains information regarding
 an individual comparison. Each list can have one of two configurations:

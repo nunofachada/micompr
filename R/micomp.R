@@ -5,8 +5,12 @@
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
 #' automatically).
-#' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
-#' principal components (i.e. number of dimensions) used in MANOVA.
+#' @param ve_npcs Percentage (\code{0 < ve_npcs < 1}) of variance explained by
+#' the \emph{q} principal components (i.e. number of dimensions) used in MANOVA,
+#' or the number of principal components (\code{ve_npcs > 1}, must be integer).
+#' Can be a vector, in which case the MANOVA test will be applied multiple
+#' times, one per specified variance to explain / number of principal
+#' components.
 #' @param comps A list of lists, where each list contains information regarding
 #' an individual comparison. Each list can have one of two configurations:
 #' \enumerate{
@@ -106,7 +110,8 @@
 #'        grpout = list(data = pphpc_diff$data,
 #'                      factors = pphpc_diff$factors))))
 #'
-micomp <- function(outputs, ve, comps, concat = F, centscal = "range", ...) {
+micomp <- function(
+  outputs, ve_npcs, comps, concat = F, centscal = "range", ...) {
 
   # Determine number of comparisons
   ncomp <- length(comps)
@@ -199,7 +204,7 @@ micomp <- function(outputs, ve, comps, concat = F, centscal = "range", ...) {
     for (j in 1:ncomp) {
 
       comp_res[[i, j]] <-
-        cmpoutput(outputs[i], ve,
+        cmpoutput(outputs[i], ve_npcs,
                   grpd_outputs[[j]]$data[[i]],
                   grpd_outputs[[j]]$factors)
     }
@@ -209,7 +214,7 @@ micomp <- function(outputs, ve, comps, concat = F, centscal = "range", ...) {
   colnames(comp_res) <- cmp_names
   rownames(comp_res) <- outputs
   class(comp_res) <- "micomp"
-  attr(comp_res, "ve") <- ve
+  attr(comp_res, "ve_npcs") <- ve_npcs
   comp_res
 
 }
@@ -307,28 +312,40 @@ summary.micomp <- function(object, ...) {
   names(smic) <- cmpnames
 
   # How many variances to explain?
-  ve <- attr(object, "ve")
-  nve <- length(ve)
+  ve_npcs <- attr(object, "ve_npcs")
+  nve_npcs <- length(ve_npcs)
 
   # Cycle through comparisons
   for (i in 1:ncomp) {
 
     # Allocate summary matrix for current comparison
-    smat <- matrix(nrow = 2 * nve + 4, ncol = nout)
+    smat <- matrix(nrow = 2 * nve_npcs + 4, ncol = nout)
     colnames(smat) <- rownames(object)
     rnames <- NULL
 
     # Obtain information from the MANOVA tests, one per requested variance to
-    # explain
-    for (j in 1:nve) {
+    # explain / number of PCs
+    for (j in 1:nve_npcs) {
       idx <- (j - 1) * 2 + 1
+
+      # Get number of PCs and MANOVA p-value
       smat[idx, ] <- sapply(object[, i],
                             function(mc) mc$npcs[j])
       smat[idx + 1, ] <- sapply(object[, i],
                                 function(mc) mc$p.values$manova[j])
+
+      # Show variance to explain or number of PCs in info label?
+      infolabel <-
+        if (ve_npcs[j] < 1) {
+          paste0("ve=", ve_npcs[j])
+        } else {
+          paste0("npcs=", ve_npcs[j])
+        }
+
+      # Add two more row names, for number of PCs and MANOVA, respectively
       rnames <- c(rnames,
-                  paste0("#PCs (ve=", ve[j], ")"),
-                  paste0("MANOVA (ve=", ve[j], ")"))
+                  paste0("#PCs (", infolabel, ")"),
+                  paste0("MANOVA (", infolabel, ")"))
     }
 
     # Obtain information for the univariate tests for the 1st PC
@@ -463,7 +480,7 @@ assumptions.micomp <- function(obj) {
   colnames(micas) <- colnames(obj)
   rownames(micas) <- rownames(obj)
   class(micas) <- "assumptions_micomp"
-  attr(micas, "ve") <- attr(obj, "ve")
+  attr(micas, "ve_npcs") <- attr(obj, "ve_npcs")
   micas
 }
 
@@ -609,17 +626,18 @@ plot.assumptions_micomp <- function(x, ...) {
 #' evaluating the assumptions of the parametric tests used in each output. More
 #' specifically, each matrix has rows with the following information:
 #' \describe{
-#'  \item{Royston (\emph{group}, \emph{ve=\%})}{One row per group per variance
-#'        to explain, with the \emph{p}-value yielded by the Royston test
-#'        (\code{\link[MVN]{roystonTest}}) for the respective group/variance
-#'        combination.}
-#'  \item{BoxM(Var.)}{One row per variance to explain with the \emph{p}-value
-#'        yielded by Box's M test (\code{\link[biotools]{boxM}}).}
-#'  \item{Shapiro-Wilk(\emph{group})}{One row per group, with the \emph{p}-value
-#'        yielded by the Shapiro-Wilk test (\code{\link{shapiro.test}}) for the
-#'        respective group.}
-#'  \item{Bartlett(Var.)}{One row with the \emph{p}-value yielded by Bartlett's
-#'        test (\code{\link{bartlett.test}}).}
+#'  \item{Royston (\emph{group}, \emph{ve=\%/npcs=})}{One row per group per
+#'        variance to explain / number of PCs, with the \emph{p}-value yielded
+#'        by the Royston test (\code{\link[MVN]{roystonTest}}) for the
+#'        respective group and variance/npcs combination.}
+#'  \item{Box's M (\emph{ve=\%/npcs=})}{One row per variance to explain with the
+#'        \emph{p}-value yielded by Box's M test
+#'        (\code{\link[biotools]{boxM}}).}
+#'  \item{Shapiro-Wilk (\emph{group})}{One row per group, with the
+#'        \emph{p}-value yielded by the Shapiro-Wilk test
+#'        (\code{\link{shapiro.test}}) for the respective group.}
+#'  \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's test
+#'        (\code{\link{bartlett.test}}).}
 #' }
 #'
 #' @export
@@ -646,8 +664,8 @@ summary.assumptions_micomp <- function(object, ...) {
   names(samic) <- cmpnames
 
   # How many variances to explain?
-  ve <- attr(object, "ve")
-  nve <- length(ve)
+  ve_npcs <- attr(object, "ve_npcs")
+  nve_npcs <- length(ve_npcs)
 
   # Cycle through comparisons
   for (i in 1:ncomp) {
@@ -657,17 +675,26 @@ summary.assumptions_micomp <- function(object, ...) {
     ngrps <- length(grps)
 
     # Number of Royston tests performed: one per group per variance to explain
-    nroytests <- ngrps * nve
+    # / number of PCs
+    nroytests <- ngrps * nve_npcs
 
     # Allocate summary matrix for current comparison
-    smat <- matrix(nrow = nroytests + nve + ngrps + 1, ncol = nout)
+    smat <- matrix(nrow = nroytests + nve_npcs + ngrps + 1, ncol = nout)
     colnames(smat) <- rownames(object)
     rnames <- NULL
     idx <- 0
 
     # Royston tests (ngrps) and Box's M tests (1) per requested variance to
     # explain
-    for (j in 1:nve) {
+    for (j in 1:nve_npcs) {
+
+      # Show variance to explain or number of PCs in info label?
+      infolabel <-
+        if (ve_npcs[j] < 1) {
+          paste0("ve=", ve_npcs[j])
+        } else {
+          paste0("npcs=", ve_npcs[j])
+        }
 
       # One Royston test per group
       for (k in 1:ngrps) {
@@ -686,7 +713,7 @@ summary.assumptions_micomp <- function(object, ...) {
           } else { NA })
 
         # Compose row name
-        rnames <- c(rnames, paste0("Royston (", grps[k], ", ve=", ve[j], ")"))
+        rnames <- c(rnames, paste0("Royston (", grps[k], ", ", infolabel, ")"))
 
       }
 
@@ -701,7 +728,7 @@ summary.assumptions_micomp <- function(object, ...) {
         } else { NA })
 
       # Compose Box's M test row name
-      rnames <- c(rnames, paste0("Box's M (ve=", ve[j], ")"))
+      rnames <- c(rnames, paste0("Box's M (", infolabel, ")"))
     }
 
     # One Shapiro-Wilk test per group
