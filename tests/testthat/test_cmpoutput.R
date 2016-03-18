@@ -157,13 +157,8 @@ test_that("cmpoutput throws errors when improperly invoked", {
 
   # Test for incorrect 've' parameter
   expect_error(
-    cmpoutput("A", 1.1, pphpc_ok$data[[1]], pphpc_ok$factors),
-    "'ve' parameter must be in the interval [0, 1[.",
-    fixed = TRUE
-  )
-  expect_error(
     cmpoutput("B", -0.01, pphpc_ok$data[[2]], pphpc_ok$factors),
-    "'ve' parameter must be in the interval [0, 1[.",
+    "'ve_npcs' parameter must be a positive value.",
     fixed = TRUE
   )
 

@@ -4,17 +4,18 @@
 \alias{cmpoutput}
 \title{Compares simulation output}
 \usage{
-cmpoutput(name, ve, data, factors)
+cmpoutput(name, ve_npcs, data, factors)
 }
 \arguments{
 \item{name}{Comparison name (useful when calling this function to perform
 multiple comparisons).}
 
-\item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
-principal components (i.e. number of dimensions) used in MANOVA. Can be a
-vector, in which case the MANOVA test will be applied multiple times, one per
-number of principal components required to explain each of the variance
-percentages passed in the vector.}
+\item{ve_npcs}{Percentage (\code{0 < ve_npcs < 1}) of variance explained by
+the \emph{q} principal components (i.e. number of dimensions) used in MANOVA,
+or the number of principal components (\code{ve_npcs > 1}, must be integer).
+Can be a vector, in which case the MANOVA test will be applied multiple
+times, one per specified variance to explain / number of principal
+components.}
 
 \item{data}{An \emph{n} x \emph{m} matrix, where \emph{n} is the total number
 of output observations (runs) and \emph{m} is the number of variables (i.e.

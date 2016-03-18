@@ -4,11 +4,12 @@
 #'
 #' @param name Comparison name (useful when calling this function to perform
 #' multiple comparisons).
-#' @param ve Percentage (between 0 and 1) of variance explained by the \emph{q}
-#' principal components (i.e. number of dimensions) used in MANOVA. Can be a
-#' vector, in which case the MANOVA test will be applied multiple times, one per
-#' number of principal components required to explain each of the variance
-#' percentages passed in the vector.
+#' @param ve_npcs Percentage (\code{0 < ve_npcs < 1}) of variance explained by
+#' the \emph{q} principal components (i.e. number of dimensions) used in MANOVA,
+#' or the number of principal components (\code{ve_npcs > 1}, must be integer).
+#' Can be a vector, in which case the MANOVA test will be applied multiple
+#' times, one per specified variance to explain / number of principal
+#' components.
 #' @param data An \emph{n} x \emph{m} matrix, where \emph{n} is the total number
 #' of output observations (runs) and \emph{m} is the number of variables (i.e.
 #' output length).
@@ -74,11 +75,11 @@
 #' factors <- factor(c(rep("A", 5), rep("B", 5)))
 #' cmp <- cmpoutput("Bogus", 0.7, data, factors)
 #'
-cmpoutput <- function(name, ve, data, factors) {
+cmpoutput <- function(name, ve_npcs, data, factors) {
 
   # Check parameters
-#  if (ve < 0 || ve >= 1)
-#    stop("'ve' parameter must be in the interval [0, 1[.")
+  if (ve_npcs <= 0)
+    stop("'ve_npcs' parameter must be a positive value.")
   if (length(factors) != dim(data)[1])
     stop("Number of observations in 'data' and 'factors' does not match.")
   if (nlevels(factors) < 2)
@@ -91,22 +92,34 @@ cmpoutput <- function(name, ve, data, factors) {
   eig <- (pca$sdev) ^ 2
   varexp <- eig / sum(eig)
   cumvar <- cumsum(varexp)
-  nve <- length(ve)
+  nve <- length(ve_npcs)
 
   # Pre-allocate vectors for Manova test
   npcs <- vector(mode = "integer", length = nve)
   mnvtest <- vector(mode = "list", length = nve)
   mnvpval <- vector(mode = "numeric", length = nve)
 
-  # Perform a Manova test for each specified ve (variance to explain)
+  # Perform a Manova test for each specified ve_npcs (variance to explain or
+  # number of principal components)
   for (i in 1:nve) {
 
-    if (ve[i] < 1) {
-      # Number of PCs required to explain the specified percentage of variance
-      npcs[i] <- which(cumvar > ve[i])[1]
+    # Percentage of variance to explain or number of PCs?
+    if (ve_npcs[i] < 1) {
+      # Percentage of variance to explain
+
+      # Determine number of PCs required to explain the specified percentage of
+      # variance
+      npcs[i] <- which(cumvar > ve_npcs[i])[1]
+
     } else {
-      npcs[i] <- ve[i]
-      ve[i] <- cumvar[npcs[i]]
+      # Number of PCs
+
+      # Number of PCs given directly, use only integer part
+      npcs[i] <- floor(ve_npcs[i])
+
+      # Keep the variance explained by the specified number of PCs
+      ve_npcs[i] <- cumvar[npcs[i]]
+
     }
 
     # Manova
@@ -176,7 +189,7 @@ cmpoutput <- function(name, ve, data, factors) {
                  factors = factors,
                  varexp = varexp,
                  npcs = npcs,
-                 ve = ve,
+                 ve = ve_npcs,
                  name = name,
                  p.values = list(manova = mnvpval,
                                  parametric = parpvals,
@@ -229,7 +242,7 @@ print.cmpoutput <- function(x, ...) {
 
   cat("Output name:", x$name, "\n")
   cat("Number of PCs which explain ", chopen,
-      paste(x$ve * 100, collapse = ", "), chclose,
+      paste(sprintf("%2.1f", x$ve * 100), collapse = ", "), chclose,
       "% of variance: ", chopen, paste(x$npcs, collapse = ", "), chclose,
       "\n", sep = "")
   cat("P-Value for MANOVA along ", chopen, paste(x$npcs, collapse = ", "),
