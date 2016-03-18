@@ -451,7 +451,7 @@ toLatex.micomp <- function(
         }
 
       # Treat value in ve as percentage of variance or as number of PCs?
-      if ((cdata_cmd == "npcs") || (cdata_cmd == "MNV")) {
+      if ((cdata_cmd == "npcs") || (cdata_cmd == "mnvp")) {
         ve_npcs_str <-
           if (ve_npcs[cdata_arg] < 1) {
             pst(100 * ve_npcs[cdata_arg], "\\% var.")
