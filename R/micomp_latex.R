@@ -398,7 +398,7 @@ toLatex.micomp <- function(
   ncmp <- length(cmp_names)
 
   # Get vector of variances to explain
-  ve <- attr(object, "ve")
+  ve_npcs <- attr(object, "ve_npcs")
 
   # ########################### #
   # Determine final data labels #
@@ -451,22 +451,24 @@ toLatex.micomp <- function(
         }
 
       # Treat value in ve as percentage of variance or as number of PCs?
-      venpcs <-
-        if (ve[cdata_arg] < 1) {
-          pst(100 * ve[cdata_arg], "\\% var.")
-        } else {
-          pst(ve[cdata_arg], " PCs")
-        }
+      if ((cdata_cmd == "npcs") || (cdata_cmd == "MNV")) {
+        ve_npcs_str <-
+          if (ve_npcs[cdata_arg] < 1) {
+            pst(100 * ve_npcs[cdata_arg], "\\% var.")
+          } else {
+            pst(ve_npcs[cdata_arg], " PCs")
+          }
+      }
 
       # Determine default label for data to show in current row
       dlabels_final[i] <-
         switch(cdata_cmd,
 
                # Number of principal components
-               npcs = pst("$\\#$PCs (", venpcs, ")"),
+               npcs = pst("$\\#$PCs (", ve_npcs_str, ")"),
 
                # MANOVA p-values
-               mnvp = pst("MNV (", venpcs, ")"),
+               mnvp = pst("MNV (", ve_npcs_str, ")"),
 
                # Parametric p-values (raw)
                parp = pst("Par. test (PC", cdata_arg, ")"),

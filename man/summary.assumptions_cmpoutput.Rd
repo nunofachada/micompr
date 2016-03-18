@@ -44,16 +44,6 @@ cmp <- cmpoutput("All", c(0.5, 0.6, 0.7),
 
 # Obtain the summary of the assumptions of the cmpoutput object
 summary(assumptions(cmp))
-# $manova                   NPCs=3    NPCs=4    NPCs=5
-# Royston (NLOK)  0.8620220 0.9418449 0.9675661
-# Royston (JEXOK) 0.0962350 0.1333937 0.2041443
-# Box's M         0.6354237 0.5986707 0.8875114
-#
-# $ttest
-#                            PC1
-# Shapiro-Wilk (NLOK)  0.5795776
-# Shapiro-Wilk (JEXOK) 0.7482611
-# Bartlett             0.3506609
 
 }
 
