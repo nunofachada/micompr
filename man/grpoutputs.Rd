@@ -52,7 +52,7 @@ Object of class \code{grpoutputs} containing the following data:
 }
 }
 \description{
-Group outputs from multiple observations of the models to be compared.
+Group outputs from multiple observations of the systems to be compared.
 }
 \examples{
 # Determine paths for data folders, each containing outputs for 10 runs of

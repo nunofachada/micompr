@@ -6,5 +6,5 @@ not support.
 - micomp should check the grpoutputs objects concat flag and check if it is
 consistent with the concat flag passed to micomp.
 - Add tests to multivarexp changes: cmpoutput, micomp, toLatex, centerscale,
-ve_npcs in micomp and cmpoutput
+concat_output, ve_npcs in micomp and cmpoutput
 - Package level doc, method for doc and for README.md

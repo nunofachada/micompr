@@ -1,6 +1,6 @@
-#' Model-independent comparison of simulation output
+#' Multivariate independent comparison of system output
 #'
-#' Perform multiple model-independent comparisons of simulation outputs.
+#' Perform multiple independent comparisons of system outputs.
 #'
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
