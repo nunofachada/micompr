@@ -23,9 +23,9 @@ documented. A user manual will be available soon.
 
 #### Practice
 
-* Fachada N, Lopes VV, Martins RC, Rosa AC. (2016) SimOutUtils -
- Utilities for analyzing simulation output. *Under peer-review*. (arXiv version
-available at http://arxiv.org/abs/1603.06914)
+* Fachada N, Lopes VV, Martins RC, Rosa AC. (2016) micompr: An R Package for
+Multivariate Independent Comparison of Observations. *Under peer-review*. (arXiv
+version available at http://arxiv.org/abs/1603.06907)
 
 #### Theory
 
