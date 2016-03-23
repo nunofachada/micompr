@@ -280,12 +280,12 @@ concat_outputs <- function(outputlist, centscal = "none") {
 
   # Check if it's a list
   if (!is.list(outputlist)) {
-    stop("'datalist' argument is not a list")
+    stop("'outputlist' argument is not a list")
   }
 
   # Check if it's not an empty list
   if (length(outputlist) == 0) {
-    stop("'datalist' is an empty list")
+    stop("'outputlist' is an empty list")
   }
 
   # Determine number of observations and output lengths

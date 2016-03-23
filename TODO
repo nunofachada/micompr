@@ -1,5 +1,5 @@
-- Add tests to multivarexp changes: cmpoutput, micomp, toLatex, concat_output,
-ve_npcs in micomp and cmpoutput
+- Add tests to multivarexp changes: cmpoutput, micomp, toLatex, ve_npcs in
+micomp and cmpoutput
 - Update docs with independent multivariate comparison context instead of
 model-independent comparison of simulation output
 - Package level doc, method for doc and for README.md
