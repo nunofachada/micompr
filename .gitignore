@@ -9,4 +9,5 @@ vignettes/*.pdf
 vignettes/*.tex
 vignettes/*.log
 vignettes/*.gz
+vignettes/*.bbl
 inst/doc

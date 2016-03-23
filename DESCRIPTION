@@ -1,11 +1,11 @@
 Package: micompr
-Title: Model-independent comparison of simulation output
-Version: 0.0.6
-Date: 2016-03-08
+Title: Multivariate independent comparison of observations
+Version: 0.0.7
+Date: 2016-03-23
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
-Description: Compares simulation output in a model-independent fashion.
+Description: Compares multivariate observations in an independent fashion.
 Depends:
     R (>= 3.0.0),
     utils
