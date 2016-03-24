@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmpoutput.R
 \name{print.cmpoutput}
 \alias{print.cmpoutput}
-\title{Print information about comparison of simulation output}
+\title{Print information about comparison of an output}
 \usage{
 \method{print}{cmpoutput}(x, ...)
 }

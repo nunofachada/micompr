@@ -3,7 +3,7 @@
 \name{plot.assumptions_cmpoutput}
 \alias{plot.assumptions_cmpoutput}
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
-in simulation output comparison}
+in output comparison}
 \usage{
 \method{plot}{assumptions_cmpoutput}(x, ...)
 }
@@ -18,7 +18,7 @@ None.
 \description{
 Plot method for objects of class \code{assumptions_cmpoutput}
 containing \emph{p}-values produced by testing the assumptions of the
-parametric tests used for comparing simulation output.
+parametric tests used for comparing an output.
 }
 \details{
 Several bar plots are presented, showing the \emph{p}-values yielded by the

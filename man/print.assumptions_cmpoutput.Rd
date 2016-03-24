@@ -3,7 +3,7 @@
 \name{print.assumptions_cmpoutput}
 \alias{print.assumptions_cmpoutput}
 \title{Print method for the assumptions of parametric tests used in a comparison
-of simulation outputs.}
+of an output.}
 \usage{
 \method{print}{assumptions_cmpoutput}(x, ...)
 }
@@ -17,28 +17,14 @@ None.
 }
 \description{
 Print method for objects of class \code{assumptions_cmpoutput}, which
-contain the assumptions for the parametric tests used in a comparison of
-simulation output.
+contain the assumptions for the parametric tests used in a comparison of an
+output.
 }
 \examples{
 
 # Create a cmpoutput object from the provided datasets
 cmp <- cmpoutput("All", c(0.7, 0.8, 0.9),
                  pphpc_diff$data[["All"]], pphpc_diff$obs_lvls)
-
-# Print assumptions of the cmpoutput object
-assumptions(cmp)
-# === MANOVA assumptions ===
-#                        NPCs=3      NPCs=6
-# Royston (NLOK)    0.967376020 0.752854092
-# Royston (JEXDIFF) 0.372754346 0.684937716
-# Box's M           0.001429117 0.003463109
-#
-# === T-test assumptions ===
-#                              PC1
-# Shapiro-Wilk (NLOK)    0.9439295
-# Shapiro-Wilk (JEXDIFF) 0.8742052
-# Bartlett               0.2434757
 
 }
 

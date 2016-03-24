@@ -3,7 +3,7 @@
 \name{summary.assumptions_cmpoutput}
 \alias{summary.assumptions_cmpoutput}
 \title{Summary method for the assumptions of parametric tests used in a comparison
-of simulation outputs.}
+of an output.}
 \usage{
 \method{summary}{assumptions_cmpoutput}(object, ..., tnpcs = 1)
 }
@@ -33,8 +33,8 @@ A list with the following items:
 }
 \description{
 Summary method for objects of class \code{assumptions_cmpoutput}, which
-contain the assumptions for the parametric tests used in a comparison of
-simulation output.
+contain the assumptions for the parametric tests used in a comparison of an
+output.
 }
 \examples{
 

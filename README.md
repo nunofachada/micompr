@@ -10,7 +10,7 @@ recommended. The following command requires the [devtools] package and installs
 _micompr_ from source:
 
 ```R
-# Requires the devtools package
+library(devtools)
 install_github("fakenmc/micompr")
 ```
 

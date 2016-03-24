@@ -188,7 +188,7 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls) {
   parpvals_adjusted <- pmin(parpvals / varexp, 1)
   nonparpvals_adjusted <- pmin(nonparpvals / varexp, 1)
 
-  # Return
+  # Return cmpoutput object
   cmpout <- list(scores = pca$x,
                  obs_lvls = obs_lvls,
                  varexp = varexp,
@@ -208,7 +208,7 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls) {
 
 }
 
-#' Print information about comparison of simulation output
+#' Print information about comparison of an output
 #'
 #' Print information about objects of class \code{cmpoutput}.
 #'
@@ -266,7 +266,7 @@ print.cmpoutput <- function(x, ...) {
 
 }
 
-#' Summary method for comparison of simulation outputs
+#' Summary method for comparison of an output
 #'
 #' Summary method for objects of class \code{cmpoutput}.
 #'
@@ -329,9 +329,9 @@ summary.cmpoutput <- function(object, ...) {
        nonparametric.pvals.adjusted = object$p.values$nonparametric_adjusted)
 }
 
-#' Plot comparison of simulation output
+#' Plot comparison of an output
 #'
-#' Plot objects of class  \code{cmpoutput}.
+#' Plot objects of class \code{cmpoutput}.
 #'
 #' This method produces four sub-plots, namely:
 #' \itemize{
@@ -505,11 +505,11 @@ assumptions.cmpoutput <- function(obj) {
 }
 
 #' Plot \emph{p}-values for testing the assumptions of the parametric tests used
-#' in simulation output comparison
+#' in output comparison
 #'
 #' Plot method for objects of class \code{assumptions_cmpoutput}
 #' containing \emph{p}-values produced by testing the assumptions of the
-#' parametric tests used for comparing simulation output.
+#' parametric tests used for comparing an output.
 #'
 #' Several bar plots are presented, showing the \emph{p}-values yielded by the
 #' Shapiro-Wilk (\code{\link{shapiro.test}}) and Royston tests
@@ -632,11 +632,11 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 }
 
 #' Print method for the assumptions of parametric tests used in a comparison
-#' of simulation outputs.
+#' of an output.
 #'
 #' Print method for objects of class \code{assumptions_cmpoutput}, which
-#' contain the assumptions for the parametric tests used in a comparison of
-#' simulation output.
+#' contain the assumptions for the parametric tests used in a comparison of an
+#' output.
 #'
 #' @param x Object of class \code{assumptions_cmpoutput}.
 #' @param ... Currently ignored.
@@ -650,20 +650,6 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 #' # Create a cmpoutput object from the provided datasets
 #' cmp <- cmpoutput("All", c(0.7, 0.8, 0.9),
 #'                  pphpc_diff$data[["All"]], pphpc_diff$obs_lvls)
-#'
-#' # Print assumptions of the cmpoutput object
-#' assumptions(cmp)
-#' # === MANOVA assumptions ===
-#' #                        NPCs=3      NPCs=6
-#' # Royston (NLOK)    0.967376020 0.752854092
-#' # Royston (JEXDIFF) 0.372754346 0.684937716
-#' # Box's M           0.001429117 0.003463109
-#' #
-#' # === T-test assumptions ===
-#' #                              PC1
-#' # Shapiro-Wilk (NLOK)    0.9439295
-#' # Shapiro-Wilk (JEXDIFF) 0.8742052
-#' # Bartlett               0.2434757
 #'
 print.assumptions_cmpoutput <- function(x, ...) {
 
@@ -685,11 +671,11 @@ print.assumptions_cmpoutput <- function(x, ...) {
 }
 
 #' Summary method for the assumptions of parametric tests used in a comparison
-#' of simulation outputs.
+#' of an output.
 #'
 #' Summary method for objects of class \code{assumptions_cmpoutput}, which
-#' contain the assumptions for the parametric tests used in a comparison of
-#' simulation output.
+#' contain the assumptions for the parametric tests used in a comparison of an
+#' output.
 #'
 #' @param object Object of class \code{assumptions_cmpoutput}.
 #' @param ... Currently ignored.

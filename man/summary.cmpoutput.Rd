@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmpoutput.R
 \name{summary.cmpoutput}
 \alias{summary.cmpoutput}
-\title{Summary method for comparison of simulation outputs}
+\title{Summary method for comparison of an output}
 \usage{
 \method{summary}{cmpoutput}(object, ...)
 }

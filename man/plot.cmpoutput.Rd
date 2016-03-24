@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmpoutput.R
 \name{plot.cmpoutput}
 \alias{plot.cmpoutput}
-\title{Plot comparison of simulation output}
+\title{Plot comparison of an output}
 \usage{
 \method{plot}{cmpoutput}(x, ...)
 }
@@ -17,7 +17,7 @@ option determines the colors to use on observations of different groups
 None.
 }
 \description{
-Plot objects of class  \code{cmpoutput}.
+Plot objects of class \code{cmpoutput}.
 }
 \details{
 This method produces four sub-plots, namely:
