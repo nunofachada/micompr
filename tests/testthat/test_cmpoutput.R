@@ -3,9 +3,15 @@ context("cmpoutput")
 
 test_that("cmpoutput constructs the expected objects", {
 
-  # Minimum percentage of variance to be explained
+  # Minimum percentage of variance to be explained (< 1) OR
+  # number of PCs specified directly (> 1)
   minvar <- 0.9
-  multvar <- c(0.3, 0.5, 0.7, 0.9)
+  ve_npcs <- c(0.3, 0.5, 0.7, 0.9, 3, 6, 9)
+
+  # Which of these are variances?
+  idxvar <- which(ve_npcs < 1)
+  # And which are PCs?
+  idxpcs <- which(ve_npcs > 1)
 
   # Instantiate several cmpoutput objects for testing using the datasets
   # provided with the package
@@ -30,7 +36,7 @@ test_that("cmpoutput constructs the expected objects", {
                         pphpc_testvlo$factors)
 
   cmp_multve <- cmpoutput("WolfEn",
-                          multvar,
+                          ve_npcs,
                           pphpc_ok$data[["Energy.Wolf"]],
                           pphpc_ok$factors)
 
@@ -71,15 +77,24 @@ test_that("cmpoutput constructs the expected objects", {
 
     } else {
 
-      # Test if the minimum percentage of variance to be explained matches what
-      # was set at instantiation time
-      expect_equal(ccmp$ve, multvar)
+      # Test if the minimum percentage of variance to be explained OR if the
+      # number of PCs matches what was set at instantiation time
+      expect_equal(ccmp$ve[idxvar], ve_npcs[idxvar])
+      expect_equal(ccmp$npcs[idxpcs], ve_npcs[idxpcs])
 
       # Check that the number of PCs which explain the specified minimum
       # percentage of variance has the expected value
-      expect_equal(ccmp$npcs, sapply(multvar,
-                                     function(mv, ve) match(T, cumsum(ve) > mv),
-                                     ccmp$varexp))
+
+      # Case 1 - Variance to explain was specified
+      expect_equal(ccmp$npcs[idxvar],
+                   sapply(ve_npcs[idxvar],
+                          function(mv, ve) match(T, cumsum(ve) > mv),
+                          ccmp$varexp))
+      # Case 2 - Number of PCs was directly specified
+      expect_equal(ccmp$ve[idxpcs],
+                   sapply(ve_npcs[idxpcs],
+                          function(npcs, ve) sum(ve[1:npcs]),
+                          ccmp$varexp))
 
     }
 

@@ -9,7 +9,12 @@ test_that("micomp constructs the expected objects", {
                "All")
 
   # Minimum percentage of variance to be explained
-  minvar <- 0.9
+  ve_npcs <- c(0.5, 2, 0.9, 4)
+
+  # Which of these are variances?
+  idxvar <- which(ve_npcs < 1)
+  # And which are PCs?
+  idxpcs <- which(ve_npcs > 1)
 
   # Determine location of extdata files
   dir_nl_ok <- system.file("extdata", "nl_ok", package = "micompr")
@@ -24,7 +29,7 @@ test_that("micomp constructs the expected objects", {
   # 1 - Build a micomp object using data from extdata files
 
   # 1a - Use files containing package datasets, three comparisons
-  mic1a <- micomp(outputs, minvar,
+  mic1a <- micomp(outputs, ve_npcs,
                   list(
                     list(name = "NLOKvsJEXOK",
                          folders = c(dir_nl_ok, dir_jex_ok),
@@ -42,14 +47,14 @@ test_that("micomp constructs the expected objects", {
 
   # 1b - Use files containing test dataset, one comparison, just five outputs
   # (unnamed), no concatenation, unnamed levels
-  mic1b <- micomp(5, minvar,
+  mic1b <- micomp(5, ve_npcs,
                   list(
                     list(name = "testVLOdata",
                          folders = dir_na,
                          files = c(filesA_na, filesB_na))))
 
   # 2 - Use package datasets (i.e. grpoutputs objects) directly
-  mic2 <- micomp(outputs, minvar,
+  mic2 <- micomp(outputs, ve_npcs,
                  list(
                    list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
                    list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
@@ -57,7 +62,7 @@ test_that("micomp constructs the expected objects", {
                  concat = T)
 
   # 3 - Use manually inserted data, unnamed outputs, no concatenation
-  mic3 <- micomp(6, minvar,
+  mic3 <- micomp(6, ve_npcs,
                  list(
                    list(name = "NLOKvsJEXOK",
                         grpout = list(data = pphpc_ok$data,
@@ -106,11 +111,20 @@ test_that("micomp constructs the expected objects", {
       # Is subobject a cmpoutput object?
       expect_is(sobj, "cmpoutput")
 
-
       # Check that the number of PCs which explain the specified minimum
       # percentage of variance has the expected value
-      expect_equal(sobj$npcs,
-                   match(TRUE, cumsum(sobj$varexp) > minvar))
+
+      # Case 1 - Variance to explain was specified
+      expect_equal(sobj$npcs[idxvar],
+                   sapply(ve_npcs[idxvar],
+                          function(mv, ve) match(T, cumsum(ve) > mv),
+                          sobj$varexp))
+      # Case 2 - Number of PCs was directly specified
+      expect_equal(sobj$ve[idxpcs],
+                   sapply(ve_npcs[idxpcs],
+                          function(npcs, ve) sum(ve[1:npcs]),
+                          sobj$varexp))
+
     }
   }
 
