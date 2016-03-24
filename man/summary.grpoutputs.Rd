@@ -14,7 +14,7 @@
 \value{
 A list with the following components:
 \describe{
- \item{output.dims}{Dimensions of each output, i.e. number of observations
+ \item{output.dims}{Dimensions for each output, i.e. number of observations
        and number of variables (i.e. output length).}
  \item{group.sizes}{Number of output observations in each group.}
 }
@@ -33,19 +33,6 @@ files <- glob2rx("stats400v1*.tsv")
 # Create a grpoutputs object
 go <-
  grpoutputs(c("o1", "o2"), c(dir_nl_ok, dir_jex_noshuff), c(files, files))
-
-# Obtain summary
-summary(go)
-## $output.dims
-##         o1  o2
-## N.Obs   20  20
-## N.Vars 201 201
-##
-## $group.sizes
-##   group.size
-## 1         10
-## 2         10
-##
 
 }
 

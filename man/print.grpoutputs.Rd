@@ -30,17 +30,6 @@ go <- grpoutputs(6, c(dir_nl_ok, dir_jex_diff), c(files, files))
 
 # Print information about object (could just type "go" instead)
 print(go)
-## Number of outputs:  6
-##
-## Output dimensions:
-##        out1 out2 out3 out4 out5 out6
-## N.Obs    20   20   20   20   20   20
-## N.Vars  201  201  201  201  201  201
-##
-## Group size by factor:
-##   group.size
-## 1         10
-## 2         10
 
 }
 

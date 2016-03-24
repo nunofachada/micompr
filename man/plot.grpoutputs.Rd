@@ -15,7 +15,7 @@
 None.
 }
 \description{
-Plot each grouped output.
+Plot objects of class \code{grpoutputs}.
 }
 \details{
 Each output is plotted individually, and observations are plotted on top of
@@ -29,6 +29,7 @@ This function can be very slow for a large number of observations.
 # Determine paths for the data folder containing outputs of different
 # lengths
 dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
+
 # Sets of files A and B have 3 files each
 filesA <- glob2rx("stats400v1*n20A.tsv")
 filesB <- glob2rx("stats400v1*n20B.tsv")

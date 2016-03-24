@@ -276,17 +276,6 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
 #'
 #' # Print information about object (could just type "go" instead)
 #' print(go)
-#' ## Number of outputs:  6
-#' ##
-#' ## Output dimensions:
-#' ##        out1 out2 out3 out4 out5 out6
-#' ## N.Obs    20   20   20   20   20   20
-#' ## N.Vars  201  201  201  201  201  201
-#' ##
-#' ## Group size by factor:
-#' ##   group.size
-#' ## 1         10
-#' ## 2         10
 #'
 print.grpoutputs <- function(x, ...) {
 
@@ -314,7 +303,7 @@ print.grpoutputs <- function(x, ...) {
 #'
 #' @return A list with the following components:
 #' \describe{
-#'  \item{output.dims}{Dimensions of each output, i.e. number of observations
+#'  \item{output.dims}{Dimensions for each output, i.e. number of observations
 #'        and number of variables (i.e. output length).}
 #'  \item{group.sizes}{Number of output observations in each group.}
 #' }
@@ -332,19 +321,6 @@ print.grpoutputs <- function(x, ...) {
 #' # Create a grpoutputs object
 #' go <-
 #'  grpoutputs(c("o1", "o2"), c(dir_nl_ok, dir_jex_noshuff), c(files, files))
-#'
-#' # Obtain summary
-#' summary(go)
-#' ## $output.dims
-#' ##         o1  o2
-#' ## N.Obs   20  20
-#' ## N.Vars 201 201
-#' ##
-#' ## $group.sizes
-#' ##   group.size
-#' ## 1         10
-#' ## 2         10
-#' ##
 #'
 summary.grpoutputs <- function(object, ...) {
 
@@ -364,7 +340,7 @@ summary.grpoutputs <- function(object, ...) {
 
 #' Plot grouped outputs
 #'
-#' Plot each grouped output.
+#' Plot objects of class \code{grpoutputs}.
 #'
 #' Each output is plotted individually, and observations are plotted on top of
 #' each other. Observations from different groups are plotted with different
@@ -377,12 +353,14 @@ summary.grpoutputs <- function(object, ...) {
 #' @param ... Extra options passed to \code{\link{plot.default}}.
 #'
 #' @return None.
+#'
 #' @export
 #'
 #' @examples
 #' # Determine paths for the data folder containing outputs of different
 #' # lengths
 #' dir_na <- system.file("extdata", "testdata", "NA", package = "micompr")
+#'
 #' # Sets of files A and B have 3 files each
 #' filesA <- glob2rx("stats400v1*n20A.tsv")
 #' filesB <- glob2rx("stats400v1*n20B.tsv")
