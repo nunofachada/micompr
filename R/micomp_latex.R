@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' Concatenate strings without any separator characters
 #'
 #' Concatenate strings without any separator characters.

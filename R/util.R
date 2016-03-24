@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' Associate colors to \emph{p}-values
 #'
 #' Associate colors to \emph{p}-values according to their value.

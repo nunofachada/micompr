@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' Load and group outputs from files
 #'
 #' Load and group outputs from files containing multiple observations of the

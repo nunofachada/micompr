@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' micompr: model-independent comparison of simulation output
 #'
 #' micompr is an R package for model-independent comparison of simulation

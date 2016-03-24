@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' Data for testing variable length outputs
 #'
 #' A dataset with six outputs of different lengths for testing purposes only.

@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' Multivariate independent comparison of system output
 #'
 #' Perform multiple independent comparisons of system outputs.

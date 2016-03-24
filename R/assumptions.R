@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Nuno Fachada
+# Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
 #' Parametric tests assumptions
 #'
 #' Generic function to get the assumptions for parametric tests applied to the
