@@ -169,7 +169,7 @@ micomp <- function(
         grpd_outputs[[i]] <- structure(
           list(data = comps[[i]]$grpout$data,
                groups = sapply(unique(olvls),
-                               function(onefac, facts) sum(facts == onefac),
+                               function(onelvl, lvls) sum(lvls == onelvl),
                                olvls),
                obs_lvls = olvls,
                lvls = levels(unique(olvls)),
@@ -416,13 +416,14 @@ plot.micomp <- function(x, ...) {
 
   for (i in 1:ncomp) {
 
-    # Get factors from the first output of the current comparison
-    facts <- x[[1, i]]$factors
+    # Get levels associated with each observation from the first output of the
+    # current comparison
+    obs_lvls <- x[[1, i]]$obs_lvls
 
     # Set title and legend for current comparison
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
     text(1, 1, pos = 1, labels = paste("Comp. ", i))
-    legend("center", legend = unique(facts), fill = col, horiz = F)
+    legend("center", legend = unique(obs_lvls), fill = col, horiz = F)
 
     for (j in 1:nout) {
 
@@ -433,7 +434,7 @@ plot.micomp <- function(x, ...) {
       # Score plot (first two PCs)
       params$x <- scores[, 1]
       params$y <- scores[, 2]
-      params$col <- col[as.numeric(facts)]
+      params$col <- col[as.numeric(obs_lvls)]
       params$xlab <- paste("PC1 (", round(varexp[1] * 100, 2), "%)", sep = "")
       params$ylab <- paste("PC2 (", round(varexp[2] * 100, 2), "%)", sep = "")
       params$main <- x[[j, i]]$name

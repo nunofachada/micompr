@@ -1,6 +1,6 @@
-#' Compares simulation output
+#' Compares one output from two or more systems
 #'
-#' Compares one output from several runs of two or more model implementations.
+#' Compares one output from several observations of two or more systems.
 #'
 #' @param name Comparison name (useful when calling this function to perform
 #' multiple comparisons).
@@ -10,20 +10,20 @@
 #' Can be a vector, in which case the MANOVA test will be applied multiple
 #' times, one per specified variance to explain / number of principal
 #' components.
-#' @param data An \emph{n} x \emph{m} matrix, where \emph{n} is the total number
+#' @param data A \emph{n} x \emph{m} matrix, where \emph{n} is the total number
 #' of output observations (runs) and \emph{m} is the number of variables (i.e.
 #' output length).
-#' @param factors Factors (or groups) associated with each observation.
+#' @param obs_lvls Levels or groups associated with each observation.
 #'
 #' @return  Object of class \code{cmpoutput} containing the following data:
 #' \describe{
 #'  \item{scores}{\emph{n} x \emph{n} matrix containing projections of
-#'        simulation output data in the principal components space. Rows
-#'        correspond to observations, columns to principal components. }
-#'  \item{factors}{Factors (or groups) associated with each observation.}
+#'        output data in the principal components space. Rows correspond to
+#'        observations, columns to principal components. }
+#'  \item{obs_lvls}{Levels or groups associated with each observation.}
 #'  \item{varexp}{Percentage of variance explained by each principal component.}
-#'  \item{npcs}{Number of principal components which explain \code{ve}
-#'        percentage of variance.}
+#'  \item{npcs}{Number of principal components specified in \code{ve_npcs} OR
+#'        which explain the variance percentages given in \code{ve_npcs}.}
 #'  \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
 #'        principal components (i.e. number of dimensions) used in MANOVA.}
 #'  \item{name}{Comparison name (useful when calling this function to perform
@@ -49,7 +49,8 @@
 #'  }
 #'  \item{tests}{
 #'    \describe{
-#'      \item{manova}{Object returned by the \code{\link{manova}} function.}
+#'      \item{manova}{Objects returned by the \code{\link{manova}} function for
+#'            each value specified in \code{ve_npcs}.}
 #'      \item{parametric}{List of objects returned by applying
 #'            \code{\link{t.test}} (two groups) or \code{\link{aov}} (more than
 #'            two groups) to each principal component.}
@@ -72,17 +73,17 @@
 #' # Compare bogus outputs created from 2 random sources, 5 observations per
 #' # source, 20 variables each, yielding a 10 x 20 data matrix.
 #' data <- matrix(c(rnorm(100), rnorm(100, mean = 1)), nrow = 10, byrow = TRUE)
-#' factors <- factor(c(rep("A", 5), rep("B", 5)))
-#' cmp <- cmpoutput("Bogus", 0.7, data, factors)
+#' olvls <- factor(c(rep("A", 5), rep("B", 5)))
+#' cmp <- cmpoutput("Bogus", 0.7, data, olvls)
 #'
-cmpoutput <- function(name, ve_npcs, data, factors) {
+cmpoutput <- function(name, ve_npcs, data, obs_lvls) {
 
   # Check parameters
   if (ve_npcs <= 0)
     stop("'ve_npcs' parameter must be a positive value.")
-  if (length(factors) != dim(data)[1])
+  if (length(obs_lvls) != dim(data)[1])
     stop("Number of observations in 'data' and 'obs_lvls' does not match.")
-  if (nlevels(factors) < 2)
+  if (nlevels(obs_lvls) < 2)
     stop("At least two levels are required to perform model comparison.")
 
   # Perform PCA
@@ -125,7 +126,7 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
     # Manova
     if (npcs[i] > 1) {
       # Can only use Manova with more than one dimension
-      mnvtest[[i]] <- manova(pca$x[, 1:npcs[i]] ~ factors)
+      mnvtest[[i]] <- manova(pca$x[, 1:npcs[i]] ~ obs_lvls)
       mnvpval[i] <- summary(mnvtest[[i]])$stats[1, 6]
     } else {
       # Only one dimension, can't use Manova
@@ -145,18 +146,18 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
   nonparpvals_adjusted <- vector(mode = "numeric", length = tpcs)
   nonpartests <- list()
 
-  if (nlevels(factors) == 2) {
+  if (nlevels(obs_lvls) == 2) {
     # Use two-group tests
 
     # Cycle through each PC
     for (i in 1:tpcs) {
 
       # Parametric test (t-test) for each PC
-      partests[[i]] <- t.test(pca$x[, i] ~ factors, var.equal = T)
+      partests[[i]] <- t.test(pca$x[, i] ~ obs_lvls, var.equal = T)
       parpvals[i] <- partests[[i]]$p.value
 
       # Non-parametric test (Mann-Whitney) for each PC
-      nonpartests[[i]] <- wilcox.test(pca$x[, i] ~ factors)
+      nonpartests[[i]] <- wilcox.test(pca$x[, i] ~ obs_lvls)
       nonparpvals[i] <- nonpartests[[i]]$p.value
 
     }
@@ -168,11 +169,11 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
     for (i in 1:tpcs) {
 
       # Parametric test (ANOVA) for each PC
-      partests[[i]] <- aov(pca$x[, i] ~ factors)
+      partests[[i]] <- aov(pca$x[, i] ~ obs_lvls)
       parpvals[i] <- summary(partests[[i]])[[1]]$"Pr(>F)"[1]
 
       # Non-parametric test (Kruskal-Wallis) for each PC
-      nonpartests[[i]] <- kruskal.test(pca$x[, i] ~ factors)
+      nonpartests[[i]] <- kruskal.test(pca$x[, i] ~ obs_lvls)
       nonparpvals[i] <- nonpartests[[i]]$p.value
 
     }
@@ -186,7 +187,7 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
 
   # Return
   cmpout <- list(scores = pca$x,
-                 factors = factors,
+                 obs_lvls = obs_lvls,
                  varexp = varexp,
                  npcs = npcs,
                  ve = ve_npcs,
@@ -226,7 +227,7 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
 #'
 print.cmpoutput <- function(x, ...) {
 
-  if (length(unique(x$factors)) == 2) {
+  if (length(unique(x$obs_lvls)) == 2) {
     test_names <- c("t-test", "Mann-Whitney U test")
   } else {
     test_names <- c("ANOVA test", "Kruskal-Wallis test")
@@ -307,7 +308,7 @@ print.cmpoutput <- function(x, ...) {
 #'
 summary.cmpoutput <- function(object, ...) {
 
-  if (length(unique(object$factors)) == 2) {
+  if (length(unique(object$obs_lvls)) == 2) {
     test_names <- c("t-test", "Mann-Whitney")
   } else {
     test_names <- c("ANOVA", "Kruskal-Wallis")
@@ -379,7 +380,7 @@ plot.cmpoutput <- function(x, ...) {
   params_sp <- params
   params_sp$x <- x$scores[, 1]
   params_sp$y <- x$scores[, 2]
-  params_sp$col <- col[as.numeric(x$factors)]
+  params_sp$col <- col[as.numeric(x$obs_lvls)]
   params_sp$xlab <- paste("PC1 (", round(x$varexp[1] * 100, 2), "%)", sep = "")
   params_sp$ylab <- paste("PC2 (", round(x$varexp[2] * 100, 2), "%)", sep = "")
   params_sp$main <- "Score plot"
@@ -466,7 +467,7 @@ assumptions.cmpoutput <- function(obj) {
   # Get stuff from cmpoutput object
   npcs <- obj$npcs
   tpcs <- length(obj$varexp)
-  factors <- obj$factors
+  obs_lvls <- obj$obs_lvls
   scores <- obj$scores
   nve <- length(npcs)
 
@@ -479,7 +480,7 @@ assumptions.cmpoutput <- function(obj) {
 
       # Can only use manova if more than one variable
       assumptions$manova[[i]] <-
-        assumptions_manova(scores[, 1:npcs[i]], factors)
+        assumptions_manova(scores[, 1:npcs[i]], obs_lvls)
 
       # Keep number of PCs
       attr(assumptions$manova[[i]], "npcs") <- npcs[i]
@@ -493,7 +494,7 @@ assumptions.cmpoutput <- function(obj) {
   }
 
   # Parametric test (t-test) for each PC
-  assumptions$ttest <- assumptions_paruv(scores[, 1:tpcs], factors)
+  assumptions$ttest <- assumptions_paruv(scores[, 1:tpcs], obs_lvls)
 
   # Return assumptions
   assumptions

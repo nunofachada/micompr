@@ -2,9 +2,9 @@
 % Please edit documentation in R/cmpoutput.R
 \name{cmpoutput}
 \alias{cmpoutput}
-\title{Compares simulation output}
+\title{Compares one output from two or more systems}
 \usage{
-cmpoutput(name, ve_npcs, data, factors)
+cmpoutput(name, ve_npcs, data, obs_lvls)
 }
 \arguments{
 \item{name}{Comparison name (useful when calling this function to perform
@@ -17,22 +17,22 @@ Can be a vector, in which case the MANOVA test will be applied multiple
 times, one per specified variance to explain / number of principal
 components.}
 
-\item{data}{An \emph{n} x \emph{m} matrix, where \emph{n} is the total number
+\item{data}{A \emph{n} x \emph{m} matrix, where \emph{n} is the total number
 of output observations (runs) and \emph{m} is the number of variables (i.e.
 output length).}
 
-\item{factors}{Factors (or groups) associated with each observation.}
+\item{obs_lvls}{Levels or groups associated with each observation.}
 }
 \value{
 Object of class \code{cmpoutput} containing the following data:
 \describe{
  \item{scores}{\emph{n} x \emph{n} matrix containing projections of
-       simulation output data in the principal components space. Rows
-       correspond to observations, columns to principal components. }
- \item{factors}{Factors (or groups) associated with each observation.}
+       output data in the principal components space. Rows correspond to
+       observations, columns to principal components. }
+ \item{obs_lvls}{Levels or groups associated with each observation.}
  \item{varexp}{Percentage of variance explained by each principal component.}
- \item{npcs}{Number of principal components which explain \code{ve}
-       percentage of variance.}
+ \item{npcs}{Number of principal components specified in \code{ve_npcs} OR
+       which explain the variance percentages given in \code{ve_npcs}.}
  \item{ve}{Percentage (between 0 and 1) of variance explained by the \emph{q}
        principal components (i.e. number of dimensions) used in MANOVA.}
  \item{name}{Comparison name (useful when calling this function to perform
@@ -58,7 +58,8 @@ Object of class \code{cmpoutput} containing the following data:
  }
  \item{tests}{
    \describe{
-     \item{manova}{Object returned by the \code{\link{manova}} function.}
+     \item{manova}{Objects returned by the \code{\link{manova}} function for
+           each value specified in \code{ve_npcs}.}
      \item{parametric}{List of objects returned by applying
            \code{\link{t.test}} (two groups) or \code{\link{aov}} (more than
            two groups) to each principal component.}
@@ -71,7 +72,7 @@ Object of class \code{cmpoutput} containing the following data:
 }
 }
 \description{
-Compares one output from several runs of two or more model implementations.
+Compares one output from several observations of two or more systems.
 }
 \examples{
 
@@ -82,8 +83,8 @@ cmp <-
 # Compare bogus outputs created from 2 random sources, 5 observations per
 # source, 20 variables each, yielding a 10 x 20 data matrix.
 data <- matrix(c(rnorm(100), rnorm(100, mean = 1)), nrow = 10, byrow = TRUE)
-factors <- factor(c(rep("A", 5), rep("B", 5)))
-cmp <- cmpoutput("Bogus", 0.7, data, factors)
+olvls <- factor(c(rep("A", 5), rep("B", 5)))
+cmp <- cmpoutput("Bogus", 0.7, data, olvls)
 
 }
 

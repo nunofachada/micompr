@@ -115,7 +115,7 @@ test_that("cmpoutput constructs the expected objects", {
     }
 
     for (i in length(ccmp$varexp)) {
-      if (length(levels(ccmp$factors)) == 2) {
+      if (length(levels(ccmp$obs_lvls)) == 2) {
         expect_is(ccmp$tests$parametric[[i]], "htest")
       } else {
         expect_is(ccmp$tests$parametric[[i]], "aov")
@@ -160,11 +160,11 @@ test_that("cmpoutput constructs the expected objects", {
                c(length(go_quad$obs_lvls), length(go_quad$obs_lvls)))
 
   # Check if the observation levels are the same as in the original data
-  expect_equal(cmp_ok1$factors, pphpc_ok$obs_lvls)
-  expect_equal(cmp_noshuff2$factors, pphpc_noshuff$obs_lvls)
-  expect_equal(cmp_diff7$factors, pphpc_diff$obs_lvls)
-  expect_equal(cmp_vlo6$factors, pphpc_testvlo$obs_lvls)
-  expect_equal(cmp_quad3$factors, go_quad$obs_lvls)
+  expect_equal(cmp_ok1$obs_lvls, pphpc_ok$obs_lvls)
+  expect_equal(cmp_noshuff2$obs_lvls, pphpc_noshuff$obs_lvls)
+  expect_equal(cmp_diff7$obs_lvls, pphpc_diff$obs_lvls)
+  expect_equal(cmp_vlo6$obs_lvls, pphpc_testvlo$obs_lvls)
+  expect_equal(cmp_quad3$obs_lvls, go_quad$obs_lvls)
 
 })
 

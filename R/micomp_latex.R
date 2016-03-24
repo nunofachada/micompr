@@ -130,8 +130,7 @@ pvalf.default <- function(pval, params = list()) {
 #'
 #' @param data Data to plot, \emph{m} x 2 numeric matrix, where \emph{m} is the
 #' number of observations or points to plot.
-#' @param factors Factors determining to which group observations in \code{data}
-#' belong to.
+#' @param obs_lvls Levels or groups associated with each observation.
 #' @param marks Character vector determining how to draw the points in
 #' \code{TikZ}, for example: \code{
 #' c("mark=square*,mark options={color=red},mark size=0.8pt",
@@ -158,7 +157,7 @@ pvalf.default <- function(pval, params = list()) {
 #' # \\path plot[mark=*,mark size=0.6pt] coordinates { (0.250,0.500)};
 #' # \\end{tikzpicture}"
 #'
-tikzscat <- function(data, factors, marks, tscale, axes_color = "gray") {
+tikzscat <- function(data, obs_lvls, marks, tscale, axes_color = "gray") {
 
   # Only two first dimensions
   data <- data[, 1:2]
@@ -167,7 +166,7 @@ tikzscat <- function(data, factors, marks, tscale, axes_color = "gray") {
   data <- data / max(abs(data))
 
   # Unique groups
-  ugrps <- unique(factors)
+  ugrps <- unique(obs_lvls)
 
   # Begin tikzfigure
   figstr <- paste("\\begin{tikzpicture}[scale=", tscale, "] ",
@@ -183,8 +182,8 @@ tikzscat <- function(data, factors, marks, tscale, axes_color = "gray") {
 
     # Get points in group (make sure result is a matrix if only one point
     # available)
-    pts_in_grp <- matrix(data = data[factors == ugrps[i], ],
-                         nrow = sum(factors == ugrps[i]))
+    pts_in_grp <- matrix(data = data[obs_lvls == ugrps[i], ],
+                         nrow = sum(obs_lvls == ugrps[i]))
 
     # Begin plotting points in current group
     figstr <- sprintf("%s \\path plot[%s] coordinates {", figstr, marks[i])
@@ -234,12 +233,12 @@ tikzscat <- function(data, factors, marks, tscale, axes_color = "gray") {
 #'
 tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 
-  # Get data and factors to produce figures
+  # Get data and levels associated with each observation to produce figures
   scores <- lapply(cmps, function(x) x$scores)
-  factors <- lapply(cmps, function(x) x$factors)
+  obs_lvls <- lapply(cmps, function(x) x$obs_lvls)
 
   # Produce figures
-  plts <- mapply(tikzscat, scores, factors, MoreArgs = list(marks, tscale))
+  plts <- mapply(tikzscat, scores, obs_lvls, MoreArgs = list(marks, tscale))
 
   # Wrap figures with before and after latex code
   figs <- paste(before, plts, after)

@@ -4,14 +4,13 @@
 \alias{tikzscat}
 \title{Simple \code{TikZ} scatter plot}
 \usage{
-tikzscat(data, factors, marks, tscale, axes_color = "gray")
+tikzscat(data, obs_lvls, marks, tscale, axes_color = "gray")
 }
 \arguments{
 \item{data}{Data to plot, \emph{m} x 2 numeric matrix, where \emph{m} is the
 number of observations or points to plot.}
 
-\item{factors}{Factors determining to which group observations in \code{data}
-belong to.}
+\item{obs_lvls}{Levels or groups associated with each observation.}
 
 \item{marks}{Character vector determining how to draw the points in
 \code{TikZ}, for example: \code{
