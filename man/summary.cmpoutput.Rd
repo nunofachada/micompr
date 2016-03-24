@@ -46,7 +46,7 @@ Summary method for objects of class \code{cmpoutput}.
 # executed with a minor implementation difference.
 
 summary(
-  cmpoutput("All", 0.6, pphpc_noshuff$data[["All"]], pphpc_noshuff$factors)
+  cmpoutput("All", 0.6, pphpc_noshuff$data[["All"]], pphpc_noshuff$obs_lvls)
 )
 
 }

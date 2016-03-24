@@ -24,7 +24,7 @@ simulation output.
 
 # Create a cmpoutput object from the provided datasets
 cmp <- cmpoutput("All", c(0.7, 0.8, 0.9),
-                 pphpc_diff$data[["All"]], pphpc_diff$factors)
+                 pphpc_diff$data[["All"]], pphpc_diff$obs_lvls)
 
 # Print assumptions of the cmpoutput object
 assumptions(cmp)

@@ -43,3 +43,39 @@ test_that("centerscale produces expected results", {
                v)
 
 })
+
+test_that("concat_outputs produces correct results and expected errors", {
+
+  # Set RNG seed for reproducible results
+  set.seed(123)
+
+  # Output 1, length 100
+  out1 <- matrix(rnorm(2000, mean = 0, sd = 1), nrow = 20)
+  # Output 2, length 200
+  out2 <- matrix(rnorm(4000, mean = 100, sd = 200), nrow = 20)
+  # Output 1, length 50
+  out3 <- matrix(rnorm(1000, mean = -1000, sd = 10), nrow = 20)
+
+  # Different methods for centering and scaling
+  expect_is(concat_outputs(list(out1, out2, out3), "center"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "auto"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "range"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "iqrange"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "vast"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "pareto"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "level"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out3), "none"), "matrix")
+
+  # More or less outputs
+  expect_is(concat_outputs(list(out1), "range"), "matrix")
+  expect_is(concat_outputs(list(out1, out2), "range"), "matrix")
+  expect_is(concat_outputs(list(out1, out2, out1, out2, out3, out1, out3),
+                           "range"), "matrix")
+
+  # Errors
+  expect_error(concat_outputs("this is not a list", "none"),
+               "'outputlist' argument is not a list")
+  expect_error(concat_outputs(list(), "none"),
+               "'outputlist' is an empty list")
+
+})

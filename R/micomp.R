@@ -38,8 +38,7 @@
 #'                 is a \emph{n} x \emph{m} matrix, where \emph{n} is the total
 #'                 number of output observations and \emph{m} is the number of
 #'                 variables (i.e. output length). }
-#'           \item{factors}{Factors (or groups) associated with each
-#'                 observation.}
+#'           \item{obs_lvls}{Levels or groups associated with each observation.}
 #'         }
 #'       }
 #'     }
@@ -102,13 +101,13 @@
 #' mic <- micomp(6, 0.5, list(
 #'   list(name = "NLOKvsJEXOK",
 #'        grpout = list(data = pphpc_ok$data,
-#'                      factors = pphpc_ok$factors)),
+#'                      obs_lvls = pphpc_ok$obs_lvls)),
 #'   list(name = "NLOKvsJEXNOSHUFF",
 #'        grpout = list(data = pphpc_noshuff$data,
-#'                      factors = pphpc_noshuff$factors)),
+#'                      obs_lvls = pphpc_noshuff$obs_lvls)),
 #'   list(name = "NLOKvsJEXDIFF",
 #'        grpout = list(data = pphpc_diff$data,
-#'                      factors = pphpc_diff$factors))))
+#'                      obs_lvls = pphpc_diff$obs_lvls))))
 #'
 micomp <- function(
   outputs, ve_npcs, comps, concat = F, centscal = "range", ...) {
@@ -166,14 +165,14 @@ micomp <- function(
       } else {
 
         # No, so build it using the provided data
-        fcts <- comps[[i]]$grpout$factors
+        olvls <- comps[[i]]$grpout$obs_lvls
         grpd_outputs[[i]] <- structure(
           list(data = comps[[i]]$grpout$data,
-               groups = sapply(unique(fcts),
+               groups = sapply(unique(olvls),
                                function(onefac, facts) sum(facts == onefac),
-                               fcts),
-               factors = fcts,
-               lvls = levels(unique(fcts)),
+                               olvls),
+               obs_lvls = olvls,
+               lvls = levels(unique(olvls)),
                concat = F),
           class = "grpoutputs")
 
@@ -206,7 +205,7 @@ micomp <- function(
       comp_res[[i, j]] <-
         cmpoutput(outputs[i], ve_npcs,
                   grpd_outputs[[j]]$data[[i]],
-                  grpd_outputs[[j]]$factors)
+                  grpd_outputs[[j]]$obs_lvls)
     }
 
   }

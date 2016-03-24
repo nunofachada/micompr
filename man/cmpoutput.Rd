@@ -77,7 +77,7 @@ Compares one output from several runs of two or more model implementations.
 
 # Comparing the first output ("Pop.Sheep") of one the provided datasets.
 cmp <-
- cmpoutput("SheepPop", 0.8, pphpc_ok$data[["Pop.Sheep"]], pphpc_ok$factors)
+ cmpoutput("SheepPop", 0.8, pphpc_ok$data[["Pop.Sheep"]], pphpc_ok$obs_lvls)
 
 # Compare bogus outputs created from 2 random sources, 5 observations per
 # source, 20 variables each, yielding a 10 x 20 data matrix.

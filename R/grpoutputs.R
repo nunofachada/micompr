@@ -1,6 +1,13 @@
-#' Group outputs
+#' Load and group outputs from files
 #'
-#' Group outputs from multiple observations of the systems to be compared.
+#' Load and group outputs from files containing multiple observations of the
+#' systems to be compared.
+#'
+#' Each file corresponds to an observation, and should have a tabular format
+#' where columns correspond to outputs and rows to variables or dimensions.
+#' Observations (files) are grouped by factor levels which correspond to the
+#' file groups given in the \code{files} parameter. These levels differentiate
+#' observations from distinct systems.
 #'
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
@@ -9,12 +16,12 @@
 #' parameter.
 #' @param folders Vector of folder names where to read files from. These are
 #' recycled if \code{length(folders) < length(files)}.
-#' @param files Vector of filenames to load in each folder. Filenames can be
-#' given as \link[=regex]{regular expressions}, or as wildcards by wrapping them
-#' with \code{\link{glob2rx}}.
-#' @param lvls Vector of factor (group) names, must be the same length as
-#' \code{files}, i.e. each file set will be associated with a different group.
-#' If not given, default group names will be set.
+#' @param files Vector of filenames or file sets to load in each folder. File
+#' sets can be given as \link[=regex]{regular expressions}, or as wildcards by
+#' wrapping them with \code{\link{glob2rx}}.
+#' @param lvls Vector of factor levels (groups). Must be the same length as
+#' \code{files}, i.e. each file set will be associated with a different level or
+#' group. If not given, default group names will be used.
 #' @param concat If TRUE add an additional output which corresponds to the
 #' concatenation of all outputs, properly centered and scaled.
 #' @param centscal Method for centering and scaling outputs if \code{concat} is
@@ -22,17 +29,19 @@
 #' "vast", "pareto" or "level". Centering and scaling is performed by the
 #' \code{\link{centerscale}} function.
 #' @param ... Options passed to \code{\link{read.table}}, which is used to read
-#' the files specified in \code{files}.
+#' the files specified in the \code{files} parameter.
 #'
 #' @return Object of class \code{grpoutputs} containing the following data:
 #' \describe{
 #'  \item{data}{List of all outputs, each one grouped into a \emph{n} x \emph{m}
 #'        matrix, where \emph{n} is the total number of output observations
-#'        and \emph{m} is the number of variables (i.e. output length).}
-#'  \item{groups}{Vector containing number of output observations in each
+#'        and \emph{m} is the number of variables or dimensions (i.e. output
+#'        length).}
+#'  \item{groupsize}{Vector containing number of observations for each level or
 #'        group.}
-#'  \item{factors}{Factors (or groups) associated with each observation.}
-#'  \item{lvls}{Vector of factor names in the order they occur (as given in
+#'  \item{obs_lvls}{Factor vector of levels or groups associated with each
+#'        observation.}
+#'  \item{lvls}{Vector of factor levels in the order they occur (as given in
 #'        parameter with the same name).}
 #'  \item{concat}{Boolean indicating if this object was created with an
 #'        additional concatenated output.}
@@ -58,7 +67,7 @@
 grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
                        centscal = "range", ...) {
 
-  # Determine number of file sets (i.e. number of unique factors or levels)
+  # Determine number of file sets (i.e. number of unique levels or groups)
   nfilesets <- length(files)
 
   # Check if lvls is NULL
@@ -78,14 +87,14 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
 
   }
 
-  # Instantiate the 'factors' vector
-  factors <- vector()
+  # Instantiate the 'obs_lvls' vector
+  obs_lvls <- vector()
 
   # Adjust the number of folders in folder vector if required
   folders <- rep_len(folders, nfilesets)
 
-  # Instantiate the 'groups' vector
-  groups <- vector(mode = "integer", length = nfilesets)
+  # Instantiate the 'groupsize' vector
+  groupsize <- vector(mode = "integer", length = nfilesets)
 
   # Determine number of files (i.e. observations) for each file set (i.e.
   # factor)
@@ -95,22 +104,22 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
     curr_files <- dir(folders[i], pattern = files[i])
 
     # How many files in set? (i.e. how many observations for current factor)
-    groups[i] <- length(curr_files)
+    groupsize[i] <- length(curr_files)
 
     # Stop if no files are found
-    if (groups[i] == 0)
+    if (groupsize[i] == 0)
       stop("No files were found: ", file.path(folders[i], files[i]))
 
     # Increase factor vector
-    factors <- c(factors, rep(lvls[i], groups[i]))
+    obs_lvls <- c(obs_lvls, rep(lvls[i], groupsize[i]))
 
   }
 
   # Create proper factor vector
-  factors <- factor(factors);
+  obs_lvls <- factor(obs_lvls);
 
   # Determine total number of files for all sets (i.e. observations)
-  nobs <- sum(groups)
+  nobs <- sum(groupsize)
 
   # Did user specify output names or a number of outputs?
   if ((length(outputs) == 1) && (is.numeric(outputs))) {
@@ -152,11 +161,11 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
     bidx <- if (i == 1) {
       0
     } else {
-      sum(groups[1:(i - 1)])
+      sum(groupsize[1:(i - 1)])
     }
 
     # Cycle through files in current set
-    for (j in 1:groups[i]) {
+    for (j in 1:groupsize[i]) {
 
       # Current file
       cfile <- file.path(folders[i], curr_files[j])
@@ -232,81 +241,14 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
     data[[outputs[nout]]] <- concat_outputs(data, centscal = centscal)
   }
 
-  # Return outputs, groups and factors
+  # Return outputs, group size and observation levels
   go <- list(data = data,
-             groups = groups,
-             factors = factors,
+             groupsize = groupsize,
+             obs_lvls = obs_lvls,
              lvls = lvls,
              concat = concat)
   class(go) <- "grpoutputs"
   go
-
-}
-
-#' Concatenate multiple outputs with multiple observations
-#'
-#' Concatenate multiple outputs with multiple observations.
-#'
-#' @param outputlist List of outputs. Each output is a \emph{n} x \emph{m}
-#' matrix, where \emph{n} is the number of observations and \emph{m} is the
-#' number of variables (i.e. output length).
-#' @param centscal Centering and scaling method: "center", "auto", "range",
-#' "iqrange", "vast", "pareto", "level" or "none". This task is delegated to the
-#' \code{\link{centerscale}} function.
-#'
-#' @return An \emph{n} x \emph{p} matrix, representing the \emph{n} observations
-#' of the concatenated output, each observation of length \emph{p}, which is the
-#' sum of individual output lengths.
-#'
-#' @export
-#'
-#' @examples
-#'
-#' # Collect 20 observations of 3 outputs with different scales and lengths
-#'
-#' # Output 1, length 100
-#' out1 <- matrix(rnorm(2000, mean = 0, sd = 1), nrow = 20)
-#'
-#' # Output 2, length 200
-#' out2 <- matrix(rnorm(4000, mean = 100, sd = 200), nrow = 20)
-#'
-#' # Output 1, length 50
-#' out3 <- matrix(rnorm(1000, mean = -1000, sd = 10), nrow = 20)
-#'
-#' # Concatenate and range scale outputs, resulting matrix dimensions will be
-#' # 20 x 350
-#' outconcat <- concat_outputs(list(out1, out2, out3), "range")
-concat_outputs <- function(outputlist, centscal = "none") {
-
-  # Check if it's a list
-  if (!is.list(outputlist)) {
-    stop("'outputlist' argument is not a list")
-  }
-
-  # Check if it's not an empty list
-  if (length(outputlist) == 0) {
-    stop("'outputlist' is an empty list")
-  }
-
-  # Determine number of observations and output lengths
-  odims <- sapply(outputlist, dim)
-  nobs = unique(odims[1, ])
-  outlen = odims[2, ]
-
-  # Check that the number of observations is constant
-  if (length(nobs) > 1) {
-    stop("Number of observations (rows) is not the same for each output matrix")
-  }
-
-  # Concatenate outputs
-  outconcat <- matrix(nrow = nobs, ncol = sum(outlen))
-  for (i in 1:nobs) {
-    outconcat[i, ] <- unlist(sapply(outputlist, function(x)
-      centerscale(x[i, ], type = centscal)))
-  }
-
-  # Return concatenated output
-  outconcat
 
 }
 
@@ -411,7 +353,7 @@ summary.grpoutputs <- function(object, ...) {
   rownames(outptab) <- c("N.Obs", "N.Vars")
 
   # Get group sizes
-  grpszbyfact <- data.frame(group.size = object$groups,
+  grpszbyfact <- data.frame(group.size = object$groupsize,
                             row.names = object$lvls,
                             stringsAsFactors = F)
 
@@ -525,8 +467,8 @@ plot.grpoutputs <- function(x, ...) {
                  main = out, type = "n", ...)
 
     # Plot lines
-    for (i in 1:length(x$factors)) {
-      lines(x$data[[out]][i,], col = col[unclass(x$factors)[i]])
+    for (i in 1:length(x$obs_lvls)) {
+      lines(x$data[[out]][i,], col = col[unclass(x$obs_lvls)[i]])
     }
 
     # Include legend in plot?

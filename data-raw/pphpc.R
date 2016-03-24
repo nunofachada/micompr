@@ -1,4 +1,4 @@
-library(micomp)
+library(micompr)
 
 outputs <- c("Pop.Sheep", "Pop.Wolf", "Qty.Grass", "Energy.Sheep",
              "Energy.Wolf", "Energy.Grass", "All")
@@ -8,7 +8,7 @@ dir_jex_ok <- "inst/extdata/j_ex_ok"
 dir_jex_noshuff <- "inst/extdata/j_ex_noshuff"
 dir_jex_diff <- "inst/extdata/j_ex_diff"
 
-files <- "stats400v1*.tsv"
+files <- glob2rx("stats400v1*.tsv")
 
 pphpc_ok <- grpoutputs(outputs,
                        c(dir_nl_ok, dir_jex_ok),
@@ -31,7 +31,8 @@ pphpc_diff <- grpoutputs(outputs,
 pphpc_testvlo <- grpoutputs(outputs,
                             system.file("extdata", "testdata", "NA",
                                         package = "micompr"),
-                            c("stats400v1*n20A.tsv", "stats400v1*n20B.tsv"),
+                            c(glob2rx("stats400v1*n20A.tsv"),
+                              glob2rx("stats400v1*n20B.tsv")),
                             concat = T)
 
 save(pphpc_ok, file = "data/pphcp_ok.rdata")

@@ -104,3 +104,70 @@ centerscale <- function(v, type) {
          level = (v - mean(v)) / mean(v),
          none = v)
 }
+
+#' Concatenate multiple outputs with multiple observations
+#'
+#' Concatenate multiple outputs with multiple observations.
+#'
+#' @param outputlist List of outputs. Each output is a \emph{n} x \emph{m}
+#' matrix, where \emph{n} is the number of observations and \emph{m} is the
+#' number of variables (i.e. output length).
+#' @param centscal Centering and scaling method: "center", "auto", "range",
+#' "iqrange", "vast", "pareto", "level" or "none". This task is delegated to the
+#' \code{\link{centerscale}} function.
+#'
+#' @return An \emph{n} x \emph{p} matrix, representing the \emph{n} observations
+#' of the concatenated output, each observation of length \emph{p}, which is the
+#' sum of individual output lengths.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' # Collect 20 observations of 3 outputs with different scales and lengths
+#'
+#' # Output 1, length 100
+#' out1 <- matrix(rnorm(2000, mean = 0, sd = 1), nrow = 20)
+#'
+#' # Output 2, length 200
+#' out2 <- matrix(rnorm(4000, mean = 100, sd = 200), nrow = 20)
+#'
+#' # Output 1, length 50
+#' out3 <- matrix(rnorm(1000, mean = -1000, sd = 10), nrow = 20)
+#'
+#' # Concatenate and range scale outputs, resulting matrix dimensions will be
+#' # 20 x 350
+#' outconcat <- concat_outputs(list(out1, out2, out3), "range")
+concat_outputs <- function(outputlist, centscal = "none") {
+
+  # Check if it's a list
+  if (!is.list(outputlist)) {
+    stop("'outputlist' argument is not a list")
+  }
+
+  # Check if it's not an empty list
+  if (length(outputlist) == 0) {
+    stop("'outputlist' is an empty list")
+  }
+
+  # Determine number of observations and output lengths
+  odims <- sapply(outputlist, dim)
+  nobs = unique(odims[1, ])
+  outlen = odims[2, ]
+
+  # Check that the number of observations is constant
+  if (length(nobs) > 1) {
+    stop("Number of observations (rows) is not the same for each output matrix")
+  }
+
+  # Concatenate outputs
+  outconcat <- matrix(nrow = nobs, ncol = sum(outlen))
+  for (i in 1:nobs) {
+    outconcat[i, ] <- unlist(sapply(outputlist, function(x)
+      centerscale(x[i, ], type = centscal)))
+  }
+
+  # Return concatenated output
+  outconcat
+
+}

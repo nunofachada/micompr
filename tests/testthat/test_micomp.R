@@ -66,14 +66,14 @@ test_that("micomp constructs the expected objects", {
                  list(
                    list(name = "NLOKvsJEXOK",
                         grpout = list(data = pphpc_ok$data,
-                                      factors = pphpc_ok$factors)),
+                                      obs_lvls = pphpc_ok$obs_lvls)),
                    list(name = "NLOKvsJEXNOSHUFF",
                         grpout = list(data = pphpc_noshuff$data,
-                                      factors = pphpc_noshuff$factors)),
+                                      obs_lvls = pphpc_noshuff$obs_lvls)),
 
                    list(name = "NLOKvsJEXDIFF",
                         grpout = list(data = pphpc_diff$data,
-                                      factors = pphpc_diff$factors))),
+                                      obs_lvls = pphpc_diff$obs_lvls))),
                  concat = F)
 
   ##### Start testing #####
@@ -150,21 +150,21 @@ test_that("micomp throws errors when improperly invoked", {
     fixed = TRUE
   )
 
-  # Don't specify factors in the third list. This will provoke an error in
-  # cmpoutput.
+  # Don't specify observation levels in the third list. This will provoke an
+  # error in cmpoutput.
   expect_error(
     micomp(6, 0.5,
            list(
              list(name = "NLOKvsJEXOK",
                   grpout = list(data = pphpc_ok$data,
-                                factors = pphpc_ok$factors)),
+                                obs_lvls = pphpc_ok$obs_lvls)),
              list(name = "NLOKvsJEXNOSHUFF",
                   grpout = list(data = pphpc_noshuff$data,
-                                factors = pphpc_noshuff$factors)),
+                                obs_lvls = pphpc_noshuff$obs_lvls)),
 
              list(name = "NLOKvsJEXDIFF",
                   grpout = list(data = pphpc_diff$data)))),
-    "Number of observations in 'data' and 'factors' does not match.",
+    "Number of observations in 'data' and 'obs_lvls' does not match.",
     fixed = TRUE
 
   )
@@ -229,14 +229,14 @@ test_that("micomp assumptions have the correct properties", {
                  list(
                    list(name = "NLOKvsJEXOK",
                         grpout = list(data = pphpc_ok$data,
-                                      factors = pphpc_ok$factors)),
+                                      obs_lvls = pphpc_ok$obs_lvls)),
                    list(name = "NLOKvsJEXNOSHUFF",
                         grpout = list(data = pphpc_noshuff$data,
-                                      factors = pphpc_noshuff$factors)),
+                                      obs_lvls = pphpc_noshuff$obs_lvls)),
 
                    list(name = "NLOKvsJEXDIFF",
                         grpout = list(data = pphpc_diff$data,
-                                      factors = pphpc_diff$factors))),
+                                      obs_lvls = pphpc_diff$obs_lvls))),
                  concat = F)
 
   ##### Create an assumptions_micomp object for each micomp object #####

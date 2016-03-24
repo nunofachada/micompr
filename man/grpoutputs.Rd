@@ -2,7 +2,7 @@
 % Please edit documentation in R/grpoutputs.R
 \name{grpoutputs}
 \alias{grpoutputs}
-\title{Group outputs}
+\title{Load and group outputs from files}
 \usage{
 grpoutputs(outputs, folders, files, lvls = NULL, concat = F,
   centscal = "range", ...)
@@ -17,13 +17,13 @@ parameter.}
 \item{folders}{Vector of folder names where to read files from. These are
 recycled if \code{length(folders) < length(files)}.}
 
-\item{files}{Vector of filenames to load in each folder. Filenames can be
-given as \link[=regex]{regular expressions}, or as wildcards by wrapping them
-with \code{\link{glob2rx}}.}
+\item{files}{Vector of filenames or file sets to load in each folder. File
+sets can be given as \link[=regex]{regular expressions}, or as wildcards by
+wrapping them with \code{\link{glob2rx}}.}
 
-\item{lvls}{Vector of factor (group) names, must be the same length as
-\code{files}, i.e. each file set will be associated with a different group.
-If not given, default group names will be set.}
+\item{lvls}{Vector of factor levels (groups). Must be the same length as
+\code{files}, i.e. each file set will be associated with a different level or
+group. If not given, default group names will be used.}
 
 \item{concat}{If TRUE add an additional output which corresponds to the
 concatenation of all outputs, properly centered and scaled.}
@@ -34,25 +34,35 @@ TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
 \code{\link{centerscale}} function.}
 
 \item{...}{Options passed to \code{\link{read.table}}, which is used to read
-the files specified in \code{files}.}
+the files specified in the \code{files} parameter.}
 }
 \value{
 Object of class \code{grpoutputs} containing the following data:
 \describe{
  \item{data}{List of all outputs, each one grouped into a \emph{n} x \emph{m}
        matrix, where \emph{n} is the total number of output observations
-       and \emph{m} is the number of variables (i.e. output length).}
- \item{groups}{Vector containing number of output observations in each
+       and \emph{m} is the number of variables or dimensions (i.e. output
+       length).}
+ \item{groupsize}{Vector containing number of observations for each level or
        group.}
- \item{factors}{Factors (or groups) associated with each observation.}
- \item{lvls}{Vector of factor names in the order they occur (as given in
+ \item{obs_lvls}{Factor vector of levels or groups associated with each
+       observation.}
+ \item{lvls}{Vector of factor levels in the order they occur (as given in
        parameter with the same name).}
  \item{concat}{Boolean indicating if this object was created with an
        additional concatenated output.}
 }
 }
 \description{
-Group outputs from multiple observations of the systems to be compared.
+Load and group outputs from files containing multiple observations of the
+systems to be compared.
+}
+\details{
+Each file corresponds to an observation, and should have a tabular format
+where columns correspond to outputs and rows to variables or dimensions.
+Observations (files) are grouped by factor levels which correspond to the
+file groups given in the \code{files} parameter. These levels differentiate
+observations from distinct systems.
 }
 \examples{
 # Determine paths for data folders, each containing outputs for 10 runs of

@@ -24,7 +24,7 @@ from objects of class \code{\link{cmpoutput}}).
 \examples{
 
 # Create a cmpoutput object from the provided datasets
-cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 
 # Get the assumptions for the parametric tests performed in cmp
 acmp <- assumptions(cmp)

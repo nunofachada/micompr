@@ -38,7 +38,7 @@ This method produces four sub-plots, namely:
 # contains simulation output data from two similar implementations of the
 # PPHPC model.
 
-plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$factors))
+plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls))
 
 }
 

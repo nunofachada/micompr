@@ -18,27 +18,27 @@ test_that("cmpoutput constructs the expected objects", {
   cmp_ok1 <- cmpoutput("SheepPop",
                        minvar,
                        pphpc_ok$data[["Pop.Sheep"]],
-                       pphpc_ok$factors)
+                       pphpc_ok$obs_lvls)
 
   cmp_noshuff2 <- cmpoutput("WolfPop",
                             minvar,
                             pphpc_noshuff$data[["Pop.Wolf"]],
-                            pphpc_noshuff$factors)
+                            pphpc_noshuff$obs_lvls)
 
   cmp_diff7 <- cmpoutput("Concat",
                          minvar,
                          pphpc_diff$data[["All"]],
-                         pphpc_diff$factors)
+                         pphpc_diff$obs_lvls)
 
   cmp_vlo6 <- cmpoutput("GrassEn",
                         minvar,
                         pphpc_testvlo$data[["Energy.Grass"]],
-                        pphpc_testvlo$factors)
+                        pphpc_testvlo$obs_lvls)
 
   cmp_multve <- cmpoutput("WolfEn",
                           ve_npcs,
                           pphpc_ok$data[["Energy.Wolf"]],
-                          pphpc_ok$factors)
+                          pphpc_ok$obs_lvls)
 
   # Instantiate a cmpoutput object with output from four pphpc implementations
   # Instantiate a grpobjects first
@@ -53,7 +53,7 @@ test_that("cmpoutput constructs the expected objects", {
   cmp_quad3 <- cmpoutput("GrassQty",
                          minvar,
                          go_quad$data[["out3"]],
-                         go_quad$factors)
+                         go_quad$obs_lvls)
 
   #### Start testing ####
 
@@ -144,26 +144,27 @@ test_that("cmpoutput constructs the expected objects", {
   expect_equal(cmp_quad3$name, "GrassQty")
 
   # Check that the dimensions of the scores (PCA) matrix are limited by the
-  # number of factors (i.e. number of observations)
+  # number of observations
   # In these cases output length (number of variables) is always larger than
-  # the number of factors (number of observations)
+  # the number of observations
   expect_equal(dim(cmp_ok1$scores),
-               c(length(pphpc_ok$factors), length(pphpc_ok$factors)))
+               c(length(pphpc_ok$obs_lvls), length(pphpc_ok$obs_lvls)))
   expect_equal(dim(cmp_noshuff2$scores),
-               c(length(pphpc_noshuff$factors), length(pphpc_noshuff$factors)))
+               c(length(pphpc_noshuff$obs_lvls),
+                 length(pphpc_noshuff$obs_lvls)))
   expect_equal(dim(cmp_diff7$scores),
-               c(length(pphpc_diff$factors), length(pphpc_diff$factors)))
+               c(length(pphpc_diff$obs_lvls), length(pphpc_diff$obs_lvls)))
   expect_equal(dim(cmp_vlo6$scores),
-               c(length(pphpc_testvlo$factors), length(pphpc_testvlo$factors)))
+               c(length(pphpc_testvlo$obs_lvls), length(pphpc_testvlo$obs_lvls)))
   expect_equal(dim(cmp_quad3$scores),
-               c(length(go_quad$factors), length(go_quad$factors)))
+               c(length(go_quad$obs_lvls), length(go_quad$obs_lvls)))
 
-  # Check if the factors are the same as in the original data
-  expect_equal(cmp_ok1$factors, pphpc_ok$factors)
-  expect_equal(cmp_noshuff2$factors, pphpc_noshuff$factors)
-  expect_equal(cmp_diff7$factors, pphpc_diff$factors)
-  expect_equal(cmp_vlo6$factors, pphpc_testvlo$factors)
-  expect_equal(cmp_quad3$factors, go_quad$factors)
+  # Check if the observation levels are the same as in the original data
+  expect_equal(cmp_ok1$factors, pphpc_ok$obs_lvls)
+  expect_equal(cmp_noshuff2$factors, pphpc_noshuff$obs_lvls)
+  expect_equal(cmp_diff7$factors, pphpc_diff$obs_lvls)
+  expect_equal(cmp_vlo6$factors, pphpc_testvlo$obs_lvls)
+  expect_equal(cmp_quad3$factors, go_quad$obs_lvls)
 
 })
 
@@ -172,22 +173,23 @@ test_that("cmpoutput throws errors when improperly invoked", {
 
   # Test for incorrect 've' parameter
   expect_error(
-    cmpoutput("B", -0.01, pphpc_ok$data[[2]], pphpc_ok$factors),
+    cmpoutput("B", -0.01, pphpc_ok$data[[2]], pphpc_ok$obs_lvls),
     "'ve_npcs' parameter must be a positive value.",
     fixed = TRUE
   )
 
   # Test for invalid number of levels
   expect_error(
-    cmpoutput("C", 0.5, pphpc_ok$data[[3]], rep(1, length(pphpc_ok$factors))),
-    "At least two factors are required to perform model comparison.",
+    cmpoutput("C", 0.5, pphpc_ok$data[[3]], rep(1, length(pphpc_ok$obs_lvls))),
+    "At least two levels are required to perform model comparison.",
     fixed = TRUE
   )
 
-  # Test for error due to different number of observations in data and factors
+  # Test for error due to different number of observations in data and
+  # observation levels
   expect_error(
-    cmpoutput("D", 0.3, pphpc_ok$data[[4]], rep(pphpc_ok$factors, 2)),
-    "Number of observations in 'data' and 'factors' does not match.",
+    cmpoutput("D", 0.3, pphpc_ok$data[[4]], rep(pphpc_ok$obs_lvls, 2)),
+    "Number of observations in 'data' and 'obs_lvls' does not match.",
     fixed = TRUE
   )
 
@@ -198,7 +200,7 @@ test_that("assumptions.cmpoutput creates the correct object", {
   #### No warnings #####
 
   # Create a cmpoutput object from the provided datasets
-  cmp <- cmpoutput("All", 0.8, pphpc_ok$data[["All"]], pphpc_ok$factors)
+  cmp <- cmpoutput("All", 0.8, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 
   # Get the assumptions for the parametric tests performed in cmp
   acmp <- assumptions(cmp)
@@ -216,7 +218,7 @@ test_that("assumptions.cmpoutput creates the correct object", {
 
   # Create a cmpoutput object from the provided datasets, set ve to 0.9 such
   # that more PCs are required than before
-  cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+  cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 
   # Check that the creation of the assumptions object produces the expected
   # warnings, i.e. that there are more variables (represented by the PCs) than
@@ -251,7 +253,7 @@ test_that("assumptions.cmpoutput creates the correct object", {
   cmp <- cmpoutput("GrassEn",
                    0.9,
                    pphpc_testvlo$data[["Energy.Grass"]],
-                   pphpc_testvlo$factors)
+                   pphpc_testvlo$obs_lvls)
 
   # Check that if it is so
   expect_warning(assumptions(cmp),

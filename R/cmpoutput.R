@@ -67,7 +67,7 @@
 #'
 #' # Comparing the first output ("Pop.Sheep") of one the provided datasets.
 #' cmp <-
-#'  cmpoutput("SheepPop", 0.8, pphpc_ok$data[["Pop.Sheep"]], pphpc_ok$factors)
+#'  cmpoutput("SheepPop", 0.8, pphpc_ok$data[["Pop.Sheep"]], pphpc_ok$obs_lvls)
 #'
 #' # Compare bogus outputs created from 2 random sources, 5 observations per
 #' # source, 20 variables each, yielding a 10 x 20 data matrix.
@@ -81,9 +81,9 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
   if (ve_npcs <= 0)
     stop("'ve_npcs' parameter must be a positive value.")
   if (length(factors) != dim(data)[1])
-    stop("Number of observations in 'data' and 'factors' does not match.")
+    stop("Number of observations in 'data' and 'obs_lvls' does not match.")
   if (nlevels(factors) < 2)
-    stop("At least two factors are required to perform model comparison.")
+    stop("At least two levels are required to perform model comparison.")
 
   # Perform PCA
   pca <- prcomp(data)
@@ -222,7 +222,7 @@ cmpoutput <- function(name, ve_npcs, data, factors) {
 #' # simulation output data from two implementations of the PPHPC model executed
 #' # with a different parameter.
 #'
-#' cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$factors)
+#' cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$obs_lvls)
 #'
 print.cmpoutput <- function(x, ...) {
 
@@ -302,7 +302,7 @@ print.cmpoutput <- function(x, ...) {
 #' # executed with a minor implementation difference.
 #'
 #' summary(
-#'   cmpoutput("All", 0.6, pphpc_noshuff$data[["All"]], pphpc_noshuff$factors)
+#'   cmpoutput("All", 0.6, pphpc_noshuff$data[["All"]], pphpc_noshuff$obs_lvls)
 #' )
 #'
 summary.cmpoutput <- function(object, ...) {
@@ -356,7 +356,7 @@ summary.cmpoutput <- function(object, ...) {
 #' # contains simulation output data from two similar implementations of the
 #' # PPHPC model.
 #'
-#' plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$factors))
+#' plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls))
 #'
 plot.cmpoutput <- function(x, ...) {
 
@@ -452,7 +452,7 @@ plot.cmpoutput <- function(x, ...) {
 #' @examples
 #'
 #' # Create a cmpoutput object from the provided datasets
-#' cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+#' cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 #'
 #' # Get the assumptions for the parametric tests performed in cmp
 #' acmp <- assumptions(cmp)
@@ -540,7 +540,7 @@ assumptions.cmpoutput <- function(obj) {
 #' @examples
 #'
 #' # Create a cmpoutput object from the provided datasets
-#' cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$factors)
+#' cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 #'
 #' # Display a bar plot with the p-values of the assumptions for the parametric
 #' # tests performed in cmp
@@ -645,7 +645,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 #'
 #' # Create a cmpoutput object from the provided datasets
 #' cmp <- cmpoutput("All", c(0.7, 0.8, 0.9),
-#'                  pphpc_diff$data[["All"]], pphpc_diff$factors)
+#'                  pphpc_diff$data[["All"]], pphpc_diff$obs_lvls)
 #'
 #' # Print assumptions of the cmpoutput object
 #' assumptions(cmp)
@@ -713,7 +713,7 @@ print.assumptions_cmpoutput <- function(x, ...) {
 #'
 #' # Create a cmpoutput object from the provided datasets
 #' cmp <- cmpoutput("All", c(0.5, 0.6, 0.7),
-#'                  pphpc_ok$data[["All"]], pphpc_ok$factors)
+#'                  pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 #'
 #' # Obtain the summary of the assumptions of the cmpoutput object
 #' summary(assumptions(cmp))

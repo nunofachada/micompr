@@ -45,8 +45,7 @@ an individual comparison. Each list can have one of two configurations:
                 is a \emph{n} x \emph{m} matrix, where \emph{n} is the total
                 number of output observations and \emph{m} is the number of
                 variables (i.e. output length). }
-          \item{factors}{Factors (or groups) associated with each
-                observation.}
+          \item{obs_lvls}{Levels or groups associated with each observation.}
         }
       }
     }
@@ -114,13 +113,13 @@ mic <- micomp(c("o1", "o2", "o3", "o4"), 0.9,
 mic <- micomp(6, 0.5, list(
   list(name = "NLOKvsJEXOK",
        grpout = list(data = pphpc_ok$data,
-                     factors = pphpc_ok$factors)),
+                     obs_lvls = pphpc_ok$obs_lvls)),
   list(name = "NLOKvsJEXNOSHUFF",
        grpout = list(data = pphpc_noshuff$data,
-                     factors = pphpc_noshuff$factors)),
+                     obs_lvls = pphpc_noshuff$obs_lvls)),
   list(name = "NLOKvsJEXDIFF",
        grpout = list(data = pphpc_diff$data,
-                     factors = pphpc_diff$factors))))
+                     obs_lvls = pphpc_diff$obs_lvls))))
 
 }
 

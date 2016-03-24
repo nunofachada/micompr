@@ -74,14 +74,14 @@ test_that("grpoutputs constructs the expected objects", {
                dim(go_diflencatT$data[[7]])[2])
 
   # Test if groups are as expected
-  expect_equal(go_ok$groups, c(10, 10))
-  expect_equal(go_noshuff$groups, c(10, 10))
-  expect_equal(go_diff$groups, c(10, 10))
-  expect_equal(go_tri$groups, c(10, 10, 10))
-  expect_equal(go_1out$groups, c(10, 10))
-  expect_equal(go_1lvl$groups, 10)
-  expect_equal(go_diflencatT$groups, c(3, 3))
-  expect_equal(go_diflencatF$groups, c(3, 3))
+  expect_equal(go_ok$groupsize, c(10, 10))
+  expect_equal(go_noshuff$groupsize, c(10, 10))
+  expect_equal(go_diff$groupsize, c(10, 10))
+  expect_equal(go_tri$groupsize, c(10, 10, 10))
+  expect_equal(go_1out$groupsize, c(10, 10))
+  expect_equal(go_1lvl$groupsize, 10)
+  expect_equal(go_diflencatT$groupsize, c(3, 3))
+  expect_equal(go_diflencatF$groupsize, c(3, 3))
 
   # Test if levels are as expected
   expect_equal(go_ok$lvls, c("NLOK", "JEXOK"))
@@ -182,41 +182,5 @@ test_that("grpoutputs throws errors when improperly invoked", {
           system.file("extdata", "nl_ok", package = "micompr"), fs,
           "stats400v1r[0-9]+.tsv'.", sep = "")
   )
-
-})
-
-test_that("concat_outputs produces correct results and expected errors", {
-
-  # Set RNG seed for reproducible results
-  set.seed(123)
-
-  # Output 1, length 100
-  out1 <- matrix(rnorm(2000, mean = 0, sd = 1), nrow = 20)
-  # Output 2, length 200
-  out2 <- matrix(rnorm(4000, mean = 100, sd = 200), nrow = 20)
-  # Output 1, length 50
-  out3 <- matrix(rnorm(1000, mean = -1000, sd = 10), nrow = 20)
-
-  # Different methods for centering and scaling
-  expect_is(concat_outputs(list(out1, out2, out3), "center"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "auto"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "range"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "iqrange"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "vast"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "pareto"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "level"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out3), "none"), "matrix")
-
-  # More or less outputs
-  expect_is(concat_outputs(list(out1), "range"), "matrix")
-  expect_is(concat_outputs(list(out1, out2), "range"), "matrix")
-  expect_is(concat_outputs(list(out1, out2, out1, out2, out3, out1, out3),
-                           "range"), "matrix")
-
-  # Errors
-  expect_error(concat_outputs("this is not a list", "none"),
-               "'outputlist' argument is not a list")
-  expect_error(concat_outputs(list(), "none"),
-               "'outputlist' is an empty list")
 
 })

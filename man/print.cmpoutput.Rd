@@ -24,7 +24,7 @@ Print information about objects of class \code{cmpoutput}.
 # simulation output data from two implementations of the PPHPC model executed
 # with a different parameter.
 
-cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$factors)
+cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$obs_lvls)
 
 }
 
