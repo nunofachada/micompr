@@ -29,7 +29,7 @@ an individual comparison. Each list can have one of two configurations:
             are recycled if \code{length(folders) < length(files)}.}
       \item{files}{Vector of filenames (with wildcards) to load in each
             folder.}
-      \item{lvls}{Vector of factor (group) names, must be the same length as
+      \item{lvls}{Vector of level or group names, must be the same length as
             \code{files}, i.e. each file set will be associated with a
             different group. If not given, default group names will be set.}
     }

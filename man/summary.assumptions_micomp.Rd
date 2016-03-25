@@ -3,7 +3,7 @@
 \name{summary.assumptions_micomp}
 \alias{summary.assumptions_micomp}
 \title{Summary method for the assumptions of parametric tests used in multiple
-comparisons of simulation output}
+comparisons of outputs}
 \usage{
 \method{summary}{assumptions_micomp}(object, ...)
 }
@@ -15,8 +15,8 @@ comparisons of simulation output}
 \value{
 A list in which each component is associated with a distinct
 comparison. Each component contains a matrix, in which columns represent
-individual simulation outputs and rows correspond to the statistical tests
-evaluating the assumptions of the parametric tests used in each output. More
+individual outputs and rows correspond to the statistical tests evaluating
+the assumptions of the parametric tests used in each output. More
 specifically, each matrix has rows with the following information:
 \describe{
  \item{Royston (\emph{group}, \emph{ve=\%/npcs=})}{One row per group per
@@ -36,7 +36,7 @@ specifically, each matrix has rows with the following information:
 \description{
 Summary method for objects of class \code{assumptions_micomp}, which
 contain the assumptions for the parametric tests used in multiple comparisons
-of simulation output.
+of outputs.
 }
 \examples{
 

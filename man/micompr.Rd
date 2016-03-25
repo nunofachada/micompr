@@ -4,10 +4,10 @@
 \name{micompr}
 \alias{micompr}
 \alias{micompr-package}
-\title{micompr: model-independent comparison of simulation output}
+\title{micompr: multivariate independent comparison of observations}
 \description{
-micompr is an R package for model-independent comparison of simulation
-output.
+micompr is an R package for independent comparison of multivariate
+observations.
 }
 \note{
 MIT License
@@ -18,7 +18,7 @@ MIT License
 To do.
 }
 \references{
-\href{http://arxiv.org/abs/1509.09174}{Model-independent
-comparison of simulation output}, arXiv preprint.
+\href{http://arxiv.org/abs/1603.06907}{micompr: An R Package for
+Multivariate Independent Comparison of Observations}, arXiv preprint.
 }
 

@@ -3,7 +3,7 @@
 \name{plot.assumptions_paruv}
 \alias{plot.assumptions_paruv}
 \title{Plot \emph{p}-values for testing the assumptions of the parametric tests used
-in simulation output comparison}
+in output comparison}
 \usage{
 \method{plot}{assumptions_paruv}(x, ...)
 }
@@ -20,7 +20,7 @@ None.
 \description{
 Plot method for objects of class \code{\link{assumptions_paruv}} containing
 \emph{p}-values produced by testing the assumptions of the parametric tests
-used for comparing simulation output.
+used for comparing outputs.
 }
 \details{
 One bar plot is presented for the Bartlett test

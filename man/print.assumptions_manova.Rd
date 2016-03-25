@@ -18,7 +18,7 @@ methods.
 \description{
 Print information about objects of class \code{assumptions_manova}, which
 represent the assumptions of the MANOVA test performed on a comparison of
-simulation output.
+outputs.
 }
 \examples{
 

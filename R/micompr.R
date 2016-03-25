@@ -1,17 +1,17 @@
 # Copyright (c) 2016 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
-#' micompr: model-independent comparison of simulation output
+#' micompr: multivariate independent comparison of observations
 #'
-#' micompr is an R package for model-independent comparison of simulation
-#' output.
+#' micompr is an R package for independent comparison of multivariate
+#' observations.
 #'
 #' @section Usage:
 #'
 #' To do.
 #'
-#' @references \href{http://arxiv.org/abs/1509.09174}{Model-independent
-#' comparison of simulation output}, arXiv preprint.
+#' @references \href{http://arxiv.org/abs/1603.06907}{micompr: An R Package for
+#' Multivariate Independent Comparison of Observations}, arXiv preprint.
 #'
 #' @note MIT License
 #'

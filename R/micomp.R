@@ -25,7 +25,7 @@
 #'             are recycled if \code{length(folders) < length(files)}.}
 #'       \item{files}{Vector of filenames (with wildcards) to load in each
 #'             folder.}
-#'       \item{lvls}{Vector of factor (group) names, must be the same length as
+#'       \item{lvls}{Vector of level or group names, must be the same length as
 #'             \code{files}, i.e. each file set will be associated with a
 #'             different group. If not given, default group names will be set.}
 #'     }
@@ -221,7 +221,7 @@ micomp <- function(
 
 }
 
-#' Print information about multiple comparisons of simulation output
+#' Print information about multiple comparisons of outputs
 #'
 #' Print information about objects of class \code{\link{micomp}}.
 #'
@@ -260,7 +260,7 @@ print.micomp <- function(x, ...) {
 
 }
 
-#' Summary method for multiple comparisons of simulation output
+#' Summary method for multiple comparisons of outputs
 #'
 #' Summary method for objects of class \code{\link{micomp}}.
 #'
@@ -269,8 +269,8 @@ print.micomp <- function(x, ...) {
 #'
 #' @return A list in which each component is associated with a distinct
 #' comparison. Each component contains a matrix, in which columns represent
-#' individual simulation outputs and rows have information about the outputs.
-#' More specifically, each matrix has the following rows:
+#' individual outputs and rows have information about the outputs. More
+#' specifically, each matrix has the following rows:
 #' \describe{
 #'  \item{#PCs (ve=\%)}{Number of principal components required to explain the
 #'        specified percentage of variance. There is one row of this kind for
@@ -488,11 +488,11 @@ assumptions.micomp <- function(obj) {
 }
 
 #' Print information about the assumptions concerning the parametric tests
-#' performed on multiple comparisons of simulation output
+#' performed on multiple comparisons of outputs
 #'
 #' Print information about objects of class \code{assumptions_micomp}, which
 #' represent the assumptions concerning the parametric tests performed on
-#' multiple comparisons of simulation output.
+#' multiple comparisons of outputs.
 #'
 #' @param x Object of class \code{assumptions_micomp}.
 #' @param ... Currently ignored.
@@ -614,19 +614,19 @@ plot.assumptions_micomp <- function(x, ...) {
 }
 
 #' Summary method for the assumptions of parametric tests used in multiple
-#' comparisons of simulation output
+#' comparisons of outputs
 #'
 #' Summary method for objects of class \code{assumptions_micomp}, which
 #' contain the assumptions for the parametric tests used in multiple comparisons
-#' of simulation output.
+#' of outputs.
 #'
 #' @param object Object of class \code{assumptions_micomp}.
 #' @param ... Currently ignored.
 #'
 #' @return A list in which each component is associated with a distinct
 #' comparison. Each component contains a matrix, in which columns represent
-#' individual simulation outputs and rows correspond to the statistical tests
-#' evaluating the assumptions of the parametric tests used in each output. More
+#' individual outputs and rows correspond to the statistical tests evaluating
+#' the assumptions of the parametric tests used in each output. More
 #' specifically, each matrix has rows with the following information:
 #' \describe{
 #'  \item{Royston (\emph{group}, \emph{ve=\%/npcs=})}{One row per group per

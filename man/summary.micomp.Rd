@@ -2,7 +2,7 @@
 % Please edit documentation in R/micomp.R
 \name{summary.micomp}
 \alias{summary.micomp}
-\title{Summary method for multiple comparisons of simulation output}
+\title{Summary method for multiple comparisons of outputs}
 \usage{
 \method{summary}{micomp}(object, ...)
 }
@@ -14,8 +14,8 @@
 \value{
 A list in which each component is associated with a distinct
 comparison. Each component contains a matrix, in which columns represent
-individual simulation outputs and rows have information about the outputs.
-More specifically, each matrix has the following rows:
+individual outputs and rows have information about the outputs. More
+specifically, each matrix has the following rows:
 \describe{
  \item{#PCs (ve=\%)}{Number of principal components required to explain the
        specified percentage of variance. There is one row of this kind for

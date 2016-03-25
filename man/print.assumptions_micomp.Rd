@@ -3,7 +3,7 @@
 \name{print.assumptions_micomp}
 \alias{print.assumptions_micomp}
 \title{Print information about the assumptions concerning the parametric tests
-performed on multiple comparisons of simulation output}
+performed on multiple comparisons of outputs}
 \usage{
 \method{print}{assumptions_micomp}(x, ...)
 }
@@ -19,7 +19,7 @@ methods.
 \description{
 Print information about objects of class \code{assumptions_micomp}, which
 represent the assumptions concerning the parametric tests performed on
-multiple comparisons of simulation output.
+multiple comparisons of outputs.
 }
 \examples{
 

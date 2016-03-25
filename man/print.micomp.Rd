@@ -2,7 +2,7 @@
 % Please edit documentation in R/micomp.R
 \name{print.micomp}
 \alias{print.micomp}
-\title{Print information about multiple comparisons of simulation output}
+\title{Print information about multiple comparisons of outputs}
 \usage{
 \method{print}{micomp}(x, ...)
 }

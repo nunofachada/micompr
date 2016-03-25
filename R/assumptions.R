@@ -4,12 +4,12 @@
 #' Parametric tests assumptions
 #'
 #' Generic function to get the assumptions for parametric tests applied to the
-#' comparison of simulation outputs.
+#' comparison of outputs.
 #'
 #' @param obj Object from which to get the assumptions.
 #'
 #' @return Assumptions for parametric tests applied to the comparison of
-#' simulation outputs.
+#' outputs.
 #'
 #' @export
 #'
@@ -184,7 +184,7 @@ assumptions_paruv <- function(data, factors) {
 #'
 #' Print information about objects of class \code{assumptions_manova}, which
 #' represent the assumptions of the MANOVA test performed on a comparison of
-#' simulation output.
+#' outputs.
 #'
 #' @param x Object of class \code{assumptions_manova}.
 #' @param ... Currently ignored.
@@ -223,7 +223,7 @@ print.assumptions_manova <- function(x, ...) {
 #' Print information about objects of class \code{assumptions_paruv}, which
 #' represent the assumptions of the parametric test (i.e. either
 #' \code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
-#' simulation output.
+#' outputs.
 #'
 #' @param x Object of class \code{assumptions_paruv}.
 #' @param ... Currently ignored.
@@ -324,11 +324,11 @@ plot.assumptions_manova <- function(x, ...) {
 }
 
 #' Plot \emph{p}-values for testing the assumptions of the parametric tests used
-#' in simulation output comparison
+#' in output comparison
 #'
 #' Plot method for objects of class \code{\link{assumptions_paruv}} containing
 #' \emph{p}-values produced by testing the assumptions of the parametric tests
-#' used for comparing simulation output.
+#' used for comparing outputs.
 #'
 #' One bar plot is presented for the Bartlett test
 #' (\code{\link{bartlett.test}}), showing the respective \emph{p}-values along

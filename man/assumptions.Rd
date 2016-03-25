@@ -11,11 +11,11 @@ assumptions(obj)
 }
 \value{
 Assumptions for parametric tests applied to the comparison of
-simulation outputs.
+outputs.
 }
 \description{
 Generic function to get the assumptions for parametric tests applied to the
-comparison of simulation outputs.
+comparison of outputs.
 }
 \seealso{
 \code{\link{assumptions.cmpoutput}},

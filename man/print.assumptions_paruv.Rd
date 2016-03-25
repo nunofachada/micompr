@@ -19,7 +19,7 @@ methods.
 Print information about objects of class \code{assumptions_paruv}, which
 represent the assumptions of the parametric test (i.e. either
 \code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
-simulation output.
+outputs.
 }
 \examples{
 
