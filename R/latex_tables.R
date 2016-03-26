@@ -851,3 +851,47 @@ toLatex.micomp <- function(
   ltxtab
 
 }
+
+
+#' Convert \code{cmpoutput} object to \code{LaTeX} table.
+#'
+#' This method converts \code{\link{cmpoutput}} objects to character vectors
+#' representing \code{LaTeX} tables.
+#'
+#' This method simply wraps the \code{\link{cmpoutput}} object into a
+#' \code{\link{micomp}} object, and invokes \code{\link{toLatex.micomp}} on the
+#' wrapped object.
+#'
+#' @param object A \code{\link{cmpoutput}} object.
+#' @param cmp_name Comparison name (to appear in table).
+#' @param ... Any options accepted by the \code{\link{toLatex.micomp}} function.
+#'
+#' @return A character vector where each element holds one line of the
+#' corresponding \code{LaTeX} table.
+#'
+#' @export
+#'
+#' @importFrom utils toLatex
+#'
+#' @examples
+#'
+#' # Create a cmpoutput object by comparing the first output ("Pop.Sheep") of
+#' # one the provided datasets.
+#' cmp <-
+#'  cmpoutput("SheepPop", 0.9, pphpc_ok$data[["Pop.Sheep"]], pphpc_ok$obs_lvls)
+#'
+#' # Print latex table source to screen
+#' toLatex(cmp)
+#'
+toLatex.cmpoutput <- function(object, cmp_name = "Comp. 1", ...) {
+
+  mic <- vector("list", length = 1)
+  dim(mic) <- c(1, 1)
+  mic[[1, 1]] <- object
+  class(mic) <- "micomp"
+  attr(mic, "ve_npcs") <- object$ve
+  rownames(mic) <- object$name
+  colnames(mic) <- cmp_name
+  toLatex.micomp(mic, ...)
+
+}

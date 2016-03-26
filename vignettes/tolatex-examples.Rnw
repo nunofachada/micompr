@@ -188,5 +188,18 @@ toLatex(mic,
                          "custom data labels."))
 @
 
+\clearpage
+
+<<table15, results = 'asis', warning = FALSE>>=
+toLatex(mic[[1, 1]],
+        orientation = F,
+        labels_cmp_show = F,
+        label_row_show = F,
+        booktabs = T,
+        data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
+        data_labels = c("NoPCs", "MNV", "$t$", "MW", "Scores"),
+        caption = paste0("Table with a single cmpoutput object."))
+@
+
 \end{document}
 
