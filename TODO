@@ -1,1 +1,4 @@
+- Allow to specify MANOVA test (Pillai, etc.)
+- Allow multiple IVs
+- Warn when n < p in MANOVA
 - Package level doc, method for doc and for README.md
