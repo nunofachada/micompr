@@ -47,7 +47,7 @@ Object of class \code{cmpoutput} containing the following data:
  \item{p.values}{\emph{P}-values for the performed statistical tests, namely:
    \describe{
      \item{manova}{List of \emph{p}-values for the MANOVA test for each
-           principal component in \code{npcs}.}
+           number of principal component in \code{npcs}.}
      \item{parametric}{Vector of \emph{p}-values for the parametric test
            applied to groups along each principal component (\emph{t}-test
            for 2 groups, ANOVA for more than 2 groups).}
