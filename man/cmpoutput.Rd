@@ -4,7 +4,8 @@
 \alias{cmpoutput}
 \title{Compares one output from two or more systems}
 \usage{
-cmpoutput(name, ve_npcs, data, obs_lvls)
+cmpoutput(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
+  mnv_test = "Pillai")
 }
 \arguments{
 \item{name}{Comparison name (useful when calling this function to perform
@@ -22,6 +23,12 @@ of output observations (runs) and \emph{m} is the number of variables (i.e.
 output length).}
 
 \item{obs_lvls}{Levels or groups associated with each observation.}
+
+\item{lim_npcs}{Limit number of principal components used for MANOVA to
+minimum number of observations per group?}
+
+\item{mnv_test}{The name of the test statistic to be used in MANOVA, as
+described in \code{\link{summary.manova}}.}
 }
 \value{
 Object of class \code{cmpoutput} containing the following data:

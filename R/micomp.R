@@ -52,6 +52,10 @@
 #' TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
 #' "vast", "pareto" or "level". Centering and scaling is performed by the
 #' \code{\link{centerscale}} function.
+#' @param lim_npcs Limit number of principal components used for MANOVA to
+#' minimum number of observations per group?
+#' @param mnv_test The name of the test statistic to be used in MANOVA, as
+#' described in \code{\link{summary.manova}}.
 #' @param ... Options passed to \code{\link{read.table}}, which is used to read
 #' the files specified in lists using the first configuration in the
 #' \code{comp} parameter.
@@ -113,7 +117,8 @@
 #'                      obs_lvls = pphpc_diff$obs_lvls))))
 #'
 micomp <- function(
-  outputs, ve_npcs, comps, concat = F, centscal = "range", ...) {
+  outputs, ve_npcs, comps, concat = F, centscal = "range", lim_npcs = TRUE,
+  mnv_test = "Pillai", ...) {
 
   # Determine number of comparisons
   ncomp <- length(comps)
@@ -208,7 +213,9 @@ micomp <- function(
       comp_res[[i, j]] <-
         cmpoutput(outputs[i], ve_npcs,
                   grpd_outputs[[j]]$data[[i]],
-                  grpd_outputs[[j]]$obs_lvls)
+                  grpd_outputs[[j]]$obs_lvls,
+                  lim_npcs = lim_npcs,
+                  mnv_test = mnv_test)
     }
 
   }

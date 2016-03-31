@@ -4,7 +4,8 @@
 \alias{micomp}
 \title{Multivariate independent comparison of system output}
 \usage{
-micomp(outputs, ve_npcs, comps, concat = F, centscal = "range", ...)
+micomp(outputs, ve_npcs, comps, concat = F, centscal = "range",
+  lim_npcs = TRUE, mnv_test = "Pillai", ...)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with
@@ -58,6 +59,12 @@ passed in the \code{comps} which follow the second configuration.}
 TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
 "vast", "pareto" or "level". Centering and scaling is performed by the
 \code{\link{centerscale}} function.}
+
+\item{lim_npcs}{Limit number of principal components used for MANOVA to
+minimum number of observations per group?}
+
+\item{mnv_test}{The name of the test statistic to be used in MANOVA, as
+described in \code{\link{summary.manova}}.}
 
 \item{...}{Options passed to \code{\link{read.table}}, which is used to read
 the files specified in lists using the first configuration in the

@@ -54,7 +54,8 @@ test_that("micomp constructs the expected objects", {
                   list(
                     list(name = "testVLOdata",
                          folders = dir_na,
-                         files = c(filesA_na, filesB_na))))
+                         files = c(filesA_na, filesB_na))),
+                  mnv_test = "Roy")
 
   # 2 - Use package datasets (i.e. grpoutputs objects) directly
   mic2 <- micomp(outputs, ve_npcs,
@@ -62,7 +63,9 @@ test_that("micomp constructs the expected objects", {
                    list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
                    list(name = "NLOKvsJEXNOSHUFF", grpout = pphpc_noshuff),
                    list(name = "NLOKvsJEXDIFF", grpout = pphpc_diff)),
-                 concat = T)
+                 concat = T,
+                 lim_npcs = T,
+                 mnv_test = "Wilks")
 
   # 3 - Use manually inserted data, unnamed outputs, no concatenation
   mic3 <- micomp(6, ve_npcs,
@@ -77,7 +80,8 @@ test_that("micomp constructs the expected objects", {
                    list(name = "NLOKvsJEXDIFF",
                         grpout = list(data = pphpc_diff$data,
                                       obs_lvls = pphpc_diff$obs_lvls))),
-                 concat = F)
+                 concat = F,
+                 mnv_test = "Hotelling-Lawley")
 
   ##### Start testing #####
 
@@ -173,7 +177,6 @@ test_that("micomp throws errors when improperly invoked", {
   )
 
 })
-
 
 test_that("micomp assumptions have the correct properties", {
 

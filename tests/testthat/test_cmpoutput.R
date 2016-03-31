@@ -26,22 +26,27 @@ test_that("cmpoutput constructs the expected objects", {
   cmp_noshuff2 <- cmpoutput("WolfPop",
                             minvar,
                             pphpc_noshuff$data[["Pop.Wolf"]],
-                            pphpc_noshuff$obs_lvls)
+                            pphpc_noshuff$obs_lvls,
+                            lim_npcs = FALSE,
+                            mnv_test = "Roy")
 
   cmp_diff7 <- cmpoutput("Concat",
                          minvar,
                          pphpc_diff$data[["All"]],
-                         pphpc_diff$obs_lvls)
+                         pphpc_diff$obs_lvls,
+                         lim_npcs = FALSE)
 
   cmp_vlo6 <- cmpoutput("GrassEn",
                         minvar,
                         pphpc_testvlo$data[["Energy.Grass"]],
-                        pphpc_testvlo$obs_lvls)
+                        pphpc_testvlo$obs_lvls,
+                        mnv_test = "Wilks")
 
   cmp_multve <- cmpoutput("WolfEn",
                           ve_npcs,
                           pphpc_ok$data[["Energy.Wolf"]],
-                          pphpc_ok$obs_lvls)
+                          pphpc_ok$obs_lvls,
+                          mnv_test = "Hotelling-Lawley")
 
   # Instantiate a cmpoutput object with output from four pphpc implementations
   # Instantiate a grpobjects first
@@ -177,7 +182,7 @@ test_that("cmpoutput throws errors when improperly invoked", {
   # Test for incorrect 've' parameter
   expect_error(
     cmpoutput("B", -0.01, pphpc_ok$data[[2]], pphpc_ok$obs_lvls),
-    "'ve_npcs' parameter must be a positive value.",
+    "'ve_npcs' parameter must only have positive values.",
     fixed = TRUE
   )
 

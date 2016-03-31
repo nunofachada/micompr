@@ -17,6 +17,10 @@
 #' of output observations (runs) and \emph{m} is the number of variables (i.e.
 #' output length).
 #' @param obs_lvls Levels or groups associated with each observation.
+#' @param lim_npcs Limit number of principal components used for MANOVA to
+#' minimum number of observations per group?
+#' @param mnv_test The name of the test statistic to be used in MANOVA, as
+#' described in \code{\link{summary.manova}}.
 #'
 #' @return  Object of class \code{cmpoutput} containing the following data:
 #' \describe{
@@ -79,11 +83,12 @@
 #' olvls <- factor(c(rep("A", 5), rep("B", 5)))
 #' cmp <- cmpoutput("Bogus", 0.7, data, olvls)
 #'
-cmpoutput <- function(name, ve_npcs, data, obs_lvls) {
+cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
+                      mnv_test = "Pillai") {
 
   # Check parameters
-  if (ve_npcs <= 0)
-    stop("'ve_npcs' parameter must be a positive value.")
+  if (any(ve_npcs <= 0))
+    stop("'ve_npcs' parameter must only have positive values.")
   if (length(obs_lvls) != dim(data)[1])
     stop("Number of observations in 'data' and 'obs_lvls' does not match.")
   if (nlevels(obs_lvls) < 2)
@@ -97,6 +102,9 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls) {
   varexp <- eig / sum(eig)
   cumvar <- cumsum(varexp)
   nve <- length(ve_npcs)
+
+  # Minimum number of observations per group
+  min_obs <- min(table(obs_lvls));
 
   # Pre-allocate vectors for Manova test
   npcs <- vector(mode = "integer", length = nve)
@@ -126,15 +134,46 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls) {
 
     }
 
+    # Check number of dimensions (PCs), which should lower than the number of
+    # observations
+    if (min_obs < npcs[i]) {
+      # Not enough observations for the specified number of PCs....
+
+      # What action to take?
+      if (lim_npcs) {
+
+        # Limit number of PCs
+        warning(paste0("Number of principal components for MANOVA test (",
+                      npcs[i],") is higher than the size of the smallest ",
+                      "group (", min_obs, "). Using only the fist ", min_obs,
+                      " principal components."))
+        npcs[i] <- min_obs
+        ve_npcs[i] <- cumvar[min_obs]
+
+      } else {
+
+        # Don't limit number of PCs and let MANOVA be performed in this less
+        # than ideal situation
+        warning(paste0("Number of principal components for MANOVA test (",
+                       npcs[i],") is higher than the size of the smallest",
+                       "group (", min_obs, ")"))
+
+      }
+    }
+
     # Manova
     if (npcs[i] > 1) {
+
       # Can only use Manova with more than one dimension
       mnvtest[[i]] <- manova(pca$x[, 1:npcs[i]] ~ obs_lvls)
-      mnvpval[i] <- summary(mnvtest[[i]])$stats[1, 6]
+      mnvpval[i] <- summary(mnvtest[[i]], test = mnv_test)$stats[1, 6]
+
     } else {
+
       # Only one dimension, can't use Manova
       mnvtest[[i]] <- NULL
       mnvpval[i] <- NA
+
     }
   }
 
