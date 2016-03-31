@@ -15,7 +15,7 @@ outputs.
 }
 \description{
 Generic function to get the assumptions for parametric tests applied to the
-comparison of outputs.
+comparison of output observations.
 }
 \seealso{
 \code{\link{assumptions.cmpoutput}},

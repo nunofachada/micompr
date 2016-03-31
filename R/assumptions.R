@@ -4,7 +4,7 @@
 #' Parametric tests assumptions
 #'
 #' Generic function to get the assumptions for parametric tests applied to the
-#' comparison of outputs.
+#' comparison of output observations.
 #'
 #' @param obj Object from which to get the assumptions.
 #'

@@ -1,9 +1,9 @@
 # Copyright (c) 2016 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
-#' Multivariate independent comparison of system output
+#' Multiple independent comparisons of observations
 #'
-#' Perform multiple independent comparisons of system outputs.
+#' Performs multiple independent comparisons of output observations.
 #'
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned

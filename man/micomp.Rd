@@ -2,7 +2,7 @@
 % Please edit documentation in R/micomp.R
 \name{micomp}
 \alias{micomp}
-\title{Multivariate independent comparison of system output}
+\title{Multiple independent comparisons of observations}
 \usage{
 micomp(outputs, ve_npcs, comps, concat = F, centscal = "range",
   lim_npcs = TRUE, mnv_test = "Pillai", ...)
@@ -76,7 +76,7 @@ list of \code{cmpoutput} objects. Rows are associated with individual
 outputs, while columns are associated with separate comparisons.
 }
 \description{
-Perform multiple independent comparisons of system outputs.
+Performs multiple independent comparisons of output observations.
 }
 \examples{
 

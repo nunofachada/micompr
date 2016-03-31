@@ -55,14 +55,14 @@ Object of class \code{grpoutputs} containing the following data:
 }
 \description{
 Load and group outputs from files containing multiple observations of the
-systems to be compared.
+groups to be compared.
 }
 \details{
 Each file corresponds to an observation, and should have a tabular format
 where columns correspond to outputs and rows to variables or dimensions.
 Observations (files) are grouped by factor levels which correspond to the
-file groups given in the \code{files} parameter. These levels differentiate
-observations from distinct systems.
+file groups given in the \code{files} parameter. Factor levels differentiate
+observations from distinct groups.
 }
 \examples{
 # Determine paths for data folders, each containing outputs for 10 runs of

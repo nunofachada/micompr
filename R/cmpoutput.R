@@ -1,9 +1,9 @@
 # Copyright (c) 2016 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
-#' Compares one output from two or more systems
+#' Compares output observations from two or more groups
 #'
-#' Compares one output from several observations of two or more systems.
+#' Compares output observations from two or more groups.
 #'
 #' @param name Comparison name (useful when calling this function to perform
 #' multiple comparisons).

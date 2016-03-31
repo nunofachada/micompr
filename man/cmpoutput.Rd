@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmpoutput.R
 \name{cmpoutput}
 \alias{cmpoutput}
-\title{Compares one output from two or more systems}
+\title{Compares output observations from two or more groups}
 \usage{
 cmpoutput(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
   mnv_test = "Pillai")
@@ -79,7 +79,7 @@ Object of class \code{cmpoutput} containing the following data:
 }
 }
 \description{
-Compares one output from several observations of two or more systems.
+Compares output observations from two or more groups.
 }
 \examples{
 

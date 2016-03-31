@@ -4,13 +4,13 @@
 #' Load and group outputs from files
 #'
 #' Load and group outputs from files containing multiple observations of the
-#' systems to be compared.
+#' groups to be compared.
 #'
 #' Each file corresponds to an observation, and should have a tabular format
 #' where columns correspond to outputs and rows to variables or dimensions.
 #' Observations (files) are grouped by factor levels which correspond to the
-#' file groups given in the \code{files} parameter. These levels differentiate
-#' observations from distinct systems.
+#' file groups given in the \code{files} parameter. Factor levels differentiate
+#' observations from distinct groups.
 #'
 #' @param outputs A vector with the labels of each output, or an integer with
 #' the number of outputs (in which case output labels will be assigned
