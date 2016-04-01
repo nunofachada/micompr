@@ -145,7 +145,7 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
         # Limit number of PCs
         warning(paste0("Number of principal components for MANOVA test (",
                       npcs[i],") is higher than the size of the smallest ",
-                      "group (", min_obs, "). Using only the fist ", min_obs,
+                      "group (", min_obs, "). Using only the first ", min_obs,
                       " principal components."))
         npcs[i] <- min_obs
         ve_npcs[i] <- cumvar[min_obs]
@@ -156,7 +156,7 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
         # than ideal situation
         warning(paste0("Number of principal components for MANOVA test (",
                        npcs[i],") is higher than the size of the smallest",
-                       "group (", min_obs, ")"))
+                       "group (", min_obs, ")."))
 
       }
     }
