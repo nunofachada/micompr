@@ -331,9 +331,26 @@ summary.grpoutputs <- function(object, ...) {
   outptab <- sapply(object$data, function(x) dim(x))
   rownames(outptab) <- c("N.Obs", "N.Vars")
 
+  # Determine row names
+  row_names <-
+    if (exists("lvls", object)) {
+      object$lvls
+    } else {
+      as.vector(unique(object$obs_lvls))
+    }
+
+  # Determine group size
+  group_size <-
+    if (exists("groupsize", object)) {
+      object$groupsize
+    } else {
+      sapply(unique(object$obs_lvls),
+             function(lvl) sum(object$obs_lvls == lvl))
+    }
+
   # Get group sizes
-  grpszbyfact <- data.frame(group.size = object$groupsize,
-                            row.names = object$lvls,
+  grpszbyfact <- data.frame(group.size = group_size,
+                            row.names = row_names,
                             stringsAsFactors = F)
 
   # Return list with summary information
@@ -377,9 +394,12 @@ summary.grpoutputs <- function(object, ...) {
 #'
 plot.grpoutputs <- function(x, ...) {
 
+  # Can we detect a concatenated output?
+  nconcat <- if (exists("concat", x)) { x$concat } else { 0 }
+
   # Get required data
   nout <- length(x$data);
-  nout_simpl <- nout - x$concat
+  nout_simpl <- nout - nconcat
   ncols <- min(2, nout)
   outputs <- names(x$data)
 
@@ -390,6 +410,10 @@ plot.grpoutputs <- function(x, ...) {
   } else {
     col <- plotcols()
   }
+
+  # Determine level names
+  lvls <-
+    if (exists("lvls", x)) { x$lvls } else { as.vector(unique(x$obs_lvls)) }
 
   # One output or more?
   if (nout == 1) {
@@ -415,7 +439,7 @@ plot.grpoutputs <- function(x, ...) {
     }
 
     # Do we have a concatenated output?
-    if (x$concat) {
+    if (nconcat > 0) {
       # If so, find space for it
       m <- c(m, rep(max(m) + 1, 2))
     }
@@ -454,7 +478,7 @@ plot.grpoutputs <- function(x, ...) {
 
     # Include legend in plot?
     if (leginc) {
-      legend("top", legend = x$lvls, fill = col, horiz = T)
+      legend("top", legend = lvls, fill = col, horiz = T)
     }
 
   }
@@ -463,7 +487,7 @@ plot.grpoutputs <- function(x, ...) {
   if (!leginc) {
     par(mar = rep(2, 4))
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-    legend("top", legend = x$lvls, fill = col, horiz = T)
+    legend("top", legend = lvls, fill = col, horiz = T)
   }
 
   invisible(NULL)
