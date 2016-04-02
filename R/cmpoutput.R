@@ -319,7 +319,7 @@ print.cmpoutput <- function(x, ...) {
 #'        percentage of variance.}
 #'  \item{var.exp}{Minimum percentage of variance which must be explained by the
 #'        number of principal components used for the MANOVA test.}
-#'  \item{manova.pval}{\emph{P}-value of the MANOVA test.}
+#'  \item{manova.pvals}{\emph{P}-value of the MANOVA test.}
 #'  \item{parametric.test}{Name of the used parametric test.}
 #'  \item{parametric.pvals}{Vector of $p$-values returned by applying the
 #'        parametric test to each principal component.}
@@ -359,7 +359,7 @@ summary.cmpoutput <- function(object, ...) {
   list(output.name = object$name,
        num.pcs = object$npcs,
        var.exp = object$ve,
-       manova.pval = object$p.values$manova,
+       manova.pvals = object$p.values$manova,
        parametric.test = test_names[1],
        parametric.pvals = object$p.values$parametric,
        parametric.pvals.adjusted = object$p.values$parametric_adjusted,
