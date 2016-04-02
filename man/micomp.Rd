@@ -71,8 +71,8 @@ the files specified in lists using the first configuration in the
 \code{comp} parameter.}
 }
 \value{
-An object of class \code{\link{micomp}}, which is a two-dimensional
-list of \code{cmpoutput} objects. Rows are associated with individual
+An object of class \code{micomp}, which is a two-dimensional
+list of \code{\link{cmpoutput}} objects. Rows are associated with individual
 outputs, while columns are associated with separate comparisons.
 }
 \description{
