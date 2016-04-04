@@ -703,14 +703,14 @@ print.assumptions_cmpoutput <- function(x, ...) {
     print(sa$manova)
   }
   cat("\n=== T-test assumptions ===\n")
-  print(sa$ttest)
+  print(sa$ttest[, 1, drop = F])
 
   invisible(NULL)
 
 }
 
 #' Summary method for the assumptions of parametric tests used in a comparison
-#' of an output.
+#' of an output
 #'
 #' Summary method for objects of class \code{assumptions_cmpoutput}, which
 #' contain the assumptions for the parametric tests used in a comparison of an
@@ -718,8 +718,6 @@ print.assumptions_cmpoutput <- function(x, ...) {
 #'
 #' @param object Object of class \code{assumptions_cmpoutput}.
 #' @param ... Currently ignored.
-#' @param tnpcs Number of principal components to summarize for the
-#' \emph{t}-test.
 #'
 #' @return A list with the following items:
 #' \describe{
@@ -747,7 +745,7 @@ print.assumptions_cmpoutput <- function(x, ...) {
 #' # Obtain the summary of the assumptions of the cmpoutput object
 #' summary(assumptions(cmp))
 #'
-summary.assumptions_cmpoutput <- function(object, ..., tnpcs = 1) {
+summary.assumptions_cmpoutput <- function(object, ...) {
 
   # Multivariate assumptions
 
@@ -787,7 +785,7 @@ summary.assumptions_cmpoutput <- function(object, ..., tnpcs = 1) {
   # Univariate assumptions
 
   # How many PCs?
-  tnpcs <- min(tnpcs, length(object$ttest$uvntest[[1]]))
+  tnpcs <- length(object$ttest$uvntest[[1]])
 
   # How many p-values per PC? Number of groups (normality) + Bartlett (variance)
   npvals <- length(object$ttest$uvntest) + 1

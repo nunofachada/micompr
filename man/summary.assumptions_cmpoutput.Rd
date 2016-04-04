@@ -3,17 +3,14 @@
 \name{summary.assumptions_cmpoutput}
 \alias{summary.assumptions_cmpoutput}
 \title{Summary method for the assumptions of parametric tests used in a comparison
-of an output.}
+of an output}
 \usage{
-\method{summary}{assumptions_cmpoutput}(object, ..., tnpcs = 1)
+\method{summary}{assumptions_cmpoutput}(object, ...)
 }
 \arguments{
 \item{object}{Object of class \code{assumptions_cmpoutput}.}
 
 \item{...}{Currently ignored.}
-
-\item{tnpcs}{Number of principal components to summarize for the
-\emph{t}-test.}
 }
 \value{
 A list with the following items:
