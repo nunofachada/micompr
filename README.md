@@ -10,8 +10,7 @@ recommended. The following command requires the [devtools] package and installs
 _micompr_ from source:
 
 ```R
-library(devtools)
-install_github("fakenmc/micompr")
+devtools::install_github("fakenmc/micompr")
 ```
 
 ### Documentation
@@ -23,9 +22,9 @@ documented. A user manual will be available soon.
 
 #### Practice
 
-* Fachada N, Lopes VV, Martins RC, Rosa AC. (2016) micompr: An R Package for
-Multivariate Independent Comparison of Observations. *Under peer-review*. (arXiv
-version available at http://arxiv.org/abs/1603.06907)
+* Fachada N, Rodrigues J, Lopes VV, Martins RC, Rosa AC. (2016) micompr: An R
+Package for Multivariate Independent Comparison of Observations. *Under
+peer-review*. (arXiv version available at http://arxiv.org/abs/1603.06907)
 
 #### Theory
 

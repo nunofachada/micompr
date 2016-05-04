@@ -1,7 +1,7 @@
 Package: micompr
 Title: Multivariate independent comparison of observations
-Version: 0.1.0
-Date: 2016-04-02
+Version: 0.9.0
+Date: 2016-05-04
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
