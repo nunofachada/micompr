@@ -61,14 +61,8 @@ pvalf <- function(pval, params) UseMethod("pvalf")
 #'
 #' @examples
 #' pvalf(0.1)
-#' # [1] "0.100"
-#'
 #' pvalf(0.000001)
-#' # [1] "\\uuline{1e-06}"
-#'
 #' pvalf(c(0.06, 0.04, 0.005, 0.00001), list(minval = 0.0001))
-#' # [1] "0.060"                 "\\uline{0.040}"        "\\uuline{0.005}"
-#' # [4] "\\uuline{$\\lt$1e-04}"
 #'
 pvalf.default <- function(pval, params = list()) {
 
@@ -152,13 +146,6 @@ pvalf.default <- function(pval, params = list()) {
 #'          c("mark=square*,mark options={color=red},mark size=0.8pt",
 #'            "mark=*,mark size=0.6pt"),
 #'          6)
-#' # [1] "\\begin{tikzpicture}[scale=6] \\path (-1.2,-1.2) (1.2,1.2);
-#' # \\draw[very thin,color=gray] (0,1.1)--(0,-1.1);
-#' # \\draw[very thin,color=gray] (1.1,0)--(-1.1,0);
-#' # \\path plot[mark=square*,mark options={color=red},mark size=0.8pt]
-#' # coordinates { (0.750,1.000)};
-#' # \\path plot[mark=*,mark size=0.6pt] coordinates { (0.250,0.500)};
-#' # \\end{tikzpicture}"
 #'
 tikzscat <- function(data, obs_lvls, marks, tscale, axes_color = "gray") {
 
@@ -251,7 +238,7 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 
 }
 
-#' Convert \code{micomp} object to \code{LaTeX} table.
+#' Convert \code{micomp} object to \code{LaTeX} table
 #'
 #' This method converts \code{\link{micomp}} objects to character vectors
 #' representing \code{LaTeX} tables.
@@ -853,7 +840,7 @@ toLatex.micomp <- function(
 }
 
 
-#' Convert \code{cmpoutput} object to \code{LaTeX} table.
+#' Convert \code{cmpoutput} object to \code{LaTeX} table
 #'
 #' This method converts \code{\link{cmpoutput}} objects to character vectors
 #' representing \code{LaTeX} tables.

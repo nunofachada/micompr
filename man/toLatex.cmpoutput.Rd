@@ -2,7 +2,7 @@
 % Please edit documentation in R/latex_tables.R
 \name{toLatex.cmpoutput}
 \alias{toLatex.cmpoutput}
-\title{Convert \code{cmpoutput} object to \code{LaTeX} table.}
+\title{Convert \code{cmpoutput} object to \code{LaTeX} table}
 \usage{
 \method{toLatex}{cmpoutput}(object, cmp_name = "Comp. 1", ...)
 }

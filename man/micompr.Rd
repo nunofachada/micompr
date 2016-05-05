@@ -6,19 +6,22 @@
 \alias{micompr-package}
 \title{micompr: multivariate independent comparison of observations}
 \description{
-micompr is an R package for independent comparison of multivariate
-observations.
+micompr is an R package for multivariate independent comparison of
+observations. It can, for example, compare two or more sets of time series in
+order to determine if they are statistically dissimilar.
 }
 \note{
 MIT License
 }
-\section{Usage}{
-
-
-To do.
+\author{
+Nuno Fachada
 }
 \references{
 \href{http://arxiv.org/abs/1603.06907}{micompr: An R Package for
 Multivariate Independent Comparison of Observations}, arXiv preprint.
+}
+\seealso{
+\code{\link{cmpoutput}}, \code{\link{micomp}},
+\code{\link{grpoutputs}}
 }
 

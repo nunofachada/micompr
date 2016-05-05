@@ -2,7 +2,7 @@
 % Please edit documentation in R/latex_tables.R
 \name{toLatex.micomp}
 \alias{toLatex.micomp}
-\title{Convert \code{micomp} object to \code{LaTeX} table.}
+\title{Convert \code{micomp} object to \code{LaTeX} table}
 \usage{
 \method{toLatex}{micomp}(object, ..., orientation = T,
   data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),

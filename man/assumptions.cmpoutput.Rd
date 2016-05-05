@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmpoutput.R
 \name{assumptions.cmpoutput}
 \alias{assumptions.cmpoutput}
-\title{Get assumptions for parametric tests performed on output comparisons.}
+\title{Get assumptions for parametric tests performed on output comparisons}
 \usage{
 \method{assumptions}{cmpoutput}(obj)
 }

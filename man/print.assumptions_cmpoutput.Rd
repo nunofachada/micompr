@@ -3,7 +3,7 @@
 \name{print.assumptions_cmpoutput}
 \alias{print.assumptions_cmpoutput}
 \title{Print method for the assumptions of parametric tests used in a comparison
-of an output.}
+of an output}
 \usage{
 \method{print}{assumptions_cmpoutput}(x, ...)
 }

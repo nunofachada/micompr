@@ -457,7 +457,7 @@ plot.micomp <- function(x, ...) {
 
 }
 
-#' Get assumptions for parametric tests performed on each comparisons.
+#' Get assumptions for parametric tests performed on each comparisons
 #'
 #' Get assumptions for parametric tests performed on multiple comparisons (i.e.
 #' from objects of class \code{\link{micomp}}).

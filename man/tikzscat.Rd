@@ -36,4 +36,11 @@ figure with \emph{x} and \emph{y} axes bounded between [-1, 1]. To render
 adequately, the final \code{LaTeX} document should load the \code{plotmarks}
 \code{TikZ} library.
 }
+\examples{
+tikzscat(rbind(c(1.5, 2), c(0.5, 1)), factor(c(1,2)),
+         c("mark=square*,mark options={color=red},mark size=0.8pt",
+           "mark=*,mark size=0.6pt"),
+         6)
+
+}
 

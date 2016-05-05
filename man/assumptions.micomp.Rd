@@ -2,7 +2,7 @@
 % Please edit documentation in R/micomp.R
 \name{assumptions.micomp}
 \alias{assumptions.micomp}
-\title{Get assumptions for parametric tests performed on each comparisons.}
+\title{Get assumptions for parametric tests performed on each comparisons}
 \usage{
 \method{assumptions}{micomp}(obj)
 }

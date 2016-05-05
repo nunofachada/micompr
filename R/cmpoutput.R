@@ -476,7 +476,7 @@ plot.cmpoutput <- function(x, ...) {
   invisible(NULL)
 }
 
-#' Get assumptions for parametric tests performed on output comparisons.
+#' Get assumptions for parametric tests performed on output comparisons
 #'
 #' Get assumptions for parametric tests performed on output comparisons (i.e.
 #' from objects of class \code{\link{cmpoutput}}).
@@ -671,7 +671,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
 }
 
 #' Print method for the assumptions of parametric tests used in a comparison
-#' of an output.
+#' of an output
 #'
 #' Print method for objects of class \code{assumptions_cmpoutput}, which
 #' contain the assumptions for the parametric tests used in a comparison of an

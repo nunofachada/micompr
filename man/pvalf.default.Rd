@@ -27,4 +27,10 @@ A string representing the formatted \code{pval}.
 Format a \emph{p}-value for printing in a \code{LaTeX} table. Requires the
 \emph{ulem} \code{LaTeX} package for underlining the \emph{p}-values.
 }
+\examples{
+pvalf(0.1)
+pvalf(0.000001)
+pvalf(c(0.06, 0.04, 0.005, 0.00001), list(minval = 0.0001))
+
+}
 
