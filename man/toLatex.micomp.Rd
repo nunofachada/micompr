@@ -114,8 +114,8 @@ representing \code{LaTeX} tables.
 }
 \details{
 This method is inspired by the functionality provided by the \code{xtable}
-and \code{print.xtable} (both from the
-\href{https://cran.r-project.org/web/packages/xtable/index.html}{xtable})
+and \code{print.xtable} functions (from the
+\href{https://cran.r-project.org/package=xtable}{xtable}
 package), but follows the standard behavior of the \code{\link{toLatex}}
 generic.
 }

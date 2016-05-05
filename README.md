@@ -50,5 +50,5 @@ at http://arxiv.org/abs/1509.09174)
 [MIT License](LICENSE)
 
 [R]: https://www.r-project.org/
-[devtools]: https://cran.r-project.org/web/packages/devtools/index.html
+[devtools]: https://cran.r-project.org/package=devtools
 [CRAN]: https://cran.r-project.org/

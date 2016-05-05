@@ -1,14 +1,17 @@
 Package: micompr
-Title: Multivariate independent comparison of observations
+Title: Multivariate Independent Comparison of Observations
 Version: 1.0.0
-Date: 2016-05-05
+Date: 2016-05-06
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
 Description: Compares multivariate observations in an independent fashion.
 Depends:
     R (>= 3.0.0),
-    utils
+    utils,
+    graphics,
+    methods,
+    stats
 Imports:
 Suggests:
     biotools,
