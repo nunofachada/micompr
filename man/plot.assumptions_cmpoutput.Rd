@@ -10,7 +10,7 @@ in output comparison}
 \arguments{
 \item{x}{Objects of class \code{assumptions_cmpoutput}.}
 
-\item{...}{Extra options passed to \code{\link{plot.default}}.}
+\item{...}{Extra options passed to \code{\link[graphics]{plot.default}}.}
 }
 \value{
 None.
@@ -22,11 +22,11 @@ parametric tests used for comparing an output.
 }
 \details{
 Several bar plots are presented, showing the \emph{p}-values yielded by the
-Shapiro-Wilk (\code{\link{shapiro.test}}) and Royston tests
+Shapiro-Wilk (\code{\link[stats]{shapiro.test}}) and Royston tests
 (\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
-respectively, and for the Bartlett (\code{\link{bartlett.test}}) and Box's M
-(\code{\link[biotools]{boxM}}) for testing homogeneity of variances and of
-covariance matrices, respectively. The following bar plots are shown:
+respectively, and for the Bartlett (\code{\link[stats]{bartlett.test}}) and
+Box's M (\code{\link[biotools]{boxM}}) for testing homogeneity of variances
+and of covariance matrices, respectively. The following bar plots are shown:
 
 \itemize{
  \item One bar plot for the \emph{p}-values of the Bartlett test, one bar

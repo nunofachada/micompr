@@ -98,12 +98,12 @@ plotcols <- function() {
 centerscale <- function(v, type) {
   switch(type,
          center = v - mean(v),
-         auto = (v - mean(v)) / sd(v),
+         auto = (v - mean(v)) / stats::sd(v),
          range = (v - mean(v)) / (max(v) - min(v)),
          # Keep results equal to MATLAB by specifying type = 5
-         iqrange = (v - mean(v)) / IQR(v, type = 5),
-         vast = (v - mean(v)) * mean(v) / var(v),
-         pareto = (v - mean(v)) / sqrt(sd(v)),
+         iqrange = (v - mean(v)) / stats::IQR(v, type = 5),
+         vast = (v - mean(v)) * mean(v) / stats::var(v),
+         pareto = (v - mean(v)) / sqrt(stats::sd(v)),
          level = (v - mean(v)) / mean(v),
          none = v)
 }

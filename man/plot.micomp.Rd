@@ -10,8 +10,9 @@ principal components space}
 \arguments{
 \item{x}{An object of class \code{\link{micomp}}.}
 
-\item{...}{Extra options passed to \code{\link{plot.default}}. The \code{col}
-option determines the colors to use on observations of different groups}
+\item{...}{Extra options passed to \code{\link[graphics]{plot.default}}. The
+\code{col} option determines the colors to use on observations of different
+groups.}
 }
 \value{
 None.

@@ -20,7 +20,7 @@
 #' @param lim_npcs Limit number of principal components used for MANOVA to
 #' minimum number of observations per group?
 #' @param mnv_test The name of the test statistic to be used in MANOVA, as
-#' described in \code{\link{summary.manova}}.
+#' described in \code{\link[stats]{summary.manova}}.
 #'
 #' @return  Object of class \code{cmpoutput} containing the following data:
 #' \describe{
@@ -56,14 +56,15 @@
 #'  }
 #'  \item{tests}{
 #'    \describe{
-#'      \item{manova}{Objects returned by the \code{\link{manova}} function for
-#'            each value specified in \code{ve_npcs}.}
+#'      \item{manova}{Objects returned by the \code{\link[stats]{manova}}
+#'            function for each value specified in \code{ve_npcs}.}
 #'      \item{parametric}{List of objects returned by applying
-#'            \code{\link{t.test}} (two groups) or \code{\link{aov}} (more than
-#'            two groups) to each principal component.}
+#'            \code{\link[stats]{t.test}} (two groups) or
+#'            \code{\link[stats]{aov}} (more than two groups) to each principal
+#'            component.}
 #'      \item{nonparametric}{List of objects returned by applying
-#'            \code{\link{wilcox.test}} (two groups) or
-#'            \code{\link{kruskal.test}} (more than two groups) to each
+#'            \code{\link[stats]{wilcox.test}} (two groups) or
+#'            \code{\link[stats]{kruskal.test}} (more than two groups) to each
 #'            principal component.}
 #'    }
 #'  }
@@ -95,7 +96,7 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
     stop("At least two levels are required to perform model comparison.")
 
   # Perform PCA
-  pca <- prcomp(data)
+  pca <- stats::prcomp(data)
 
   # Explained variances
   eig <- (pca$sdev) ^ 2
@@ -165,7 +166,7 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
     if (npcs[i] > 1) {
 
       # Can only use Manova with more than one dimension
-      mnvtest[[i]] <- manova(pca$x[, 1:npcs[i]] ~ obs_lvls)
+      mnvtest[[i]] <- stats::manova(pca$x[, 1:npcs[i]] ~ obs_lvls)
       mnvpval[i] <- summary(mnvtest[[i]], test = mnv_test)$stats[1, 6]
 
     } else {
@@ -195,11 +196,11 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
     for (i in 1:tpcs) {
 
       # Parametric test (t-test) for each PC
-      partests[[i]] <- t.test(pca$x[, i] ~ obs_lvls, var.equal = T)
+      partests[[i]] <- stats::t.test(pca$x[, i] ~ obs_lvls, var.equal = T)
       parpvals[i] <- partests[[i]]$p.value
 
       # Non-parametric test (Mann-Whitney) for each PC
-      nonpartests[[i]] <- wilcox.test(pca$x[, i] ~ obs_lvls)
+      nonpartests[[i]] <- stats::wilcox.test(pca$x[, i] ~ obs_lvls)
       nonparpvals[i] <- nonpartests[[i]]$p.value
 
     }
@@ -211,11 +212,11 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
     for (i in 1:tpcs) {
 
       # Parametric test (ANOVA) for each PC
-      partests[[i]] <- aov(pca$x[, i] ~ obs_lvls)
+      partests[[i]] <- stats::aov(pca$x[, i] ~ obs_lvls)
       parpvals[i] <- summary(partests[[i]])[[1]]$"Pr(>F)"[1]
 
       # Non-parametric test (Kruskal-Wallis) for each PC
-      nonpartests[[i]] <- kruskal.test(pca$x[, i] ~ obs_lvls)
+      nonpartests[[i]] <- stats::kruskal.test(pca$x[, i] ~ obs_lvls)
       nonparpvals[i] <- nonpartests[[i]]$p.value
 
     }
@@ -385,13 +386,15 @@ summary.cmpoutput <- function(object, ...) {
 #' }
 #'
 #' @param x Object of class \code{cmpoutput}.
-#' @param ... Extra options passed to \code{\link{plot.default}}. The \code{col}
-#' option determines the colors to use on observations of different groups
-#' (scatter plot only).
+#' @param ... Extra options passed to \code{\link[graphics]{plot.default}}. The
+#' \code{col} option determines the colors to use on observations of different
+#' groups (scatter plot only).
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #'
@@ -413,7 +416,7 @@ plot.cmpoutput <- function(x, ...) {
   }
 
   # Set mfrow graphical parameter to setup subplots
-  par(mfrow = c(3,2))
+  graphics::par(mfrow = c(3,2))
 
   # Total number of PCs
   tpcs <- length(x$varexp)
@@ -551,11 +554,11 @@ assumptions.cmpoutput <- function(obj) {
 #' parametric tests used for comparing an output.
 #'
 #' Several bar plots are presented, showing the \emph{p}-values yielded by the
-#' Shapiro-Wilk (\code{\link{shapiro.test}}) and Royston tests
+#' Shapiro-Wilk (\code{\link[stats]{shapiro.test}}) and Royston tests
 #' (\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
-#' respectively, and for the Bartlett (\code{\link{bartlett.test}}) and Box's M
-#' (\code{\link[biotools]{boxM}}) for testing homogeneity of variances and of
-#' covariance matrices, respectively. The following bar plots are shown:
+#' respectively, and for the Bartlett (\code{\link[stats]{bartlett.test}}) and
+#' Box's M (\code{\link[biotools]{boxM}}) for testing homogeneity of variances
+#' and of covariance matrices, respectively. The following bar plots are shown:
 #'
 #' \itemize{
 #'  \item One bar plot for the \emph{p}-values of the Bartlett test, one bar
@@ -574,11 +577,13 @@ assumptions.cmpoutput <- function(obj) {
 #' }
 #'
 #' @param x Objects of class \code{assumptions_cmpoutput}.
-#' @param ... Extra options passed to \code{\link{plot.default}}.
+#' @param ... Extra options passed to \code{\link[graphics]{plot.default}}.
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #'
@@ -596,7 +601,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
   # How many PCs did each MANOVA test?
   npcs <- sapply(x$manova,
                  function(y) {
-                   if (!is.null(y) && is(y$mvntest[[1]], "royston")) {
+                   if (!is.null(y) && methods::is(y$mvntest[[1]], "royston")) {
                      dim(y$mvntest[[1]]@dataframe)[2]
                    } else {
                      1
@@ -632,7 +637,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
   side_dim <- ceiling(sqrt(nplots))
 
   # Setup subplot layout
-  par(mfrow = c(side_dim, side_dim))
+  graphics::par(mfrow = c(side_dim, side_dim))
 
   # Plot univariate assumptions
   plot(x$ttest, ...)
@@ -662,7 +667,7 @@ plot.assumptions_cmpoutput <- function(x, ...) {
     params$names.arg <- npcs[npcs > 1]
     params$ylab <- "Probability"
     params$col <- pvalcol(mnvboxp, col)
-    do.call("barplot", params)
+    do.call(get("barplot", asNamespace("graphics")), params)
 
   }
 
@@ -752,7 +757,7 @@ summary.assumptions_cmpoutput <- function(object, ...) {
   # How many PCs did each MANOVA test?
   npcs <- sapply(object$manova,
                  function(y) {
-                   if (!is.null(y) && is(y$mvntest[[1]], "royston")) {
+                   if (!is.null(y) && methods::is(y$mvntest[[1]], "royston")) {
                      dim(y$mvntest[[1]]@dataframe)[2]
                    } else {
                      1

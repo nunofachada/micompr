@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{Object of class \code{grpoutputs}.}
 
-\item{...}{Extra options passed to \code{\link{plot.default}}.}
+\item{...}{Extra options passed to \code{\link[graphics]{plot.default}}.}
 }
 \value{
 None.

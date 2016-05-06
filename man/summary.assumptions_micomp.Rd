@@ -28,9 +28,9 @@ specifically, each matrix has rows with the following information:
        (\code{\link[biotools]{boxM}}).}
  \item{Shapiro-Wilk (\emph{group})}{One row per group, with the
        \emph{p}-value yielded by the Shapiro-Wilk test
-       (\code{\link{shapiro.test}}) for the respective group.}
+       (\code{\link[stats]{shapiro.test}}) for the respective group.}
  \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's test
-       (\code{\link{bartlett.test}}).}
+       (\code{\link[stats]{bartlett.test}}).}
 }
 }
 \description{

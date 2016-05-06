@@ -10,9 +10,9 @@ the MANOVA test}
 \arguments{
 \item{x}{Objects of class \code{\link{assumptions_manova}}.}
 
-\item{...}{Extra options passed to \code{\link{barplot}}. The \code{col}
-parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
-respectively.}
+\item{...}{Extra options passed to \code{\link[graphics]{barplot}}. The
+\code{col} parameter defines colors for \emph{p}-values below 1, 0.05 and
+0.01, respectively.}
 }
 \value{
 None.

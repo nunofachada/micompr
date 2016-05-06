@@ -7,12 +7,12 @@ Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
 Maintainer: Nuno Fachada <faken@fakenmc.com>
 Description: Compares multivariate observations in an independent fashion.
 Depends:
-    R (>= 3.0.0),
+    R (>= 3.2.0)
+Imports:
     utils,
     graphics,
     methods,
     stats
-Imports:
 Suggests:
     biotools,
     MVN,

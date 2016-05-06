@@ -55,9 +55,9 @@
 #' @param lim_npcs Limit number of principal components used for MANOVA to
 #' minimum number of observations per group?
 #' @param mnv_test The name of the test statistic to be used in MANOVA, as
-#' described in \code{\link{summary.manova}}.
-#' @param ... Options passed to \code{\link{read.table}}, which is used to read
-#' the files specified in lists using the first configuration in the
+#' described in \code{\link[stats]{summary.manova}}.
+#' @param ... Options passed to \code{\link[utils]{read.table}}, which is used
+#' to read the files specified in lists using the first configuration in the
 #' \code{comp} parameter.
 #'
 #' @return An object of class \code{micomp}, which is a two-dimensional
@@ -165,7 +165,7 @@ micomp <- function(
       # Second configuration: load data from environment variables
 
       # Is the object in the grpout field of class grpoutputs?
-      if (is(comps[[i]], "grpoutputs")) {
+      if (methods::is(comps[[i]], "grpoutputs")) {
 
         # Yes, so use it directly
         grpd_outputs[[i]] <- comps[[i]]
@@ -391,12 +391,15 @@ summary.micomp <- function(object, ...) {
 #' principal components space.
 #'
 #' @param x An object of class \code{\link{micomp}}.
-#' @param ... Extra options passed to \code{\link{plot.default}}. The \code{col}
-#' option determines the colors to use on observations of different groups
+#' @param ... Extra options passed to \code{\link[graphics]{plot.default}}. The
+#' \code{col} option determines the colors to use on observations of different
+#' groups.
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #'
@@ -422,7 +425,7 @@ plot.micomp <- function(x, ...) {
 
   # Layout of subplots
   m <- matrix(1:(nplots + ncomp), nrow = ncomp, ncol = nout + 1, byrow = T)
-  layout(mat = m)
+  graphics::layout(mat = m)
 
   for (i in 1:ncomp) {
 
@@ -432,8 +435,8 @@ plot.micomp <- function(x, ...) {
 
     # Set title and legend for current comparison
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-    text(1, 1, pos = 1, labels = paste("Comp. ", i))
-    legend("center", legend = unique(obs_lvls), fill = col, horiz = F)
+    graphics::text(1, 1, pos = 1, labels = paste("Comp. ", i))
+    graphics::legend("center", legend = unique(obs_lvls), fill = col, horiz = F)
 
     for (j in 1:nout) {
 
@@ -448,7 +451,7 @@ plot.micomp <- function(x, ...) {
       params$xlab <- paste("PC1 (", round(varexp[1] * 100, 2), "%)", sep = "")
       params$ylab <- paste("PC2 (", round(varexp[2] * 100, 2), "%)", sep = "")
       params$main <- x[[j, i]]$name
-      do.call("plot.default", params)
+      do.call(get("plot.default", asNamespace("graphics")), params)
 
     }
   }
@@ -550,11 +553,13 @@ print.assumptions_micomp <- function(x, ...) {
 #' the assumptions of the parametric tests.
 #'
 #' @param x Object of class \code{assumptions_micomp}.
-#' @param ... Extra options passed to \code{\link{barplot}}.
+#' @param ... Extra options passed to \code{\link[graphics]{barplot}}.
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #'
@@ -574,7 +579,7 @@ plot.assumptions_micomp <- function(x, ...) {
   sm <- summary(x)
 
   # Set layout for plots
-  par(mfcol = dim(x))
+  graphics::par(mfcol = dim(x))
 
   # Cycle through comparisons
   for (cmp in names(sm)) {
@@ -586,10 +591,10 @@ plot.assumptions_micomp <- function(x, ...) {
     for (out in colnames(sco)) {
 
       # Set margins
-      par(mar = c(2, 4, 2, 4))
+      graphics::par(mar = c(2, 4, 2, 4))
 
       # Get vector to plot, remove NAs
-      pvals <- na.omit(sco[, out])
+      pvals <- stats::na.omit(sco[, out])
 
       # Are any p-values left after filtering the NAs?
       if (length(pvals) > 0) {
@@ -603,13 +608,13 @@ plot.assumptions_micomp <- function(x, ...) {
         params$main <- paste(cmp, out)
         params$las <- 2
         params$horiz <- TRUE
-        do.call("barplot", params)
+        do.call(get("barplot", asNamespace("graphics")), params)
 
       } else {
 
         # No, place an empty plot in this spot
         plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-        title(main = paste(cmp, out))
+        graphics::title(main = paste(cmp, out))
 
       }
 
@@ -645,9 +650,9 @@ plot.assumptions_micomp <- function(x, ...) {
 #'        (\code{\link[biotools]{boxM}}).}
 #'  \item{Shapiro-Wilk (\emph{group})}{One row per group, with the
 #'        \emph{p}-value yielded by the Shapiro-Wilk test
-#'        (\code{\link{shapiro.test}}) for the respective group.}
+#'        (\code{\link[stats]{shapiro.test}}) for the respective group.}
 #'  \item{Bartlett}{One row with the \emph{p}-value yielded by Bartlett's test
-#'        (\code{\link{bartlett.test}}).}
+#'        (\code{\link[stats]{bartlett.test}}).}
 #' }
 #'
 #' @export
@@ -716,7 +721,7 @@ summary.assumptions_micomp <- function(object, ...) {
         smat[idx, ] <- sapply(object[, i], function(aco)
           if (length(aco$manova) >= j) {
             if (!is.null(aco$manova[[j]])) {
-              if (is(aco$manova[[j]]$mvntest[[k]], "royston")) {
+              if (methods::is(aco$manova[[j]]$mvntest[[k]], "royston")) {
                 aco$manova[[j]]$mvntest[[k]]@p.value
               } else { NA }
             } else { NA }

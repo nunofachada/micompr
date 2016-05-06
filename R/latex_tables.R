@@ -246,8 +246,8 @@ tscat_apply <- function(cmps, marks, tscale, before = "", after = "") {
 #' This method is inspired by the functionality provided by the \code{xtable}
 #' and \code{print.xtable} functions (from the
 #' \href{https://cran.r-project.org/package=xtable}{xtable}
-#' package), but follows the standard behavior of the \code{\link{toLatex}}
-#' generic.
+#' package), but follows the standard behavior of the
+#' \code{\link[utils]{toLatex}} generic.
 #'
 #' @param object A \code{\link{micomp}} object.
 #' @param ... Currently ignored.

@@ -10,9 +10,9 @@ in output comparison}
 \arguments{
 \item{x}{Objects of class \code{\link{assumptions_paruv}}.}
 
-\item{...}{Extra options passed to \code{\link{barplot}}. The \code{col}
-parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
-respectively.}
+\item{...}{Extra options passed to \code{\link[graphics]{barplot}}. The
+\code{col} parameter defines colors for \emph{p}-values below 1, 0.05 and
+0.01, respectively.}
 }
 \value{
 None.
@@ -24,11 +24,11 @@ used for comparing outputs.
 }
 \details{
 One bar plot is presented for the Bartlett test
-(\code{\link{bartlett.test}}), showing the respective \emph{p}-values along
-principal component. \emph{s} bar plots are presented for the Shapiro-Wilk
-(\code{\link{shapiro.test}}), where \emph{s} is the number of groups being
-compared; individual bars in each plot represent the \emph{p}-values
-associated with each principal component.
+(\code{\link[stats]{bartlett.test}}), showing the respective \emph{p}-values
+along principal component. \emph{s} bar plots are presented for the
+Shapiro-Wilk (\code{\link[stats]{shapiro.test}}), where \emph{s} is the
+number of groups being compared; individual bars in each plot represent the
+\emph{p}-values associated with each principal component.
 }
 \examples{
 

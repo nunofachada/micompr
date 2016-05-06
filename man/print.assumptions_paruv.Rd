@@ -18,8 +18,8 @@ methods.
 \description{
 Print information about objects of class \code{assumptions_paruv}, which
 represent the assumptions of the parametric test (i.e. either
-\code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
-outputs.
+\code{\link[stats]{t.test}} or \code{\link[stats]{aov}}) performed on a
+comparison of outputs.
 }
 \examples{
 

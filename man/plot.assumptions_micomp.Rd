@@ -10,7 +10,7 @@ in multiple output comparison}
 \arguments{
 \item{x}{Object of class \code{assumptions_micomp}.}
 
-\item{...}{Extra options passed to \code{\link{barplot}}.}
+\item{...}{Extra options passed to \code{\link[graphics]{barplot}}.}
 }
 \value{
 None.

@@ -19,7 +19,7 @@ recycled if \code{length(folders) < length(files)}.}
 
 \item{files}{Vector of filenames or file sets to load in each folder. File
 sets can be given as \link[=regex]{regular expressions}, or as wildcards by
-wrapping them with \code{\link{glob2rx}}.}
+wrapping them with \code{\link[utils]{glob2rx}}.}
 
 \item{lvls}{Vector of factor levels (groups). Must be the same length as
 \code{files}, i.e. each file set will be associated with a different level or
@@ -33,8 +33,8 @@ TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
 "vast", "pareto" or "level". Centering and scaling is performed by the
 \code{\link{centerscale}} function.}
 
-\item{...}{Options passed to \code{\link{read.table}}, which is used to read
-the files specified in the \code{files} parameter.}
+\item{...}{Options passed to \code{\link[utils]{read.table}}, which is used
+to read the files specified in the \code{files} parameter.}
 }
 \value{
 Object of class \code{grpoutputs} containing the following data:

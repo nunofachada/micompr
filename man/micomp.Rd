@@ -64,10 +64,10 @@ TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
 minimum number of observations per group?}
 
 \item{mnv_test}{The name of the test statistic to be used in MANOVA, as
-described in \code{\link{summary.manova}}.}
+described in \code{\link[stats]{summary.manova}}.}
 
-\item{...}{Options passed to \code{\link{read.table}}, which is used to read
-the files specified in lists using the first configuration in the
+\item{...}{Options passed to \code{\link[utils]{read.table}}, which is used
+to read the files specified in lists using the first configuration in the
 \code{comp} parameter.}
 }
 \value{

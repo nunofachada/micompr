@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{Object of class \code{cmpoutput}.}
 
-\item{...}{Extra options passed to \code{\link{plot.default}}. The \code{col}
-option determines the colors to use on observations of different groups
-(scatter plot only).}
+\item{...}{Extra options passed to \code{\link[graphics]{plot.default}}. The
+\code{col} option determines the colors to use on observations of different
+groups (scatter plot only).}
 }
 \value{
 None.

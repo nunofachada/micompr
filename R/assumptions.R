@@ -117,8 +117,9 @@ assumptions_manova <- function(data, factors) {
 #' Determine the assumptions for the parametric comparison test
 #'
 #' Determine two assumptions for the parametric comparison tests (i.e. either
-#' \code{\link{t.test}} or \code{\link{aov}}) for each principal component,
-#' namely: a) univariate normality of each group; b) homogeneity of variances.
+#' \code{\link[stats]{t.test}} or \code{\link[stats]{aov}}) for each principal
+#' component, namely: a) univariate normality of each group; b) homogeneity of
+#' variances.
 #'
 #' @param data Data used in the parametric test (rows correspond to
 #' observations, columns to principal components).
@@ -128,9 +129,10 @@ assumptions_manova <- function(data, factors) {
 #' containing two elements:
 #' \describe{
 #'  \item{\code{uvntest}}{List of results from the Shapiro-Wilk normality test
-#'  (\code{\link{shapiro.test}}), one result per group per principal component.}
+#'        (\code{\link[stats]{shapiro.test}}), one result per group per
+#'        principal component.}
 #'  \item{\code{vartest}}{Result of Bartlett test for homogeneity of variances
-#'        (\code{\link{bartlett.test}}).}
+#'        (\code{\link[stats]{bartlett.test}}).}
 #' }
 #'
 #' @export
@@ -168,11 +170,11 @@ assumptions_paruv <- function(data, factors) {
     # Perform univariate normality tests for each group for current variable
     for (f in unique(factors)) {
       if (!is.list(assumpt$uvntest[[f]])) assumpt$uvntest[[f]] <- list()
-      assumpt$uvntest[[f]][[d]] <- shapiro.test(currdata[factors == f])
+      assumpt$uvntest[[f]][[d]] <- stats::shapiro.test(currdata[factors == f])
     }
 
     # Perform the homogeneity of variances test for current variable
-    assumpt$vartest[[d]] <- bartlett.test(currdata ~ factors)
+    assumpt$vartest[[d]] <- stats::bartlett.test(currdata ~ factors)
 
   }
 
@@ -205,7 +207,7 @@ print.assumptions_manova <- function(x, ...) {
 
   cat("Royston test (Multivariate Normality):\n")
   for (grp in names(x$mvntest)) {
-    if (is(x$mvntest[[grp]], "royston")) {
+    if (methods::is(x$mvntest[[grp]], "royston")) {
       cat("\tP-value '", grp, "': ",
           x$mvntest[[grp]]@p.value, "\n", sep = "")
     } else {
@@ -222,8 +224,8 @@ print.assumptions_manova <- function(x, ...) {
 #'
 #' Print information about objects of class \code{assumptions_paruv}, which
 #' represent the assumptions of the parametric test (i.e. either
-#' \code{\link{t.test}} or \code{\link{aov}}) performed on a comparison of
-#' outputs.
+#' \code{\link[stats]{t.test}} or \code{\link[stats]{aov}}) performed on a
+#' comparison of outputs.
 #'
 #' @param x Object of class \code{assumptions_paruv}.
 #' @param ... Currently ignored.
@@ -279,13 +281,15 @@ print.assumptions_paruv <- function(x, ...) {
 #' being compared.
 #'
 #' @param x Objects of class \code{\link{assumptions_manova}}.
-#' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
-#' parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
-#' respectively.
+#' @param ... Extra options passed to \code{\link[graphics]{barplot}}. The
+#' \code{col} parameter defines colors for \emph{p}-values below 1, 0.05 and
+#' 0.01, respectively.
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #'
@@ -331,20 +335,22 @@ plot.assumptions_manova <- function(x, ...) {
 #' used for comparing outputs.
 #'
 #' One bar plot is presented for the Bartlett test
-#' (\code{\link{bartlett.test}}), showing the respective \emph{p}-values along
-#' principal component. \emph{s} bar plots are presented for the Shapiro-Wilk
-#' (\code{\link{shapiro.test}}), where \emph{s} is the number of groups being
-#' compared; individual bars in each plot represent the \emph{p}-values
-#' associated with each principal component.
+#' (\code{\link[stats]{bartlett.test}}), showing the respective \emph{p}-values
+#' along principal component. \emph{s} bar plots are presented for the
+#' Shapiro-Wilk (\code{\link[stats]{shapiro.test}}), where \emph{s} is the
+#' number of groups being compared; individual bars in each plot represent the
+#' \emph{p}-values associated with each principal component.
 #'
 #' @param x Objects of class \code{\link{assumptions_paruv}}.
-#' @param ... Extra options passed to \code{\link{barplot}}. The \code{col}
-#' parameter defines colors for \emph{p}-values below 1, 0.05 and 0.01,
-#' respectively.
+#' @param ... Extra options passed to \code{\link[graphics]{barplot}}. The
+#' \code{col} parameter defines colors for \emph{p}-values below 1, 0.05 and
+#' 0.01, respectively.
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #'

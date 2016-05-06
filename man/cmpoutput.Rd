@@ -28,7 +28,7 @@ output length).}
 minimum number of observations per group?}
 
 \item{mnv_test}{The name of the test statistic to be used in MANOVA, as
-described in \code{\link{summary.manova}}.}
+described in \code{\link[stats]{summary.manova}}.}
 }
 \value{
 Object of class \code{cmpoutput} containing the following data:
@@ -65,14 +65,15 @@ Object of class \code{cmpoutput} containing the following data:
  }
  \item{tests}{
    \describe{
-     \item{manova}{Objects returned by the \code{\link{manova}} function for
-           each value specified in \code{ve_npcs}.}
+     \item{manova}{Objects returned by the \code{\link[stats]{manova}}
+           function for each value specified in \code{ve_npcs}.}
      \item{parametric}{List of objects returned by applying
-           \code{\link{t.test}} (two groups) or \code{\link{aov}} (more than
-           two groups) to each principal component.}
+           \code{\link[stats]{t.test}} (two groups) or
+           \code{\link[stats]{aov}} (more than two groups) to each principal
+           component.}
      \item{nonparametric}{List of objects returned by applying
-           \code{\link{wilcox.test}} (two groups) or
-           \code{\link{kruskal.test}} (more than two groups) to each
+           \code{\link[stats]{wilcox.test}} (two groups) or
+           \code{\link[stats]{kruskal.test}} (more than two groups) to each
            principal component.}
    }
  }

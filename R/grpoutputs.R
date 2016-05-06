@@ -21,7 +21,7 @@
 #' recycled if \code{length(folders) < length(files)}.
 #' @param files Vector of filenames or file sets to load in each folder. File
 #' sets can be given as \link[=regex]{regular expressions}, or as wildcards by
-#' wrapping them with \code{\link{glob2rx}}.
+#' wrapping them with \code{\link[utils]{glob2rx}}.
 #' @param lvls Vector of factor levels (groups). Must be the same length as
 #' \code{files}, i.e. each file set will be associated with a different level or
 #' group. If not given, default group names will be used.
@@ -31,8 +31,8 @@
 #' TRUE. It can be one of "center", "auto", "range" (default), "iqrange",
 #' "vast", "pareto" or "level". Centering and scaling is performed by the
 #' \code{\link{centerscale}} function.
-#' @param ... Options passed to \code{\link{read.table}}, which is used to read
-#' the files specified in the \code{files} parameter.
+#' @param ... Options passed to \code{\link[utils]{read.table}}, which is used
+#' to read the files specified in the \code{files} parameter.
 #'
 #' @return Object of class \code{grpoutputs} containing the following data:
 #' \describe{
@@ -174,7 +174,7 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
       cfile <- file.path(folders[i], curr_files[j])
 
       # Read file data
-      tdata <- read.table(cfile, ...)
+      tdata <- utils::read.table(cfile, ...)
 
       # Check that the number of outputs specified by the user is not larger
       # than the number of outputs available
@@ -370,11 +370,13 @@ summary.grpoutputs <- function(object, ...) {
 #' This function can be very slow for a large number of observations.
 #'
 #' @param x Object of class \code{grpoutputs}.
-#' @param ... Extra options passed to \code{\link{plot.default}}.
+#' @param ... Extra options passed to \code{\link[graphics]{plot.default}}.
 #'
 #' @return None.
 #'
 #' @export
+#'
+#' @importFrom graphics plot
 #'
 #' @examples
 #' # Determine paths for the data folder containing outputs of different
@@ -455,7 +457,7 @@ plot.grpoutputs <- function(x, ...) {
   # Set layout and plot outputs  ===================================
 
   # Set layout
-  layout(m)
+  graphics::layout(m)
 
   # Plot each output separately
   for (i in 1:nout) {
@@ -468,26 +470,26 @@ plot.grpoutputs <- function(x, ...) {
     xlen <- length(x$data[[out]][1,])
 
     # Prepare plot
-    plot.default(0, xlim = c(0, xlen), ylim = c(ymin, ymax),
+    graphics::plot.default(0, xlim = c(0, xlen), ylim = c(ymin, ymax),
                  main = out, type = "n", ...)
 
     # Plot lines
     for (i in 1:length(x$obs_lvls)) {
-      lines(x$data[[out]][i,], col = col[unclass(x$obs_lvls)[i]])
+      graphics::lines(x$data[[out]][i,], col = col[unclass(x$obs_lvls)[i]])
     }
 
     # Include legend in plot?
     if (leginc) {
-      legend("top", legend = lvls, fill = col, horiz = T)
+      graphics::legend("top", legend = lvls, fill = col, horiz = T)
     }
 
   }
 
   # Plot legend in own subplot?
   if (!leginc) {
-    par(mar = rep(2, 4))
+    graphics::par(mar = rep(2, 4))
     plot(0, type = "n", axes = FALSE, xlab = "", ylab = "")
-    legend("top", legend = lvls, fill = col, horiz = T)
+    graphics::legend("top", legend = lvls, fill = col, horiz = T)
   }
 
   invisible(NULL)
