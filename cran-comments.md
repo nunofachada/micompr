@@ -11,7 +11,13 @@ There were no ERRORs, WARNINGs or NOTES.
 
 There are currently no downstream dependencies for this package.
 
-# Other
+# Changes after second submission
+
+* A more detailed description of the package has been placed in: a) the
+  "Description" field of the DESCRIPTION file; b) the summary of the README.md
+  file; and, c) the main documentation page (in file micompr.R).
+  
+# Changes after first submission
 
 * Namespace issues in previous submissions have been fixed.
 * CRAN URLs have been corrected.

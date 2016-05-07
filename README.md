@@ -1,8 +1,14 @@
 ### Summary
 
-_micompr_ is an [R] package for multivariate independent comparison of
-observations. It can, for example, compare two or more sets of time series in
-order to determine if they are statistically dissimilar.
+The _micompr_ [R] package implements a procedure for comparing multivariate
+samples associated with different groups. The procedure uses principal component
+analysis to convert multivariate observations into a set of linearly
+uncorrelated statistical measures, which are then compared using a number of
+statistical methods. This technique is independent of the distributional
+properties of samples and automatically selects features that best explain their
+differences, avoiding manual selection of specific points or summary statistics.
+The procedure is appropriate for comparing samples of time series, images,
+spectrometric measures or similar multivariate observations.
 
 ### How to install
 
@@ -16,7 +22,7 @@ The package has been submitted to [CRAN] and, if accepted, will be installable
 via the following instruction:
 
 ```R
-install.package("micompr")
+install.packages("micompr")
 ```
 
 ### Documentation
