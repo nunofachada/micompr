@@ -11,15 +11,26 @@ There were no ERRORs, WARNINGs or NOTES.
 
 There are currently no downstream dependencies for this package.
 
-# Changes after second submission
+## Other
+
+### Changes for fourth submission (2016-05-08)
+
+* Fix "Description" field in the DESCRIPTION file, i.e., remove "This package
+  implements" and focus on what it does.
+
+### Changes for third submission (2016-05-07)
 
 * A more detailed description of the package has been placed in: a) the
   "Description" field of the DESCRIPTION file; b) the summary of the README.md
   file; and, c) the main documentation page (in file micompr.R).
   
-# Changes after first submission
+### Changes for second submission (2016-05-06)
 
 * Namespace issues in previous submissions have been fixed.
 * CRAN URLs have been corrected.
 * Title in description is now in title case.
 * Tested on more OSes / R versions.
+
+### First submission (2016-05-05)
+
+* Issues with namespaces and CRAN URLs.

@@ -5,16 +5,15 @@ Date: 2016-05-06
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
-Description: This package implements a procedure for comparing multivariate
-    samples associated with different groups. The procedure uses principal
-    component analysis to convert multivariate observations into a set of
-    linearly uncorrelated statistical measures, which are then compared using a
-    number of statistical methods. This technique is independent of the
-    distributional properties of samples and automatically selects features that
-    best explain their differences, avoiding manual selection of specific points
-    or summary statistics. The procedure is appropriate for comparing samples of
-    time series, images, spectrometric measures or similar multivariate
-    observations.
+Description: A procedure for comparing multivariate samples associated with
+    different groups. It uses principal component analysis to convert
+    multivariate observations into a set of linearly uncorrelated statistical
+    measures, which are then compared using a number of statistical methods. The
+    procedure is independent of the distributional properties of samples and
+    automatically selects features that best explain their differences, avoiding
+    manual selection of specific points or summary statistics. It is appropriate
+    for comparing samples of time series, images, spectrometric measures or
+    similar multivariate observations.
 Depends:
     R (>= 3.2.0)
 Imports:
