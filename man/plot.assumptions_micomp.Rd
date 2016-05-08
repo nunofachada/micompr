@@ -26,7 +26,7 @@ combination, showing the several statistical tests employed to verify
 the assumptions of the parametric tests.
 }
 \examples{
-
+\donttest{
 # Create a micomp object, use provided dataset
 mic <- micomp(6, 0.65,
               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
@@ -36,6 +36,6 @@ mic <- micomp(6, 0.65,
 # Plot the p-values of the statistic tests evaluating the assumptions of the
 # comparisons performed in the mic object
 plot(assumptions(mic))
-
+}
 }
 

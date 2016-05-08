@@ -107,6 +107,7 @@ mic <- micomp(7, 0.8,
                         lvls = c("NLOK", "JEXDIFF"))),
               concat = TRUE)
 
+\donttest{
 # Create a micomp object from package datasets (i.e. grpoutputs objects)
 # directly
 
@@ -127,6 +128,6 @@ mic <- micomp(6, 0.5, list(
   list(name = "NLOKvsJEXDIFF",
        grpout = list(data = pphpc_diff$data,
                      obs_lvls = pphpc_diff$obs_lvls))))
-
+}
 }
 

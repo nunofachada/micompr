@@ -13,6 +13,10 @@ There are currently no downstream dependencies for this package.
 
 ## Other
 
+### Changes for fifth submission (2016-05-08)
+
+* Add \donttest to slower examples so they dont run in CRAN checks.
+
 ### Changes for fourth submission (2016-05-08)
 
 * Fix "Description" field in the DESCRIPTION file, i.e., remove "This package

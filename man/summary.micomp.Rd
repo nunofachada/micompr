@@ -43,11 +43,11 @@ Summary method for objects of class \code{\link{micomp}}.
 \examples{
 
 # A micomp object from package datasets (i.e. grpoutputs objects) directly
-
+\donttest{
 summary(micomp(5, 0.85,
                list(list(name = "CompEq", grpout = pphpc_ok),
                     list(name = "CompNoShuf", grpout = pphpc_noshuff),
                     list(name = "CompDiff", grpout = pphpc_diff))))
-
+}
 }
 

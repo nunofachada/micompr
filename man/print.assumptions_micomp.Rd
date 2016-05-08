@@ -22,7 +22,7 @@ represent the assumptions concerning the parametric tests performed on
 multiple comparisons of outputs.
 }
 \examples{
-
+\donttest{
 # Create a micomp object, use provided dataset
 mic <- micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.7,
               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
@@ -32,6 +32,6 @@ mic <- micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.7,
 # Print the results (p-values) of the statistic tests evaluating the
 # assumptions of the comparisons performed in the mic object
 assumptions(mic)
-
+}
 }
 

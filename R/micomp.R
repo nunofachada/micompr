@@ -95,6 +95,7 @@
 #'                         lvls = c("NLOK", "JEXDIFF"))),
 #'               concat = TRUE)
 #'
+#' \donttest{
 #' # Create a micomp object from package datasets (i.e. grpoutputs objects)
 #' # directly
 #'
@@ -115,7 +116,7 @@
 #'   list(name = "NLOKvsJEXDIFF",
 #'        grpout = list(data = pphpc_diff$data,
 #'                      obs_lvls = pphpc_diff$obs_lvls))))
-#'
+#' }
 micomp <- function(
   outputs, ve_npcs, comps, concat = F, centscal = "range", lim_npcs = TRUE,
   mnv_test = "Pillai", ...) {
@@ -241,14 +242,14 @@ micomp <- function(
 #' @export
 #'
 #' @examples
-#'
+#' \donttest{
 #' # A micomp object from package datasets (i.e. grpoutputs objects) directly
 #'
 #' micomp(c("outA", "outB", "outC", "outD"), 0.9,
 #'               list(list(name = "Comp1", grpout = pphpc_ok),
 #'                    list(name = "Comp2", grpout = pphpc_noshuff),
 #'                    list(name = "Comp3", grpout = pphpc_diff)))
-#'
+#' }
 print.micomp <- function(x, ...) {
 
   # Use summary to get the info to be printed
@@ -304,12 +305,12 @@ print.micomp <- function(x, ...) {
 #' @examples
 #'
 #' # A micomp object from package datasets (i.e. grpoutputs objects) directly
-#'
+#' \donttest{
 #' summary(micomp(5, 0.85,
 #'                list(list(name = "CompEq", grpout = pphpc_ok),
 #'                     list(name = "CompNoShuf", grpout = pphpc_noshuff),
 #'                     list(name = "CompDiff", grpout = pphpc_diff))))
-#'
+#' }
 summary.micomp <- function(object, ...) {
 
   dims <- dim(object)
@@ -402,12 +403,12 @@ summary.micomp <- function(object, ...) {
 #' @importFrom graphics plot
 #'
 #' @examples
-#'
+#' \donttest{
 #' plot(micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.95,
 #'             list(list(name = "I", grpout = pphpc_ok),
 #'                  list(name = "II", grpout = pphpc_noshuff),
 #'                  list(name = "III", grpout = pphpc_diff))))
-#'
+#' }
 plot.micomp <- function(x, ...) {
 
   # Was a color specified?
@@ -513,7 +514,7 @@ assumptions.micomp <- function(obj) {
 #' @export
 #'
 #' @examples
-#'
+#' \donttest{
 #' # Create a micomp object, use provided dataset
 #' mic <- micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.7,
 #'               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
@@ -523,7 +524,7 @@ assumptions.micomp <- function(obj) {
 #' # Print the results (p-values) of the statistic tests evaluating the
 #' # assumptions of the comparisons performed in the mic object
 #' assumptions(mic)
-#'
+#' }
 print.assumptions_micomp <- function(x, ...) {
 
   sm <- summary(x)
@@ -562,7 +563,7 @@ print.assumptions_micomp <- function(x, ...) {
 #' @importFrom graphics plot
 #'
 #' @examples
-#'
+#' \donttest{
 #' # Create a micomp object, use provided dataset
 #' mic <- micomp(6, 0.65,
 #'               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
@@ -572,7 +573,7 @@ print.assumptions_micomp <- function(x, ...) {
 #' # Plot the p-values of the statistic tests evaluating the assumptions of the
 #' # comparisons performed in the mic object
 #' plot(assumptions(mic))
-#'
+#' }
 plot.assumptions_micomp <- function(x, ...) {
 
   # Get the assumptions summary
@@ -658,7 +659,7 @@ plot.assumptions_micomp <- function(x, ...) {
 #' @export
 #'
 #' @examples
-#'
+#' \donttest{
 #' # Create a micomp object, use provided dataset
 #' mic <- micomp(5, c(0.7, 0.8, 0.9),
 #'               list(list(name = "NLOKvsJEXOK", grpout = pphpc_ok),
@@ -667,7 +668,7 @@ plot.assumptions_micomp <- function(x, ...) {
 #'
 #' # Get the assumptions summary
 #' sam <- summary(assumptions(mic))
-#'
+#' }
 summary.assumptions_micomp <- function(object, ...) {
 
   dims <- dim(object)

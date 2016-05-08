@@ -23,11 +23,11 @@ the projection of output observations on the first two dimensions of the
 principal components space.
 }
 \examples{
-
+\donttest{
 plot(micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.95,
             list(list(name = "I", grpout = pphpc_ok),
                  list(name = "II", grpout = pphpc_noshuff),
                  list(name = "III", grpout = pphpc_diff))))
-
+}
 }
 
