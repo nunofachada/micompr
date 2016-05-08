@@ -18,8 +18,8 @@ the [devtools] package):
 ```R
 devtools::install_github("fakenmc/micompr")
 ```
-The package has been submitted to [CRAN] and, if accepted, will be installable
-via the following instruction:
+A stable version of the package is available on [CRAN] and can be installed with
+the following instruction:
 
 ```R
 install.packages("micompr")

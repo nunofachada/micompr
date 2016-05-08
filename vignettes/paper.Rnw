@@ -146,7 +146,7 @@ While the procedure is most appropriate for comparing multivariate observations 
 
 \subsection{Overview}
 
-The \pkg{micompr} package for the R statistical computing environment implements the methodology proposed in Section \nameref{micompr:sec:theory}. Here we describe version 1.0.0 of the package, which is available at \url{https://cran.r-project.org/web/packages/micompr}. The development version is hosted at \url{https://github.com/fakenmc/micompr}. The package is covered by the MIT license.
+The \pkg{micompr} package for the R statistical computing environment implements the methodology proposed in Section \nameref{micompr:sec:theory}. Here we describe version 1.0.0 of the package, which is available at \url{https://cran.r-project.org/package=micompr}. The development version is hosted at \url{https://github.com/fakenmc/micompr}. The package is covered by the MIT license.
 
 The \pkg{micompr} package is built upon two functions, \code{cmpoutput} and \code{micomp}. The former compares two or more samples of multivariate observations collected from one output. The latter is used for comparing multiple outputs and/or comparing outputs in multiple contexts. \code{grpoutputs} is a helper function for loading data from two or more set of files and preparing the data to be processed by the \code{cmpoutput} and/or \code{micomp} functions. \code{assumptions} is a generic function for assessing the assumptions of the parametric tests used in sample comparisons.
 
