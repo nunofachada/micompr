@@ -191,7 +191,7 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
 
       # Make sure tdata is in matrix form even if it only has one output
       if (nout == 1) {
-        tdata <- matrix(tdata, ncol = nout)
+        tdata <- matrix(tdata[[1]], ncol = nout)
       }
 
       # Is this the first file to be opened?
