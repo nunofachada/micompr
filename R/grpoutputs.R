@@ -183,16 +183,9 @@ grpoutputs <- function(outputs, folders, files, lvls = NULL, concat = F,
                    "of outputs in file '", cfile, "'.", sep = ""))
       }
 
-      # If the user specified less outputs than those available in the file,
-      # discard extra outputs.
-      if (nout < dim(tdata)[2]) {
-        tdata <- tdata[, 1:nout]
-      }
-
-      # Make sure tdata is in matrix form even if it only has one output
-      if (nout == 1) {
-        tdata <- matrix(tdata[[1]], ncol = nout)
-      }
+      # Use only the number of specified outputs and normalize data into
+      # matrix format
+      tdata <- as.matrix(tdata[, 1:nout], ncol = nout, nrow = dim(tdata)[1])
 
       # Is this the first file to be opened?
       if (first) {

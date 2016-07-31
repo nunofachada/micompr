@@ -83,6 +83,14 @@ test_that("micomp constructs the expected objects", {
                  concat = F,
                  mnv_test = "Hotelling-Lawley")
 
+  # 4 - One output, one comparison
+  mic4 <- micomp(1, ve_npcs,
+                  list(
+                    list(name = "NLOKvsJEXOK",
+                         folders = c(dir_nl_ok, dir_jex_ok),
+                         files = c(files, files),
+                         lvls = c("NLOK", "JEXOK"))))
+
   ##### Start testing #####
 
   # Check object dimensions
@@ -90,6 +98,7 @@ test_that("micomp constructs the expected objects", {
   expect_equal(dim(mic1b), c(5, 1))
   expect_equal(dim(mic2), c(7, 3))
   expect_equal(dim(mic3), c(6, 3))
+  expect_equal(dim(mic4), c(1, 1))
 
   # Check object row names
   expect_equal(rownames(mic1a), outputs)
@@ -97,6 +106,7 @@ test_that("micomp constructs the expected objects", {
   expect_equal(rownames(mic2), outputs)
   expect_equal(rownames(mic3),
                c("out1", "out2", "out3", "out4", "out5", "out6"))
+  expect_equal(rownames(mic4), c("out1"))
 
   # Check object column names
   expect_equal(colnames(mic1a),
@@ -107,6 +117,7 @@ test_that("micomp constructs the expected objects", {
                c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
   expect_equal(colnames(mic3),
                c("NLOKvsJEXOK", "NLOKvsJEXNOSHUFF", "NLOKvsJEXDIFF"))
+  expect_equal(colnames(mic4), "NLOKvsJEXOK")
 
   # Check properties of sub-objects
   for (i in 1:dim(mic1a)[1]) {
