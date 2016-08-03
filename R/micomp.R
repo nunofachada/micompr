@@ -125,12 +125,18 @@ micomp <- function(
   ncomp <- length(comps)
   cmp_names <- vector(mode = "character", length = ncomp)
 
-  # Did the user specify output names? Or should we provide some default names?
-  if (length(outputs) == 1) {
-    nout <- outputs
-    outputs <- paste("out", 1:nout, sep = "")
+  # Did user specify output names or a number of outputs?
+  if ((length(outputs) == 1) && (is.numeric(outputs))) {
+
+    # User specified number of outputs, set default names
+    nout <- trunc(outputs)
+    outputs <- paste("out", 1:trunc(outputs), sep = "")
+
   } else {
+
+    # User specified output names, determine number of outputs
     nout <- length(outputs)
+
   }
 
   # List of grouped outputs for each comparison
