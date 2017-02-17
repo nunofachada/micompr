@@ -8,17 +8,17 @@ citEntry(entry = "Article",
                              as.person("Vitor V. Lopes"),
                              as.person("Rui C. Martins"),
                              as.person("Agostinho C. Rosa")),
-         journal      = "arXiv",
+         journal      = "The R Journal",
          year         = "2016",
-         # volume       = "...",
-         number       = "1603.06907",
-         # pages        = "...",
-         url = "http://arxiv.org/abs/1603.06907",
+         volume       = "8",
+         number       = "2",
+         pages        = "406--421",
+         url = "https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf",
 
   textVersion  =
   paste("N. Fachada, J. Rodrigues, V.V. Lopes, R.C. Martins, A.C. Rosa (2016).",
         "micompr: An R Package for Multivariate Independent Comparison of",
         "Observations.",
-        "arXiv, 1603.06907.",
-        "URL http://arxiv.org/abs/1603.06907.")
+        "The R Journal, 8(2):406–421",
+        "URL https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf.")
 )
