@@ -43,7 +43,7 @@ Additionally, the package contains two vignettes with a number of examples.
 
 * Fachada N, Rodrigues J, Lopes VV, Martins RC, Rosa AC. (2016) micompr: An R
 Package for Multivariate Independent Comparison of Observations. *The R Journal*
-8(2):406–421.
+8(2):405–420.
 https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf
 
 #### Theory
