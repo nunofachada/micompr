@@ -20,9 +20,6 @@ observations.
 \note{
 MIT License
 }
-\author{
-Nuno Fachada
-}
 \references{
 \href{http://arxiv.org/abs/1603.06907}{micompr: An R Package for
 Multivariate Independent Comparison of Observations}, arXiv preprint.
@@ -31,4 +28,6 @@ Multivariate Independent Comparison of Observations}, arXiv preprint.
 \code{\link{cmpoutput}}, \code{\link{micomp}},
 \code{\link{grpoutputs}}
 }
-
+\author{
+Nuno Fachada
+}

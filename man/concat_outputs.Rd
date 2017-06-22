@@ -40,4 +40,3 @@ out3 <- matrix(rnorm(1000, mean = -1000, sd = 10), nrow = 20)
 # 20 x 350
 outconcat <- concat_outputs(list(out1, out2, out3), "range")
 }
-

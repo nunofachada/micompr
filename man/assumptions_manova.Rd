@@ -39,4 +39,3 @@ This function requires the \code{MVN} and \code{biotools} packages.
 a <- assumptions_manova(iris[, 1:4], iris[, 5])
 
 }
-

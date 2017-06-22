@@ -30,4 +30,3 @@ cmp <- cmpoutput("All", 0.9, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls)
 acmp <- assumptions(cmp)
 
 }
-

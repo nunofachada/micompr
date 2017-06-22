@@ -35,4 +35,3 @@ go <-
  grpoutputs(c("o1", "o2"), c(dir_nl_ok, dir_jex_noshuff), c(files, files))
 
 }
-

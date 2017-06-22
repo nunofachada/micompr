@@ -27,4 +27,3 @@ Print information about objects of class \code{cmpoutput}.
 cmpoutput("WolfPop", 0.7, pphpc_diff$data[[5]], pphpc_diff$obs_lvls)
 
 }
-

@@ -26,4 +26,3 @@ micompr:::pst("a", "b", "c", c("a", "b", "c"))
 
 }
 \keyword{internal}
-

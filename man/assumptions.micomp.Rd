@@ -33,4 +33,3 @@ mic <- micomp(6, 0.8,
 a <- assumptions(mic)
 
 }
-

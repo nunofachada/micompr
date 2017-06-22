@@ -95,4 +95,3 @@ olvls <- factor(c(rep("A", 5), rep("B", 5)))
 cmp <- cmpoutput("Bogus", 0.7, data, olvls)
 
 }
-

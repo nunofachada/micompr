@@ -32,4 +32,3 @@ go <- grpoutputs(6, c(dir_nl_ok, dir_jex_diff), c(files, files))
 print(go)
 
 }
-

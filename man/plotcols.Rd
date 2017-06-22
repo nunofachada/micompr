@@ -18,4 +18,3 @@ micompr:::plotcols()
 
 }
 \keyword{internal}
-

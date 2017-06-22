@@ -41,4 +41,3 @@ This method produces four sub-plots, namely:
 plot(cmpoutput("All", 0.95, pphpc_ok$data[["All"]], pphpc_ok$obs_lvls))
 
 }
-

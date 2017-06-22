@@ -130,4 +130,3 @@ mic <- micomp(6, 0.5, list(
                      obs_lvls = pphpc_diff$obs_lvls))))
 }
 }
-

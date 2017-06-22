@@ -28,4 +28,3 @@ outputs.
 assumptions_manova(iris[, 1:4], iris[, 5])
 
 }
-

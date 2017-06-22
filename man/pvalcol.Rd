@@ -28,4 +28,3 @@ micompr:::pvalcol(c(0.06, 0.9, 0.0001, 0.3, 0.2, 0.02),
 
 }
 \keyword{internal}
-

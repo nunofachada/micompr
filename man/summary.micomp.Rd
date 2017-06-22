@@ -50,4 +50,3 @@ summary(micomp(5, 0.85,
                     list(name = "CompDiff", grpout = pphpc_diff))))
 }
 }
-

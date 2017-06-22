@@ -50,4 +50,3 @@ mic <- micomp(5, c(0.7, 0.8, 0.9),
 sam <- summary(assumptions(mic))
 }
 }
-

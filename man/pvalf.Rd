@@ -20,4 +20,3 @@ Generic function to format \emph{p}-values.
 \seealso{
 \code{\link{pvalf.default}}
 }
-

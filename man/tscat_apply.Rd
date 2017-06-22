@@ -34,4 +34,3 @@ This function is mainly to be used by the \code{\link{toLatex.micomp}}
 method.
 }
 \keyword{internal}
-

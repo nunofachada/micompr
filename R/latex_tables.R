@@ -84,7 +84,7 @@ pvalf.default <- function(pval, params = list()) {
     lim2val <- 0.05
   }
 
-  if (lim1val >= lim2val) {
+  if (lim1val > lim2val) {
     stop("lim1val must be lower than lim2val.")
   }
 

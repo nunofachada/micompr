@@ -80,4 +80,3 @@ go <- grpoutputs(7, c(dir_nl_ok, dir_jex_ok), c(files, files),
 go <- grpoutputs(c("a", "b", "c", "d", "e", "f"),
                  c(dir_nl_ok, dir_jex_ok), c(files, files))
 }
-

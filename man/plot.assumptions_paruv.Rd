@@ -40,4 +40,3 @@ plot(assumptions_paruv(iris[, 1:4], iris[, 5]))
 plot(assumptions_paruv(iris[, 1:4], iris[, 5]), log = "y")
 
 }
-

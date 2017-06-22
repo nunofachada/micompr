@@ -21,4 +21,3 @@ comparison of output observations.
 \code{\link{assumptions.cmpoutput}},
 \code{\link{assumptions.micomp}}
 }
-

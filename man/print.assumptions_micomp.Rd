@@ -34,4 +34,3 @@ mic <- micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.7,
 assumptions(mic)
 }
 }
-

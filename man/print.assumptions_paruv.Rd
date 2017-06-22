@@ -29,4 +29,3 @@ comparison of outputs.
 assumptions_paruv(iris[, 1:4], iris[, 5])
 
 }
-

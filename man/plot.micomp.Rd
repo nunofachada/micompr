@@ -30,4 +30,3 @@ plot(micomp(c("SheepPop", "WolfPop", "GrassQty"), 0.95,
                  list(name = "III", grpout = pphpc_diff))))
 }
 }
-

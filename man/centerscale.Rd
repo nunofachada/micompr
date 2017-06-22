@@ -60,4 +60,3 @@ Berg, R., Hoefsloot, H., Westerhuis, J., Smilde, A., and Werf, M.
 information content of metabolomics data. \emph{BMC Genomics} \bold{7}, 142.
 DOI: 10.1186/1471-2164-7-142
 }
-

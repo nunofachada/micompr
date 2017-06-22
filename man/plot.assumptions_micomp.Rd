@@ -38,4 +38,3 @@ mic <- micomp(6, 0.65,
 plot(assumptions(mic))
 }
 }
-

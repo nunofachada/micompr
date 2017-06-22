@@ -133,4 +133,3 @@ mic <- micomp(4, 0.8,
 toLatex(mic)
 
 }
-

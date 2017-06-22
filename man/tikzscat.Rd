@@ -43,4 +43,3 @@ tikzscat(rbind(c(1.5, 2), c(0.5, 1)), factor(c(1,2)),
          6)
 
 }
-

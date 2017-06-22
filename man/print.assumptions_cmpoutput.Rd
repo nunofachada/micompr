@@ -27,4 +27,3 @@ cmp <- cmpoutput("All", c(0.7, 0.8, 0.9),
                  pphpc_diff$data[["All"]], pphpc_diff$obs_lvls)
 
 }
-

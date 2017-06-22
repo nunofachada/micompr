@@ -37,4 +37,3 @@ cmp <-
 toLatex(cmp)
 
 }
-

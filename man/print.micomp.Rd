@@ -28,4 +28,3 @@ micomp(c("outA", "outB", "outC", "outD"), 0.9,
                    list(name = "Comp3", grpout = pphpc_diff)))
 }
 }
-

@@ -33,4 +33,3 @@ plot(assumptions_manova(iris[, 1:4], iris[, 5]))
 plot(assumptions_manova(iris[, 1:4], iris[, 5]), log = "y")
 
 }
-
