@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Nuno Fachada
+# Copyright (c) 2017 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 #' Concatenate strings without any separator characters
@@ -131,8 +131,8 @@ pvalf.default <- function(pval, params = list()) {
 #' @param marks Character vector determining how to draw the points in
 #' \code{TikZ}, for example: \code{
 #' c("mark=square*,mark options={color=red},mark size=0.8pt",
-#'   "mark=*,mark size=0.6pt",
-#'   "mark=o,mark size=0.7pt")}.
+#'   "mark=diamond*,mark options={color=black},mark size=1pt",
+#'   "mark=triangle*,mark options={color=green},mark size=1pt")}.
 #' @param tscale The \code{scale} property of the \code{TikZ} figure.
 #' @param axes_color Axes color (must be a \code{LaTeX}/\code{TikZ} color).
 #'
@@ -144,7 +144,7 @@ pvalf.default <- function(pval, params = list()) {
 #' @examples
 #' tikzscat(rbind(c(1.5, 2), c(0.5, 1)), factor(c(1,2)),
 #'          c("mark=square*,mark options={color=red},mark size=0.8pt",
-#'            "mark=*,mark size=0.6pt"),
+#'            "mark=diamond*,mark options={color=black},mark size=1pt"),
 #'          6)
 #'
 tikzscat <- function(data, obs_lvls, marks, tscale, axes_color = "gray") {
@@ -209,8 +209,8 @@ tikzscat <- function(data, obs_lvls, marks, tscale, axes_color = "gray") {
 #' @param marks Character vector determining how to draw the points in
 #' \code{TikZ}, for example: \code{
 #' c("mark=square*,mark options={color=red},mark size=0.8pt",
-#'   "mark=*,mark size=0.6pt",
-#'   "mark=o,mark size=0.7pt")}.
+#'   "mark=diamond*,mark options={color=black},mark size=0.6pt",
+#'   "mark=triangle*,mark options={color=green},mark size=0.7pt")}.
 #' @param tscale The \code{scale} property of the \code{TikZ} figure.
 #' @param before \code{LaTeX} code to paste before each \code{TikZ} figure.
 #' @param after \code{LaTeX} code to paste after each \code{TikZ} figure.
@@ -355,8 +355,8 @@ toLatex.micomp <- function(
   pvalf_params = list(),
   scoreplot_marks = c(
     "mark=square*,mark options={color=red},mark size=0.8pt",
-    "mark=*,mark size=0.6pt",
-    "mark=o,mark size=0.7pt"),
+    "mark=diamond*,mark options={color=black},mark size=1pt",
+    "mark=triangle*,mark options={color=green},mark size=1pt"),
   scoreplot_scale = 6,
   scoreplot_before = "\\raisebox{-.5\\height}{\\resizebox {1.2cm} {1.2cm} {",
   scoreplot_after = "}}") {

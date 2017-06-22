@@ -13,7 +13,9 @@
   caption = NULL, caption_cmd = "\\\\caption", label = NULL,
   col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
   scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
-  "mark=*,mark size=0.6pt", "mark=o,mark size=0.7pt"), scoreplot_scale = 6,
+  "mark=diamond*,mark options={color=black},mark size=1pt",
+  "mark=triangle*,mark options={color=green},mark size=1pt"),
+  scoreplot_scale = 6,
   scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
   scoreplot_after = "}}")
 }

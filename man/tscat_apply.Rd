@@ -12,8 +12,8 @@ tscat_apply(cmps, marks, tscale, before = "", after = "")
 \item{marks}{Character vector determining how to draw the points in
 \code{TikZ}, for example: \code{
 c("mark=square*,mark options={color=red},mark size=0.8pt",
-  "mark=*,mark size=0.6pt",
-  "mark=o,mark size=0.7pt")}.}
+  "mark=diamond*,mark options={color=black},mark size=0.6pt",
+  "mark=triangle*,mark options={color=green},mark size=0.7pt")}.}
 
 \item{tscale}{The \code{scale} property of the \code{TikZ} figure.}
 

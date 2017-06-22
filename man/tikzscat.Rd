@@ -15,8 +15,8 @@ number of observations or points to plot.}
 \item{marks}{Character vector determining how to draw the points in
 \code{TikZ}, for example: \code{
 c("mark=square*,mark options={color=red},mark size=0.8pt",
-  "mark=*,mark size=0.6pt",
-  "mark=o,mark size=0.7pt")}.}
+  "mark=diamond*,mark options={color=black},mark size=1pt",
+  "mark=triangle*,mark options={color=green},mark size=1pt")}.}
 
 \item{tscale}{The \code{scale} property of the \code{TikZ} figure.}
 
@@ -39,7 +39,7 @@ adequately, the final \code{LaTeX} document should load the \code{plotmarks}
 \examples{
 tikzscat(rbind(c(1.5, 2), c(0.5, 1)), factor(c(1,2)),
          c("mark=square*,mark options={color=red},mark size=0.8pt",
-           "mark=*,mark size=0.6pt"),
+           "mark=diamond*,mark options={color=black},mark size=1pt"),
          6)
 
 }
