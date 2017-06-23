@@ -1,3 +1,11 @@
+# micompr 1.0.2
+
+* LaTeX tables: make default score plots printable
+* LaTeX tables: allow equal lower p-value limits
+* Update citation
+* Update main package vignette in accordance to published article
+* Add support for automated testing and code coverage
+
 # micompr 1.0.1
 
 * Fix bug in grpoutputs when loading files with just one output
