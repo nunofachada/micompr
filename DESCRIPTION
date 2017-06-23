@@ -1,7 +1,7 @@
 Package: micompr
 Title: Multivariate Independent Comparison of Observations
-Version: 1.0.1.9002
-Date: 2017-07-22
+Version: 1.0.1.9003
+Date: 2017-07-23
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
@@ -24,9 +24,11 @@ Imports:
 Suggests:
     biotools,
     MVN,
+    deseasonalize,
     testthat (>= 0.8),
     knitr,
-    deseasonalize
+    roxygen2,
+    devtools
 License: MIT + file LICENSE
 URL: http://github.com/fakenmc/micompr
 BugReports: https://github.com/fakenmc/micompr/issues
