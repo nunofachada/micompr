@@ -1,0 +1,14 @@
+language: r
+sudo: false
+cache: packages
+
+r:
+  - oldrel
+  - release
+  - devel
+
+before_install:
+  - tlmgr install setspace booktabs multirow tabularx inputenc caption fontenc
+    booktabs multirow amsmath amsfonts amssymb color algorithm url ulem siunitx
+    hyphenat tikz pgfplots plotmarks authblk xspace geometry textpos natbib
+    abbrvnat fancyvrb alltt
