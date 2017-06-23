@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/fakenmc/micompr.svg?branch=master)](https://travis-ci.org/fakenmc/micompr)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/micompr)](https://CRAN.R-project.org/package=micompr)
+[![Rdoc](http://www.rdocumentation.org/badges/version/micompr)](http://www.rdocumentation.org/packages/micompr)
+
 ### Summary
 
 The _micompr_ [R] package implements a procedure for comparing multivariate
