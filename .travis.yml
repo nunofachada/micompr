@@ -2,10 +2,15 @@ language: r
 sudo: false
 cache: packages
 
-r:
-  - oldrel
-  - release
-  - devel
+#r:
+#  - oldrel
+#  - release
+#  - devel
 
 before_install:
   - tlmgr install hyphenat pgfplots textpos
+
+addons:
+  apt:
+    packages:
+      - tk-dev
