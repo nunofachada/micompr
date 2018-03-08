@@ -18,7 +18,7 @@ An object of class \code{assumptions_manova} which is a list
 containing two elements:
 \describe{
  \item{\code{mvntest}}{List of results from the Royston multivariate
-       normality test (\code{\link[MVN]{roystonTest}}), one result per
+       normality test (\code{\link[MVN]{mvn}}), one result per
        group.}
  \item{\code{vartest}}{Result of Box's M test for homogeneity of covariance
        matrices (\code{\link[biotools]{boxM}}).}

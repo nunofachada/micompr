@@ -23,7 +23,7 @@ parametric tests used for comparing an output.
 \details{
 Several bar plots are presented, showing the \emph{p}-values yielded by the
 Shapiro-Wilk (\code{\link[stats]{shapiro.test}}) and Royston tests
-(\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
+(\code{\link[MVN]{mvn}}) for univariate and multivariate normality,
 respectively, and for the Bartlett (\code{\link[stats]{bartlett.test}}) and
 Box's M (\code{\link[biotools]{boxM}}) for testing homogeneity of variances
 and of covariance matrices, respectively. The following bar plots are shown:

@@ -20,7 +20,7 @@ None.
 \description{
 Plot method for objects of class \code{\link{assumptions_manova}} which
 presents a bar plot containing the \emph{p}-values produced by the Royston
-multivariate normality test (\code{\link[MVN]{roystonTest}}) for each group
+multivariate normality test (\code{\link[MVN]{mvn}}) for each group
 being compared.
 }
 \examples{

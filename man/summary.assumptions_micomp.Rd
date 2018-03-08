@@ -21,7 +21,7 @@ specifically, each matrix has rows with the following information:
 \describe{
  \item{Royston (\emph{group}, \emph{ve=\%/npcs=})}{One row per group per
        variance to explain / number of PCs, with the \emph{p}-value yielded
-       by the Royston test (\code{\link[MVN]{roystonTest}}) for the
+       by the Royston test (\code{\link[MVN]{mvn}}) for the
        respective group and variance/npcs combination.}
  \item{Box's M (\emph{ve=\%/npcs=})}{One row per variance to explain with the
        \emph{p}-value yielded by Box's M test

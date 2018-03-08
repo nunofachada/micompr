@@ -650,7 +650,7 @@ plot.assumptions_micomp <- function(x, ...) {
 #' \describe{
 #'  \item{Royston (\emph{group}, \emph{ve=\%/npcs=})}{One row per group per
 #'        variance to explain / number of PCs, with the \emph{p}-value yielded
-#'        by the Royston test (\code{\link[MVN]{roystonTest}}) for the
+#'        by the Royston test (\code{\link[MVN]{mvn}}) for the
 #'        respective group and variance/npcs combination.}
 #'  \item{Box's M (\emph{ve=\%/npcs=})}{One row per variance to explain with the
 #'        \emph{p}-value yielded by Box's M test
@@ -728,8 +728,8 @@ summary.assumptions_micomp <- function(object, ...) {
         smat[idx, ] <- sapply(object[, i], function(aco)
           if (length(aco$manova) >= j) {
             if (!is.null(aco$manova[[j]])) {
-              if (methods::is(aco$manova[[j]]$mvntest[[k]], "royston")) {
-                aco$manova[[j]]$mvntest[[k]]@p.value
+              if (methods::is(aco$manova[[j]]$mvntest[[k]], "data.frame")) {
+                aco$manova[[j]]$mvntest[[k]]$`p value`
               } else { NA }
             } else { NA }
           } else { NA })

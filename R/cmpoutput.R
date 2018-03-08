@@ -555,7 +555,7 @@ assumptions.cmpoutput <- function(obj) {
 #'
 #' Several bar plots are presented, showing the \emph{p}-values yielded by the
 #' Shapiro-Wilk (\code{\link[stats]{shapiro.test}}) and Royston tests
-#' (\code{\link[MVN]{roystonTest}}) for univariate and multivariate normality,
+#' (\code{\link[MVN]{mvn}}) for univariate and multivariate normality,
 #' respectively, and for the Bartlett (\code{\link[stats]{bartlett.test}}) and
 #' Box's M (\code{\link[biotools]{boxM}}) for testing homogeneity of variances
 #' and of covariance matrices, respectively. The following bar plots are shown:
@@ -601,8 +601,8 @@ plot.assumptions_cmpoutput <- function(x, ...) {
   # How many PCs did each MANOVA test?
   npcs <- sapply(x$manova,
                  function(y) {
-                   if (!is.null(y) && methods::is(y$mvntest[[1]], "royston")) {
-                     dim(y$mvntest[[1]]@dataframe)[2]
+                   if (!is.null(y) && methods::is(y$mvntest[[1]], "data.frame")) {
+                     y$mvntest[[1]]$npcs
                    } else {
                      1
                    }
@@ -757,8 +757,8 @@ summary.assumptions_cmpoutput <- function(object, ...) {
   # How many PCs did each MANOVA test?
   npcs <- sapply(object$manova,
                  function(y) {
-                   if (!is.null(y) && methods::is(y$mvntest[[1]], "royston")) {
-                     dim(y$mvntest[[1]]@dataframe)[2]
+                   if (!is.null(y) && methods::is(y$mvntest[[1]], "data.frame")) {
+                     y$mvntest[[1]]$npcs
                    } else {
                      1
                    }
@@ -775,7 +775,7 @@ summary.assumptions_cmpoutput <- function(object, ...) {
     mvpvals <- sapply(mnvmv,
                       function(mnv) {
                         npv <- sapply(mnv$mvntest,
-                                      function(roy) roy@p.value)
+                                      function(roy) roy$`p value`)
                         pv <- c(npv, mnv$vartest$p.value)
                         names(pv) <-
                           c(paste0("Royston (", names(mnv$mvntest), ")"),
