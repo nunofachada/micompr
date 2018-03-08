@@ -83,14 +83,15 @@ assumptions_manova <- function(data, factors) {
       if (nobs > nvars) {
 
         assumpt$mvntest[[f]] <-
-          MVN::roystonTest(data[fidx, ])
+          MVN::mvn(data[fidx, ], mvnTest = "royston")$multivariateNormality
 
       } else {
 
         # If there are no more observations than variables for current group,
         # then perform test with less variables and warn the user
         assumpt$mvntest[[f]] <-
-          MVN::roystonTest(data[fidx, 1:min(nobs - 1, nvars)])
+          MVN::mvn(data[fidx, 1:min(nobs - 1, nvars)],
+                   mvnTest = "royston")$multivariateNormality
         warning(paste("Royston test requires more observations than ",
                       "(dependent) variables (DVs). Reducing number of ",
                       "variables from ", nvars, " to ", nobs - 1," in group '",

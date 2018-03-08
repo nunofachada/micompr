@@ -26,7 +26,7 @@ test_that("assumptions_manova constructs the expected objects", {
 
     expect_is(amnv, "assumptions_manova")
     for (rt in amnv$mvntest) {
-      expect_is(rt, "royston")
+      expect_is(rt, "data.frame")
     }
     expect_is(amnv$vartest, "boxM")
 
