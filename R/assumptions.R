@@ -32,7 +32,7 @@ assumptions <- function(obj) UseMethod("assumptions")
 #' containing two elements:
 #' \describe{
 #'  \item{\code{mvntest}}{List of results from the Royston multivariate
-#'        normality test (\code{\link[MVN]{roystonTest}}), one result per
+#'        normality test (\code{\link[MVN]{mvn}}), one result per
 #'        group.}
 #'  \item{\code{vartest}}{Result of Box's M test for homogeneity of covariance
 #'        matrices (\code{\link[biotools]{boxM}}).}
@@ -85,6 +85,9 @@ assumptions_manova <- function(data, factors) {
         assumpt$mvntest[[f]] <-
           MVN::mvn(data[fidx, ], mvnTest = "royston")$multivariateNormality
 
+        # Keep reference of how many PCs (variables) were used for this test
+        assumpt$mvntest[[f]]$npcs <- nvars
+
       } else {
 
         # If there are no more observations than variables for current group,
@@ -96,6 +99,10 @@ assumptions_manova <- function(data, factors) {
                       "(dependent) variables (DVs). Reducing number of ",
                       "variables from ", nvars, " to ", nobs - 1," in group '",
                       f, "'.", sep = ""), call. = F)
+
+        # Keep reference of how many PCs (variables) were used for this test
+        assumpt$mvntest[[f]]$npcs <- nobs - 1
+
       }
     } else {
 
@@ -208,9 +215,9 @@ print.assumptions_manova <- function(x, ...) {
 
   cat("Royston test (Multivariate Normality):\n")
   for (grp in names(x$mvntest)) {
-    if (methods::is(x$mvntest[[grp]], "royston")) {
+    if (methods::is(x$mvntest[[grp]], "data.frame")) {
       cat("\tP-value '", grp, "': ",
-          x$mvntest[[grp]]@p.value, "\n", sep = "")
+          x$mvntest[[grp]]$`p value`, "\n", sep = "")
     } else {
       cat("\tTest not performed.\n")
     }
@@ -313,12 +320,12 @@ plot.assumptions_manova <- function(x, ...) {
   }
 
   # Get the p-values to plot
-  pvals <- sapply(x$mvntest, function(x) x@p.value)
+  pvals <- sapply(x$mvntest, function(x) x$`p value`)
 
   # Plot the p-values in a bar plot
   params$height <- pvals
   params$main <- sprintf("Royston test p-values (%d PCs)",
-                         dim(x$mvntest[[1]]@dataframe)[2])
+                         x$mvntest[[1]]$npcs)
   params$sub <- "Multivariate normality"
   params$xlab <- "Groups"
   params$ylab <- "Probability"
