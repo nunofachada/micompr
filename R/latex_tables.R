@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Nuno Fachada
+# Copyright (c) 2017-2018 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 #' Concatenate strings without any separator characters

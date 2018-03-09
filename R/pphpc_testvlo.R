@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Nuno Fachada
+# Copyright (c) 2016-2018 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 #' Data for testing variable length outputs
@@ -12,7 +12,7 @@
 #'
 #' @source Runs are obtained from the NetLogo and Java (EX with 8 threads)
 #' implementations of the PPHPC model available at
-#' \url{https://github.com/FakenMC/pphpc}.
+#' \url{https://github.com/fakenmc/pphpc}.
 #'
 #' @keywords internal
 #'

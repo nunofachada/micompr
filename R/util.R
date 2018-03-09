@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Nuno Fachada
+# Copyright (c) 2016-2018 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 #' Associate colors to \emph{p}-values

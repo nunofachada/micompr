@@ -11,7 +11,7 @@ to the concatenation of the six outputs}
 \source{
 Runs are obtained from the NetLogo and Java (EX with 8 threads)
 implementations of the PPHPC model available at
-\url{https://github.com/FakenMC/pphpc}.
+\url{https://github.com/fakenmc/pphpc}.
 }
 \usage{
 pphpc_testvlo

@@ -1,3 +1,7 @@
+# micompr 1.1.0
+
+* Update micompr to conform with new version of upstream package MVN
+
 # micompr 1.0.2
 
 * LaTeX tables: make default score plots printable

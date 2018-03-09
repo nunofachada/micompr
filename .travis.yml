@@ -17,6 +17,8 @@ addons:
     packages:
       - tk-dev
       - bwidget
+      - ghostscript
+      - libnlopt-dev
 
 r_github_packages:
   - jimhester/covr
