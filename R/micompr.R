@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Nuno Fachada
+# Copyright (c) 2016-2018 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 #' micompr: multivariate independent comparison of observations
@@ -14,8 +14,10 @@
 #' time series, images, spectrometric measures or similar multivariate
 #' observations.
 #'
-#' @references \href{http://arxiv.org/abs/1603.06907}{micompr: An R Package for
-#' Multivariate Independent Comparison of Observations}, arXiv preprint.
+#' @references \href{https://journal.r-project.org/archive/2016/RJ-2016-055/index.html}{
+#' micompr: An R Package for Multivariate Independent Comparison of
+#' Observations}, Nuno Fachada, João Rodrigues, Vitor V. Lopes, Rui C. Martins
+#' and Agostinho C. Rosa , The R Journal (2016) 8:2, pages 405-420.
 #'
 #' @author Nuno Fachada
 #'

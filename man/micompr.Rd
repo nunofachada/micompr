@@ -21,8 +21,10 @@ observations.
 MIT License
 }
 \references{
-\href{http://arxiv.org/abs/1603.06907}{micompr: An R Package for
-Multivariate Independent Comparison of Observations}, arXiv preprint.
+\href{https://journal.r-project.org/archive/2016/RJ-2016-055/index.html}{
+micompr: An R Package for Multivariate Independent Comparison of
+Observations}, Nuno Fachada, João Rodrigues, Vitor V. Lopes, Rui C. Martins
+and Agostinho C. Rosa , The R Journal (2016) 8:2, pages 405-420.
 }
 \seealso{
 \code{\link{cmpoutput}}, \code{\link{micomp}},
