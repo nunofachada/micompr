@@ -1,5 +1,9 @@
 # micompr 1.1.0
 
+* Update micompr to conform with version 5.9 of upstream package MVN
+
+# micompr 1.1.0
+
 * Update micompr to conform with new version of upstream package MVN
 
 # micompr 1.0.2
