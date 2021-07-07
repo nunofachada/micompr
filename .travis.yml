@@ -10,6 +10,10 @@ r:
 services:
   - xvfb
 
+before_install:
+  - tlmgr option repository ctan
+  - tlmgr install hyphenat pgfplots textpos
+
 addons:
   apt:
     packages:
