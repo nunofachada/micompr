@@ -10,9 +10,6 @@ r:
 services:
   - xvfb
 
-before_install:
-  - tlmgr install hyphenat pgfplots textpos
-
 addons:
   apt:
     packages:
