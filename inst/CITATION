@@ -13,12 +13,13 @@ citEntry(entry = "Article",
          volume       = "8",
          number       = "2",
          pages        = "405--420",
-         url = "https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf",
+         doi = "10.32614/RJ-2016-055",
+         url = "https://journal.r-project.org/archive/2016/RJ-2016-055/index.html",
 
   textVersion  =
   paste("N. Fachada, J. Rodrigues, V.V. Lopes, R.C. Martins, A.C. Rosa (2016).",
         "micompr: An R Package for Multivariate Independent Comparison of",
         "Observations.",
         "The R Journal, 8(2):405–420",
-        "URL https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf.")
+        "URL https://journal.r-project.org/archive/2016/RJ-2016-055/index.html.")
 )
