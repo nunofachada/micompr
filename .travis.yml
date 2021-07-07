@@ -12,6 +12,7 @@ services:
 
 before_install:
   - tlmgr option repository ctan
+  - tlmgr update --self
   - tlmgr install hyphenat pgfplots textpos
 
 addons:
