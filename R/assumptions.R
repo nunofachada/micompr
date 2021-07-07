@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Nuno Fachada
+# Copyright (c) 2016-2021 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 #' Parametric tests assumptions
@@ -83,7 +83,8 @@ assumptions_manova <- function(data, factors) {
       if (nobs > nvars) {
 
         assumpt$mvntest[[f]] <-
-          MVN::mvn(data[fidx, ], mvnTest = "royston")$multivariateNormality
+          MVN::mvn(data[fidx, ], mvnTest = "royston",
+                   univariateTest = "SW")$multivariateNormality
 
         # Keep reference of how many PCs (variables) were used for this test
         assumpt$mvntest[[f]]$npcs <- nvars
@@ -94,7 +95,8 @@ assumptions_manova <- function(data, factors) {
         # then perform test with less variables and warn the user
         assumpt$mvntest[[f]] <-
           MVN::mvn(data[fidx, 1:min(nobs - 1, nvars)],
-                   mvnTest = "royston")$multivariateNormality
+                   mvnTest = "royston",
+                   univariateTest = "SW")$multivariateNormality
         warning(paste("Royston test requires more observations than ",
                       "(dependent) variables (DVs). Reducing number of ",
                       "variables from ", nvars, " to ", nobs - 1," in group '",

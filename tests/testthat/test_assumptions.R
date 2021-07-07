@@ -65,8 +65,6 @@ test_that("assumptions_manova throws the expected warnings", {
     expect_warning(assumptions_manova(bogus_data, factors),
                    "Royston test requires more observations than (dependent)",
                    fixed = TRUE)
-
-
   }
 
 })
