@@ -3,7 +3,8 @@ Title: Multivariate Independent Comparison of Observations
 Version: 1.1.1
 Date: 2021-07-07
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
-                  role = c("aut", "cre"))
+                  role = c("aut", "cre"),
+                  comment = c(ORCID = "0000-0002-8487-5837"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
 Description: A procedure for comparing multivariate samples associated with
     different groups. It uses principal component analysis to convert
