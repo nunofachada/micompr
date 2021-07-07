@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/fakenmc/micompr.svg?branch=master)](https://travis-ci.org/fakenmc/micompr)
 [![codecov](https://codecov.io/gh/fakenmc/micompr/branch/master/graph/badge.svg)](https://codecov.io/gh/fakenmc/micompr)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/micompr)](https://CRAN.R-project.org/package=micompr)
-[![Rdoc](http://www.rdocumentation.org/badges/version/micompr)](http://www.rdocumentation.org/packages/micompr)
+![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/micompr)
 
 ### Summary
 
