@@ -1,11 +1,10 @@
 language: r
-sudo: false
-cache: packages
+dist: focal
 
-r:
-  - oldrel
-  - release
-  - devel
+#r:
+#  - release
+#  - oldrel
+#  - devel
 
 services:
   - xvfb
