@@ -1,7 +1,7 @@
 Package: micompr
 Title: Multivariate Independent Comparison of Observations
-Version: 1.1.0
-Date: 2018-03-09
+Version: 1.1.1
+Date: 2021-07-07
 Authors@R: person("Nuno", "Fachada", email = "faken@fakenmc.com",
                   role = c("aut", "cre"))
 Maintainer: Nuno Fachada <faken@fakenmc.com>
@@ -15,7 +15,7 @@ Description: A procedure for comparing multivariate samples associated with
     for comparing samples of time series, images, spectrometric measures or
     similar multivariate observations.
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.5.0)
 Imports:
     utils,
     graphics,
@@ -35,4 +35,4 @@ BugReports: https://github.com/fakenmc/micompr/issues
 LazyData: true
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1
