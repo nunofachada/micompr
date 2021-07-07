@@ -4,8 +4,7 @@
 \alias{cmpoutput}
 \title{Compares output observations from two or more groups}
 \usage{
-cmpoutput(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
-  mnv_test = "Pillai")
+cmpoutput(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE, mnv_test = "Pillai")
 }
 \arguments{
 \item{name}{Comparison name (useful when calling this function to perform

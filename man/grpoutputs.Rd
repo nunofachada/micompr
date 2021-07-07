@@ -4,8 +4,15 @@
 \alias{grpoutputs}
 \title{Load and group outputs from files}
 \usage{
-grpoutputs(outputs, folders, files, lvls = NULL, concat = F,
-  centscal = "range", ...)
+grpoutputs(
+  outputs,
+  folders,
+  files,
+  lvls = NULL,
+  concat = F,
+  centscal = "range",
+  ...
+)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with

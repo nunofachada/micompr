@@ -3,7 +3,6 @@
 \docType{package}
 \name{micompr}
 \alias{micompr}
-\alias{micompr-package}
 \title{micompr: multivariate independent comparison of observations}
 \description{
 The micompr R package implements a procedure for comparing multivariate

@@ -4,8 +4,16 @@
 \alias{micomp}
 \title{Multiple independent comparisons of observations}
 \usage{
-micomp(outputs, ve_npcs, comps, concat = F, centscal = "range",
-  lim_npcs = TRUE, mnv_test = "Pillai", ...)
+micomp(
+  outputs,
+  ve_npcs,
+  comps,
+  concat = F,
+  centscal = "range",
+  lim_npcs = TRUE,
+  mnv_test = "Pillai",
+  ...
+)
 }
 \arguments{
 \item{outputs}{A vector with the labels of each output, or an integer with

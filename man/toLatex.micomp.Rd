@@ -4,20 +4,35 @@
 \alias{toLatex.micomp}
 \title{Convert \code{micomp} object to \code{LaTeX} table}
 \usage{
-\method{toLatex}{micomp}(object, ..., orientation = T,
+\method{toLatex}{micomp}(
+  object,
+  ...,
+  orientation = T,
   data_show = c("npcs-1", "mnvp-1", "parp-1", "nparp-1", "scoreplot"),
-  data_labels = NULL, labels_cmp_show = T, labels_col_show = T,
-  label_row_show = T, tag_comp = "Comp.", tag_data = "Data",
-  tag_outputs = "Outputs", table_placement = "ht",
-  latex_envs = c("center"), booktabs = F, booktabs_cmalign = "l",
-  caption = NULL, caption_cmd = "\\\\caption", label = NULL,
-  col_width = F, pvalf_f = pvalf.default, pvalf_params = list(),
+  data_labels = NULL,
+  labels_cmp_show = T,
+  labels_col_show = T,
+  label_row_show = T,
+  tag_comp = "Comp.",
+  tag_data = "Data",
+  tag_outputs = "Outputs",
+  table_placement = "ht",
+  latex_envs = c("center"),
+  booktabs = F,
+  booktabs_cmalign = "l",
+  caption = NULL,
+  caption_cmd = "\\\\caption",
+  label = NULL,
+  col_width = F,
+  pvalf_f = pvalf.default,
+  pvalf_params = list(),
   scoreplot_marks = c("mark=square*,mark options={color=red},mark size=0.8pt",
-  "mark=diamond*,mark options={color=black},mark size=1pt",
-  "mark=triangle*,mark options={color=green},mark size=1pt"),
+    "mark=diamond*,mark options={color=black},mark size=1pt",
+    "mark=triangle*,mark options={color=green},mark size=1pt"),
   scoreplot_scale = 6,
   scoreplot_before = "\\\\raisebox{-.5\\\\height}{\\\\resizebox {1.2cm} {1.2cm} {",
-  scoreplot_after = "}}")
+  scoreplot_after = "}}"
+)
 }
 \arguments{
 \item{object}{A \code{\link{micomp}} object.}
