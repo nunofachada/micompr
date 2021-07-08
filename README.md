@@ -48,15 +48,14 @@ Additionally, the package contains two vignettes with a number of examples.
 
 * Fachada N, Rodrigues J, Lopes VV, Martins RC, Rosa AC. (2016) micompr: An R
 Package for Multivariate Independent Comparison of Observations. *The R Journal*
-8(2):405–420.
-https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf
+8(2):405–420. https://doi.org/10.32614/RJ-2016-055
 
 #### Theory
 
 * Fachada N, Lopes VV, Martins RC, Rosa AC. (2017)
 Model-independent comparison of simulation output. *Simulation Modelling
-Practice and Theory*. 72:131–149. http://dx.doi.org/10.1016/j.simpat.2016.12.013
-([arXiv preprint](http://arxiv.org/abs/1509.09174))
+Practice and Theory*. 72:131–149. https://doi.org/10.1016/j.simpat.2016.12.013
+([arXiv preprint](https://arxiv.org/abs/1509.09174))
 
 ### License
 

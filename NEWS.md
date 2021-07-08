@@ -1,6 +1,7 @@
-# micompr 1.1.0
+# micompr 1.1.1
 
 * Update micompr to conform with version 5.9 of upstream package MVN
+* Update citation and citation links
 
 # micompr 1.1.0
 

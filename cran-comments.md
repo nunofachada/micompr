@@ -17,6 +17,6 @@ There are currently no downstream dependencies for this package.
 
 ## Other
 
-* First submission attempt for version 1.1.1
+* Second submission attempt for version 1.1.1
 * List of changes in NEWS.md (update to conform with new version of upstream
-  package)
+  package, small documentation updates)
