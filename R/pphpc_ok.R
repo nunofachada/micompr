@@ -13,6 +13,6 @@
 #'
 #' @source Runs are obtained from the NetLogo and Java (EX with 8 threads)
 #' implementations of the PPHPC model available at
-#' \url{https://github.com/fakenmc/pphpc}. The \code{config400v1.txt}
+#' \url{https://github.com/nunofachada/pphpc}. The \code{config400v1.txt}
 #' configuration was used in both cases.
 "pphpc_ok"

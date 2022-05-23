@@ -72,7 +72,7 @@
 \date{}
 
 \begin{textblock*}{202mm}(3mm,3mm)
-\noindent The peer-reviewed version of this vignette is published in The R Journal (\url{https://journal.r-project.org/archive/2016-2/fachada-rodrigues-lopes-etal.pdf}). This version is typeset by the authors and differs only in pagination and typographical detail.
+\noindent The peer-reviewed version of this vignette is published in The R Journal (\url{https://doi.org/10.32614/RJ-2016-055}). This version is typeset by the authors and differs only in pagination and typographical detail.
 \end{textblock*}
 
 \title{\pkg{micompr}: An R Package for Multivariate Independent Comparison of Observations}
@@ -135,7 +135,7 @@ While the procedure is most appropriate for comparing multivariate observations 
 
 \subsection{Overview}
 
-The \pkg{micompr} package for the R statistical computing environment implements the methodology proposed in Section \nameref{micompr:sec:theory}. Here we describe version 1.0.2 of the package, which is available at \url{https://cran.r-project.org/package=micompr}. The development version is hosted at \url{https://github.com/fakenmc/micompr}. The package is covered by the MIT license.
+The \pkg{micompr} package for the R statistical computing environment implements the methodology proposed in Section \nameref{micompr:sec:theory}. Here we describe version 1.1.2 of the package, which is available at \url{https://cran.r-project.org/package=micompr}. The development version is hosted at \url{https://github.com/nunofachada/micompr}. The package is covered by the MIT license.
 
 The \pkg{micompr} package is built upon two functions, \code{cmpoutput} and \code{micomp}. The former compares two or more samples of multivariate observations collected from one output. The latter is used for comparing multiple outputs and/or comparing outputs in multiple contexts. \code{grpoutputs} is a helper function for loading data from two or more set of files and preparing the data to be processed by the \code{cmpoutput} and/or \code{micomp} functions. \code{assumptions} is a generic function for assessing the assumptions of the parametric tests used in sample comparisons.
 
@@ -189,11 +189,11 @@ The package includes test data produced by several implementations of the Predat
 
 \subsection{Dependencies}
 
-\pkg{micompr} has a number of optional dependencies, not required for package installation and for using most of its functionality. The \CRANpkg{biotools} \citep{silva2015biotools} and \CRANpkg{MVN} \citep{korkmaz2014mvn} packages are required by the \code{assumptions} functions, providing the statistical tests for assessing MANOVA and $t$-test assumptions. If these functions are invoked without the presence of the specified packages, they will inform the user of that fact, and terminate cleanly. The \CRANpkg{testthat} \citep{wickham2011testthat}, \CRANpkg{knitr} \citep{xie2015dynamic} and \CRANpkg{roxygen2} \citep{wickham2015roxygen2} packages are required for package development. The \CRANpkg{deseasonalize} package \citep{mcleod2013optimal} is required for building one of the vignettes.
+\pkg{micompr} has a number of optional dependencies, not required for package installation and for using most of its functionality. The \CRANpkg{biotools} \citep{silva2015biotools} and \CRANpkg{MVN} \citep{korkmaz2014mvn} packages are required by the \code{assumptions} functions, providing the statistical tests for assessing MANOVA and $t$-test assumptions. If these functions are invoked without the presence of the specified packages, they will inform the user of that fact, and terminate cleanly. The \CRANpkg{testthat} \citep{wickham2011testthat}, \CRANpkg{knitr} \citep{xie2015dynamic} and \CRANpkg{roxygen2} \citep{wickham2015roxygen2} packages are required for package development. The \pkg{deseasonalize} package \citep{mcleod2013optimal} is required for building one of the vignettes\footnote{The \pkg{deseasonalize} package \citep{mcleod2013optimal} has since been removed from CRAN, therefore the respective examples have been commented out of this vignette.}.
 
 \section{Examples}\label{micompr:sec:examples}
 
-In this section we discuss four concrete application examples for the \pkg{micompr} package. The complete scripts used in these examples are available at \url{https://github.com/fakenmc/micompr-examples}.
+In this section we discuss four concrete application examples for the \pkg{micompr} package. The complete scripts used in these examples are available at \url{https://github.com/nunofachada/micompr-examples}.
 
 \subsection{Simulation model with multiple outputs}\label{micompr:sec:examples:pphpc}
 
@@ -351,62 +351,67 @@ plot(cmp)
 
 \subsection{Saugeen river flow}\label{micompr:sec:examples:saugeen}
 
-This example uses the Saugeen River daily flow data \citep{hipel1994time}, included with the \pkg{deseasonalize} package. This data consists of a time series of the rivers' daily flow (m\textsuperscript{3}/s) from 1915 to 1979. Considering one year as an observation, there are a total of 65 observations. We can, for example, define two samples of 30 observations each, with the first and last 30 years of records, and ask the following question: is there any statistical difference between the flow dynamics during the 1915--1944 and 1950--1979 periods (perhaps due to climate change or some other factor)? The following code compares observations from the two periods:
+This example uses the Saugeen River daily flow data \citep{hipel1994time}, included with the \pkg{deseasonalize} package. This data consists of a time series of the rivers' daily flow (m\textsuperscript{3}/s) from 1915 to 1979. Considering one year as an observation, there are a total of 65 observations. We can, for example, define two samples of 30 observations each, with the first and last 30 years of records, and ask the following question: is there any statistical difference between the flow dynamics during the 1915--1944 and 1950--1979 periods (perhaps due to climate change or some other factor)?
 
-<<saugeen1, results = 'markup', warning = FALSE>>=
-# Load libraries
-library(micompr)
-library(deseasonalize)
+\textbf{Update 23-05-2022}: The \pkg{deseasonalize} package has been removed from CRAN, therefore this example no longer runs. However, the example is still available in \pkg{micompr}'s original paper at \url{https://doi.org/10.32614/RJ-2016-055}.
 
-# Unique years
-years <- unique(sapply(rownames(SaugeenDay), substr, 1, 4))
-
-# Number of days in each year
-ndays <- sapply(years, function(x)
-                sum(substr(rownames(SaugeenDay), 1, 4) == x))
-
-# Indexes of last day in each year
-lastdays <- cumsum(ndays)
-
-# Prepare data for PCA
-saugdata <- t(mapply(
-  function(nd, ld) {
-    rflows <- rep(NA, 366)
-    rflows[1:nd] <- SaugeenDay[(ld - nd + 1):ld]
-    # Discard last day in leap years
-    rflows[1:365]
-  },
-  ndays, lastdays))
-
-# Consider first 30 years and last 30 years (discard 5 years in between)
-saugdata <- saugdata[c(1:30, 36:65), ]
-
-# Factor vector, two levels: first 30 years and last 30 years
-groups <- factor(c(rep("A", 30), rep("B", 30)))
-
-# Compare
-cmp <- cmpoutput("SaugeenFlow", 0.9, saugdata, groups)
-@
-
-\noindent The \code{cmp} object can now be analyzed:
-
-<<saugeen2, results = 'markup', warning = FALSE>>=
-cmp
-@
-
-\noindent There are no significant $p$-values. As such, it is not possible to conclude that the river flow dynamic during the first 30 years of measurements is statistically different from the last 30 years. The MANOVA assumptions are not verified, as shown by be \code{assumptions} function:
-
-<<saugeen3, results = 'markup', warning = FALSE>>=
-assumptions(cmp)
-@
-
-\noindent The $t$-test assumptions mostly hold, in spite of the PC1 normality test for sample A (first 30 years) being significant at the $\alpha=0.05$ level. Nonetheless, the $U$ test $p$-value provides a similar conclusion. Plotting the \code{cmp} object provides another perspective:
-
-<<saugeen4, fig.show = 'asis', fig.env = 'figure', fig.cap = 'Plots produced by the Saugeen river flow example.'>>=
-plot(cmp)
-@
-
-\noindent The previous command will produce plots in Figure~\ref{micompr:fig:saugeen}. The PC1 vs. PC2 score plot does not show any clear sample separation and the decrease in explained variance from the first PC to the second is considerably less abrupt than what was observed for the sunspots example. Additionally, no $t$ and $U$ test $p$-values are significant for the 60 PCs after weighted Bonferroni correction, further reinforcing the conclusion that the yearly Saugeen river flow dynamic was similar during the compared periods of time.
+%
+%The following code compares observations from the two periods:
+%
+%<<saugeen1, results = 'markup', warning = FALSE>>=
+%# Load libraries
+%library(micompr)
+%library(deseasonalize)
+%
+%# Unique years
+% years <- unique(sapply(rownames(SaugeenDay), substr, 1, 4))
+%
+% # Number of days in each year
+% ndays <- sapply(years, function(x)
+%                 sum(substr(rownames(SaugeenDay), 1, 4) == x))
+%
+% # Indexes of last day in each year
+% lastdays <- cumsum(ndays)
+%
+% # Prepare data for PCA
+% saugdata <- t(mapply(
+%   function(nd, ld) {
+%     rflows <- rep(NA, 366)
+%     rflows[1:nd] <- SaugeenDay[(ld - nd + 1):ld]
+%     # Discard last day in leap years
+%     rflows[1:365]
+%   },
+%   ndays, lastdays))
+%
+% # Consider first 30 years and last 30 years (discard 5 years in between)
+% saugdata <- saugdata[c(1:30, 36:65), ]
+%
+% # Factor vector, two levels: first 30 years and last 30 years
+% groups <- factor(c(rep("A", 30), rep("B", 30)))
+%
+% # Compare
+% cmp <- cmpoutput("SaugeenFlow", 0.9, saugdata, groups)
+% @
+%
+% \noindent The \code{cmp} object can now be analyzed:
+%
+% <<saugeen2, results = 'markup', warning = FALSE>>=
+% cmp
+% @
+%
+% \noindent There are no significant $p$-values. As such, it is not possible to conclude that the river flow dynamic during the first 30 years of measurements is statistically different from the last 30 years. The MANOVA assumptions are not verified, as shown by be \code{assumptions} function:
+%
+% <<saugeen3, results = 'markup', warning = FALSE>>=
+% assumptions(cmp)
+% @
+%
+% \noindent The $t$-test assumptions mostly hold, in spite of the PC1 normality test for sample A (first 30 years) being significant at the $\alpha=0.05$ level. Nonetheless, the $U$ test $p$-value provides a similar conclusion. Plotting the \code{cmp} object provides another perspective:
+%
+% <<saugeen4, fig.show = 'asis', fig.env = 'figure', fig.cap = 'Plots produced by the Saugeen river flow example.'>>=
+% plot(cmp)
+% @
+%
+% \noindent The previous command will produce plots in Figure~\ref{micompr:fig:saugeen}. The PC1 vs. PC2 score plot does not show any clear sample separation and the decrease in explained variance from the first PC to the second is considerably less abrupt than what was observed for the sunspots example. Additionally, no $t$ and $U$ test $p$-values are significant for the 60 PCs after weighted Bonferroni correction, further reinforcing the conclusion that the yearly Saugeen river flow dynamic was similar during the compared periods of time.
 
 \subsection{PH\textsuperscript{2} database of dermoscopic images}\label{micompr:sec:examples:ph2}
 
