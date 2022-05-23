@@ -35,7 +35,7 @@ jobs:
       - name: Install additional LaTeX packages
         run: |
           tlmgr --version
-          tlmgr install caption booktabs multirow amsmath amsfonts url ulem siunitx hyphenat pgfplots geometry textpos natbib fancyvrb xcolor
+          tlmgr install algorithms amsfonts amsmath booktabs caption fancyvrb geometry hyphenat multirow natbib pgfplots siunitx textpos ulem url xcolor
           tlmgr list --only-installed
 
       - uses: r-lib/actions/setup-r@v1
