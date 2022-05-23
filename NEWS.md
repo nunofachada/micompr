@@ -1,3 +1,9 @@
+# micompr 1.1.2
+
+* Remove dependency from deseasonalize, which was removed from CRAN.
+* Update URL of development version in GitHub.
+* Use GitHub Actions for CI instead of Travis.
+
 # micompr 1.1.1
 
 * Update micompr to conform with version 5.9 of upstream package MVN
