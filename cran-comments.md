@@ -1,15 +1,12 @@
 ## Test environments
 
-* Ubuntu 20.04.2 + R 4.1.0
-* Windows 10 + R 3.5.3
-* Windows Server 2008 + R-4.0.5 / R-4.1.0 / R-devel (http://win-builder.r-project.org/)
+* Ubuntu 20.04.4 (R: devel, release, oldrel-1, 3.5.0)
+* Windows 11 (R: release)
+* macOS 12 (R: release)
 
 ## R CMD check results
 
-There were no ERRORs, WARNINGs or NOTES, with the following exception under
-Windows Server 2008 + R-4.1.0 and R-devel:
-
-* "checking CRAN incoming feasibility ... NOTE"
+There were no ERRORs, WARNINGs or NOTES.
 
 ## Downstream dependencies
 
@@ -17,6 +14,6 @@ There are currently no downstream dependencies for this package.
 
 ## Other
 
-* Second submission attempt for version 1.1.1
-* List of changes in NEWS.md (update to conform with new version of upstream
-  package, small documentation updates)
+* First submission attempt for version 1.1.2
+* List of changes in NEWS.md (update to conform with removal of upstream
+  package, CI updates, URL updates)
