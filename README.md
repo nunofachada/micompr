@@ -1,8 +1,8 @@
-<!--[![Build Status](https://travis-ci.org/nunofachada/micompr.svg?branch=master)](https://travis-ci.org/nunofachada/micompr)-->
+![Checks](https://github.com/nunofachada/micompr/actions/workflows/check.yml/badge.svg)
 [![codecov](https://codecov.io/gh/nunofachada/micompr/branch/master/graph/badge.svg)](https://codecov.io/gh/nunofachada/micompr)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/micompr)](https://CRAN.R-project.org/package=micompr)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/micompr)
-[![Documentation](https://img.shields.io/badge/docs-R_Documentation-brightgreen.svg)](http://www.rdocumentation.org/packages/micompr)
+[![Documentation](https://img.shields.io/badge/docs-1.1.2-brightgreen.svg)](http://www.rdocumentation.org/packages/micompr)
 
 ### Summary
 
