@@ -16,7 +16,7 @@ Description: A procedure for comparing multivariate samples associated with
     for comparing samples of time series, images, spectrometric measures or
     similar multivariate observations.
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.6.0)
 Imports:
     utils,
     graphics,
