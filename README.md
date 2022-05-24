@@ -1,4 +1,4 @@
-![Checks](https://github.com/nunofachada/micompr/actions/workflows/check.yml/badge.svg)
+[![Checks](https://github.com/nunofachada/micompr/actions/workflows/check.yml/badge.svg)](https://github.com/nunofachada/micompr/actions/workflows/check.yml)
 [![codecov](https://codecov.io/gh/nunofachada/micompr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/nunofachada/micompr)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/micompr)](https://CRAN.R-project.org/package=micompr)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/micompr)
