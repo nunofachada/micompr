@@ -1,13 +1,13 @@
 citHeader("To cite micompr in publications use:")
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
          title = paste("{micompr}: An R Package for Multivariate Independent",
                        "Comparison of Observations"),
-         author = personList(as.person("Nuno Fachada"),
-                             as.person("Jo\\~{a}o Rodrigues"),
-                             as.person("Vitor V. Lopes"),
-                             as.person("Rui C. Martins"),
-                             as.person("Agostinho C. Rosa")),
+         author = c(as.person("Nuno Fachada"),
+                    as.person("Jo\\~{a}o Rodrigues"),
+                    as.person("Vitor V. Lopes"),
+                    as.person("Rui C. Martins"),
+                    as.person("Agostinho C. Rosa")),
          journal      = "The R Journal",
          year         = "2016",
          volume       = "8",
@@ -15,11 +15,4 @@ citEntry(entry = "Article",
          pages        = "405--420",
          doi = "10.32614/RJ-2016-055",
          url = "https://journal.r-project.org/archive/2016/RJ-2016-055/index.html",
-
-  textVersion  =
-  paste("N. Fachada, J. Rodrigues, V.V. Lopes, R.C. Martins, A.C. Rosa (2016).",
-        "micompr: An R Package for Multivariate Independent Comparison of",
-        "Observations.",
-        "The R Journal, 8(2):405–420",
-        "URL https://journal.r-project.org/archive/2016/RJ-2016-055/index.html.")
 )
