@@ -1,10 +1,12 @@
+name: test-coverage
+
 on:
   push:
     branches: [master]
+    paths: [ 'R/**', 'tests/**', '.github/workflows/cov.yml' ]
   pull_request:
     branches: [master]
-
-name: test-coverage
+    paths: [ 'R/**', 'tests/**', '.github/workflows/cov.yml' ]
 
 jobs:
   test-coverage:

@@ -1,10 +1,12 @@
+name: R-CMD-check
+
 on:
   push:
     branches: [master]
+    paths: [ 'R/**', 'tests/**', '.github/workflows/check.yml' ]
   pull_request:
     branches: [master]
-
-name: R-CMD-check
+    paths: [ 'R/**', 'tests/**', '.github/workflows/check.yml' ]
 
 jobs:
   R-CMD-check:
