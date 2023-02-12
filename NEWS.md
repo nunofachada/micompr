@@ -1,3 +1,10 @@
+# micompr 1.1.3
+
+* Bump minimum R version to 4.1.0 due to updates in dependencies.
+* CI updates: update versions of GitHub Actions, more efficient CI triggers.
+* Update citation in DESCRIPTION and inst/CITATION according to CRAN
+  requirements.
+
 # micompr 1.1.2
 
 * Remove dependency from deseasonalize, which was removed from CRAN.
