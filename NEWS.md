@@ -1,3 +1,5 @@
+# micompr (development version)
+
 # micompr 1.1.3
 
 * Bump minimum R version to 4.1.0 due to updates in dependencies.
