@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/nunofachada/micompr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/nunofachada/micompr)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/micompr)](https://CRAN.R-project.org/package=micompr)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/micompr)
-[![Documentation](https://img.shields.io/badge/docs-1.1.2-brightgreen.svg)](https://www.rdocumentation.org/packages/micompr)
+[![Documentation](https://img.shields.io/badge/docs-1.1.3-brightgreen.svg)](https://www.rdocumentation.org/packages/micompr)
 
 ### Summary
 
