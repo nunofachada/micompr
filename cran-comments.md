@@ -15,3 +15,10 @@ There are currently no downstream dependencies for this package.
 ## Other
 
 * Fix packaging issue due to roxygen update.
+
+## Note
+
+* Local check done with
+  `devtools::check(remote = TRUE, manual = TRUE, build_args = "--compact-vignettes=gs+qpdf")`
+* CRAN submission done with
+  `devtools::submit_cran(args = "--compact-vignettes=gs+qpdf")`
