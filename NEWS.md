@@ -1,4 +1,6 @@
-# micompr (development version)
+# micompr 1.1.4
+
+* Fix packaging issue due to roxygen update.
 
 # micompr 1.1.3
 
