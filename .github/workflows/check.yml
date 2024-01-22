@@ -36,6 +36,7 @@ jobs:
 
       - name: Install additional LaTeX packages
         run: |
+          tlmgr update --self
           tlmgr --version
           tlmgr install algorithms amsfonts amsmath booktabs caption colortbl fancyvrb geometry hyphenat multirow natbib pgfplots preprint siunitx textpos ulem url xcolor
           tlmgr list --only-installed
