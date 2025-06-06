@@ -24,7 +24,7 @@ Imports:
     stats
 Suggests:
     biotools,
-    MVN (>= 5.0),
+    MVN (>= 6.0),
     testthat (>= 0.8),
     knitr,
     roxygen2,
