@@ -16,7 +16,7 @@ Description: A procedure for comparing multivariate samples associated with
     similar multivariate observations. This package is described in Fachada et
     al. (2016) <doi:10.32614/RJ-2016-055>.
 Depends:
-    R (>= 4.1.0)
+    R (>= 4.4.0)
 Imports:
     utils,
     graphics,
