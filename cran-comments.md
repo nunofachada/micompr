@@ -1,8 +1,8 @@
 ## Test environments
 
-* Ubuntu 22.04.3 (R: devel, release, oldrel-1, 4.1.0)
+* Ubuntu 24.04.2 (R: devel, release, oldrel-1, 4.4.0)
 * Windows 11 (R: release)
-* macOS 12 (R: release)
+* macOS 14 (R: release)
 
 ## R CMD check results
 
@@ -14,11 +14,11 @@ There are currently no downstream dependencies for this package.
 
 ## Other
 
-* Fix packaging issue due to roxygen update.
+* Fix several issues due to updates in upstream package MVN.
 
 ## Note
 
 * Local check done with
   `devtools::check(remote = TRUE, manual = TRUE, build_args = "--compact-vignettes=gs+qpdf")`
 * CRAN submission done with
-  `devtools::submit_cran(args = "--compact-vignettes=gs+qpdf")`
+  `devtools::release(args = "--compact-vignettes=gs+qpdf")`
