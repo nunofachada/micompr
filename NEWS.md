@@ -1,5 +1,11 @@
 # micompr 1.2.0
 
+* Bump minimum R version to 4.4.0 due to dependency updates.
+* Fix issue due to some Royston p-values that might not to be numeric due
+  to upstream MVN changes.
+* Rename `p value` fields to p.value due to upstream MVN changes.
+* Update API calls to MVN 6.0.
+
 # micompr 1.1.4
 
 * Fix packaging issue due to roxygen update.
