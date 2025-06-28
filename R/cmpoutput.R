@@ -775,7 +775,7 @@ summary.assumptions_cmpoutput <- function(object, ...) {
     mvpvals <- sapply(mnvmv,
                       function(mnv) {
                         npv <- sapply(mnv$mvntest,
-                                      function(roy) roy$`p value`)
+                                      function(roy) roy$p.value)
                         pv <- c(npv, mnv$vartest$p.value)
                         names(pv) <-
                           c(paste0("Royston (", names(mnv$mvntest), ")"),

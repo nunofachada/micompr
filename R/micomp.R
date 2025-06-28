@@ -729,7 +729,7 @@ summary.assumptions_micomp <- function(object, ...) {
           if (length(aco$manova) >= j) {
             if (!is.null(aco$manova[[j]])) {
               if (methods::is(aco$manova[[j]]$mvntest[[k]], "data.frame")) {
-                aco$manova[[j]]$mvntest[[k]]$`p value`
+                aco$manova[[j]]$mvntest[[k]]$p.value
               } else { NA }
             } else { NA }
           } else { NA })

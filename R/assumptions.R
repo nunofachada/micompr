@@ -219,7 +219,7 @@ print.assumptions_manova <- function(x, ...) {
   for (grp in names(x$mvntest)) {
     if (methods::is(x$mvntest[[grp]], "data.frame")) {
       cat("\tP-value '", grp, "': ",
-          x$mvntest[[grp]]$`p value`, "\n", sep = "")
+          x$mvntest[[grp]]$p.value, "\n", sep = "")
     } else {
       cat("\tTest not performed.\n")
     }
@@ -322,7 +322,7 @@ plot.assumptions_manova <- function(x, ...) {
   }
 
   # Get the p-values to plot
-  pvals <- sapply(x$mvntest, function(x) x$`p value`)
+  pvals <- sapply(x$mvntest, function(x) x$p.value)
 
   # Plot the p-values in a bar plot
   params$height <- pvals
