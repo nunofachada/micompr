@@ -3,6 +3,6 @@
 ^data-raw$
 ^TODO$
 cran-comments.md
-NEWS.md
 .github
 ^CRAN-SUBMISSION$
+^cran-comments\.md$
