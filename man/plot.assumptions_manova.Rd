@@ -29,7 +29,4 @@ being compared.
 # (species) of the iris data
 plot(assumptions_manova(iris[, 1:4], iris[, 5]))
 
-# Plot the same data with logarithmic scale for p-values
-plot(assumptions_manova(iris[, 1:4], iris[, 5]), log = "y")
-
 }

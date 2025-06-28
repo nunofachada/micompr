@@ -307,9 +307,6 @@ print.assumptions_paruv <- function(x, ...) {
 #' # (species) of the iris data
 #' plot(assumptions_manova(iris[, 1:4], iris[, 5]))
 #'
-#' # Plot the same data with logarithmic scale for p-values
-#' plot(assumptions_manova(iris[, 1:4], iris[, 5]), log = "y")
-#'
 plot.assumptions_manova <- function(x, ...) {
 
   # Was a color specified?
@@ -322,7 +319,7 @@ plot.assumptions_manova <- function(x, ...) {
   }
 
   # Get the p-values to plot
-  pvals <- sapply(x$mvntest, function(x) x$p.value)
+  pvals <- pvalnum(sapply(x$mvntest, function(x) x$p.value))
 
   # Plot the p-values in a bar plot
   params$height <- pvals

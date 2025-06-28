@@ -1,5 +1,31 @@
-# Copyright (c) 2016-2018 Nuno Fachada
+# Copyright (c) 2016-2025 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
+
+#' Make sure \emph{p}-values are numeric
+#'
+#' Make sure \emph{p}-values are numeric. Non-numeric values (e.g., "<0.001")
+#' are converted to zero.
+#'
+#' @param pvals Vector of \emph{p}-values which might not be fully numeric.
+#'
+#' @return A vector of fully numeric \emph{p}-values.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' micompr:::pvalnum(c("0.06", "0.9", "<0.0001", "0.3"))
+#' # [1] 0.06 0.90 0.00 0.30
+#'
+pvalnum <- function(pvals) {
+
+  # Suppress warning and convert to numeric
+  numeric_pvals <- suppressWarnings(as.numeric(pvals))
+
+  # Replace NAs (from malformed entries) with 0
+  numeric_pvals[is.na(numeric_pvals)] <- 0
+
+  numeric_pvals
+}
 
 #' Associate colors to \emph{p}-values
 #'
