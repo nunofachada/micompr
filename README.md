@@ -1,5 +1,5 @@
 [![Checks](https://github.com/nunofachada/micompr/actions/workflows/check.yml/badge.svg)](https://github.com/nunofachada/micompr/actions/workflows/check.yml)
-[![codecov](https://codecov.io/gh/nunofachada/micompr/graph/badge.svg?token=N3QdVYpps2)](https://codecov.io/gh/nunofachada/micompr)
+[![codecov](https://codecov.io/gh/nunofachada/micompr/graph/badge.svg?token=N3QdVYpps2)](https://app.codecov.io/gh/nunofachada/micompr)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/micompr)](https://CRAN.R-project.org/package=micompr)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/micompr)
 [![docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://www.rdocumentation.org/packages/micompr)
