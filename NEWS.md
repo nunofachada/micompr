@@ -1,4 +1,4 @@
-# micompr (development version)
+# micompr 1.2.0
 
 # micompr 1.1.4
 
