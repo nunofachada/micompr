@@ -91,7 +91,12 @@ cmpoutput <- function(name, ve_npcs, data, obs_lvls, lim_npcs = TRUE,
   if (any(ve_npcs <= 0))
     stop("'ve_npcs' parameter must only have positive values.")
   if (length(obs_lvls) != dim(data)[1])
-    stop("Number of observations in 'data' and 'obs_lvls' does not match.")
+    stop(paste0(
+      "Number of observations in 'data' and 'obs_lvls' does not match (",
+      dim(data)[1],
+      " != ",
+      length(obs_lvls),
+      ")"))
   if (nlevels(obs_lvls) < 2)
     stop("At least two levels are required to perform model comparison.")
 
