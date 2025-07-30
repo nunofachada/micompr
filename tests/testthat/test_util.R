@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Nuno Fachada
+# Copyright (c) 2016-2025 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 library(micompr)
@@ -80,5 +80,10 @@ test_that("concat_outputs produces correct results and expected errors", {
                "'outputlist' argument is not a list")
   expect_error(concat_outputs(list(), "none"),
                "'outputlist' is an empty list")
-
+  m1 = matrix(c(2, 2, 2, 1), nrow=2)
+  m2 = matrix(c(1, 3, 4, 1, 6, 7, 0, 0, 8), nrow=3)
+  expect_error(concat_outputs(list(m1, m2)),
+               paste0("Number of observations (rows) is not the same for ",
+                      "each output matrix"),
+               fixed = TRUE)
 })
