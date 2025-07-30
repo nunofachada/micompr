@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Nuno Fachada
+# Copyright (c) 2016-2025 Nuno Fachada
 # Distributed under the MIT License (http://opensource.org/licenses/MIT)
 
 library(micompr)
@@ -195,9 +195,15 @@ test_that("cmpoutput throws errors when improperly invoked", {
 
   # Test for error due to different number of observations in data and
   # observation levels
+  data_to_test <- pphpc_ok$data[[4]]
+  obs_lvls_to_test <- rep(pphpc_ok$obs_lvls, 2)
   expect_error(
-    cmpoutput("D", 0.3, pphpc_ok$data[[4]], rep(pphpc_ok$obs_lvls, 2)),
-    "Number of observations in 'data' and 'obs_lvls' does not match.",
+    cmpoutput("D", 0.3, data_to_test, obs_lvls_to_test),
+    paste0("Number of observations in 'data' and 'obs_lvls' does not match (",
+           nrow(data_to_test),
+           " != ",
+           length(obs_lvls_to_test),
+           ")"),
     fixed = TRUE
   )
 

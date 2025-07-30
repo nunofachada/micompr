@@ -196,10 +196,13 @@ test_that("micomp throws errors when improperly invoked", {
              list(name = "NLOKvsJEXNOSHUFF",
                   grpout = list(data = pphpc_noshuff$data,
                                 obs_lvls = pphpc_noshuff$obs_lvls)),
-
              list(name = "NLOKvsJEXDIFF",
                   grpout = list(data = pphpc_diff$data)))),
-    "Number of observations in 'data' and 'obs_lvls' does not match.",
+    paste0("Number of observations in 'data' and 'obs_lvls' does not match (",
+           nrow(pphpc_diff$data$All),
+           " != ",
+           0,
+           ")"),
     fixed = TRUE
 
   )
