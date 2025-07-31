@@ -4,6 +4,14 @@
 library(micompr)
 context("micompr utilities")
 
+# Test pvalnum
+test_that("pvalnum correctly converts p-values to numeric values", {
+  expect_equal(micompr:::pvalnum(c("0.06", 0.9, "<0.0001", "0.3", "100", "x")),
+               c(0.06, 0.9, 0, 0.3, 100, 0))
+  expect_equal(micompr:::pvalnum(0.001), 0.001)
+  expect_equal(micompr:::pvalnum(""), 0)
+})
+
 # Test pvalcol
 test_that("pvalcol produces expected results", {
   tc <- c("darkgreen", "yellow", "red")
