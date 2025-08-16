@@ -1,4 +1,10 @@
-# micompr (development version)
+# micompr 1.3.0
+
+* More robust `centerscale()` function, with better handling of edge cases and
+  warning the user when these occur.
+* Improve error message when num. obs != num. levels.
+* Slight increase in test coverage.
+* Bump minimum testthat version to 3.0.0.
 
 # micompr 1.2.0
 
