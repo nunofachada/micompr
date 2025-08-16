@@ -93,14 +93,10 @@ plotcols <- function() {
 #'   }
 #' @param na.rm Logical; if \code{TRUE}, remove missing values before computing
 #' statistics (mean, sd, var, range, etc.).
-#' @param eps Small numeric tolerance used to detect near-zero denominators and
-#' to stabilize scaling when \code{zero_action = "epsilon"}.
 #' @param zero_action Policy when denominator is zero or invalid. One of:
 #'   \itemize{
 #'     \item \code{"zeros"}: return a vector of zeros (default).
 #'     \item \code{"unscaled"}: return the original vector unscaled.
-#'     \item \code{"epsilon"}: use a stabilized denominator
-#'       \code{max(|denom|, eps)}.
 #'     \item \code{"fill"}: return a constant vector with value given by
 #'       \code{zero_fill}.
 #'   }
@@ -171,8 +167,7 @@ centerscale <- function(
     v,
     type = c("center", "auto", "range", "iqrange", "vast", "pareto", "level", "none"),
     na.rm = FALSE,
-    eps = .Machine$double.eps,
-    zero_action = c("zeros","unscaled","epsilon","fill"),
+    zero_action = c("zeros", "unscaled", "fill"),
     zero_fill = 0.5  # used only when zero_action == "fill"
 ) {
   type <- match.arg(type)
@@ -183,19 +178,19 @@ centerscale <- function(
   cs <- switch(
     type,
     center = v - mean(v, na.rm = na.rm),
-    auto   = {
+    auto = {
       denom <- stats::sd(v, na.rm = na.rm)
       (v - mean(v, na.rm = na.rm)) / denom
     },
-    range  = {
+    range = {
       denom <- diff(range(v, na.rm = na.rm))
       (v - mean(v, na.rm = na.rm)) / denom
     },
-    iqrange= {
+    iqrange = {
       denom <- stats::IQR(v, type = 5, na.rm = na.rm) # MATLAB-compatible IQR
       (v - mean(v, na.rm = na.rm)) / denom
       },
-    vast   = {
+    vast = {
       denom <- stats::var(v, na.rm = na.rm)
       (v - mean(v, na.rm = na.rm)) * mean(v, na.rm = na.rm) / denom
       },
@@ -203,15 +198,15 @@ centerscale <- function(
       denom <- sqrt(stats::sd(v, na.rm = na.rm))
       (v - mean(v, na.rm = na.rm)) / denom
       },
-    level  = {
+    level = {
       denom <- mean(v, na.rm = na.rm)
       (v - mean(v, na.rm = na.rm)) / denom
     },
-    none   = v
+    none = v
   )
 
   # If denom invalid or ~0, apply policy
-  if (!is.finite(denom) || abs(denom) <= eps) {
+  if (!is.finite(denom) || abs(denom) <= .Machine$double.eps) {
 
     msg <- sprintf(
       "Denominator for '%s' scaling is zero/invalid (%.3g); applying zero_action='%s'.",
@@ -223,9 +218,9 @@ centerscale <- function(
 
     cs <- switch(
       zero_action,
-      zeros    = numeric(length(v)),
+      zeros = numeric(length(v)),
       unscaled = v,
-      fill     = rep(zero_fill, length(v))
+      fill = rep(zero_fill, length(v))
     )
   }
 

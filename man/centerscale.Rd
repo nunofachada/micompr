@@ -8,8 +8,7 @@ centerscale(
   v,
   type = c("center", "auto", "range", "iqrange", "vast", "pareto", "level", "none"),
   na.rm = FALSE,
-  eps = .Machine$double.eps,
-  zero_action = c("zeros", "unscaled", "epsilon", "fill"),
+  zero_action = c("zeros", "unscaled", "fill"),
   zero_fill = 0.5
 )
 }
@@ -33,15 +32,10 @@ centerscale(
 \item{na.rm}{Logical; if \code{TRUE}, remove missing values before computing
 statistics (mean, sd, var, range, etc.).}
 
-\item{eps}{Small numeric tolerance used to detect near-zero denominators and
-to stabilize scaling when \code{zero_action = "epsilon"}.}
-
 \item{zero_action}{Policy when denominator is zero or invalid. One of:
 \itemize{
   \item \code{"zeros"}: return a vector of zeros (default).
   \item \code{"unscaled"}: return the original vector unscaled.
-  \item \code{"epsilon"}: use a stabilized denominator
-    \code{max(|denom|, eps)}.
   \item \code{"fill"}: return a constant vector with value given by
     \code{zero_fill}.
 }}
