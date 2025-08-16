@@ -73,7 +73,7 @@ plotcols <- function() {
 #'
 #' Center and scale an input vector using the specified method. Several scaling
 #' approaches are supported, including mean-centering, autoscaling (unit
-#' variance), range scaling, interquartile range scaling, VAST, Pareto, and
+#' variance), range scaling, interquartile range scaling, vast, Pareto, and
 #' level scaling. A fallback policy can be specified for cases where the
 #' denominator is zero or invalid (e.g. constant vectors).
 #'
@@ -155,18 +155,31 @@ plotcols <- function() {
 #' centerscale(v, "none")
 #' # [1] -100    3    4  500   10   25   -8  -33  321    0    2
 #'
+#' # The following examples will throw warnings due to the vector being constant
+#'
+#' w <- c(5, 5, 5)
+#' centerscale(w, "auto")
+#' # [1] 0 0 0
+#'
+#' centerscale(w, "range", zero_action="unscaled")
+#' # [1] 5 5 5
+#'
+#' centerscale(w, "level", zero_action="epsilon")
+#' # [1] 0 0 0
+#'
+#' centerscale(w, "range", zero_action="fill", zero_fill=0.5)
+#' # [1] 0.5 0.5 0.5
+#'
 centerscale <- function(
     v,
-    type = c("center", "auto", "range", "iqrange", "vast", "pareto", "level", "none") #,
-    # na.rm = FALSE,
-    # eps = .Machine$double.eps,
-    # zero_action = c("zeros","unscaled","epsilon","fill"),
-    # zero_fill = 0.5  # used only when zero_action == "fill"
+    type = c("center", "auto", "range", "iqrange", "vast", "pareto", "level", "none"),
+    na.rm = FALSE,
+    eps = .Machine$double.eps,
+    zero_action = c("zeros","unscaled","epsilon","fill"),
+    zero_fill = 0.5  # used only when zero_action == "fill"
 ) {
   type <- match.arg(type)
-  # zero_action <- match.arg(zero_action)
-
-  na.rm = FALSE
+  zero_action <- match.arg(zero_action)
 
   denom <- 1
   # compute only what's needed
@@ -183,7 +196,7 @@ centerscale <- function(
     },
     iqrange= {
       denom <- stats::IQR(v, type = 5, na.rm = na.rm) # MATLAB-compatible IQR
-      (v - stats::median(v, na.rm = na.rm)) / denom
+      (v - mean(v, na.rm = na.rm)) / denom
       },
     vast   = {
       denom <- stats::var(v, na.rm = na.rm)
@@ -200,35 +213,40 @@ centerscale <- function(
     none   = v
   )
 
-  # # If denom invalid or ~0, apply policy
-  # if (!is.finite(denom) || abs(denom) <= eps) {
-  #   msg <- sprintf("Denominator for '%s' scaling is zero/invalid (%.3g); applying zero_action='%s'.",
-  #                  type, denom, zero_action)
-  #   warning(msg)
-  #
-  #   cs <- switch(
-  #     zero_action,
-  #     zeros    = numeric(length(v)),
-  #     unscaled = v,
-  #     epsilon  = {
-  #       # Recompute with stabilized denominator
-  #       stab <- if (is.finite(denom)) sign(denom) * max(abs(denom), eps) else eps
-  #       # Recreate scaled value according to type’s formula but with 'stab'
-  #       switch(
-  #         type,
-  #         center = v - mean(v, na.rm = na.rm),
-  #         auto   = (v - mean(v, na.rm = na.rm)) / stab,
-  #         range  = (v - mean(v, na.rm = na.rm)) / stab,
-  #         iqrange= (v - stats::median(v, na.rm = na.rm)) / stab,
-  #         vast   = (v - mean(v, na.rm = na.rm)) * mean(v, na.rm = na.rm) / stab,
-  #         pareto = (v - mean(v, na.rm = na.rm)) / stab,
-  #         level  = (v - mean(v, na.rm = na.rm)) / stab,
-  #         none   = v
-  #       )
-  #     },
-  #     fill     = rep(zero_fill, length(v))
-  #   )
-  # }
+  # If denom invalid or ~0, apply policy
+  if (!is.finite(denom) || abs(denom) <= eps) {
+
+    msg <- sprintf(
+      "Denominator for '%s' scaling is zero/invalid (%.3g); applying zero_action='%s'.",
+      type,
+      denom,
+      zero_action)
+
+    warning(msg)
+
+    cs <- switch(
+      zero_action,
+      zeros    = numeric(length(v)),
+      unscaled = v,
+      epsilon  = {
+        # Recompute with stabilized denominator
+        stab <- if (is.finite(denom)) sign(denom) * max(abs(denom), eps) else eps
+        # Recreate scaled value according to type’s formula but with 'stab'
+        switch(
+          type,
+          center = v - mean(v, na.rm = na.rm),
+          auto   = (v - mean(v, na.rm = na.rm)) / stab,
+          range  = (v - mean(v, na.rm = na.rm)) / stab,
+          iqrange= (v - stats::median(v, na.rm = na.rm)) / stab,
+          vast   = (v - mean(v, na.rm = na.rm)) * mean(v, na.rm = na.rm) / stab,
+          pareto = (v - mean(v, na.rm = na.rm)) / stab,
+          level  = (v - mean(v, na.rm = na.rm)) / stab,
+          none   = v
+        )
+      },
+      fill     = rep(zero_fill, length(v))
+    )
+  }
 
   cs
 }

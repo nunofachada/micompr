@@ -4,19 +4,64 @@
 \alias{centerscale}
 \title{Center and scale vector}
 \usage{
-centerscale(v, type)
+centerscale(
+  v,
+  type = c("center", "auto", "range", "iqrange", "vast", "pareto", "level", "none"),
+  na.rm = FALSE,
+  eps = .Machine$double.eps,
+  zero_action = c("zeros", "unscaled", "epsilon", "fill"),
+  zero_fill = 0.5
+)
 }
 \arguments{
-\item{v}{Vector to center and scale.}
+\item{v}{A numeric vector to center and scale.}
 
-\item{type}{Type of scaling: "center", "auto", "range", "iqrange", "vast",
-"pareto", "level" or "none".}
+\item{type}{Type of scaling. One of:
+\itemize{
+  \item \code{"center"}: subtract mean.
+  \item \code{"auto"}: subtract mean and divide by standard deviation.
+  \item \code{"range"}: subtract mean and divide by range.
+  \item \code{"iqrange"}: subtract median and divide by interquartile range
+    (MATLAB-compatible, type = 5).
+  \item \code{"vast"}: variance-stabilizing transformation.
+  \item \code{"pareto"}: subtract mean and divide by square root of standard
+    deviation.
+  \item \code{"level"}: subtract mean and divide by mean.
+  \item \code{"none"}: return input unchanged.
+}}
+
+\item{na.rm}{Logical; if \code{TRUE}, remove missing values before computing
+statistics (mean, sd, var, range, etc.).}
+
+\item{eps}{Small numeric tolerance used to detect near-zero denominators and
+to stabilize scaling when \code{zero_action = "epsilon"}.}
+
+\item{zero_action}{Policy when denominator is zero or invalid. One of:
+\itemize{
+  \item \code{"zeros"}: return a vector of zeros (default).
+  \item \code{"unscaled"}: return the original vector unscaled.
+  \item \code{"epsilon"}: use a stabilized denominator
+    \code{max(|denom|, eps)}.
+  \item \code{"fill"}: return a constant vector with value given by
+    \code{zero_fill}.
+}}
+
+\item{zero_fill}{Numeric value to use when \code{zero_action = "fill"}.}
 }
 \value{
-Center and scaled vector using the specified method.
+A numeric vector of the same length as \code{v}, centered and scaled
+according to the specified method and zero-denominator policy.
 }
 \description{
-Center and scale input vector using the specified method.
+Center and scale an input vector using the specified method. Several scaling
+approaches are supported, including mean-centering, autoscaling (unit
+variance), range scaling, interquartile range scaling, vast, Pareto, and
+level scaling. A fallback policy can be specified for cases where the
+denominator is zero or invalid (e.g. constant vectors).
+}
+\details{
+Warnings are issued when the denominator is zero or invalid and the
+\code{zero_action} policy is applied.
 }
 \examples{
 
@@ -52,6 +97,21 @@ centerscale(v, "level")
 
 centerscale(v, "none")
 # [1] -100    3    4  500   10   25   -8  -33  321    0    2
+
+# The following examples will throw warnings due to the vector being constant
+
+w <- c(5, 5, 5)
+centerscale(w, "auto")
+# [1] 0 0 0
+
+centerscale(w, "range", zero_action="unscaled")
+# [1] 5 5 5
+
+centerscale(w, "level", zero_action="epsilon")
+# [1] 0 0 0
+
+centerscale(w, "range", zero_action="fill", zero_fill=0.5)
+# [1] 0.5 0.5 0.5
 
 }
 \references{
