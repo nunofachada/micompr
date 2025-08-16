@@ -25,4 +25,4 @@ There are currently no downstream dependencies for this package.
 * Local check done with
   `devtools::check(remote = TRUE, manual = TRUE, build_args = "--compact-vignettes=gs+qpdf")`
 * CRAN submission done with
-  `devtools::release(args = "--compact-vignettes=gs+qpdf")`
+  `devtools::submit_cran(args = "--compact-vignettes=gs+qpdf")`
