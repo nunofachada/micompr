@@ -1,8 +1,8 @@
 ## Test environments
 
-* Ubuntu 24.04.2 (R: devel, release, oldrel-1, 4.4.0)
-* Windows 11 (R: release)
-* macOS 14 (R: release)
+* Ubuntu 24.04.3 (R: devel, release, oldrel-1, 4.4.0)
+* Windows Server 2022 (R: release)
+* macOS 15.5 (R: release)
 
 ## R CMD check results
 
@@ -14,7 +14,11 @@ There are currently no downstream dependencies for this package.
 
 ## Other
 
-* Fix several issues due to updates in upstream package MVN.
+* More robust `centerscale()` function, with better handling of edge cases and
+  warning the user when these occur.
+* Improve error message when num. obs != num. levels.
+* Slight increase in test coverage.
+* Bump minimum testthat version to 3.0.0.
 
 ## Note
 
