@@ -25,7 +25,7 @@ Imports:
 Suggests:
     biotools,
     MVN (>= 6.0),
-    testthat (>= 0.8),
+    testthat (>= 3.0.0),
     knitr,
     roxygen2,
     devtools
