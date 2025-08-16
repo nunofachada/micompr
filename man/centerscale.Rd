@@ -107,9 +107,6 @@ centerscale(w, "auto")
 centerscale(w, "range", zero_action="unscaled")
 # [1] 5 5 5
 
-centerscale(w, "level", zero_action="epsilon")
-# [1] 0 0 0
-
 centerscale(w, "range", zero_action="fill", zero_fill=0.5)
 # [1] 0.5 0.5 0.5
 

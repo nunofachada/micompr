@@ -164,9 +164,6 @@ plotcols <- function() {
 #' centerscale(w, "range", zero_action="unscaled")
 #' # [1] 5 5 5
 #'
-#' centerscale(w, "level", zero_action="epsilon")
-#' # [1] 0 0 0
-#'
 #' centerscale(w, "range", zero_action="fill", zero_fill=0.5)
 #' # [1] 0.5 0.5 0.5
 #'
@@ -228,22 +225,6 @@ centerscale <- function(
       zero_action,
       zeros    = numeric(length(v)),
       unscaled = v,
-      epsilon  = {
-        # Recompute with stabilized denominator
-        stab <- if (is.finite(denom)) sign(denom) * max(abs(denom), eps) else eps
-        # Recreate scaled value according to type’s formula but with 'stab'
-        switch(
-          type,
-          center = v - mean(v, na.rm = na.rm),
-          auto   = (v - mean(v, na.rm = na.rm)) / stab,
-          range  = (v - mean(v, na.rm = na.rm)) / stab,
-          iqrange= (v - stats::median(v, na.rm = na.rm)) / stab,
-          vast   = (v - mean(v, na.rm = na.rm)) * mean(v, na.rm = na.rm) / stab,
-          pareto = (v - mean(v, na.rm = na.rm)) / stab,
-          level  = (v - mean(v, na.rm = na.rm)) / stab,
-          none   = v
-        )
-      },
       fill     = rep(zero_fill, length(v))
     )
   }
