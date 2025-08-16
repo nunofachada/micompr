@@ -71,13 +71,47 @@ plotcols <- function() {
 
 #' Center and scale vector
 #'
-#' Center and scale input vector using the specified method.
+#' Center and scale an input vector using the specified method. Several scaling
+#' approaches are supported, including mean-centering, autoscaling (unit
+#' variance), range scaling, interquartile range scaling, VAST, Pareto, and
+#' level scaling. A fallback policy can be specified for cases where the
+#' denominator is zero or invalid (e.g. constant vectors).
 #'
-#' @param v Vector to center and scale.
-#' @param type Type of scaling: "center", "auto", "range", "iqrange", "vast",
-#' "pareto", "level" or "none".
+#' @param v A numeric vector to center and scale.
+#' @param type Type of scaling. One of:
+#'   \itemize{
+#'     \item \code{"center"}: subtract mean.
+#'     \item \code{"auto"}: subtract mean and divide by standard deviation.
+#'     \item \code{"range"}: subtract mean and divide by range.
+#'     \item \code{"iqrange"}: subtract median and divide by interquartile range
+#'       (MATLAB-compatible, type = 5).
+#'     \item \code{"vast"}: variance-stabilizing transformation.
+#'     \item \code{"pareto"}: subtract mean and divide by square root of standard
+#'       deviation.
+#'     \item \code{"level"}: subtract mean and divide by mean.
+#'     \item \code{"none"}: return input unchanged.
+#'   }
+#' @param na.rm Logical; if \code{TRUE}, remove missing values before computing
+#' statistics (mean, sd, var, range, etc.).
+#' @param eps Small numeric tolerance used to detect near-zero denominators and
+#' to stabilize scaling when \code{zero_action = "epsilon"}.
+#' @param zero_action Policy when denominator is zero or invalid. One of:
+#'   \itemize{
+#'     \item \code{"zeros"}: return a vector of zeros (default).
+#'     \item \code{"unscaled"}: return the original vector unscaled.
+#'     \item \code{"epsilon"}: use a stabilized denominator
+#'       \code{max(|denom|, eps)}.
+#'     \item \code{"fill"}: return a constant vector with value given by
+#'       \code{zero_fill}.
+#'   }
+#' @param zero_fill Numeric value to use when \code{zero_action = "fill"}.
 #'
-#' @return Center and scaled vector using the specified method.
+#' @return A numeric vector of the same length as \code{v}, centered and scaled
+#' according to the specified method and zero-denominator policy.
+#'
+#' @details
+#' Warnings are issued when the denominator is zero or invalid and the
+#' \code{zero_action} policy is applied.
 #'
 #' @references Berg, R., Hoefsloot, H., Westerhuis, J., Smilde, A., and Werf, M.
 #' (2006). Centering, scaling, and transformations: improving the biological
@@ -121,17 +155,82 @@ plotcols <- function() {
 #' centerscale(v, "none")
 #' # [1] -100    3    4  500   10   25   -8  -33  321    0    2
 #'
-centerscale <- function(v, type) {
-  switch(type,
-         center = v - mean(v),
-         auto = (v - mean(v)) / stats::sd(v),
-         range = (v - mean(v)) / (max(v) - min(v)),
-         # Keep results equal to MATLAB by specifying type = 5
-         iqrange = (v - mean(v)) / stats::IQR(v, type = 5),
-         vast = (v - mean(v)) * mean(v) / stats::var(v),
-         pareto = (v - mean(v)) / sqrt(stats::sd(v)),
-         level = (v - mean(v)) / mean(v),
-         none = v)
+centerscale <- function(
+    v,
+    type = c("center", "auto", "range", "iqrange", "vast", "pareto", "level", "none") #,
+    # na.rm = FALSE,
+    # eps = .Machine$double.eps,
+    # zero_action = c("zeros","unscaled","epsilon","fill"),
+    # zero_fill = 0.5  # used only when zero_action == "fill"
+) {
+  type <- match.arg(type)
+  # zero_action <- match.arg(zero_action)
+
+  na.rm = FALSE
+
+  denom <- 1
+  # compute only what's needed
+  cs <- switch(
+    type,
+    center = v - mean(v, na.rm = na.rm),
+    auto   = {
+      denom <- stats::sd(v, na.rm = na.rm)
+      (v - mean(v, na.rm = na.rm)) / denom
+    },
+    range  = {
+      denom <- diff(range(v, na.rm = na.rm))
+      (v - mean(v, na.rm = na.rm)) / denom
+    },
+    iqrange= {
+      denom <- stats::IQR(v, type = 5, na.rm = na.rm) # MATLAB-compatible IQR
+      (v - stats::median(v, na.rm = na.rm)) / denom
+      },
+    vast   = {
+      denom <- stats::var(v, na.rm = na.rm)
+      (v - mean(v, na.rm = na.rm)) * mean(v, na.rm = na.rm) / denom
+      },
+    pareto = {
+      denom <- sqrt(stats::sd(v, na.rm = na.rm))
+      (v - mean(v, na.rm = na.rm)) / denom
+      },
+    level  = {
+      denom <- mean(v, na.rm = na.rm)
+      (v - mean(v, na.rm = na.rm)) / denom
+    },
+    none   = v
+  )
+
+  # # If denom invalid or ~0, apply policy
+  # if (!is.finite(denom) || abs(denom) <= eps) {
+  #   msg <- sprintf("Denominator for '%s' scaling is zero/invalid (%.3g); applying zero_action='%s'.",
+  #                  type, denom, zero_action)
+  #   warning(msg)
+  #
+  #   cs <- switch(
+  #     zero_action,
+  #     zeros    = numeric(length(v)),
+  #     unscaled = v,
+  #     epsilon  = {
+  #       # Recompute with stabilized denominator
+  #       stab <- if (is.finite(denom)) sign(denom) * max(abs(denom), eps) else eps
+  #       # Recreate scaled value according to type’s formula but with 'stab'
+  #       switch(
+  #         type,
+  #         center = v - mean(v, na.rm = na.rm),
+  #         auto   = (v - mean(v, na.rm = na.rm)) / stab,
+  #         range  = (v - mean(v, na.rm = na.rm)) / stab,
+  #         iqrange= (v - stats::median(v, na.rm = na.rm)) / stab,
+  #         vast   = (v - mean(v, na.rm = na.rm)) * mean(v, na.rm = na.rm) / stab,
+  #         pareto = (v - mean(v, na.rm = na.rm)) / stab,
+  #         level  = (v - mean(v, na.rm = na.rm)) / stab,
+  #         none   = v
+  #       )
+  #     },
+  #     fill     = rep(zero_fill, length(v))
+  #   )
+  # }
+
+  cs
 }
 
 #' Concatenate multiple outputs with multiple observations

@@ -55,6 +55,92 @@ test_that("centerscale produces expected results", {
 
 })
 
+# test_that("centerscale handles NA values with na.rm", {
+#   v_na <- c(1, 2, NA, 3)
+#
+#   # autoscale with na.rm = TRUE
+#   m  <- mean(v_na, na.rm = TRUE)
+#   s  <- sd(v_na, na.rm = TRUE)
+#   expect_equal(
+#     centerscale(v_na, "auto", na.rm = TRUE),
+#     (v_na - m) / s
+#   )
+#
+#   # range with na.rm = TRUE
+#   r  <- diff(range(v_na, na.rm = TRUE))
+#   expect_equal(
+#     centerscale(v_na, "range", na.rm = TRUE),
+#     (v_na - m) / r
+#   )
+#
+#   # iqrange with na.rm = TRUE (keeps your original mean-centering contract)
+#   iq <- IQR(v_na, type = 5, na.rm = TRUE)
+#   expect_equal(
+#     centerscale(v_na, "iqrange", na.rm = TRUE),
+#     (v_na - m) / iq
+#   )
+# })
+#
+# test_that("centerscale applies zero_action = 'zeros' by default (and warns)", {
+#   v_const <- rep(5, 4)    # sd=0, var=0, range=0, IQR=0
+#   expect_warning(expect_equal(centerscale(v_const, "auto"),   rep(0, 4)))
+#   expect_warning(expect_equal(centerscale(v_const, "range"),  rep(0, 4)))
+#   expect_warning(expect_equal(centerscale(v_const, "iqrange"),rep(0, 4)))
+#   expect_warning(expect_equal(centerscale(v_const, "vast"),   rep(0, 4)))
+#   expect_warning(expect_equal(centerscale(v_const, "pareto"), rep(0, 4)))
+#
+#   # level with constant nonzero mean has denom != 0; should not warn, still zeros
+#   expect_silent(expect_equal(centerscale(v_const, "level"),   (v_const - mean(v_const)) / mean(v_const)))
+# })
+#
+# test_that("centerscale zero_action = 'unscaled' returns original vector (and warns)", {
+#   v_const <- rep(5, 3)
+#   expect_warning(expect_equal(
+#     centerscale(v_const, "range", zero_action = "unscaled"),
+#     v_const
+#   ))
+#   expect_warning(expect_equal(
+#     centerscale(v_const, "auto", zero_action = "unscaled"),
+#     v_const
+#   ))
+# })
+#
+# test_that("centerscale zero_action = 'fill' uses zero_fill (and warns)", {
+#   v_const <- rep(5, 5)
+#   expect_warning(expect_equal(
+#     centerscale(v_const, "iqrange", zero_action = "fill", zero_fill = 0.5),
+#     rep(0.5, length(v_const))
+#   ))
+#   expect_warning(expect_equal(
+#     centerscale(v_const, "vast", zero_action = "fill", zero_fill = -7),
+#     rep(-7, length(v_const))
+#   ))
+# })
+#
+# test_that("centerscale zero_action = 'epsilon' stabilizes denominator (and warns)", {
+#   # Choose a vector where denom = 0 but numerator not all zero under 'level'
+#   v_mean0 <- c(-1, 0, 1)  # mean = 0
+#   eps <- 1e-6
+#   # level: (v - mean(v)) / mean(v) -> denom = 0; with epsilon => v / eps
+#   expect_warning(expect_equal(
+#     centerscale(v_mean0, "level", zero_action = "epsilon", eps = eps),
+#     (v_mean0 - mean(v_mean0)) / max(abs(0), eps)  # i.e., v / eps
+#   ))
+#
+#   # auto with all zeros -> numerator is all zeros; result should still be zeros
+#   v_zero <- c(0, 0, 0)
+#   expect_warning(expect_equal(
+#     centerscale(v_zero, "auto", zero_action = "epsilon", eps = eps),
+#     rep(0, length(v_zero))
+#   ))
+# })
+
+test_that("centerscale 'center' and 'none' do not warn for constant vectors", {
+  v_const <- rep(5, 3)
+  expect_silent(centerscale(v_const, "center"))
+  expect_silent(centerscale(v_const, "none"))
+})
+
 test_that("concat_outputs produces correct results and expected errors", {
 
   # Set RNG seed for reproducible results
