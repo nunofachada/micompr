@@ -1,3 +1,5 @@
+# micompr (development version)
+
 # micompr 1.3.0
 
 * More robust `centerscale()` function, with better handling of edge cases and
